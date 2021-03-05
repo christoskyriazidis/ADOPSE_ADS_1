@@ -1,0 +1,27 @@
+﻿
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.9.1/oidc-client.min.js"></script>
+
+
+<script>
+
+    //save in local storage
+
+    var userManger = new Oidc.UserManager(
+        {userStore: new Oidc.WebStorageStateStore({ store: window.localStorage })});
+
+    userManger.signinCallback().then(res => {
+        console.log(res);
+        window.location.href = '/home/index';
+    })
+
+
+
+    //save in session
+    @*var userManger = new Oidc.UserManager();
+
+    userManger.signinCallback().then(res => {
+        console.log(res);
+        window.location.href = '/home/index';
+    })*@
+</script>
