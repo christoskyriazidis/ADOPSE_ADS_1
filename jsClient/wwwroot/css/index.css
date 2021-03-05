@@ -1,0 +1,22 @@
+﻿*{
+    margin:0;
+    padding:0;
+    
+}
+nav ul {
+    width: 100%;
+    background-color: lightblue;
+    height: 10vh;
+    display:flex;
+    align-items: center;
+}
+nav ul li{
+    list-style: none;
+    margin: 5px;
+}
+
+button{
+    cursor: pointer;
+    padding: 10px;
+}
+ 
