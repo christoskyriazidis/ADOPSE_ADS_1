@@ -11,7 +11,6 @@ namespace identityServerNew
 {
     public static class Configuration
     {
-
         public static IEnumerable<IdentityResource> GetIdentityResources() =>
             new List<IdentityResource>
             {
@@ -25,8 +24,7 @@ namespace identityServerNew
                         "username","email","sta8ero","kinito","role",ClaimTypes.DateOfBirth,ClaimTypes.Role
                     }
                 }
-                //new IdentityResources.Email()
-
+                //new IdentityResources.Email
             };
 
         //gia api identify
@@ -91,8 +89,6 @@ namespace identityServerNew
                     AccessTokenLifetime=1,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
-                    
-
                 }
             };
     }

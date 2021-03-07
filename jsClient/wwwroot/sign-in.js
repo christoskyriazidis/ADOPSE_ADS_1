@@ -2,6 +2,7 @@
 const btnSignOut = document.querySelector('#btn-signOut')
 const btnApi = document.querySelector('#btn-callApi')
 const btnChat = document.querySelector('#btn-chat');
+const username = document.querySelector('#username');
 
 btnSignIn.addEventListener('click', signIn)
 btnApi.addEventListener('click', callApi)
@@ -21,7 +22,26 @@ var config = {
     scope: "openid ApiOne credentials",
 }
 
+//var mgr = new UserManager();
 var userManager = new Oidc.UserManager(config);
+
+userManager.events.addUserLoaded(function () {
+    alert("hello");
+});
+userManager.events.addUserUnloaded(function () {
+    alert("byebye")
+    localStorage.clear();
+});
+
+userManager.events.addUserSignedOut(function () {
+    alert("signOut")
+    localStorage.clear();
+});
+userManager.events.addUserSignedIn(function () {
+    alert("signOut")
+});
+
+
 
 function signIn() {
     userManager.signinRedirect();
@@ -31,11 +51,16 @@ function signOut() {
 }
 
 userManager.getUser().then(user=>{
-    console.log("user:",user);
+    //console.log("user:",user);
     if (user) {
         //vazoume san default header to token, global fasi
         axios.defaults.headers.common["Authorization"] = "Bearer " + user.access_token;
         me = user;
+        btnSignOut.style.display = "flex"
+        username.innerHTML = me.profile.username;
+    }
+    else {
+        btnSignIn.style.display = "flex"
     }
 });
 
