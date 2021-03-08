@@ -1,6 +1,4 @@
-#Εργασια ΑΔΟΠΣΕ.!
-
-[Click here to play](https://adise2020.solosquareprojects.com/index.php?page=servers)
+# Εργασια ΑΔΟΠΣΕ.!
 
 - SQL
   - [Tables](#tables)
