@@ -29,14 +29,6 @@ namespace identityServerNew.Controllers
             _interactionService = interactionService;
         }
 
-        [Authorize]
-        [Route("/test")]
-        [HttpGet]
-        public IActionResult test()
-        {
-            return Json(new { message = "inside identity server" });
-        }
-
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
         {
@@ -72,16 +64,21 @@ namespace identityServerNew.Controllers
                 return View(lvm);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(lvm.Username, lvm.Password, false, false);
-            if (result.Succeeded)
+            //var user = await _userManager.FindByEmailAsync(lvm.Username);
+            //var emailtest = user.EmailConfirmed;
+
+            var result = await _signInManager.PasswordSignInAsync(lvm.Username, lvm.Password, false, true);
+            if (result.IsLockedOut)
+            {
+                ViewBag.Message = "You have been lockedOut wait 1 minute.";
+                return View(lvm);
+                //kane kati gia to lockedOut
+            }
+            else if (result.Succeeded)
             {
                 //pane pisw apo ekei pou ir8es dhladh..
                 return Redirect(lvm.ReturnUrl);
             }
-            //else if (result.IsLockedOut)
-            //{
-            //    //kane kati gia to lockedOut
-            //}
             ViewBag.Message = "Wrong username or password";
             return View(lvm);
         }
@@ -101,8 +98,7 @@ namespace identityServerNew.Controllers
             {
                 return View(rgv);
             }
-
-
+            
             var userExists = await _userManager.FindByNameAsync(rgv.Username);
             if (userExists != null)
             {
@@ -110,20 +106,29 @@ namespace identityServerNew.Controllers
                 return View(rgv);
             }
 
-            var user = new IdentityUser(rgv.Username);
+            var user = new IdentityUser
+            {
+                UserName = rgv.Username,
+                Email = rgv.Email,
+            };
+
             var result =await _userManager.CreateAsync(user, rgv.Password);
 
             if (result.Succeeded)
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim("email", rgv.Email));
-                claims.Add(new Claim("kinito", rgv.MobilePhone));
-                claims.Add(new Claim("username", rgv.Name));
-                claims.Add(new Claim(ClaimTypes.StreetAddress, rgv.StreetAddress));
+                var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                await _userManager.AddClaimsAsync(user, claims);
+                var link = Url.Action(nameof(VerifyEmail), "Home", new { userId = user.Id, emailToken }, Request.Scheme, Request.Host.ToString());
+
+                var claims = new List<Claim>();
+                //claims.Add(new Claim("email", rgv.Email));
+                //claims.Add(new Claim("kinito", rgv.MobilePhone));
+                //claims.Add(new Claim("username", rgv.Name));
+                //claims.Add(new Claim(ClaimTypes.StreetAddress, rgv.StreetAddress));
+
+                //await _userManager.AddClaimsAsync(user, claims);
                 //kanoume kai signIn (give token)
-                await _signInManager.SignInAsync(user, false);
+                //await _signInManager.SignInAsync(user, false);
 
                 //pane pisw apo ekei pou ir8es dhladh..
                 return Redirect(rgv.ReturnUrl);
@@ -134,6 +139,30 @@ namespace identityServerNew.Controllers
             //    //kane kati gia to lockedOut
             //}
             return View();
+        }
+
+        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null) return BadRequest();
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            return BadRequest();
+        }
+
+        public IActionResult EmailVerification() => View();
+
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

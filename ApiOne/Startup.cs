@@ -75,8 +75,8 @@ namespace ApiOne
             //        .AllowAnyHeader());
             //});
 
-            services.AddSignalR();
             services.AddControllers();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,6 +103,8 @@ namespace ApiOne
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<ChatHub>("/helperHub");
+                endpoints.MapHub<ChatHub>("/AdminHub");
             });
         }
     }

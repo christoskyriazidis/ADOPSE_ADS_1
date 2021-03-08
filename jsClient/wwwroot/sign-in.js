@@ -56,7 +56,7 @@ userManager.getUser().then(user=>{
         //vazoume san default header to token, global fasi
         axios.defaults.headers.common["Authorization"] = "Bearer " + user.access_token;
         me = user;
-        btnSignOut.style.display = "flex"
+        btnSignOut.style.display = "flex";
         username.innerHTML = me.profile.username;
     }
     else {

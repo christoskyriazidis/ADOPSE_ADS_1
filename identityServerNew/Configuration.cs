@@ -21,7 +21,7 @@ namespace identityServerNew
                     Name="credentials",
                     UserClaims =
                     {
-                        "username","email","sta8ero","kinito","role",ClaimTypes.DateOfBirth,ClaimTypes.Role
+                        "username",ClaimTypes.Email,"sta8ero","kinito","role",ClaimTypes.DateOfBirth,ClaimTypes.Role
                     }
                 }
                 //new IdentityResources.Email

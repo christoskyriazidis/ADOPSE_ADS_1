@@ -22,13 +22,18 @@ namespace identityServerNew
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                var user = new IdentityUser("bob");
+                var user = new IdentityUser
+                {
+                    UserName = "bob",
+                    Email = "bobobo@gmail.com",
+                };
+                //var user = new IdentityUser("bob");
                 //google .GetAwaiter().GetResult()
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
 
                 userManager.AddClaimAsync(user, new Claim("username", "bob")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim("sta8ero", "sekatouraw123")).GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim("email", "bobobo@gmail.com")).GetAwaiter().GetResult();
+                //userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, "bobobo@gmail.com")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim("kinito", "kinito123123")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, "lalala")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "malakas")).GetAwaiter().GetResult();
@@ -40,7 +45,7 @@ namespace identityServerNew
 
                 userManager.AddClaimAsync(user2, new Claim("username", "bob2")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user2, new Claim("sta8ero", "sekatouraw123")).GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user2, new Claim("email", "bobobo@gmail.com")).GetAwaiter().GetResult();
+                userManager.AddClaimAsync(user2, new Claim(ClaimTypes.Email, "bobobo@gmail.com")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user2, new Claim("kinito", "kinito123123")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user2, new Claim(ClaimTypes.DateOfBirth, "lalala")).GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user2, new Claim(ClaimTypes.Role, "Admin")).GetAwaiter().GetResult();
