@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace identityServerNew.Controllers
 {
-    public class AuthController :Controller
+    public class AuthController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -27,6 +27,32 @@ namespace identityServerNew.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _interactionService = interactionService;
+        }
+
+        [Authorize]
+        [Route("/testt")]
+        [HttpGet]
+        public async Task<IActionResult> UpdateClaims()
+        {
+            var claims = User.Claims.ToList();
+            var name = claims.FirstOrDefault(c => c.Type == "name")?.Value;
+            var idClaim = claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            //var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var userId = await _userManager.FindByIdAsync(idClaim);
+            var user = await _userManager.FindByNameAsync(name);
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, "lalal@mail.com");
+            var newEmail = await _userManager.ChangeEmailAsync(user, "lalal@mail.com", token);
+            var newClaim = await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.MobilePhone, "12312"));
+
+            var tokenPassword = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var newPassword = await _userManager.ResetPasswordAsync(user, tokenPassword, "eimaivlakas");
+
+            var user2 = await _userManager.FindByNameAsync("bob");
+            var newClaims = User.Claims.ToList();
+
+
+            return Json(new { test = "s" });
         }
 
         [HttpGet]
@@ -47,7 +73,7 @@ namespace identityServerNew.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl)
         {
-            return View(new LoginViewModel { ReturnUrl=returnUrl});
+            return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
@@ -58,31 +84,80 @@ namespace identityServerNew.Controllers
                 return View(lvm);
             }
             //vlepoume an einai valid to request (model)
-            if (lvm.Password==null || lvm.Username ==null)
+            if (lvm.Password == null || lvm.Username == null)
             {
                 ViewBag.Message = "You must fill the form dumb kid!";
                 return View(lvm);
             }
 
-            //var user = await _userManager.FindByEmailAsync(lvm.Username);
-            //var emailtest = user.EmailConfirmed;
-
-            var result = await _signInManager.PasswordSignInAsync(lvm.Username, lvm.Password, false, true);
-            if (result.IsLockedOut)
+            //koitaw an uparxei to email PRWTA
+            var user = await _userManager.FindByEmailAsync(lvm.Username);
+            if (user == null)
             {
-                ViewBag.Message = "You have been lockedOut wait 1 minute.";
-                return View(lvm);
-                //kane kati gia to lockedOut
+                user = await _userManager.FindByNameAsync(lvm.Username);
+                if (user == null)
+                {
+                    ViewBag.Message = $"Wrong username or password (den uparxei o xrhsths/email gia ekpedeutikous logous oxi asfaleia)";
+                    return View(lvm);
+                }
             }
-            else if (result.Succeeded)
+            var loginResult = await _signInManager.PasswordSignInAsync(user, lvm.Password, false, true);
+            if (loginResult.IsLockedOut)
             {
-                //pane pisw apo ekei pou ir8es dhladh..
+                ViewBag.Message = $"You have been lockedOut wait 1 minute. ";
+                return View(lvm);
+            }
+            else if (loginResult.Succeeded)
+            {
                 return Redirect(lvm.ReturnUrl);
             }
-            ViewBag.Message = "Wrong username or password";
+            var failedTimes = await _userManager.GetAccessFailedCountAsync(user);
+            ViewBag.Message = $"Wrong password.Sou menoun akoma {4 - failedTimes} prospa8ies";
             return View(lvm);
         }
 
+        [HttpGet]
+        [Route("/customers")]
+        public async Task<IActionResult> UserInfo()
+        {
+            var users = await _userManager.GetUsersForClaimAsync(new Claim(ClaimTypes.Role, "customer"));
+            List<Object> userObjects = new List<object>();
+            foreach(var i in users)
+            {
+                userObjects.Add(new {
+                    id = i.Id,
+                    username = i.UserName,
+                    email = i.Email,
+                    emailConfirmed = i.EmailConfirmed,
+                    claims = await _userManager.GetClaimsAsync(i)
+            });
+            }
+
+            return Json(userObjects);
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpGet]
+        [Route("/admins")]
+        public async Task<IActionResult> UserInfoA()
+        {
+            var user = await _userManager.FindByNameAsync("bob");
+            var users = await _userManager.GetUsersForClaimAsync(new Claim(ClaimTypes.Role, "Admin"));
+
+            List<Object> userObjects = new List<object>();
+
+            foreach(var i in users)
+            {
+                userObjects.Add(new {
+                    id = i.Id,
+                    username = i.UserName,
+                    email = i.Email,
+                    emailConfirmed = i.EmailConfirmed,
+                    claims = await _userManager.GetClaimsAsync(i)
+                });
+            }
+
+            return Json(userObjects);
+        }
 
         [HttpGet]
         public IActionResult Register(string returnUrl)

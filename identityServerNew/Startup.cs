@@ -28,7 +28,7 @@ namespace identityServerNew
                 config.Password.RequireDigit =false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false ;
-                config.Lockout.MaxFailedAccessAttempts = 2;
+                config.Lockout.MaxFailedAccessAttempts = 4;
                 config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 //config.SignIn.RequireConfirmedEmail = true;
             })
@@ -38,7 +38,7 @@ namespace identityServerNew
                 config.Cookie.Name = "IdentityServer.Cookie";
                 config.LoginPath = "/Auth/Login";
                 config.LogoutPath = "/Auth/Logout";
-                //config.AccessDeniedPath = "/Auth/UserAccessDenied";
+                config.AccessDeniedPath = "/Auth/UserAccessDenied";
             });
             //exei mesa authentication/authorization..
             services.AddIdentityServer()
