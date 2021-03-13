@@ -57,7 +57,7 @@ namespace ApiOne
                 //    policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
                 //});
 
-                config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role));
+                config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role,"Admin"));
 
                 config.AddPolicy("Claim.DoB", policyBuilder => {
                     policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
@@ -65,15 +65,6 @@ namespace ApiOne
             });
 
             services.AddScoped<IAuthorizationHandler,CustomRequireClaimHandler>();
-
-
-            //services.AddCors(config => {
-            //    config.AddPolicy("AllowAll", 
-            //        p => p
-            //        .AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader());
-            //});
 
             services.AddControllers();
             services.AddSignalR();

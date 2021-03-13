@@ -33,6 +33,9 @@ namespace identityServerNew.Controllers
         public string Name { get; set; }
         
         [Required]
+        public string LastName { get; set; }
+        
+        [Required]
         public string StreetAddress { get; set; }
 
         public string ReturnUrl { get; set; }

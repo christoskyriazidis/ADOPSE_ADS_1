@@ -15,7 +15,7 @@ namespace ApiOne.Hubs
         public static HashSet<string> ConnectedUsers = new HashSet<string>();
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy  = "Admin")]
         public async Task SendMessage(string message)
         {
             var identity = (ClaimsIdentity)Context.User.Identity;

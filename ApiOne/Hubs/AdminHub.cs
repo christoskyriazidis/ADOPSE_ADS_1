@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Hubs
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "Admin")]
     public class AdminHub : Hub
     {
         

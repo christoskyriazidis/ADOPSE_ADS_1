@@ -21,7 +21,7 @@ namespace identityServerNew
                     Name="credentials",
                     UserClaims =
                     {
-                        "username",ClaimTypes.Email,"sta8ero","kinito","role",ClaimTypes.DateOfBirth,ClaimTypes.Role,ClaimTypes.NameIdentifier
+                        "username",ClaimTypes.Email,"Mobile","role",ClaimTypes.Role,ClaimTypes.NameIdentifier,"lastName",ClaimTypes.StreetAddress,"name","lastName"
                     }
                 }
                 //new IdentityResources.Email
@@ -32,7 +32,7 @@ namespace identityServerNew
             //kai kala kanoume register ena api pou exei onoma apione google
             //edw vazoume claims gia to access token..
             new List<ApiResource> {
-                new ApiResource("ApiOne","mpourdela", new string[]{"username","role",ClaimTypes.DateOfBirth,ClaimTypes.Role}) ,
+                new ApiResource("ApiOne","mpourdela", new string[]{"username",ClaimTypes.Email,"Mobile","role",ClaimTypes.Role,ClaimTypes.NameIdentifier,"lastName",ClaimTypes.StreetAddress,"name","lastName"}) ,
                 new ApiResource("ApiTwo") ,
             };
 

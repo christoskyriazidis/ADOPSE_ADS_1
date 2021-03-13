@@ -31,6 +31,8 @@ namespace identityServerNew
                 config.Lockout.MaxFailedAccessAttempts = 4;
                 config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 //config.SignIn.RequireConfirmedEmail = true;
+
+                //config.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
@@ -56,6 +58,9 @@ namespace identityServerNew
                        .AllowAnyHeader();
             }));
 
+            services.AddAuthorization(config => {
+                config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Admin"));
+            });
             services.AddControllersWithViews();
         }
 

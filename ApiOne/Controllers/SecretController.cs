@@ -41,9 +41,9 @@ namespace ApiOne.Controllers
         }
         
 
-
+        [HttpGet]
         [Route("/secret")]
-        [Authorize]
+        [Authorize(Policy= "Admin")]
         public IActionResult Secret()
         {
             var claims = User.Claims.ToList();
