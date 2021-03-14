@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Configuration;
+using identityServerNew.Model;
 
 namespace identityServerNew.Controllers
 {
@@ -114,6 +115,37 @@ namespace identityServerNew.Controllers
             smtpClient.Send(mailMessage);
         }
 
+
+        [Authorize]
+        [HttpPost]
+        [Route("/changePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePassword changePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(changePassword);
+            }
+            var claims = User.Claims.ToList();
+            var id = claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            var user = await _userManager.FindByIdAsync(id);
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
+            if (changePasswordResult.Succeeded)
+            {
+                return View("ConfirmEmail", ViewBag.Message = "Password change complete log in with your new password!!! ");
+            }
+            return View("ConfirmEmail", ViewBag.Message = "Password change Failed!!! (token expired)");
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/changePassword")]
+        public  IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+
         [Route("/forgetPassword")]
         [HttpGet]
         public async Task<IActionResult> PassowrdForget()
@@ -122,7 +154,7 @@ namespace identityServerNew.Controllers
             var user = await _userManager.FindByNameAsync("admin");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = HttpUtility.UrlEncode(token);
-            var link = $"https://localhost:44305/verifyEmail?userId={user.Id}&token={encodedToken}";
+            var link = $"https://localhost:44305/Auth/ResetPassword?userId={user.Id}&token={encodedToken}";
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("mailservice.adopse@gmail.com"),
@@ -140,7 +172,35 @@ namespace identityServerNew.Controllers
         }
 
        
+        [HttpGet]
+        //[Route("/Auth/ResetPassword")]
+        public IActionResult ResetPassword(string token,string userId)
+        {
 
+            ResetPassword model = new ResetPassword();
+            model.token = token;
+            model.userId = userId;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPasswrod)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswrod);
+            }
+            var user = await _userManager.FindByIdAsync(resetPasswrod.userId);
+            if (user == null) return BadRequest();
+            var resetResult = await _userManager.ResetPasswordAsync(user, resetPasswrod.token, resetPasswrod.NewPassword);
+            if (resetResult.Succeeded)
+            {
+                return View("ConfirmEmail", ViewBag.Message = "Password reset complete log in with your new password!!!");
+
+            }
+            return View("ConfirmEmail", ViewBag.Message = "Password reset Failed!!! (token expired)");
+
+        }
 
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)

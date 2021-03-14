@@ -9,7 +9,6 @@ btnApi.addEventListener('click', callApi)
 btnSignOut.addEventListener('click', signOut)
 btnChat.addEventListener('click', () => window.location.href = '/home/chat')
 
-
 var me = null;
 
 var config = {
@@ -50,6 +49,9 @@ function signOut() {
     userManager.signoutRedirect();
 }
 
+
+
+
 userManager.getUser().then(user=>{
     //console.log("user:",user);
     if (user) {
@@ -75,17 +77,6 @@ function callApi(){
         console.error(err); 
     })
 }
-function callMalaka() {
-    axios.get("https://localhost:44374/malakas")
-    .then(res => {
-        console.log(res)
-    })
-    .catch(err => {
-        alert(err)
-        console.error(err); 
-    })
-}
-
 
 //epeidh exoume global token header dn xroiazete na to valoume k se auto to request/response
 var refreshing = false;
