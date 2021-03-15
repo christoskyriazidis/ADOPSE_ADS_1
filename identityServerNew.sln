@@ -13,38 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mvcClient", "mvcClient\mvcC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jsClient", "jsClient\jsClient.csproj", "{91B6F9E0-C671-4195-9B0D-512154FAF58E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logs, research and artifacts", "Logs, research and artifacts", "{90CCDAE5-3490-426A-BA35-70C877B0AD86}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class UML", "Class UML", "{C1A00089-4979-4F02-9943-51AFDC8C85C9}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ER", "ER", "{B6D9433A-90DE-4DB4-9E1B-09F23FDB50B2}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backlog", "Backlog", "{529D91B5-B98E-41D1-91BC-132DB20CAA55}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI UX", "UI UX", "{6C14A584-DD40-4E05-B2C5-C515E52D93F2}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meetings", "Meetings", "{967BB8D2-FF9F-403A-96F9-602771D7963F}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reviews", "Reviews", "{520EF96E-430D-4633-854C-6887230A3D79}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,14 +42,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C1A00089-4979-4F02-9943-51AFDC8C85C9} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
-		{B6D9433A-90DE-4DB4-9E1B-09F23FDB50B2} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
-		{529D91B5-B98E-41D1-91BC-132DB20CAA55} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
-		{6C14A584-DD40-4E05-B2C5-C515E52D93F2} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
-		{967BB8D2-FF9F-403A-96F9-602771D7963F} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
-		{520EF96E-430D-4633-854C-6887230A3D79} = {90CCDAE5-3490-426A-BA35-70C877B0AD86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80D9842D-807A-4DE1-9902-1FFF17E04A65}
