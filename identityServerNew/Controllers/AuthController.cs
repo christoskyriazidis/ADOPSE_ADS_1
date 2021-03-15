@@ -246,7 +246,7 @@ namespace identityServerNew.Controllers
             {
                 return Redirect(returnUrl);
             }
-            var username = info.Principal.FindFirst(ClaimTypes.Name.Replace(" ", "_")).Value;
+            var username = info.Principal.FindFirst(ClaimTypes.Name).Value.Replace(" ", "_");
             return View("ExternalRegister",new ExternalRegisterViewModel {Username= username });
         }
 
@@ -265,6 +265,11 @@ namespace identityServerNew.Controllers
             var user = new IdentityUser(vm.Username);
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
+            {
+                return View(vm);
+            }
+            var claim = await _userManager.AddClaimAsync(user, new Claim("username", vm.Username));
+            if (!claim.Succeeded)
             {
                 return View(vm);
             }
