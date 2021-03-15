@@ -73,7 +73,7 @@ namespace identityServerNew
                     ClientId="client_id_js",
 
                     AllowedGrantTypes=GrantTypes.Implicit,
-
+                    
                     RedirectUris ={"https://localhost:44364/home/signin"},
                     PostLogoutRedirectUris ={"https://localhost:44364/Home/Index"},
                     

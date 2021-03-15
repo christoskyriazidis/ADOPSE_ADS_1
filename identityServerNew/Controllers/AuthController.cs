@@ -230,7 +230,6 @@ namespace identityServerNew.Controllers
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Auth",new { returnUrl });
 
             var properties =  _signInManager.ConfigureExternalAuthenticationProperties(provider,redirectUrl);
-
             return Challenge(properties,provider);
         }
 

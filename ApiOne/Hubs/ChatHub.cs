@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ApiOne.Hubs
 {
@@ -22,8 +23,10 @@ namespace ApiOne.Hubs
             string userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             string username = Context.User.FindFirst(claim=>claim.Type=="username")?.Value;
             string test = Context.User.Identity.Name;
+            //html 
             //var claims = User.Claims.ToList();
-            await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveMessage", username, message);
+            message = HttpUtility.HtmlEncode(message);
+            await Clients.All.SendAsync("ReceiveMessage", username, message);
             
         }
 

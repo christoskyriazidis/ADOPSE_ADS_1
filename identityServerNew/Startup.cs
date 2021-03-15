@@ -69,6 +69,13 @@ namespace identityServerNew
                 config.AppId = _config.GetValue<string>("Facebook:AppId");
                 config.AppSecret = _config.GetValue<string>("Facebook:AppSecret");
             });
+            services.AddAuthentication().AddGitHub(config =>
+            {
+                config.ClientId = _config.GetValue<string>("GitHub:ClientId");
+                config.ClientSecret = _config.GetValue<string>("GitHub:ClientSecret");
+                config.Scope.Add("user:email");
+
+            });
 
             services.AddAuthorization(config => {
                 config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Admin"));
