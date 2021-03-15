@@ -12,11 +12,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace identityServerNew
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(config => {
@@ -28,10 +35,9 @@ namespace identityServerNew
                 config.Password.RequireDigit =false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false ;
-                config.Lockout.MaxFailedAccessAttempts = 4;
-                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-                //config.SignIn.RequireConfirmedEmail = true;
 
+                //config.Lockout.MaxFailedAccessAttempts = 4;
+                //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 //config.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -57,6 +63,12 @@ namespace identityServerNew
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
+
+            services.AddAuthentication().AddFacebook(config=>
+            {
+                config.AppId = _config.GetValue<string>("Facebook:AppId");
+                config.AppSecret = _config.GetValue<string>("Facebook:AppSecret");
+            });
 
             services.AddAuthorization(config => {
                 config.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Admin"));

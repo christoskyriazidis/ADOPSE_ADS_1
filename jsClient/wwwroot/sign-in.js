@@ -74,7 +74,10 @@ function callApi(){
     })
      .catch(err => {
             alert(err)
-        console.error(err); 
+         console.error(err);
+         if (err.status === 401) {
+            signIn();
+         }
     })
 }
 
@@ -91,7 +94,7 @@ axios.interceptors.response.use(
         //if error response is 401 try to refresh token
         if (error.response.status === 401) {
             console.log("axios error 401");
-
+            //signIn();
             // if already refreshing don't make another request
             if (!refreshing) {
                 console.log("starting token refresh");

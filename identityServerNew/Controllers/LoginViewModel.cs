@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace identityServerNew.Controllers
 {
@@ -13,5 +16,6 @@ namespace identityServerNew.Controllers
 
         public string ReturnUrl { get; set; }
 
+        public IEnumerable<AuthenticationScheme>  ExternalProviders { get; set; }
     }
 }
