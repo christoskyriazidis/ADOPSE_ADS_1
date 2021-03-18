@@ -34,7 +34,7 @@ namespace identityServerNew
                     userManager.AddClaimAsync(user2, new Claim("Mobile", "69999888")).GetAwaiter().GetResult();
                     userManager.AddClaimAsync(user2, new Claim(ClaimTypes.DateOfBirth, "lalala")).GetAwaiter().GetResult();
                     userManager.AddClaimAsync(user2, new Claim(ClaimTypes.Role, "Admin")).GetAwaiter().GetResult();
-                    userManager.AddClaimAsync(user2, new Claim(ClaimTypes.StreetAddress, $"malakias 12")).GetAwaiter().GetResult();
+                    userManager.AddClaimAsync(user2, new Claim(ClaimTypes.StreetAddress, $"my addressssss")).GetAwaiter().GetResult();
                 
 
                 for (int i = 10; i < 14; i++)

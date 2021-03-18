@@ -1,6 +1,9 @@
 ﻿using ApiOne.Databases;
+using ApiOne.Hubs;
 using ApiOne.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +15,14 @@ namespace ApiOne.Controllers
 {
     public class dbController : Controller
     {
+        private readonly IHubContext<ChatHub> _myHub;
 
+        public dbController(IHubContext<ChatHub> hubContext)
+        {
+            _myHub = hubContext;
 
+        }
+        private readonly Database database = Database.GetInstance();
         public MyErrorObject CheckAdForErrors(Product product)
         {
             foreach (PropertyInfo pi in product.GetType().GetProperties())
@@ -41,16 +50,27 @@ namespace ApiOne.Controllers
         [HttpGet]
         [Route("/ad")]
         [Produces("application/json")]
-        public async Task<IActionResult> GetAds()
+        public JsonResult  GetAds()
         {
-            List<Product> ads = new List<Product>();
-            ads.Add(new Product("title", 10, 10, 10, "lalalaalalalaalala"));
-            ads.Add(new Product("title", 10, 10, 10, "lalalaalalalaalala"));
-            ads.Add(new Product("title", 10, 10, 10, "lalalaalalalaalala"));
-            ads.Add(new Product("title", 10, 10, 10, "lalalaalalalaalala"));
-            ads.Add(new Product("title", 10, 10, 10, "lalalaalalalaalala"));
+            return Json(database.GetAds());
+        }
 
-            return Json(ads);
+
+        [HttpGet]
+        [Route("/category")]
+        [Produces("application/json")]
+        public JsonResult GetCategories()
+        {
+            return Json(database.GetCategories());
+        }
+        
+
+        [HttpGet]
+        [Route("/condition")]
+        [Produces("application/json")]
+        public JsonResult GetCondition()
+        {
+            return Json(database.GetCondition());
         }
 
         //[Authorize]
@@ -70,17 +90,17 @@ namespace ApiOne.Controllers
 
 
         [HttpPut]
-        [Route("/ad")]
+        [Route("/ad/{id}")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public IActionResult UpdateAd([FromBody] Product product)
+        public async Task<IActionResult> UpdateAd(int id,[FromBody] Ad ad)
         {
-            MyErrorObject error = CheckAdForErrors(product);
-            if (error.Error != null)
+            if(database.UpdateAd(id, ad))
             {
-                return BadRequest(error);
+                await _myHub.Clients.All.SendAsync("wishListNotification");
+                return Ok();
             }
-            return Json(product);
+            return BadRequest();
         }
 
         [HttpDelete]
@@ -90,6 +110,26 @@ namespace ApiOne.Controllers
             //if error
             //else ok
             return Json(new { message = $"byebye {id}" });
+        }
+        
+        //[Authorize]
+        [HttpGet]
+        [Route("/notification")]
+        public IActionResult GetWishListNotification()
+        {
+            return Json(database.GetWishListNotification(1));
+        }
+
+        [HttpGet]
+        [Route("/test")]
+        public async Task<IActionResult> ttess()
+        {
+            var users = ChatHub.ConnectedUsers;
+            foreach (string i in users)
+            {
+                await _myHub.Clients.Client(i).SendAsync("wishListNotification");
+            }
+            return Ok();
         }
 
     }

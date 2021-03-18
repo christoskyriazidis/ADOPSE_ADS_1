@@ -18,6 +18,18 @@ connection.on("ReceiveMessage", function (user, message) {
     document.getElementById("messagesList").appendChild(li);
 });
 
+connection.on("wishListNotification", function () {
+    axios.get("https://localhost:44374/notification")
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                alert(err)
+                console.error(err);
+            })
+    
+});
+
 const chat = document.querySelector('.chat')
 connection.on("Typing", function (user) {
     var p = document.createElement('p');

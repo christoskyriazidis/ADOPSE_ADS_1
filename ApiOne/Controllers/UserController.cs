@@ -31,7 +31,7 @@ namespace ApiOne.Controllers
             var id = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             List<Ad> ads = new List<Ad>();
-            ads.Add(new Ad("title",11,11,11,"desccccccccc"));
+            //ads.Add(new Ad("title",11,11,11,"desccccccccc"));
             
             return Json(ads);
         }

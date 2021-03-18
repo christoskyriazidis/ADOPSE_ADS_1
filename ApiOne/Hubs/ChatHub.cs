@@ -40,14 +40,16 @@ namespace ApiOne.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            ConnectedUsers.Add(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
+            //ConnectedUsers.Add(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
+            ConnectedUsers.Add(Context.ConnectionId);
             await Clients.All.SendAsync("OnlineUsers", ConnectedUsers);
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            ConnectedUsers.Remove(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
+            //ConnectedUsers.Remove(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
+            ConnectedUsers.Remove(Context.ConnectionId);
             await Clients.All.SendAsync("OnlineUsers", ConnectedUsers);
             await base.OnDisconnectedAsync(ex);
         }

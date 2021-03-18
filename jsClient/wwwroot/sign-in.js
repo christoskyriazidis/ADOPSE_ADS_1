@@ -11,6 +11,7 @@ btnChat.addEventListener('click', () => window.location.href = '/home/chat')
 
 var me = null;
 
+
 var config = {
     userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }),
     authority: "https://localhost:44305/",
