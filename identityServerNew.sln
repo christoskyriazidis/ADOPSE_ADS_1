@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mvcClient", "mvcClient\mvcC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jsClient", "jsClient\jsClient.csproj", "{91B6F9E0-C671-4195-9B0D-512154FAF58E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClientt", "WpfClientt\WpfClientt.csproj", "{0E25AAEB-C195-4265-96D5-00F70D56E469}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{91B6F9E0-C671-4195-9B0D-512154FAF58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91B6F9E0-C671-4195-9B0D-512154FAF58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91B6F9E0-C671-4195-9B0D-512154FAF58E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E25AAEB-C195-4265-96D5-00F70D56E469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E25AAEB-C195-4265-96D5-00F70D56E469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E25AAEB-C195-4265-96D5-00F70D56E469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E25AAEB-C195-4265-96D5-00F70D56E469}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

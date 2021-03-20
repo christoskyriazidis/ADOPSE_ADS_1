@@ -46,16 +46,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Ad]";
-                var ads =  conn.Query<Ad>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Ad]";
+                    var ads = connn.Query<Ad>(sql).ToList();
+                    return ads;
+                }
             }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -65,18 +66,19 @@ namespace ApiOne.Databases
             string sql = "UPDATE [Ad] SET title=@title where id=@id";
             try
             {
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.Add("@id", SqlDbType.Int,30).Value=id;
-                command.Parameters.Add("@title", SqlDbType.VarChar,50).Value=ad.Title;
-                conn.Open();
-                command.ExecuteNonQuery();
-                conn.Close();
-                return true;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(sql, connn);
+                    command.Parameters.Add("@id", SqlDbType.Int,30).Value=id;
+                    command.Parameters.Add("@title", SqlDbType.VarChar,50).Value=ad.Title;
+                    connn.Open();
+                    command.ExecuteNonQuery();
+                    return true;
+                }
             }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return false;
             }
         }
@@ -85,16 +87,18 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Category]";
-                var ads =  conn.Query<Category>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Category]";
+                    var ads = connn.Query<Category>(sql).ToList();
+                    return ads;
+
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -102,16 +106,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Condition]";
-                var ads =  conn.Query<Condition>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Condition]";
+                    var ads = connn.Query<Condition>(sql).ToList();
+                    return ads;
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -120,16 +125,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Manufacturer]";
-                var ads =  conn.Query<Manufacturer>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Manufacturer]";
+                    var ads = connn.Query<Manufacturer>(sql).ToList();
+                    return ads;
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -137,16 +143,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Category]";
-                var ads =  conn.Query<Ad>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Category]";
+                    var ads = connn.Query<Ad>(sql).ToList();
+                    return ads;
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -154,16 +161,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Category]";
-                var ads =  conn.Query<Ad>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Category]";
+                    var ads = connn.Query<Ad>(sql).ToList();
+                    return ads;
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -171,16 +179,17 @@ namespace ApiOne.Databases
         {
             try
             {
-                conn.Open();
-                string sql = "SELECT * from [Category]";
-                var ads =  conn.Query<Ad>(sql).ToList();
-                conn.Close();
-                return ads;
+                using (SqlConnection connn = new SqlConnection(connectionString))
+                {
+                    connn.Open();
+                    string sql = "SELECT * from [Category]";
+                    var ads = connn.Query<Ad>(sql).ToList();
+                    return ads;
+                }
                 }
             catch (SqlException e)
             {
                 Debug.WriteLine(e.ToString());
-                conn.Close();
                 return null;
             }
         }
@@ -194,7 +203,6 @@ namespace ApiOne.Databases
                     connn.Open();
                     string sql = $"SELECT w.clicked,a.title,a.Img from [aWishListNotification] w join ad a on (w.adId=a.id) where w.customerId={userId}";
                     var ads = connn.Query<WishListNotification>(sql).ToList();
-                    connn.Close();
                     return ads;
                 }
             }
@@ -204,7 +212,6 @@ namespace ApiOne.Databases
                 return null;
             }
         }
-        
 
     }
 }

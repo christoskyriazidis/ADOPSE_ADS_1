@@ -4,24 +4,25 @@
 
 
 <script>
-
-    //save in local storage
-
-    var userManger = new Oidc.UserManager(
-        {userStore: new Oidc.WebStorageStateStore({ store: window.localStorage })});
-
+    var userManger = new Oidc.UserManager({
+        userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }),
+        response_mode: "query"
+    });
     userManger.signinCallback().then(res => {
         console.log(res);
+
         window.location.href = '/home/index';
     })
-
-
-
     //save in session
     @*var userManger = new Oidc.UserManager();
 
     userManger.signinCallback().then(res => {
         console.log(res);
         window.location.href = '/home/index';
-    })*@
+    }) *@
 </script>
+
+
+
+  
+

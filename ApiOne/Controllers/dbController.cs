@@ -1,11 +1,15 @@
 ﻿using ApiOne.Databases;
 using ApiOne.Hubs;
+using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -15,6 +19,7 @@ namespace ApiOne.Controllers
 {
     public class dbController : Controller
     {
+        private  readonly IAdRepository _adRepository = new AdRepository();
         private readonly IHubContext<ChatHub> _myHub;
 
         public dbController(IHubContext<ChatHub> hubContext)
@@ -47,14 +52,61 @@ namespace ApiOne.Controllers
             return new MyErrorObject { Error = null };
         }
 
+        //[Authorize]
         [HttpGet]
         [Route("/ad")]
         [Produces("application/json")]
         public JsonResult  GetAds()
         {
-            return Json(database.GetAds());
+            return Json(_adRepository.GetAds());
+        } 
+        
+        [HttpGet]
+        [Route("/ad/{id}")]
+        [Produces("application/json")]
+        public IActionResult GetAd(int id)
+        {
+            var ad=_adRepository.GetAd(id);
+            if (ad == null)
+            {
+                return BadRequest(new { error = "ad not found" });
+            }
+            return Json(ad);
         }
 
+        //[Authorize]
+        [Route("/ad")]
+        [HttpPost]
+        [Consumes("application/json")]
+        public IActionResult AddAd([FromBody] Ad ad)
+        {
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            _adRepository.InsertAd(ad);
+            return Ok(ad);
+        }
+
+        [HttpPut]
+        [Route("/ad")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        public async Task<IActionResult> UpdateAd([FromBody] Ad ad)
+        {
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            var updateResult = _adRepository.UpdateAd(ad);
+            if (updateResult!=null)
+            {
+                return Json(updateResult);
+            }
+            return BadRequest();
+        }
 
         [HttpGet]
         [Route("/category")]
@@ -73,35 +125,10 @@ namespace ApiOne.Controllers
             return Json(database.GetCondition());
         }
 
-        //[Authorize]
-        [Route("/ad")]
-        [HttpPost]
-        [Consumes("application/json")]
-        public IActionResult AddAd([FromBody] Product product)
-        {
-            MyErrorObject error = CheckAdForErrors(product);
-            if (error.Error != null)
-            {
-                return BadRequest(error);
-            }
-            //database stuff add product
-            return Json(product);
-        }
+       
 
 
-        [HttpPut]
-        [Route("/ad/{id}")]
-        [Produces("application/json")]
-        [Consumes("application/json")]
-        public async Task<IActionResult> UpdateAd(int id,[FromBody] Ad ad)
-        {
-            if(database.UpdateAd(id, ad))
-            {
-                await _myHub.Clients.All.SendAsync("wishListNotification");
-                return Ok();
-            }
-            return BadRequest();
-        }
+        
 
         [HttpDelete]
         [Route("/ad/{id}")]

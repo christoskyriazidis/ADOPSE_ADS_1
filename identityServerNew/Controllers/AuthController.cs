@@ -285,15 +285,17 @@ namespace identityServerNew.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel lvm)
         {
+            var externalProvidres = await _signInManager.GetExternalAuthenticationSchemesAsync();
+
             if (!ModelState.IsValid)
             {
-                return View(lvm);
+                return View(new LoginViewModel {ExternalProviders=externalProvidres,ReturnUrl=lvm.ReturnUrl,Username=lvm.Username});
             }
             //vlepoume an einai valid to request (model)
             if (lvm.Password == null || lvm.Username == null)
             {
                 ViewBag.Message = "You must fill the form dumb kid!";
-                return View(lvm);
+                return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
             }
 
             //koitaw an uparxei to email PRWTA
@@ -304,7 +306,7 @@ namespace identityServerNew.Controllers
                 if (user == null)
                 {
                     ViewBag.Message = $"Wrong username or password (den uparxei o xrhsths/email gia ekpedeutikous logous oxi asfaleia)";
-                    return View(lvm);
+                    return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
                 }
             }
             //var emailConfirmation = await _userManager.IsEmailConfirmedAsync(user);
@@ -317,7 +319,7 @@ namespace identityServerNew.Controllers
             if (loginResult.IsLockedOut)
             {
                 ViewBag.Message = $"You have been lockedOut wait 1 minute. ";
-                return View(lvm);
+                return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
             }
             else if (loginResult.Succeeded)
             {
@@ -325,7 +327,7 @@ namespace identityServerNew.Controllers
             }
             var failedTimes = await _userManager.GetAccessFailedCountAsync(user);
             ViewBag.Message = $"Wrong password.Sou menoun akoma {4 - failedTimes} prospa8ies";
-            return View(lvm);
+            return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
         }
 
 

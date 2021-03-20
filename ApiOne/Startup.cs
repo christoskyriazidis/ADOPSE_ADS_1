@@ -1,6 +1,8 @@
 using ApiOne.AuthorizationRequirements;
 using ApiOne.Databases;
 using ApiOne.Hubs;
+using ApiOne.Interfaces;
+using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -67,20 +69,23 @@ namespace ApiOne
                 config.AddPolicy("Claim.DoB", policyBuilder => {
                     policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
                 });
-                services.AddTransient<Database>();
+                services.AddTransient<IAdRepository, AdRepository>();
 
             });
 
             services.AddScoped<IAuthorizationHandler,CustomRequireClaimHandler>();
 
-
-            //services.AddControllers();
-
             services.AddControllers()
             .AddNewtonsoftJson(
-          options => {
-           options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
-      });
+              options =>
+              {
+                  options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+              }).AddMvcOptions(options =>
+              {
+                  options.MaxModelValidationErrors = 50;
+                  options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                      _ => "The field is required.");
+              });
 
             services.AddSignalR();
         }

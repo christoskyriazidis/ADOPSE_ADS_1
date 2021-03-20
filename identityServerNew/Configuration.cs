@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
@@ -59,8 +60,8 @@ namespace identityServerNew
                     AllowedScopes={ 
                         "ApiOne",
                         "ApiTwo",
-                        IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
                         "credentials"
                     },
                     RequireConsent=false,
@@ -72,8 +73,10 @@ namespace identityServerNew
                 {
                     ClientId="client_id_js",
 
-                    AllowedGrantTypes=GrantTypes.Implicit,
-                    
+                    AllowedGrantTypes=GrantTypes.Code,
+                    RequirePkce=true,
+                    //automato
+                    RequireClientSecret=false,
                     RedirectUris ={"https://localhost:44364/home/signin"},
                     PostLogoutRedirectUris ={"https://localhost:44364/Home/Index"},
                     
@@ -81,12 +84,31 @@ namespace identityServerNew
 
                     AllowedScopes =
                     {
-                        IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.OpenId,
                         "ApiOne",
                         "credentials"
                     },
-
                     AccessTokenLifetime=1,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                },
+                new Client {
+                    ClientId = "wpf",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+
+                    RedirectUris = { "http://localhost/sample-wpf-app" },
+                    AllowedCorsOrigins = { "http://localhost" },
+
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        "credentials",
+                        "ApiOne"
+
+                    },
+
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                 }
