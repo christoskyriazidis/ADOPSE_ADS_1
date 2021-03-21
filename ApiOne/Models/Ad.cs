@@ -45,6 +45,8 @@ namespace ApiOne.Models
         [Range(1, 100)]
         [Required(ErrorMessage = "Manufacturer is required")]
         public int Manufacturer { get; set; }
+
+        public string LastUpdate { get; set; }
         public int Reports { get; set; }
         public int Views { get; set; }
         public string Date { get; set; }

@@ -13,8 +13,20 @@ namespace ApiOne.Interfaces
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
         bool InsertAd(Ad ad);
-        bool DeleteAd(Ad ad);
+        bool DeleteAd(int id);
 
+        bool SubscribeToCategory(int categoryId, int customerId);
 
+        bool AddToWishList(int adId, int customerId);
+
+        IEnumerable<int> GetSuscribedCategories(int CustmerId);
+        IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId);
+        IEnumerable<CategoryNotification> GetWishList(int CustmerId);
+        IEnumerable<WishListNotification> GetWishListNotifications(int CustmerId);
+        IEnumerable<Category> GetCategories();
+        IEnumerable<Condition> GetConditions();
+        IEnumerable<Manufacturer> GetManufacturers();
+        IEnumerable<State> GetStates();
+        IEnumerable<Models.Type> GetTypes();
     }
 }

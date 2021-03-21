@@ -8,15 +8,15 @@ namespace ApiOne.Models
 {
     public class Customer
     {
-        public int id { get; set; }
-        public int reviews { get; set; }
-        public string username { get; set; }
+        public int Id { get; set; }
+        public int Reviews { get; set; }
+        public string Username { get; set; }
 
         public Customer(int id, int reviews, string username)
         {
-            this.id = id;
-            this.reviews = reviews;
-            this.username = username;
+            Id = id;
+            Reviews = reviews;
+            Username = username;
         }
 
         public Customer()

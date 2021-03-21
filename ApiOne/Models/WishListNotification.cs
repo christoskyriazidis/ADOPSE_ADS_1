@@ -8,9 +8,14 @@ namespace ApiOne.Models
 {
     public class WishListNotification
     {
-        public bool Clicked  { get; set; }
-        public string Title  { get; set; }
-        public string Img  { get; set; }
+        public int AdId { get; set; }
+        public bool Clicked { get; set; }
+        public int CustomerId { get; set; }
+        public string Username { get; set; }
+        public string LastUpdate { get; set; }
+        public string Title { get; set; }
+        public string Img { get; set; }
+
 
     }
 }
