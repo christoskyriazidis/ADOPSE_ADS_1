@@ -1,4 +1,5 @@
 ﻿using ApiOne.Models;
+using ApiOne.Models.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace ApiOne.Interfaces
 {
     public interface IAdRepository
     {
-        IEnumerable<Ad> GetAds();
+        IEnumerable<Ad> GetAds(AdParameters adParameters);
+        int GetAdTableSize();
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
         bool InsertAd(Ad ad);

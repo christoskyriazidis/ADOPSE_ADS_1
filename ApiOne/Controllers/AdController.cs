@@ -2,11 +2,13 @@
 using ApiOne.Hubs;
 using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -31,9 +33,12 @@ namespace ApiOne.Controllers
         [HttpGet]
         [Route("/ad")]
         [Produces("application/json")]
-        public JsonResult GetAds()
+        public JsonResult GetAds([FromQuery] AdParameters adParameters)
         {
-            return Json(_adRepository.GetAds());
+            var adCount = _adRepository.GetAdTableSize();
+            var pagination = new {CurrentPage=adParameters.PageNumber,SizeRequested=adParameters.PageSize,AdCount = adCount, TotalPages= adCount /adParameters.PageSize};
+            Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
+            return Json(_adRepository.GetAds(adParameters));
         }
 
         //no authorize gia na vlepoun oi episkeptes
@@ -104,7 +109,15 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
-       
+       [HttpGet]
+       [Route("/")]
+       public IActionResult testt()
+        {
+
+            var pagination = new { pageNumber = 4, pageSize = 10 };
+            Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
+            return Json(new {msg="hello" });
+        }
 
         //[HttpGet]
         //[Route("/category")]

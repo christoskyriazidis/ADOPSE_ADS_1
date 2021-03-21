@@ -1,5 +1,7 @@
-﻿using ApiOne.Interfaces;
+﻿using ApiOne.Helpers;
+using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Models.Queries;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -31,12 +33,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    string sql = "SELECT * from [Ad] where id=@Id";
-                    var ad = conn.Query<Ad>(sql, new { Id = id }).FirstOrDefault();
-                    return ad;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [Ad] where id=@Id";
+                var ad = conn.Query<Ad>(sql, new { Id = id }).FirstOrDefault();
+                return ad;
             }
             catch (SqlException sqlEx)
             {
@@ -45,13 +45,26 @@ namespace ApiOne.Repositories
             }
         }
         
-        public IEnumerable<Ad> GetAds()
+        public IEnumerable<Ad> GetAds(AdParameters adParameters)
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            using var conn = ConnectionManager.GetSqlConnection();
+            string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
+            var ads = conn.Query<Ad>(sql, new { adParameters.PageNumber, adParameters.PageSize }).ToList();
+            return ads;
+        }
+
+        public int GetAdTableSize()
+        {
+            try {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT count(*) as AdCount FROM [Ad]";
+                int count = conn.Query<int>(sql).FirstOrDefault();
+                return count;
+            }
+            catch (SqlException sqlEx)
             {
-                string sql = "SELECT * from [Ad]";
-                var ads = conn.Query<Ad>(sql).ToList();
-                return ads;
+                Debug.WriteLine(sqlEx);
+                return -1;
             }
         }
 
@@ -60,12 +73,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    string sql = "DELETE FROM [Ad] WHERE id=@Id";
-                    var result = conn.Execute(sql, new {Id=id});
-                    return true;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "DELETE FROM [Ad] WHERE id=@Id";
+                var result = conn.Execute(sql, new { Id = id });
+                return true;
             }
             catch (SqlException sqlEx)
             {
@@ -78,15 +89,13 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    ad.Date = DateTime.Now.ToString();
-                    ad.LastUpdate = DateTime.Now.ToString();
-                    string sql = "  INSERT INTO [Ad] (title,Description,Date,State,Img,Type,Category,Condition,Customer,Manufacturer,LastUpdate)" +
-                                "VALUES (@Title,@Description,@Date,@State,@Img,@Type,@Category,@Condition,@Customer,@Manufacturer,@LastUpdate)";
-                    var result = conn.Execute(sql, new {ad.Title,ad.Description,ad.Date,ad.State,ad.Img,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate});
-                    return true;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                ad.Date = DateTime.Now.ToString();
+                ad.LastUpdate = DateTime.Now.ToString();
+                string sql = "  INSERT INTO [Ad] (title,Description,Date,State,Img,Type,Category,Condition,Customer,Manufacturer,LastUpdate)" +
+                            "VALUES (@Title,@Description,@Date,@State,@Img,@Type,@Category,@Condition,@Customer,@Manufacturer,@LastUpdate)";
+                var result = conn.Execute(sql, new { ad.Title, ad.Description, ad.Date, ad.State, ad.Img, ad.Type, ad.Category, ad.Condition, ad.Customer, ad.Manufacturer, ad.LastUpdate });
+                return true;
             }
             catch (SqlException sqlEx)
             {
@@ -99,15 +108,25 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                ad.LastUpdate = DateTime.Now.ToString();
+                string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Img=@Img,Type=@Type,Category=@Category,Condition=@Condition," +
+                                "Customer=@Customer,Manufacturer=@Manufacturer where id=@Id";
+                var result = conn.Execute(sql, new
                 {
-                    ad.LastUpdate = DateTime.Now.ToString();
-                    string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Img=@Img,Type=@Type,Category=@Category,Condition=@Condition," +
-                                    "Customer=@Customer,Manufacturer=@Manufacturer where id=@Id";
-                    var result = conn.Execute(sql, new{ad.Title,ad.Description,ad.LastUpdate,ad.State,ad.Img,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.Id
-                    });
-                    return ad;
-                }
+                    ad.Title,
+                    ad.Description,
+                    ad.LastUpdate,
+                    ad.State,
+                    ad.Img,
+                    ad.Type,
+                    ad.Category,
+                    ad.Condition,
+                    ad.Customer,
+                    ad.Manufacturer,
+                    ad.Id
+                });
+                return ad;
             }
             catch (SqlException sqlEx)
             {
@@ -118,13 +137,19 @@ namespace ApiOne.Repositories
 
         public IEnumerable<Category> GetCategories()
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            try
             {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "SELECT * from [Category]";
                 var categories = conn.Query<Category>(sql).ToList();
                 return categories;
             }
-        }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
+}
 
         public IEnumerable<Condition> GetConditions()
         {
@@ -150,13 +175,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    
-                    string sql = " insert into [SubscribedCategories] (customerId,categoryId) values (@CustomerId,@CategoryId)";
-                    var result = conn.Execute(sql, new { CustomerId =customerId, CategoryId= categoryId });
-                    return true;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = " insert into [SubscribedCategories] (customerId,categoryId) values (@CustomerId,@CategoryId)";
+                var result = conn.Execute(sql, new { CustomerId = customerId, CategoryId = categoryId });
+                return true;
             }
             catch (SqlException sqlEx)
             {
@@ -169,13 +191,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-
-                    string sql = "insert into [WishListt] (customerId,adId) values (@CustomerId,@AdId)";
-                    var result = conn.Execute(sql, new { CustomerId = customerId, AdId = adId });
-                    return true;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "insert into [WishListt] (customerId,adId) values (@CustomerId,@AdId)";
+                var result = conn.Execute(sql, new { CustomerId = customerId, AdId = adId });
+                return true;
             }
             catch (SqlException sqlEx)
             {
@@ -188,12 +207,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    string sql = "SELECT * from [CategoryNotification] where CustomerId=@Id";
-                    var categoryNotifications = conn.Query<CategoryNotification>(sql, new { Id = CustmerId }).ToList();
-                    return categoryNotifications;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [CategoryNotification] where CustomerId=@Id";
+                var categoryNotifications = conn.Query<CategoryNotification>(sql, new { Id = CustmerId }).ToList();
+                return categoryNotifications;
             }
             catch (SqlException sqlEx)
             {
@@ -206,12 +223,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    string sql = "SELECT w.clicked,w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId";
-                    var wishListNotifications = conn.Query<WishListNotification>(sql,new { CId= custmerId }).ToList();
-                    return wishListNotifications;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT w.clicked,w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId";
+                var wishListNotifications = conn.Query<WishListNotification>(sql, new { CId = custmerId }).ToList();
+                return wishListNotifications;
             }
             catch (SqlException sqlEx)
             {
@@ -224,12 +239,10 @@ namespace ApiOne.Repositories
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    string sql = "SELECT categoryId from [SubscribedCategories] where CustomerId=@Id";
-                    var wishListNotifications = conn.Query<int>(sql, new { Id = CustmerId }).ToList();
-                    return wishListNotifications;
-                }
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT categoryId from [SubscribedCategories] where CustomerId=@Id";
+                var wishListNotifications = conn.Query<int>(sql, new { Id = CustmerId }).ToList();
+                return wishListNotifications;
             }
             catch (SqlException sqlEx)
             {
