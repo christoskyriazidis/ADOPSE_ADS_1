@@ -1,4 +1,5 @@
 ﻿using ApiOne.Models;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Queries;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ namespace ApiOne.Interfaces
 {
     public interface IAdRepository
     {
-        IEnumerable<Ad> GetAds(AdParameters adParameters);
+        AdPagination GetAds(AdPageSizeNumberParameters adParameters);
+        AdPagination GetAdsByFilters(AdParametresQuertyFilter adParametresFilter);
         int GetAdTableSize();
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
@@ -25,10 +27,10 @@ namespace ApiOne.Interfaces
         IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId);
         IEnumerable<CategoryNotification> GetWishList(int CustmerId);
         IEnumerable<WishListNotification> GetWishListNotifications(int CustmerId);
-        IEnumerable<Category> GetCategories();
-        IEnumerable<Condition> GetConditions();
-        IEnumerable<Manufacturer> GetManufacturers();
-        IEnumerable<State> GetStates();
-        IEnumerable<Models.Type> GetTypes();
+        IEnumerable<AdFilter> GetCategories();
+        IEnumerable<AdFilter> GetConditions();
+        IEnumerable<AdFilter> GetManufacturers();
+        IEnumerable<AdFilter> GetStates();
+        IEnumerable<AdFilter> GetTypes();
     }
 }

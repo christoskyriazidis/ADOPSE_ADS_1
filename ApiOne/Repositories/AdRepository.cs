@@ -1,6 +1,7 @@
 ﻿using ApiOne.Helpers;
 using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Queries;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -17,18 +18,11 @@ namespace ApiOne.Repositories
 {
     public class AdRepository : IAdRepository
     {
-        private IConfiguration _config;
-        public AdRepository(IConfiguration config)
-        {
-            _config = config;
-        }
+
         public AdRepository()
         {
 
         }
-
-        private readonly string ConnectionString = "Data Source=DESKTOP-79B5CPA;Initial Catalog=adDB;Integrated Security=True";
-
         public Ad GetAd(int id)
         {
             try
@@ -44,14 +38,66 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
-        
-        public IEnumerable<Ad> GetAds(AdParameters adParameters)
+            
+        public AdPagination GetAdsByFilters(AdParametresQuertyFilter adParametresFilter)
         {
-            using var conn = ConnectionManager.GetSqlConnection();
-            string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
-            var ads = conn.Query<Ad>(sql, new { adParameters.PageNumber, adParameters.PageSize }).ToList();
-            return ads;
+            try
+            {
+                using var conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*)as AdCount FROM [Ad] ";
+                AdPagination adPagination = new AdPagination();
+                using (var results = conn.QueryMultiple(sql, new { adParametresFilter.Params.PageNumber, adParametresFilter.Params.PageSize }))
+                {
+                    adPagination.Ads = results.Read<Ad>().ToList();
+                    adPagination.TotalAds = results.Read<int>().FirstOrDefault();
+                };
+                //https://localhost:44374/ad?PageNumber=5&PageSize=5
+                int lastPageNumber = (adPagination.TotalAds % adParametresFilter.Params.PageSize == 0) ? adPagination.TotalAds / adParametresFilter.Params.PageSize : adPagination.TotalAds / adParametresFilter.Params.PageSize + 1;
+                adPagination.PageSize = adParametresFilter.Params.PageSize;
+                adPagination.NextPageUrl = $"{(adParametresFilter.Params.PageNumber == lastPageNumber ? lastPageNumber : adParametresFilter.Params.PageNumber + 1)}";
+                adPagination.PreviousPageUrl = $"previous:{(adParametresFilter.Params.PageNumber < 2 ? 1 : adParametresFilter.Params.PageNumber - 1)}";
+                adPagination.LastPageUrl = $"lastpage:{lastPageNumber}";
+                adPagination.CurrentPage = adParametresFilter.Params.PageNumber;
+                adPagination.TotalPages = lastPageNumber;
+                return adPagination;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
         }
+
+
+        public AdPagination GetAds(AdPageSizeNumberParameters adParameters)
+        {
+            try
+            { 
+                using var conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
+                AdPagination adPagination = new AdPagination();
+                using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
+                {
+                    adPagination.Ads = results.Read<Ad>().ToList();
+                    adPagination.TotalAds = results.Read<int>().FirstOrDefault();
+                };
+                //https://localhost:44374/ad?PageNumber=5&PageSize=5
+                int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
+                adPagination.PageSize = adParameters.PageSize;
+                adPagination.NextPageUrl= $"{(adParameters.PageNumber== lastPageNumber ? lastPageNumber : adParameters.PageNumber + 1)}";
+                adPagination.PreviousPageUrl = $"previous:{(adParameters.PageNumber<2?1:adParameters.PageNumber-1)}";
+                adPagination.LastPageUrl= $"lastpage:{lastPageNumber}";
+                adPagination.CurrentPage = adParameters.PageNumber;
+                adPagination.TotalPages = lastPageNumber;
+                return adPagination;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
 
         public int GetAdTableSize()
         {
@@ -135,13 +181,13 @@ namespace ApiOne.Repositories
             };
         }
 
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<AdFilter> GetCategories()
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "SELECT * from [Category]";
-                var categories = conn.Query<Category>(sql).ToList();
+                var categories = conn.Query<AdFilter>(sql).ToList();
                 return categories;
             }
             catch (SqlException sqlEx)
@@ -149,27 +195,10 @@ namespace ApiOne.Repositories
                 Debug.WriteLine(sqlEx);
                 return null;
             };
-}
-
-        public IEnumerable<Condition> GetConditions()
-        {
-            throw new NotImplementedException();
         }
 
-        public IEnumerable<Manufacturer> GetManufacturers()
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public IEnumerable<State> GetStates()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Models.Type> GetTypes()
-        {
-            throw new NotImplementedException();
-        }
 
         public bool SubscribeToCategory(int categoryId, int customerId)
         {
@@ -252,6 +281,28 @@ namespace ApiOne.Repositories
         }
 
         public IEnumerable<CategoryNotification> GetWishList(int CustmerId)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+        public IEnumerable<AdFilter> GetConditions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<AdFilter> GetManufacturers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<AdFilter> GetStates()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<AdFilter> GetTypes()
         {
             throw new NotImplementedException();
         }

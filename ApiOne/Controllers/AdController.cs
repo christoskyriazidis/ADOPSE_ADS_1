@@ -30,15 +30,23 @@ namespace ApiOne.Controllers
         }
 
         //no authorize gia na vlepoun oi episkeptes
+        //valid query String (value < 1) ? 1 : value; pageSize = (value > maxPageSize||value<5) ? maxPageSize : value;
         [HttpGet]
         [Route("/ad")]
         [Produces("application/json")]
-        public JsonResult GetAds([FromQuery] AdParameters adParameters)
+        public IActionResult GetAds([FromQuery] AdPageSizeNumberParameters adParameters)
         {
-            var adCount = _adRepository.GetAdTableSize();
-            var pagination = new {CurrentPage=adParameters.PageNumber,SizeRequested=adParameters.PageSize,AdCount = adCount, TotalPages= adCount /adParameters.PageSize};
-            Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
-            return Json(_adRepository.GetAds(adParameters));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "Ads Out of range" });
+            }
+            var ads = _adRepository.GetAds(adParameters);
+            if (ads.Ads == null||ads.Ads.Count==0||ads.TotalAds<1)
+            {
+                return BadRequest(new { error = "Ads Out of range" });
+            }
+            //Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
+            return Json(ads);
         }
 
         //no authorize gia na vlepoun oi episkeptes
@@ -109,14 +117,25 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
-       [HttpGet]
-       [Route("/")]
-       public IActionResult testt()
+        [HttpGet]
+        [Route("/filter")]
+        public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] AdPageSizeNumberParameters adParameters)
         {
+            AdParametresQuertyFilter adParametresFilter = new AdParametresQuertyFilter(adParameters);
 
-            var pagination = new { pageNumber = 4, pageSize = 10 };
-            Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
-            return Json(new {msg="hello" });
+            foreach (var prop in paramTypeFilter.GetType().GetProperties())
+            {
+                var value = prop.GetValue(paramTypeFilter, null);
+                if (value != null)
+                {
+                    String[] filterArray = value.ToString().Split("_").ToArray();
+                    string sqlIn = String.Join(",", filterArray);
+                    string last =$"{prop.Name} IN ({sqlIn})";
+                    adParametresFilter.GetType().GetProperty(prop.Name).SetValue(adParametresFilter,last);
+                }
+            }
+            var asd = adParametresFilter;
+            return Json(new { msg = "hello" });
         }
 
         //[HttpGet]

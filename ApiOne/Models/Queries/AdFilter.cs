@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiOne.Models
+namespace ApiOne.Models.Queries
 {
-    public class User
+    public class AdFilter
     {
-        public List<Ad> ads{ get; set; }
-
-        public User()
-        {
-
-        }
+        public int Id { get; set; }
+        public int Title { get; set; }
     }
 }

@@ -1,39 +1,140 @@
 ﻿
 
+<style>
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
 
-@model LoginViewModel   
+    body {
+        background: rgb(153,194,236);
+        background: linear-gradient(180deg, rgba(153,194,236,1) 0%, rgba(51,133,217,1) 50%, rgba(27,109,193,1) 100%);
+        height: 100vh;
+        width: 100vw;
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-    <h1>Sign In With</h1>
-    <form asp-controller="Auth" asp-action="ExternalLogin" 
-          asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    .authorizationContainer {
+        flex-direction: column;
+        display: flex;
+        width: 20vw;
+        height: 60vh;
+        border-radius: 10px;
+        box-shadow: 5px 5px 50px rgb(41, 41, 41);
+        border: 0.5px solid rgb(82, 82, 82);
+        background-color: #ebebeb;
+        justify-content: center;
+        align-items: center;
+    }
 
-        @foreach(var provider in Model.ExternalProviders)
-        {
-        <button name="provider"
-                type="submit"
-                value="@provider.Name">
-             @provider.Name
-        </button>
+        .authorizationContainer h1 {
+            color: rgb(76, 120, 163);
+            display: flex;
         }
+
+        .authorizationContainer .inputs {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+        }
+
+    input {
+        border: 0px;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgb(87, 115, 143);
+        outline-width: 0;
+        margin: 20px;
+        font-size: x-large;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        width: 35%;
+    }
+
+    button {
+        outline-width: 0;
+        border: none;
+        background: none;
+        font-size: x-large;
+        border-radius: 20px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 35px;
+        text-decoration: none;
+        box-shadow: 5px 5px 5px rgba(41, 41, 41,.5);
+        cursor: pointer;
+    }
+
+    span {
+        text-align: center;
+    }
+
+    .login {
+        background-color: rgb(76, 120, 163);
+        color: #fff;
+        margin-top: 40px;
+    }
+
+    .Facebook-login {
+        background-color: #ebebeb;
+        border: 2px solid rgb(76, 120, 163);
+        color: rgb(58, 92, 126);
+    }
+
+    .Github-login {
+        background-color: #ebebeb;
+        border: 2px solid rgb(76, 120, 163);
+        color: rgb(58, 92, 126);
+    }
+
+    .signup-btn {
+        color: rgb(49, 78, 107);
+        margin-top: 20px;
+        font-size: larger;
+        text-align: center;
+    }
+
+    ::placeholder {
+        color: rgb(76, 120, 163);
+    }
+</style>
+@model LoginViewModel
+
+<div class="authorizationContainer">
+    <h1>Sign In With</h1>
+    <label class="" >@ViewBag.Message</label>
+
+    <form class="inputs" asp-controller="Auth" asp-action="Login" method="post">
+        @*hidden gia to returnUrl*@
+
+        <input type="hidden" asp-for="ReturnUrl" />
+        <input asp-for="Username" placeholder="Username" />
+        <span asp-validation-for="Username"></span>
+
+        <input asp-for="Password" placeholder="Password" />
+        <span class="" asp-validation-for="Password"></span>
+
+        <button class="login" type="submit">LogIn</button>
     </form>
 
-<form asp-controller="Auth" asp-action="Login" method="post">
-        @*hidden gia to returnUrl*@
-    <input type="hidden" asp-for="ReturnUrl" />
-        <label style="background-color:red;">@ViewBag.Message</label>
-        <div>
-            <label>Username</label>
-            <input asp-for="Username" />
-            <span asp-validation-for="Username"></span>
-        </div>
-        <div>
-            <label>Password</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-    <div>
-        <button type="submit">SignIn</button>
-    </div>
-<a asp-controller="Auth" asp-action="Register"
-   asp-route-returnUrl="@Model.ReturnUrl">Register</a>
-</form>
+    <form class="buttons" asp-controller="Auth" asp-action="ExternalLogin"
+          asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+        @foreach (var provider in Model.ExternalProviders)
+        {
+            <button class="@provider.Name-login" name="provider"
+                    type="submit"
+                    value="@provider.Name">
+                @provider.Name
+            </button>
+        }
+    </form>
+    <a class="signup-btn" asp-controller="Auth" asp-action="Register"
+       asp-route-returnUrl="@Model.ReturnUrl">Not registered yet?<br> click here to sign up for free today!</a>
+</div>

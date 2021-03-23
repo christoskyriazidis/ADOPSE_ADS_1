@@ -90,10 +90,10 @@ namespace identityServerNew
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
             app.UseCors("MyPolicy");
 
             app.UseRouting();
-            app.UseStaticFiles();
 
             app.UseIdentityServer();
             app.UseAuthorization();
