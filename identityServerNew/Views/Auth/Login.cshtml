@@ -106,9 +106,17 @@
 </style>
 @model LoginViewModel
 
+@{
+    var registerResult = "";
+    if (TempData.ContainsKey("register"))
+    {
+        registerResult = TempData["register"] as string;
+    }
+}
+
 <div class="authorizationContainer">
     <h1>Sign In With</h1>
-    <label class="" >@ViewBag.Message</label>
+    <label class="">@ViewBag.Message @registerResult</label>
 
     <form class="inputs" asp-controller="Auth" asp-action="Login" method="post">
         @*hidden gia to returnUrl*@
@@ -137,4 +145,7 @@
     </form>
     <a class="signup-btn" asp-controller="Auth" asp-action="Register"
        asp-route-returnUrl="@Model.ReturnUrl">Not registered yet?<br> click here to sign up for free today!</a>
+    <a class="signup-btn" asp-controller="Auth" asp-action="ResetPasswordInput"
+       asp-route-returnUrl="@Model.ReturnUrl">Forgot you Password?</a>
 </div>
+

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Configuration;
 using identityServerNew.Model;
+using identityServerNew.Helpers;
 
 namespace identityServerNew.Controllers
 {
@@ -64,11 +65,31 @@ namespace identityServerNew.Controllers
         }
 
 
-        [Route("/mail")]
+        [Route("/cssMail")]
         [HttpGet]
-        public async Task<IActionResult> testingMail()
+        public async Task<IActionResult> mailSending()
         {
-            var user = await _userManager.FindByNameAsync("admin");
+            string texttt = System.IO.File.ReadAllText(@"C:\Users\TestFolder\index.html");
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("mailservice.adopse@gmail.com"),
+                Subject = "subject",
+                Body = texttt.Replace("#link#","eisaivlakaskaienazwo"),
+                IsBodyHtml = true,
+                To = { "christosgalaxiz@gmail.com" }
+            };
+            var emailStatus = await MyEmailService.SendMail(mailMessage);
+            if (emailStatus)
+            {
+                return Ok();
+            }
+            return Json(new { error="problem with email service"});
+        }
+
+        //apo edw stelnoum email to verification token.
+        public async Task<IActionResult> EmailConfirmation(string username,string email)
+        {
+            var user = await _userManager.FindByNameAsync(username);
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedToken = HttpUtility.UrlEncode(token);
             var link = $"https://localhost:44305/verifyEmail?userId={user.Id}&token={encodedToken}";
@@ -80,8 +101,11 @@ namespace identityServerNew.Controllers
                 IsBodyHtml = true,
                 To = { "christosgalaxiz@gmail.com"}
             };
-
-            SendMail(mailMessage);
+            var emailStatus = await MyEmailService.SendMail(mailMessage);
+            if (emailStatus)
+            {
+                return Ok();
+            }
             return Ok();
         }
 
@@ -94,25 +118,9 @@ namespace identityServerNew.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                return View("ConfirmEmail", ViewBag.Message = "Verified completed!!!");
+                return View("ConfirmPage", ViewBag.Message = "Verified completed!!!");
             }
-            return View("ConfirmEmail", ViewBag.Message = "Verified Failed!!!");
-        }
-
-
-        public void SendMail(MailMessage mailMessage)
-        {
-            var port = _config.GetValue<int>("Email:Port");
-            var appSmtpClient = _config.GetValue<string>("Email:SmtpClient");
-            var appMail = _config.GetValue<string>("Email:mail");
-            var password = _config.GetValue<string>("Email:password");
-            var smtpClient = new SmtpClient(appSmtpClient)
-            {
-                Port = port,
-                Credentials = new NetworkCredential(appMail, password),
-                EnableSsl = true,
-            };
-            smtpClient.Send(mailMessage);
+            return View("ConfirmPage", ViewBag.Message = "Verified Failed!!!");
         }
 
 
@@ -132,9 +140,9 @@ namespace identityServerNew.Controllers
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, changePassword.OldPassword, changePassword.NewPassword);
             if (changePasswordResult.Succeeded)
             {
-                return View("ConfirmEmail", ViewBag.Message = "Password change complete log in with your new password!!! ");
+                return View("ConfirmPage", ViewBag.Message = "Password change complete log in with your new password!!! ");
             }
-            return View("ConfirmEmail", ViewBag.Message = "Password change Failed!!! (token expired)");
+            return View("ConfirmPage", ViewBag.Message = "Password change Failed!!! (token expired)");
         }
 
         [Authorize]
@@ -148,9 +156,8 @@ namespace identityServerNew.Controllers
 
         [Route("/forgetPassword")]
         [HttpGet]
-        public async Task<IActionResult> PassowrdForget()
+        public async Task<IActionResult> SendPasswordResetToMail(string username,string email)
         {
-
             var user = await _userManager.FindByNameAsync("admin");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = HttpUtility.UrlEncode(token);
@@ -166,12 +173,39 @@ namespace identityServerNew.Controllers
                 To = { "christosgalaxiz@gmail.com" }
             };
 
-            SendMail(mailMessage);
-
+            var emailStatus = await MyEmailService.SendMail(mailMessage);
             return Ok();
         }
 
        
+        [HttpGet]
+        public IActionResult ResetPasswordInput()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordInput(AccountResetPassword accountResetPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(accountResetPassword);
+            }
+            var user = await _userManager.FindByNameAsync(accountResetPassword.UsernameEmail);
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(accountResetPassword.UsernameEmail);
+                if (user == null)
+                {
+                    ViewBag.Message = "Username Email not found.!";
+                    return View(accountResetPassword);
+                }
+
+            }
+            ViewBag.Message = "Verification code Send to Your email!";
+            await SendPasswordResetToMail(user.UserName, user.Email);
+            return View(accountResetPassword);
+        }
+
         [HttpGet]
         //[Route("/Auth/ResetPassword")]
         public IActionResult ResetPassword(string token,string userId)
@@ -195,10 +229,10 @@ namespace identityServerNew.Controllers
             var resetResult = await _userManager.ResetPasswordAsync(user, resetPasswrod.token, resetPasswrod.NewPassword);
             if (resetResult.Succeeded)
             {
-                return View("ConfirmEmail", ViewBag.Message = "Password reset complete log in with your new password!!!");
+                return View("ConfirmPage", ViewBag.Message = "Password reset complete log in with your new password!!!");
 
             }
-            return View("ConfirmEmail", ViewBag.Message = "Password reset Failed!!! (token expired)");
+            return View("ConfirmPage", ViewBag.Message = "Password reset Failed!!! (token expired)");
 
         }
 
@@ -255,12 +289,19 @@ namespace identityServerNew.Controllers
             {
                 return View(vm);
             }
+            //check if username exists and throw error
+            var checkUsername = await _userManager.FindByNameAsync(vm.Username);
+            if (checkUsername!=null)
+            {
+                ViewBag.Message="Username already Exists";
+                return View(vm);
+            }
+            //check for errors
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 return RedirectToAction("Login");
             }
-
             var user = new IdentityUser(vm.Username);
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -279,7 +320,6 @@ namespace identityServerNew.Controllers
             }
             //perasei ola auta tote redirect
             return Redirect(vm.ReturnUrl);
-
         }
 
         [HttpPost]
@@ -305,10 +345,11 @@ namespace identityServerNew.Controllers
                 user = await _userManager.FindByNameAsync(lvm.Username);
                 if (user == null)
                 {
-                    ViewBag.Message = $"Wrong username or password (den uparxei o xrhsths/email gia ekpedeutikous logous oxi asfaleia)";
+                    ViewBag.Message = $"Wrong username or password (den uparxei o xrhsths/email)";
                     return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
                 }
             }
+            //check if email is confirmed
             //var emailConfirmation = await _userManager.IsEmailConfirmedAsync(user);
             //if (!emailConfirmation)
             //{
@@ -357,7 +398,7 @@ namespace identityServerNew.Controllers
                 UserName = rgv.Username,
                 Email = rgv.Email,
             };
-            var result =await _userManager.CreateAsync(user, rgv.Password);
+            var result = await _userManager.CreateAsync(user, rgv.Password);
 
             if (result.Succeeded)
             {
@@ -370,9 +411,10 @@ namespace identityServerNew.Controllers
                 claims.Add(new Claim(ClaimTypes.StreetAddress, rgv.StreetAddress));
 
                 await _userManager.AddClaimsAsync(user, claims);
-                //kanoume kai signIn (give token)
-                await _signInManager.SignInAsync(user, false);
+                //stelnoume sto mail tou xrhsth to token...
+                await EmailConfirmation(rgv.Username, "what ever");
                 //pane pisw apo ekei pou ir8es dhladh..
+                TempData["register"] = "Registration success Plz verify Your Email!!!";
                 return Redirect(rgv.ReturnUrl);
             }
             
@@ -382,6 +424,8 @@ namespace identityServerNew.Controllers
             //}
             return View();
         }
+
+
 
         public async Task<IActionResult> LogOut()
         {

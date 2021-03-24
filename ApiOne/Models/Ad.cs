@@ -11,7 +11,7 @@ namespace ApiOne.Models
     {
         public int Id { get; set; }
 
-        [StringLength(15)]
+        [StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 

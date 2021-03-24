@@ -134,7 +134,7 @@ namespace ApiOne.Controllers
                     adParametresFilter.GetType().GetProperty(prop.Name).SetValue(adParametresFilter,last);
                 }
             }
-            var asd = adParametresFilter;
+
             return Json(new { msg = "hello" });
         }
 
@@ -145,8 +145,8 @@ namespace ApiOne.Controllers
         //{
         //    return Json(database.GetCategories());
         //}
-
-
+       
+        
         //[HttpGet]
         //[Route("/condition")]
         //[Produces("application/json")]

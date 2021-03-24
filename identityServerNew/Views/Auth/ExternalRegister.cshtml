@@ -2,7 +2,8 @@
 
 <form asp-controller="Auth" asp-action="ExternalRegister" method="post">
     <div>
-        <input type="hidden" asp-for="ReturnUrl"  />
+        <label class="">@ViewBag.Message</label>
+        <input type="hidden" asp-for="ReturnUrl" />
         <label>Username</label>
         <input asp-for="Username" />
         <span asp-validation-for="Username"></span>

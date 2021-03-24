@@ -1,52 +1,237 @@
-﻿@model RegisterViewModel
+﻿
+<style>
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
 
-<form asp-controller="Auth" asp-action="Register" method="post">
-    <label style="background-color:red;">@ViewBag.Message</label>
-    <input type="hidden" asp-for="ReturnUrl" />
-    <div>
-        <label>Username</label>
-        <input asp-for="Username" />
-        <span asp-validation-for="Username"></span>
-    </div>
-    <div>
-        <label>Password</label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label>Confirm Password</label>
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword"></span>
-    </div>
-    <div>
-        <label>Email</label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <label>MobilePhone</label>
-        <input asp-for="MobilePhone" />
-        <span asp-validation-for="MobilePhone"></span>
-    </div>
-    <div>
-        <label>Name</label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
-    </div>
-    <div>
-        <label>LastName</label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-    <div>
-        <label>StreetAddress</label>
-        <input asp-for="StreetAddress" />
-        <span asp-validation-for="StreetAddress"></span>
-    </div>
-    <div>
-        <button type="submit">Sign Up</button>
-    </div>
-    <a asp-controller="Auth" asp-action="Login"
-   asp-route-returnUrl="@Model.ReturnUrl">Back to Login</a>
-</form>
-    
+    body {
+        background: rgb(153,194,236);
+        background: linear-gradient(180deg, rgba(153,194,236,1) 0%, rgba(51,133,217,1) 50%, rgba(27,109,193,1) 100%);
+        height: 100vh;
+        width: 100vw;
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .authorizationContainer {
+        flex-direction: column;
+        display: flex;
+        width: 30vw;
+        height: fit-content;
+        border-radius: 10px;
+        box-shadow: 5px 5px 50px rgb(41, 41, 41);
+        border: 0.5px solid rgb(82, 82, 82);
+        background-color: #ebebeb;
+        justify-content: center;
+        align-items: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+        .authorizationContainer form {
+            width: 75%;
+        }
+
+        .authorizationContainer h1 {
+            color: rgb(76, 120, 163);
+            display: flex;
+        }
+
+        .authorizationContainer .inputs {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+        }
+
+    input {
+        border: 0px;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid rgb(127, 170, 214);
+        outline-width: 0;
+        font-size: x-large;
+    }
+
+        input:focus {
+            border-bottom: 3px solid rgb(5, 32, 59);
+        }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        width: 35%;
+    }
+
+    button {
+        outline-width: 0;
+        border: none;
+        background: none;
+        font-size: x-large;
+        border-radius: 20px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 35px;
+        text-decoration: none;
+        box-shadow: 5px 5px 5px rgba(41, 41, 41,.5);
+        cursor: pointer;
+        border: 2px solid rgb(76, 120, 163);
+    }
+
+    span {
+        text-align: center;
+        width: 100%;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        margin: 30px;
+    }
+
+    label {
+        position: relative;
+        bottom: -3px;
+        color: rgb(76, 120, 163);
+        font-size: x-large;
+    }
+
+    .filler {
+        flex-grow: 1;
+    }
+
+    input {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .signup-btn-container {
+        display: flex;
+        justify-content: center;
+    }
+
+        .signup-btn-container button {
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: rgb(76, 120, 163);
+            color: white;
+        }
+
+    .error-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .error {
+        margin-top: 10px;
+        font-size: larger;
+        color: #dc3545
+    }
+
+    .login-btn {
+        color: rgb(49, 78, 107);
+        font-size: larger;
+        margin-top: 0px;
+        display: flex;
+        text-align: center;
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+        .login-btn:hover {
+            box-shadow: 5px 5px 5px rgba(41, 41, 41,.5);
+        }
+</style>
+@model RegisterViewModel
+
+<div class="authorizationContainer">
+    <h1>Sign Up</h1>
+    <label class="error">@ViewBag.Message</label>
+    <form asp-controller="Auth" asp-action="Register" method="post">
+
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div class="inputContainer">
+            <label>Username</label>
+            <div class="filler"></div>
+            <input asp-for="Username" />
+
+        </div>
+
+        <div class="inputContainer">
+            <label>Password</label>
+            <div class="filler"></div>
+            <input asp-for="Password" />
+
+        </div>
+
+        <div class="inputContainer">
+            <label>Confirm Password</label>
+            <div class="filler"></div>
+            <input asp-for="ConfirmPassword" />
+
+        </div>
+        <div class="inputContainer">
+            <label>Email</label>
+            <div class="filler"></div>
+            <input asp-for="Email" />
+
+        </div>
+        <div class="inputContainer">
+            <label>Mobile Phone</label>
+            <div class="filler"></div>
+            <input asp-for="MobilePhone" />
+
+        </div>
+        <div class="inputContainer">
+            <label>Name</label>
+            <div class="filler"></div>
+            <input asp-for="Name" />
+
+        </div>
+        <div class="inputContainer">
+            <label>Last Name</label>
+            <div class="filler"></div>
+            <input asp-for="LastName" />
+
+        </div>
+        <div class="inputContainer">
+            <label>Street Address</label>
+            <div class="filler"></div>
+            <input asp-for="StreetAddress" />
+
+        </div>
+        <div class="error-container">
+            <span class="error" asp-validation-for="Username"></span>
+
+            <span class="error" asp-validation-for="Password"></span>
+
+            <span class="error" asp-validation-for="ConfirmPassword"></span>
+
+            <span class="error" asp-validation-for="Name"></span>
+
+            <span class="error" asp-validation-for="LastName"></span>
+
+            <span class="error" asp-validation-for="Email"></span>
+
+            <span class="error" asp-validation-for="MobilePhone"></span>
+
+            <span class="error" asp-validation-for="StreetAddress"></span>
+        </div>
+
+
+        <div class="signup-btn-container">
+            <button type="submit">Sign Up</button>
+        </div>
+
+    </form>
+    <a class="login-btn" asp-controller="Auth" asp-action="Login"
+       asp-route-returnUrl="@Model.ReturnUrl">Already have an account?<br> click here to login!</a>
+</div>
+
+
