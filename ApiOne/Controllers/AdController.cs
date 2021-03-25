@@ -5,6 +5,8 @@ using ApiOne.Models;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
@@ -12,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -22,10 +25,12 @@ namespace ApiOne.Controllers
     public class AdController : Controller
     {
         private readonly IAdRepository _adRepository = new AdRepository();
+        private readonly IWebHostEnvironment _env;
         private readonly IHubContext<ChatHub> _myHub;
 
-        public AdController(IHubContext<ChatHub> hubContext)
+        public AdController(IHubContext<ChatHub> hubContext, IWebHostEnvironment webHostEnvironment)
         {
+            _env = webHostEnvironment;
             _myHub = hubContext;
         }
 
@@ -210,7 +215,27 @@ namespace ApiOne.Controllers
 
 
 
-
+    
+        [HttpPost]
+        [Route("/ad/image")]
+        public IActionResult SingleFileUpload(IFormFile file)
+        {
+            if (file.Length > 3145728)
+            {
+                return BadRequest(new { error = "File is too big (max 3mb)" });
+            }
+            if (file.ContentType!= "image/png")
+            {
+                return BadRequest(new { error = "Wrong file type" });
+            }
+            var dir = _env.ContentRootPath;
+            var AdPath = Path.Combine(dir, "Images","Ad","lala.png");
+            using (var fileStream = new FileStream(AdPath, FileMode.Create, FileAccess.Write))
+            {
+                file.CopyTo(fileStream);
+            }
+            return Ok();
+        }
 
 
 

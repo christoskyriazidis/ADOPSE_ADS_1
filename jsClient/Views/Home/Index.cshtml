@@ -10,10 +10,23 @@
         <li><a href="https://localhost:44305/changePassword">changePassword</a></li>
         
         <li id="username"></li>
-
     </ul>
+    <div>
+        <h3>Upload</h3>
+        <input type="file" onchange="UploadFile(event)"  />
+    </div>
 </nav>
 
+<script>
+    function UploadFile(e) {
+        console.log(e);
+        var file = e.target.files[0];
+        console.log(file);
+        var formData = new FormData();
+        formData.append("file", file)
+        axios.post("https://localhost:44374/customer/profileImage", formData
+    } 
+</script>
 
 
 
