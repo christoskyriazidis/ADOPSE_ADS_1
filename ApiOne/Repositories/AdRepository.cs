@@ -38,28 +38,22 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
-            
-        public AdPagination GetAdsByFilters(AdParametresQuertyFilter adParametresFilter)
+
+        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter)
         {
             try
             {
+                AdParametresQueryFilterFront adParametresQueryFilterFront = new AdParametresQueryFilterFront();
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*)as AdCount FROM [Ad] ";
                 AdPagination adPagination = new AdPagination();
-                using (var results = conn.QueryMultiple(sql, new { adParametresFilter.Params.PageNumber, adParametresFilter.Params.PageSize }))
+                using (var results = conn.QueryMultiple(sql, new { Filter=adParametresFilter.FinalQuery,adParametresFilter.Params.PageNumber, adParametresFilter.Params.PageSize }))
                 {
-                    adPagination.Ads = results.Read<Ad>().ToList();
-                    adPagination.TotalAds = results.Read<int>().FirstOrDefault();
+                    adParametresQueryFilterFront.Ads = results.Read<Ad>().ToList();
+                    adParametresQueryFilterFront.TotalAds = results.Read<int>().FirstOrDefault();
                 };
-                //https://localhost:44374/ad?PageNumber=5&PageSize=5
-                int lastPageNumber = (adPagination.TotalAds % adParametresFilter.Params.PageSize == 0) ? adPagination.TotalAds / adParametresFilter.Params.PageSize : adPagination.TotalAds / adParametresFilter.Params.PageSize + 1;
-                adPagination.PageSize = adParametresFilter.Params.PageSize;
-                adPagination.NextPageUrl = $"{(adParametresFilter.Params.PageNumber == lastPageNumber ? lastPageNumber : adParametresFilter.Params.PageNumber + 1)}";
-                adPagination.PreviousPageUrl = $"previous:{(adParametresFilter.Params.PageNumber < 2 ? 1 : adParametresFilter.Params.PageNumber - 1)}";
-                adPagination.LastPageUrl = $"lastpage:{lastPageNumber}";
-                adPagination.CurrentPage = adParametresFilter.Params.PageNumber;
-                adPagination.TotalPages = lastPageNumber;
-                return adPagination;
+
+                return adParametresQueryFilterFront;
             }
             catch (SqlException sqlEx)
             {
@@ -81,12 +75,13 @@ namespace ApiOne.Repositories
                     adPagination.Ads = results.Read<Ad>().ToList();
                     adPagination.TotalAds = results.Read<int>().FirstOrDefault();
                 };
-                //https://localhost:44374/ad?PageNumber=5&PageSize=5
                 int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
                 adPagination.PageSize = adParameters.PageSize;
-                adPagination.NextPageUrl= $"{(adParameters.PageNumber== lastPageNumber ? lastPageNumber : adParameters.PageNumber + 1)}";
-                adPagination.PreviousPageUrl = $"previous:{(adParameters.PageNumber<2?1:adParameters.PageNumber-1)}";
-                adPagination.LastPageUrl= $"lastpage:{lastPageNumber}";
+                int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1; 
+                adPagination.NextPageUrl= $"https://localhost:44374/ad?PageNumber={nextPageNumber}&PageSize={adParameters.PageSize}";
+                int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
+                adPagination.PreviousPageUrl = $"https://localhost:44374/ad?PageNumber={previousPageNumber}&PageSize={adParameters.PageSize}";
+                adPagination.LastPageUrl= $"https://localhost:44374/ad?PageNumber={lastPageNumber}&PageSize={adParameters.PageSize}"; ;
                 adPagination.CurrentPage = adParameters.PageNumber;
                 adPagination.TotalPages = lastPageNumber;
                 return adPagination;
@@ -181,21 +176,7 @@ namespace ApiOne.Repositories
             };
         }
 
-        public IEnumerable<AdFilter> GetCategories()
-        {
-            try
-            {
-                using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT * from [Category]";
-                var categories = conn.Query<AdFilter>(sql).ToList();
-                return categories;
-            }
-            catch (SqlException sqlEx)
-            {
-                Debug.WriteLine(sqlEx);
-                return null;
-            };
-        }
+        
 
         
 
@@ -280,31 +261,105 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<CategoryNotification> GetWishList(int CustmerId)
+        public IEnumerable<WishList> GetWishList(int CustmerId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT w.adId,c.username,a.title,a.Img FROM [WishListt] w " +
+                    "join [Customer] c on (c.id=w.customerId)" +
+                    "join [Ad] a on (a.id=w.adId)" +
+                    "where customerId=@CustomerId ";
+                var wishList = conn.Query<WishList>(sql,new { CustomerId=CustmerId }).ToList();
+                return wishList;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
 
-       
 
         public IEnumerable<AdFilter> GetConditions()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [Condition]";
+                var conditions = conn.Query<AdFilter>(sql).ToList();
+                return conditions;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
 
         public IEnumerable<AdFilter> GetManufacturers()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [Manufacturer]";
+                var manufacturers = conn.Query<AdFilter>(sql).ToList();
+                return manufacturers;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
 
         public IEnumerable<AdFilter> GetStates()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [State]";
+                var states = conn.Query<AdFilter>(sql).ToList();
+                return states;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
 
         public IEnumerable<AdFilter> GetTypes()
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [Type]";
+                var types = conn.Query<AdFilter>(sql).ToList();
+                return types;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
+
+        public IEnumerable<AdFilter> GetCategories()
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * from [Category]";
+                var categories = conn.Query<AdFilter>(sql).ToList();
+                return categories;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
+        }
+
     }
 }

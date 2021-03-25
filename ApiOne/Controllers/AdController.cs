@@ -121,8 +121,9 @@ namespace ApiOne.Controllers
         [Route("/filter")]
         public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] AdPageSizeNumberParameters adParameters)
         {
-            AdParametresQuertyFilter adParametresFilter = new AdParametresQuertyFilter(adParameters);
+            AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack(adParameters);
 
+            string filterBox ="";
             foreach (var prop in paramTypeFilter.GetType().GetProperties())
             {
                 var value = prop.GetValue(paramTypeFilter, null);
@@ -131,29 +132,86 @@ namespace ApiOne.Controllers
                     String[] filterArray = value.ToString().Split("_").ToArray();
                     string sqlIn = String.Join(",", filterArray);
                     string last =$"{prop.Name} IN ({sqlIn})";
-                    adParametresFilter.GetType().GetProperty(prop.Name).SetValue(adParametresFilter,last);
+                    adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, last);
+                    filterBox += $"{last},";
                 }
             }
-
-            return Json(new { msg = "hello" });
+            adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 1);
+            var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack);
+            return Json(filteredAds);
         }
 
-        //[HttpGet]
-        //[Route("/category")]
-        //[Produces("application/json")]
-        //public JsonResult GetCategories()
-        //{
-        //    return Json(database.GetCategories());
-        //}
-       
+        [HttpGet]
+        [Route("/wishlist")]
+        [Produces("application/json")]
+        public IActionResult GetWishList()
+        {
+            var userId = 3;
+            var updateResult = _adRepository.GetWishList(userId);
+            if (updateResult != null)
+            {
+                return Json(updateResult);
+            }
+            return BadRequest(new { error="kati pige la8os me to wishlist(id mallon)"});
+        }
+
+        [HttpGet]
+        [Route("/condition")]
+        [Produces("application/json")]
+        public IActionResult GetConditions()
+        {
+            var conditions = _adRepository.GetConditions();
+            if (conditions != null)
+            {
+                return Json(conditions);
+            }
+            return BadRequest(new { error = "kati pige la8os me ta conditions" });
+        }
         
-        //[HttpGet]
-        //[Route("/condition")]
-        //[Produces("application/json")]
-        //public JsonResult GetCondition()
-        //{
-        //    return Json(database.GetCondition());
-        //}
+        [HttpGet]
+        [Route("/states")]
+        [Produces("application/json")]
+        public IActionResult GetStates()
+        {
+            var states = _adRepository.GetStates();
+            if (states != null)
+            {
+                return Json(states);
+            }
+            return BadRequest(new { error="kati pige la8os me to wishlist"});
+        }  
+        
+        [HttpGet]
+        [Route("/types")]
+        [Produces("application/json")]
+        public IActionResult GetTypes()
+        {
+            var types = _adRepository.GetTypes();
+            if (types != null)
+            {
+                return Json(types);
+            }
+            return BadRequest(new { error= "kati pige la8os me to types" });
+        }
+
+        [HttpGet]
+        [Route("/category")]
+        [Produces("application/json")]
+        public IActionResult GetCategories()
+        {
+            var categories = _adRepository.GetCategories();
+            if (categories != null)
+            {
+                return Json(categories);
+            }
+            return BadRequest(new { error = "kati pige la8os me ta categories" });
+        }
+
+
+
+
+
+
 
 
 

@@ -8,11 +8,11 @@ namespace ApiOne.Models.Queries
 {
     public class ParamTypesFilter
     {
-        //private string _type="type=";
         public string Type { get; set; }
         public string Category { get; set; }
         public string Manufacturer { get; set; }
         public string State { get; set; }
+        public string Condition { get; set; }
 
     }
 }

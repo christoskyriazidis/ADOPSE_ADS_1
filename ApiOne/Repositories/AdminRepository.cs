@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiOne.Models.Queries
+namespace ApiOne.Repositories
 {
-    public class AdFilter
+    public class AdminRepository
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
+        
     }
 }

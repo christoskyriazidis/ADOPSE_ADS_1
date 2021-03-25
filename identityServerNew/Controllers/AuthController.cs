@@ -153,9 +153,6 @@ namespace identityServerNew.Controllers
             return View();
         }
 
-
-        [Route("/forgetPassword")]
-        [HttpGet]
         public async Task<IActionResult> SendPasswordResetToMail(string username,string email)
         {
             var user = await _userManager.FindByNameAsync("admin");
@@ -206,17 +203,16 @@ namespace identityServerNew.Controllers
             return View(accountResetPassword);
         }
 
+        //view page gia resetpassword me token
         [HttpGet]
-        //[Route("/Auth/ResetPassword")]
         public IActionResult ResetPassword(string token,string userId)
         {
-
             ResetPassword model = new ResetPassword();
             model.token = token;
             model.userId = userId;
             return View(model);
         }
-
+        //edw ginete submit form gia  password reset me token
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPassword resetPasswrod)
         {
@@ -425,14 +421,13 @@ namespace identityServerNew.Controllers
             return View();
         }
 
-
-
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
         }
 
+        //view gia to access denied
         [Route("/Auth/UserAccessDenied")]
         [HttpGet]
         public ActionResult UserAccessDenied()

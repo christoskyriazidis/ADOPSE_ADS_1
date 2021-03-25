@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
@@ -103,6 +105,14 @@ namespace ApiOne
             {   
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseFileServer(new FileServerOptions { 
+            FileProvider= new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+                RequestPath= "/Images"
+                //EnableDirectoryBrowsing=true
+            });;
+
             //app.UseCors("AllowAll");
             app.UseCors(x => x
                .AllowAnyMethod()

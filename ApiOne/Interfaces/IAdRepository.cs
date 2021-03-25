@@ -12,7 +12,7 @@ namespace ApiOne.Interfaces
     public interface IAdRepository
     {
         AdPagination GetAds(AdPageSizeNumberParameters adParameters);
-        AdPagination GetAdsByFilters(AdParametresQuertyFilter adParametresFilter);
+        AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter);
         int GetAdTableSize();
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
@@ -25,12 +25,13 @@ namespace ApiOne.Interfaces
 
         IEnumerable<int> GetSuscribedCategories(int CustmerId);
         IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId);
-        IEnumerable<CategoryNotification> GetWishList(int CustmerId);
+        IEnumerable<WishList> GetWishList(int CustmerId);
         IEnumerable<WishListNotification> GetWishListNotifications(int CustmerId);
         IEnumerable<AdFilter> GetCategories();
         IEnumerable<AdFilter> GetConditions();
         IEnumerable<AdFilter> GetManufacturers();
         IEnumerable<AdFilter> GetStates();
         IEnumerable<AdFilter> GetTypes();
+
     }
 }
