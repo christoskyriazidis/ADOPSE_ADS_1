@@ -12,7 +12,7 @@ namespace ApiOne.Interfaces
     public interface IAdRepository
     {
         AdPagination GetAds(AdPageSizeNumberParameters adParameters);
-        AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter);
+        AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, AdPageSizeNumberParameters Params);
         int GetAdTableSize();
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);

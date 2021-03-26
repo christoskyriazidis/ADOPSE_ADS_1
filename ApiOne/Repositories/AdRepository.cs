@@ -39,20 +39,39 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter)
+        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, AdPageSizeNumberParameters Params)
         {
             try
             {
                 AdParametresQueryFilterFront adParametresQueryFilterFront = new AdParametresQueryFilterFront();
                 using var conn = ConnectionManager.GetSqlConnection();
-                string sql = "EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*)as AdCount FROM [Ad] ";
+                string sql = $"EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*) as AdCount FROM [Ad] where {adParametresFilter.FinalQuery}";
                 AdPagination adPagination = new AdPagination();
-                using (var results = conn.QueryMultiple(sql, new { Filter=adParametresFilter.FinalQuery,adParametresFilter.Params.PageNumber, adParametresFilter.Params.PageSize }))
+                using (var results = conn.QueryMultiple(sql, new { Filter=adParametresFilter.FinalQuery,Params.PageNumber, Params.PageSize }))
                 {
                     adParametresQueryFilterFront.Ads = results.Read<Ad>().ToList();
                     adParametresQueryFilterFront.TotalAds = results.Read<int>().FirstOrDefault();
                 };
-
+                var urlFilters = "";
+                //loop through se ka8e property gia na gemise to front object gia print
+                foreach (var prop in adParametresFilter.GetType().GetProperties())
+                {
+                    var value = prop.GetValue(adParametresFilter, null);
+                    if (value != null && prop.Name != "FinalQuery")
+                    {
+                        urlFilters += $"{prop.Name}={value}&";
+                        var newValue = value.ToString().Length > 2 ? value.ToString().Split("_") : value.ToString().Split("_");
+                        adParametresQueryFilterFront.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterFront, newValue);
+                    }
+                }
+                adParametresQueryFilterFront.Params = Params;
+                int lastPageNumber = (adParametresQueryFilterFront.TotalAds % Params.PageSize == 0) ? adParametresQueryFilterFront.TotalAds / Params.PageSize : adParametresQueryFilterFront.TotalAds / Params.PageSize + 1;
+                int nextPageNumber = (Params.PageNumber == lastPageNumber) ? lastPageNumber : Params.PageNumber + 1;
+                adParametresQueryFilterFront.NextPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={nextPageNumber}&PageSize={Params.PageSize}";
+                int previousPageNumber = (Params.PageNumber < 2) ? 1 : Params.PageNumber - 1;
+                adParametresQueryFilterFront.PreviousPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={previousPageNumber}&PageSize={Params.PageSize}";
+                adParametresQueryFilterFront.LastPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={lastPageNumber}&PageSize={Params.PageSize}"; ;
+                adParametresQueryFilterFront.TotalPages = lastPageNumber;
                 return adParametresQueryFilterFront;
             }
             catch (SqlException sqlEx)

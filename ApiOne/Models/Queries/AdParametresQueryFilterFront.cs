@@ -16,13 +16,12 @@ namespace ApiOne.Models.Queries
         public IEnumerable Manufacturer { get; set; }
         public IEnumerable State { get; set; }
         public IEnumerable Condition { get; set; }
-        public int PageSize { get; set; }
-        public int CurrentPage { get; set; }
         public int TotalAds { get; set; }
         public int TotalPages { get; set; }
         public string NextPageUrl { get; set; }
         public string PreviousPageUrl { get; set; }
         public string LastPageUrl { get; set; }
+        public string CurrentPageUrl { get; set; }
         public List<Ad> Ads { get; set; }
 
         public AdParametresQueryFilterFront()

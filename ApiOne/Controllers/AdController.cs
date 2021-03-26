@@ -126,8 +126,16 @@ namespace ApiOne.Controllers
         [Route("/filter")]
         public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] AdPageSizeNumberParameters adParameters)
         {
-            AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack(adParameters);
-
+            if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
+            {
+                return BadRequest(new { error = "you should use at least one filter"});
+            }
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack();
             string filterBox ="";
             foreach (var prop in paramTypeFilter.GetType().GetProperties())
             {
@@ -137,12 +145,13 @@ namespace ApiOne.Controllers
                     String[] filterArray = value.ToString().Split("_").ToArray();
                     string sqlIn = String.Join(",", filterArray);
                     string last =$"{prop.Name} IN ({sqlIn})";
-                    adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, last);
-                    filterBox += $"{last},";
+                    adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, value.ToString());
+                    filterBox += $"{last} or ";
                 }
             }
-            adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 1);
-            var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack);
+            //vgazoume to teleuaio or... :)
+            adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 3);
+            var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack,adParameters);
             return Json(filteredAds);
         }
 
