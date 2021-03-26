@@ -13,7 +13,7 @@ namespace ApiOne.Helpers
         
         public static SqlConnection GetSqlConnection()
         {
-            string connString = Startup.StaticConfig.GetConnectionString("SqlServer");
+            string connString = Startup.StaticConfig.GetConnectionString("Azure");
             var connection = new SqlConnection(connString);
             connection.Open();
             return connection;
