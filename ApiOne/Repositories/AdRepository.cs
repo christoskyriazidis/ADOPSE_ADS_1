@@ -53,15 +53,17 @@ namespace ApiOne.Repositories
                     adParametresQueryFilterFront.TotalAds = results.Read<int>().FirstOrDefault();
                 };
                 var urlFilters = "";
-                //loop through se ka8e property gia na gemise to front object gia print
+                //loop through se ka8e property gia na gemise to front object
                 foreach (var prop in adParametresFilter.GetType().GetProperties())
                 {
                     var value = prop.GetValue(adParametresFilter, null);
                     if (value != null && prop.Name != "FinalQuery")
                     {
+                        //pattern  type=1_2_3&category=1_2_3
                         urlFilters += $"{prop.Name}={value}&";
-                        var newValue = value.ToString().Length > 2 ? value.ToString().Split("_") : value.ToString().Split("_");
-                        adParametresQueryFilterFront.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterFront, newValue);
+                        var stringFilter = value.ToString().Length > 2 ? value.ToString().Split("_") : value.ToString().Split("_");
+                        var intArrayFilter = stringFilter.Select(Int32.Parse).ToList();
+                        adParametresQueryFilterFront.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterFront, intArrayFilter);
                     }
                 }
                 adParametresQueryFilterFront.Params = Params;
@@ -70,7 +72,8 @@ namespace ApiOne.Repositories
                 adParametresQueryFilterFront.NextPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={nextPageNumber}&PageSize={Params.PageSize}";
                 int previousPageNumber = (Params.PageNumber < 2) ? 1 : Params.PageNumber - 1;
                 adParametresQueryFilterFront.PreviousPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={previousPageNumber}&PageSize={Params.PageSize}";
-                adParametresQueryFilterFront.LastPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={lastPageNumber}&PageSize={Params.PageSize}"; ;
+                adParametresQueryFilterFront.LastPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={lastPageNumber}&PageSize={Params.PageSize}";
+                adParametresQueryFilterFront.CurrentPageUrl = $"https://localhost:44374/filter?{urlFilters}PageNumber={Params.PageNumber}&PageSize={Params.PageSize}";
                 adParametresQueryFilterFront.TotalPages = lastPageNumber;
                 return adParametresQueryFilterFront;
             }
@@ -80,7 +83,6 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
-
 
         public AdPagination GetAds(AdPageSizeNumberParameters adParameters)
         {
@@ -195,10 +197,6 @@ namespace ApiOne.Repositories
             };
         }
 
-        
-
-        
-
 
         public bool SubscribeToCategory(int categoryId, int customerId)
         {
@@ -298,7 +296,6 @@ namespace ApiOne.Repositories
                 return null;
             };
         }
-
 
         public IEnumerable<AdFilter> GetConditions()
         {

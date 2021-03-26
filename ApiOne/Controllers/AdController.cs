@@ -152,6 +152,10 @@ namespace ApiOne.Controllers
             //vgazoume to teleuaio or... :)
             adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 3);
             var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack,adParameters);
+            if (filteredAds.Ads.Count < 1)
+            {
+                return Json(new { result="There are still no ads with current filters",filters=paramTypeFilter });
+            }
             return Json(filteredAds);
         }
 
@@ -183,7 +187,7 @@ namespace ApiOne.Controllers
         }
         
         [HttpGet]
-        [Route("/states")]
+        [Route("/state")]
         [Produces("application/json")]
         public IActionResult GetStates()
         {
@@ -196,7 +200,7 @@ namespace ApiOne.Controllers
         }  
         
         [HttpGet]
-        [Route("/types")]
+        [Route("/type")]
         [Produces("application/json")]
         public IActionResult GetTypes()
         {
@@ -219,6 +223,19 @@ namespace ApiOne.Controllers
                 return Json(categories);
             }
             return BadRequest(new { error = "kati pige la8os me ta categories" });
+        }
+        
+        [HttpGet]
+        [Route("/manufacturer")]
+        [Produces("application/json")]
+        public IActionResult GetManufacturers()
+        {
+            var manufacturers = _adRepository.GetManufacturers();
+            if (manufacturers != null)
+            {
+                return Json(manufacturers);
+            }
+            return BadRequest(new { error = "kati pige la8os me ta manufacturers" });
         }
 
 
