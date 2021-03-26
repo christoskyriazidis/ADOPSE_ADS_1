@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="../styles/style.css">
     <title>Easy Market</title>
 </head>
 
@@ -18,21 +18,26 @@
             </div>
             <div class="navListContainer">
                 <ul class="loggedIn hidden">
-                    <li><a class="" href="#">My account</a></li>
-                    <li><a href="#" class="wishlist">Wishlist</a></li>
-                    <li><a href="#" class="notifications">Notifications</a></li>
-                    <li><a href="#">Chats</a></li>
+                    <li><a href="">Log in</a></li>
+                    <li><button style="" id="btn-signIn">Sign in</button></li>
+                    <li><a class="attention" href="">Sign up</a></li>
+                    <li><a class="hide" href="#">My account</a></li>
+                    <li><a class="hide" href="#" class="wishlist">Wishlist</a></li>
+                    <li><a href="#" class="notifications hide">Notifications</a></li>
+                    <li><a href="#" class="hide">Chats</a></li>
                 </ul>
             </div>
         </div>
         <div class="secondary-nav">
             <div class="secondNavListContainer">
                 <ul>
+                    <div class="vl"> </div>
                     <li><a href="">Ads</a></li>
                     <div class="vl"> </div>
                     <li><a href="">Categories</a></li>
                     <div class="vl"> </div>
                     <li><a href="">About</a></li>
+                    <div class="vl"> </div>
                 </ul>
             </div>
         </div>
@@ -47,13 +52,13 @@
     axios.get("https://localhost:44374/awdd")
     .then(console.log)
      .catch(err => {
-            alert(err)
+            // alert(err)
          console.error(err);
          if (err.status === 401) {
             signIn();
          }
     })
-    function UploadFile(e) {
+    function UploadFile(e) { 
         console.log(e);
         var file = e.target.files[0];
         console.log(file);
@@ -62,13 +67,12 @@
         axios.post("https://localhost:44374/customer/profileImage", formData)
     } 
 </script>
-
-<script src="scripts/index.js"></script>
-<script src="scripts/asyncMethods.js"></script>
-<script src="scripts/components/wishlistComponent.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+<script src="../scripts/index.js"></script>
+<script src="../scripts/asyncMethods.js"></script>
+<script src="../scripts/components/wishlistComponent.js"></script>
+<script src="../scripts/sign-in.js"></script>
 </body>
-<!--<li><a href="">Log in</a></li>
-                    <li><a class="attention" href="">Sign up</a></li> -->
+<!-- -->
 
 </html>

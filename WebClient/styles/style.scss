@@ -1,7 +1,7 @@
 $primary-color: #1b6dc1;
 $secondary-color: #3385d9;
 $alternative-color: #7bb6f1ad;
-$secondary-font-color: #2c2c2c;
+$secondary-font-color: #243649fa;
 $primary-font-color: #ebebeb;
 $shadow-color: #2020209b;
 $attention-color: #1f271b9b;
@@ -52,6 +52,7 @@ nav {
                             background-color: $alternative-color;
                         }
                     }
+                    
                 }
                 .attention {
                     background-color: $attention-color;
@@ -95,7 +96,7 @@ nav {
                         text-decoration: none;
                         color: $secondary-font-color;
                         font-size: larger;
-                        font-weight: 600;
+                        font-weight: 500;
                         padding: 12px;
                         border-radius: 10px;
                     }
@@ -109,4 +110,7 @@ nav {
             }
         }
     }
+}
+.hide{
+                    
 }

@@ -1,0 +1,22 @@
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.9.1/oidc-client.min.js"></script>
+
+
+<script>
+    const userManger = new Oidc.UserManager({
+        userStore: new Oidc.WebStorageStateStore({ store: window.localStorage }),
+        response_mode: "query"
+    });
+    userManger.signinCallback().then(res => {
+        console.log(res);
+
+        window.location.href = 'http://127.0.0.1:5501/home/index';
+    })
+    
+</script>
+
+
+
+  
+

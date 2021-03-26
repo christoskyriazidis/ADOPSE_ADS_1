@@ -77,10 +77,10 @@ namespace identityServerNew
                     RequirePkce=true,
                     //automato
                     RequireClientSecret=false,
-                    RedirectUris ={"https://localhost:44364/home/signin"},
-                    PostLogoutRedirectUris ={"https://localhost:44364/Home/Index"},
+                    RedirectUris ={"http://127.0.0.1:5501/home/signin"},
+                    PostLogoutRedirectUris ={"http://127.0.0.1:5501/Home/Index"},
                     
-                    AllowedCorsOrigins={"https://localhost:44364"},
+                    AllowedCorsOrigins={"http://127.0.0.1:5501"},
 
                     AllowedScopes =
                     {

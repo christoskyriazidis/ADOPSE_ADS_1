@@ -148,9 +148,9 @@ nav .secondary-nav .secondNavListContainer ul li {
 
 nav .secondary-nav .secondNavListContainer ul li a {
   text-decoration: none;
-  color: #2c2c2c;
+  color: #243649fa;
   font-size: larger;
-  font-weight: 600;
+  font-weight: 500;
   padding: 12px;
   border-radius: 10px;
 }
