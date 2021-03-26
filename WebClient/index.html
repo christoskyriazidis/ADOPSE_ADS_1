@@ -37,14 +37,36 @@
             </div>
         </div>
     </nav>
+    <div>
+        <h3>Upload</h3>
+        <input type="file" onchange="UploadFile(event)"  />
+    </div>
 
-
-
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    axios.get("https://localhost:44374/awdd")
+    .then(console.log)
+     .catch(err => {
+            alert(err)
+         console.error(err);
+         if (err.status === 401) {
+            signIn();
+         }
+    })
+    function UploadFile(e) {
+        console.log(e);
+        var file = e.target.files[0];
+        console.log(file);
+        var formData = new FormData();
+        formData.append("file", file)
+        axios.post("https://localhost:44374/customer/profileImage", formData)
+    } 
+</script>
 
 <script src="scripts/index.js"></script>
 <script src="scripts/asyncMethods.js"></script>
 <script src="scripts/components/wishlistComponent.js"></script>
+
 </body>
 <!--<li><a href="">Log in</a></li>
                     <li><a class="attention" href="">Sign up</a></li> -->
