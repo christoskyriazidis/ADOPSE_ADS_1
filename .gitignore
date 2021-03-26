@@ -340,3 +340,8 @@ ASALocalRun/
 healthchecksdb
 /identityServerNew/appsettings.json
 ApiOne/appsettings.json
+
+
+ApiOne/appsettings.Development.json
+
+ApiOne/appsettings.json
