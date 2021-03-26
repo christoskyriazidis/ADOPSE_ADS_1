@@ -167,7 +167,7 @@ namespace identityServerNew.Controllers
                        $"<h3>Follow this link To change your password</h3>"+
                        $"<a href=\"{link}\">change password here!!!</a>",
                 IsBodyHtml = true,
-                To = { "christosgalaxiz@gmail.com" }
+                To = { "christosgalaxiz@gmail.com","comninos22@gmail.com" }
             };
 
             var emailStatus = await MyEmailService.SendMail(mailMessage);

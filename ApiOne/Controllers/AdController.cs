@@ -37,6 +37,7 @@ namespace ApiOne.Controllers
         //no authorize gia na vlepoun oi episkeptes
         //valid query String (value < 1) ? 1 : value; pageSize = (value > maxPageSize||value<5) ? maxPageSize : value;
         [HttpGet]
+        [Authorize]
         [Route("/ad")]
         [Produces("application/json")]
         public IActionResult GetAds([FromQuery] AdPageSizeNumberParameters adParameters)

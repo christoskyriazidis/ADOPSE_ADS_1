@@ -35,7 +35,7 @@ namespace identityServerNew
                 config.Password.RequireDigit =false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false ;
-
+                
                 //config.Lockout.MaxFailedAccessAttempts = 4;
                 //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 //config.SignIn.RequireConfirmedEmail = true;
