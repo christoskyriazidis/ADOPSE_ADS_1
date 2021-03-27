@@ -19,12 +19,13 @@ namespace WpfClientt.services {
         public GenericScroller(HttpClient client, int size, string url) {
             this.client = client;
             this.size = size;
-            this.url = $"{url}?size={size}&page={1}";
-            //this.url = $"{url}1";//for mock api only
+            //this.url = $"{url}?size={size}&page={1}";
+            this.url = $"{url}1";//for mock api only
         }
 
-        public async Task Init() {
+        public async Task Init(Action<IScroller<T>> doAfterInit) {
             await SetCurrentPage();
+            doAfterInit(this);
         }
 
         public IPage<T> CurrentPage() {

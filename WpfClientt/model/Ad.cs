@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AggeliesProject.domain {
+namespace WpfClientt.model {
     public sealed class Ad {
 
         public long Id { get; set; }
