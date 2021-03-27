@@ -23,8 +23,9 @@ namespace WpfClientt.services {
             this.url = $"{url}1";//for mock api only
         }
 
-        public async Task Init() {
+        public async Task Init(Action<IScroller<T>> doAfterInit) {
             await SetCurrentPage();
+            doAfterInit(this);
         }
 
         public IPage<T> CurrentPage() {
