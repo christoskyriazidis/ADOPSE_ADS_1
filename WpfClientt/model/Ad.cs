@@ -34,6 +34,8 @@ namespace WpfClientt.model {
 
         public long CustomerId { get; set; }
 
+        public double Price { get; set; }
+
         public Ad() { 
         
         }
