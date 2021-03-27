@@ -36,8 +36,8 @@ namespace ApiOne.Controllers
 
         //no authorize gia na vlepoun oi episkeptes
         //valid query String (value < 1) ? 1 : value; pageSize = (value > maxPageSize||value<5) ? maxPageSize : value;
+        //[Authorize]
         [HttpGet]
-        [Authorize]
         [Route("/ad")]
         [Produces("application/json")]
         public IActionResult GetAds([FromQuery] AdPageSizeNumberParameters adParameters)
@@ -86,6 +86,13 @@ namespace ApiOne.Controllers
                 return Ok(ad);
             }
             return Json(new { error = "error" });
+        }
+
+        [HttpPost]
+        [Route("/lala")]
+        public IActionResult Asd([FromBody] Ad ad)
+        {
+            return Json(ad);
         }
 
         [HttpPut]
@@ -160,19 +167,7 @@ namespace ApiOne.Controllers
             return Json(filteredAds);
         }
 
-        [HttpGet]
-        [Route("/wishlist")]
-        [Produces("application/json")]
-        public IActionResult GetWishList()
-        {
-            var userId = 3;
-            var updateResult = _adRepository.GetWishList(userId);
-            if (updateResult != null)
-            {
-                return Json(updateResult);
-            }
-            return BadRequest(new { error="kati pige la8os me to wishlist(id mallon)"});
-        }
+        
 
         [HttpGet]
         [Route("/condition")]

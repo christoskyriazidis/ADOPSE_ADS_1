@@ -1,5 +1,6 @@
 ﻿using ApiOne.Hubs;
 using ApiOne.Interfaces;
+using ApiOne.Models.Ads;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -42,13 +43,9 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/category/subscribe")]
-        public IActionResult GetSubscribedCategories([FromRoute] int CatId)
+        public IActionResult GetSubscribedCategories()
         {
             int custId = 3;
-            if (CatId < 0)
-            {
-                return BadRequest(new { error = "something went wrong" });
-            }
             var categories = _adRepository.GetSuscribedCategories(custId);
             if (categories != null)
             {
@@ -86,6 +83,23 @@ namespace ApiOne.Controllers
             }
             return BadRequest();
         }
+        
+        [HttpDelete]
+        [Route("/wishlist")]
+        public IActionResult DeleteFromWishList([FromBody] DeleteAdsFromWishList ids)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "wrong request." });
+            }
+            int custId = 3;
+            var deleteResult = _adRepository.RemoveFromWishList(custId, ids.AdIds);
+            if (deleteResult)
+            {
+                return Json(new { status = "removed from wishlist!" });
+            }
+            return BadRequest(new { status = $" fail to remove from wishlist!" });
+        }
 
         [HttpGet]
         [Route("/wishlist/notification")]
@@ -100,5 +114,18 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("/wishlist")]
+        [Produces("application/json")]
+        public IActionResult GetWishList()
+        {
+            var userId = 3;
+            var updateResult = _adRepository.GetWishList(userId);
+            if (updateResult != null)
+            {
+                return Json(updateResult);
+            }
+            return BadRequest(new { error = "kati pige la8os me to wishlist(id mallon)" });
+        }
     }
 }

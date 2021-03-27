@@ -114,22 +114,6 @@ namespace ApiOne.Repositories
             }
         }
 
-
-        public int GetAdTableSize()
-        {
-            try {
-                using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT count(*) as AdCount FROM [Ad]";
-                int count = conn.Query<int>(sql).FirstOrDefault();
-                return count;
-            }
-            catch (SqlException sqlEx)
-            {
-                Debug.WriteLine(sqlEx);
-                return -1;
-            }
-        }
-
         // na dw ta gamimena kleidia, mallon cascade h kati tetoio
         public bool DeleteAd(int id)
         {
@@ -235,7 +219,9 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT * from [CategoryNotification] where CustomerId=@Id";
+                string sql = "SELECT c.AdId,cust.username,a.Img,a.title,c.Clicked,c.categoryId from [CategoryNotification] c " +
+                    "join [Ad] a on (c.AdId =a.id) " +
+                    "join [Customer] cust on (cust.id=c.CustomerId) where CustomerId=@Id order by c.id desc";
                 var categoryNotifications = conn.Query<CategoryNotification>(sql, new { Id = CustmerId }).ToList();
                 return categoryNotifications;
             }
@@ -377,5 +363,20 @@ namespace ApiOne.Repositories
             };
         }
 
+        public bool RemoveFromWishList(int CustomerId, int[] AdIds)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "DELETE FROM WishListt WHERE adId in @AdIds and customerId=@CustomerId";
+                var result = conn.Execute(sql, new { CustomerId, AdIds });
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
     }
 }

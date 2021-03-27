@@ -10,6 +10,7 @@ namespace identityServerNew.Model
     public class ExternalRegisterViewModel
     {
         [Required]
+        [RegularExpression(@"([0-9]|[A-Za-z])+", ErrorMessage = "You can use abc 123")]
         public string Username { get; set; }
         public string ReturnUrl { get; set; }
     }

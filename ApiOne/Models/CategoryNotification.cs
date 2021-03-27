@@ -8,10 +8,11 @@ namespace ApiOne.Models
 {
     public class CategoryNotification
     {
-        public int Id { get; }
-        public int CategoryId { get; set; }
-        public int CustomerId { get; set; }
-        public bool Clicked { get; set; }
         public int AdId { get; set; }
+        public string Username { get; set; }
+        public string Img { get; set; }
+        public string Title { get; set; }
+        public bool Clicked { get; set; }
+        public int CategoryId { get; set; }
     }
 }

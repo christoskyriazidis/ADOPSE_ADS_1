@@ -13,11 +13,12 @@ namespace ApiOne.Interfaces
     {
         AdPagination GetAds(AdPageSizeNumberParameters adParameters);
         AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, AdPageSizeNumberParameters Params);
-        int GetAdTableSize();
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
         bool InsertAd(Ad ad);
         bool DeleteAd(int id);
+
+        bool RemoveFromWishList(int customerId, int[] AdIds);
 
         bool SubscribeToCategory(int categoryId, int customerId);
 
