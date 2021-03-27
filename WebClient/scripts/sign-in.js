@@ -7,11 +7,7 @@ var config = {
     post_logout_redirect_uri: "http://127.0.0.1:5501/Home/Index.html",
     scope: "openid ApiOne credentials",
 }
-const btnSignIn = document.querySelector('#btn-signIn')
-const btnSignOut = document.querySelector('#btn-signOut')
 
-btnSignIn.addEventListener('click', signIn)
-btnSignOut.addEventListener('click', signOut)
 var userManager = new Oidc.UserManager(config);
 
 userManager.getUser().then(user => {
@@ -21,11 +17,11 @@ userManager.getUser().then(user => {
         //vazoume san default header to token, global fasi
         axios.defaults.headers.common["Authorization"] = "Bearer " + user.access_token;
         me = user;
-        btnSignOut.style.display = "flex";
-        username.innerHTML = me.profile.username;
+        document.querySelector("navbar-component").setAttribute("logged","true")
+        body.innerHTML += me.profile.username;
     }
     else {
-        btnSignIn.style.display = "flex"
+     
     }
 });
 var refreshing = false;
@@ -74,11 +70,12 @@ function callApi() {
         })
 }
 userManager.events.addUserLoaded(function () {
-    alert("hello");
+    alert("hedllo");
 });
 
 function signIn() {
     userManager.signinRedirect();
+    
 }
 function signOut() {
     userManager.signoutRedirect();

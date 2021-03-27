@@ -1,0 +1,14 @@
+.paginationContainer{
+    display:flex;
+    ul{
+        list-style:none;
+        display:flex;
+        flex-direction:row;
+        li{
+            margin:5px;
+            a{
+                text-decoration: none;
+            }
+        }
+    }
+}

@@ -5,24 +5,28 @@ class WishlistComponent extends HTMLElement {
     constructor() {
         super();
         console.log('hi')
-        Ajax.request("GET", "https://6037e3024e3a9b0017e927dd.mockapi.io/yy")
+        
+        axios.get("https://6037e3024e3a9b0017e927dd.mockapi.io/yy")
+            .then((response)=>response.data)
             .then(handleApiData)
-            .then((html) => this.innerHTML = html)
+            .then(this.render)
             .catch(x => console.log(x))
             .finally()
-        
+
     }
     connectedCallback() {
 
     }
-    static render(html) {
+    render=(html)=>{
+
         this.innerHTML = html
     }
 }
 
 //style="background-image:url('${object.productphoto}')
 function handleApiData(data) {
-    let allItems="";
+    
+    let allItems = "";
     for (object of data) {
         const item = `
         <li>
@@ -38,6 +42,7 @@ function handleApiData(data) {
         `
         allItems += item;
     }
+   
     const html = `
     <div class="wishlistContainer">
         <div class="wishlistContent">
@@ -50,7 +55,7 @@ function handleApiData(data) {
             <a href="#">Expand this list</a>
         </div>
     </div>
-    <style>@import "styles/components/wishlist/wishlist.css"</style>
+    <style>@import "/styles/components/wishlist/wishlist.css"</style>
     `
     return html;
 }
