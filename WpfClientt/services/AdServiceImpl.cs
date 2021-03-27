@@ -1,11 +1,10 @@
-﻿using AggeliesProject.domain;
+﻿using WpfClientt.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using WpfClientt.model;
 
 namespace WpfClientt.services {
     public class AdServiceImpl : IAdService {
