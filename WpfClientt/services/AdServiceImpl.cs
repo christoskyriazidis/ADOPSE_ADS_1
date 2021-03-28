@@ -10,7 +10,7 @@ namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
 
         private HttpClient client;
-        private string mainUrl = "https://localhost:44374/ad";
+        private string mainUrl = ApiInfo.AdMainUrl();
 
         public AdServiceImpl(HttpClient client) {
             this.client = client;
