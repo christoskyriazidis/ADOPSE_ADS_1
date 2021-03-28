@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WpfClientt.model;
 
 namespace WpfClientt.services {
-    public class CustomerServiceImpl : ICustomerService {
+    class CustomerServiceImpl : ICustomerService {
         private HttpClient client;
         private string mainUrl = "https://6055bef691ea2900170d30d2.mockapi.io/customers";
 

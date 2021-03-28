@@ -145,6 +145,7 @@
     <Compile Include="model\Customer.cs" />
     <Compile Include="services\AdServiceImpl.cs" />
     <Compile Include="services\CustomerServiceImpl.cs" />
+    <Compile Include="services\FactoryServices.cs" />
     <Compile Include="services\GenericPage.cs" />
     <Compile Include="services\GenericScroller.cs" />
     <Compile Include="services\IAdService.cs" />

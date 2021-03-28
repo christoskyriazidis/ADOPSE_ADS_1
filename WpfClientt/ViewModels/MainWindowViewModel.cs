@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfClientt.services;
 using WpfClientt.viewModels.menu;
 
 namespace WpfClientt.viewModels {
     public class MainWindowViewModel : BaseViewModel {
 
         private IViewModel _currentPageViewModel;
-        private IMenu _currentMenuView; 
+        private IMenu _currentMenuView;
+        private FactoryServices factory;
 
         public List<IViewModel> PageViewModels { get; } = new List<IViewModel>();
 
@@ -35,7 +37,8 @@ namespace WpfClientt.viewModels {
         }
 
         public MainWindowViewModel() {
-            PageViewModels.Add(new AdsViewModel());
+            factory = new FactoryServices();
+            PageViewModels.Add(new AdsViewModel(factory.AdServiceInstance()));
             PageViewModels.Add(new RegisterViewModel());
 
             CurrentMenuView = new GuestMenu();

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.services {
-    public class AdServiceImpl : IAdService {
+    class AdServiceImpl : IAdService {
 
         private HttpClient client;
         private string mainUrl = "https://6055bef691ea2900170d30d2.mockapi.io/ads";
