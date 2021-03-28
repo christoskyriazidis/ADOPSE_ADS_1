@@ -138,9 +138,9 @@ namespace ApiOne.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.Date = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
-                string sql = "  INSERT INTO [Ad] (title,Description,Date,State,Img,Type,Category,Condition,Customer,Manufacturer,LastUpdate)" +
-                            "VALUES (@Title,@Description,@Date,@State,@Img,@Type,@Category,@Condition,@Customer,@Manufacturer,@LastUpdate)";
-                var result = conn.Execute(sql, new { ad.Title, ad.Description, ad.Date, ad.State, ad.Img, ad.Type, ad.Category, ad.Condition, ad.Customer, ad.Manufacturer, ad.LastUpdate });
+                string sql = "  INSERT INTO [Ad] (title,Description,Date,State,Img,Type,Category,Condition,Customer,Manufacturer,LastUpdate,Price)" +
+                            "VALUES (@Title,@Description,@Date,@State,@Img,@Type,@Category,@Condition,@Customer,@Manufacturer,@LastUpdate,@Price)";
+                var result = conn.Execute(sql, new { ad.Title,ad.Description,ad.Date,ad.State,ad.Img,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price });
                 return true;
             }
             catch (SqlException sqlEx)
