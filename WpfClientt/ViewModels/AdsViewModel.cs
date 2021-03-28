@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 
 namespace WpfClientt.viewModels {
-    public class AdsViewModel : BaseViewModel,IViewModel {
+    public class AdsViewModel : BaseViewModel, IViewModel {
 
         public ObservableCollection<Ad> ads { get; } = new ObservableCollection<Ad>();
         private IScroller<Ad> scroller;
@@ -27,7 +27,6 @@ namespace WpfClientt.viewModels {
                     ads.Add(ad);
                 }
             });
-
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
         }
@@ -49,7 +48,12 @@ namespace WpfClientt.viewModels {
                 }
             }
         }
-     
+
+        private void OnReadMore(object param) { 
+        
+        }
+
+
 
     }
 }

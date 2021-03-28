@@ -11,7 +11,7 @@
             <RowDefinition Height="0.96*" />
             <RowDefinition Height="0.04*" />
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Path=ads}" HorizontalContentAlignment="Stretch" >
+        <ListView Grid.Row="0" ItemsSource="{Binding ads}" HorizontalContentAlignment="Stretch" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

@@ -12,11 +12,15 @@
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
-            <ColumnDefinition Width="0.48*" />
+            <ColumnDefinition Width="0.13*" />
+            <ColumnDefinition Width="0.22*" />
+            <ColumnDefinition Width="0.13*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" />
-        <Button Grid.Column="1" Content="My Profile" Style="{StaticResource medium_blue_button}" />
+        <Button Grid.Column="1" Content="My Account" Style="{StaticResource medium_blue_button}" />
         <Button Grid.Column="2" Content="Create Ad" Style="{StaticResource medium_blue_button}" />
-        <Button Grid.Column="3" Content="Logout" Style="{StaticResource medium_blue_button}" />
+        <Button Grid.Column="3" Content="Notifications" Style="{StaticResource medium_blue_button}" />
+        <Button Grid.Column="4" Content="Chats" Style="{StaticResource medium_blue_button}" />
+        <Button Grid.Column="6" Content="Logout" Style="{StaticResource medium_blue_button}" />
     </Grid>
 </UserControl>
