@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -86,13 +88,6 @@ namespace ApiOne.Controllers
                 return Ok(ad);
             }
             return Json(new { error = "error" });
-        }
-
-        [HttpPost]
-        [Route("/lala")]
-        public IActionResult Asd([FromBody] Ad ad)
-        {
-            return Json(ad);
         }
 
         [HttpPut]
@@ -242,17 +237,22 @@ namespace ApiOne.Controllers
         [Route("/ad/image")]
         public IActionResult SingleFileUpload(IFormFile file)
         {
+            int adId = 5873458;
             if (file.Length > 3145728)
             {
                 return BadRequest(new { error = "File is too big (max 3mb)" });
             }
-            if (file.ContentType!= "image/png")
+            if (file.ContentType != "image/png" && file.ContentType != "image/jpeg" && file.ContentType != "image/jpg")
             {
                 return BadRequest(new { error = "Wrong file type" });
             }
             var dir = _env.ContentRootPath;
-            var AdPath = Path.Combine(dir, "Images","Ad","lala.png");
-            using (var fileStream = new FileStream(AdPath, FileMode.Create, FileAccess.Write))
+            var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small",$"{adId}.png");
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(100, 100));
+            image.Save(smallSizeAdPath);
+            var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{adId}.png");
+            using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
             {
                 file.CopyTo(fileStream);
             }

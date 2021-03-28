@@ -6,43 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <script src="/scripts/components/navbarComponent.js" defer></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="/scripts/sign-in.js" defer></script>
+    <script src="/scripts/components/wishlistComponent.js" defer></script>
+    <script src="/scripts/components/paginationComponent.js" defer></script>
     <title>Easy Market</title>
 </head>
 
 <body>
-    <nav>
-        <div class="primary-nav">
-            <div class="brandLogo">
-                <h1>awesome brand logo</h1>
-            </div>
-            <div class="navListContainer">
-                <ul class="loggedIn hidden">
-                    <li><button style="" id="btn-signOut">signOut</button></li>
-                    <li><a href="">Log in</a></li>
-                    <li><button style="" id="btn-signIn">Sign in</button></li>
-                    <li><a class="attention" href="">Sign up</a></li>
-                    <li><a class="hide" href="#">My account</a></li>
-                    <li><a class="hide" href="#" class="wishlist">Wishlist</a></li>
-                    <li><a href="#" class="notifications hide">Notifications</a></li>
-                    <li><a href="#" class="hide">Chats</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="secondary-nav">
-            <div class="secondNavListContainer">
-                <ul>
-                    <div class="vl"> </div>
-                    <li><a href="">Ads</a></li>
-                    <div class="vl"> </div>
-                    <li><a href="">Categories</a></li>
-                    <div class="vl"> </div>
-                    <li><a href="">About</a></li>
-                    <div class="vl"> </div>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <navbar-component></navbar-component>
     <div>
         <h3>Upload</h3>
         <input type="file" onchange="UploadFile(event)"  />
@@ -68,11 +43,7 @@
         axios.post("https://localhost:44374/customer/profileImage", formData)
     } 
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
-<script src="../scripts/index.js"></script>
-<script src="../scripts/asyncMethods.js"></script>
-<script src="../scripts/components/wishlistComponent.js"></script>
-<script src="../scripts/sign-in.js"></script>
+
 </body>
 <!-- -->
 

@@ -19,10 +19,10 @@ namespace ApiOne.Interfaces
         bool DeleteAd(int id);
 
         bool RemoveFromWishList(int customerId, int[] AdIds);
+        bool AddToWishList(int adId, int customerId);
 
         bool SubscribeToCategory(int categoryId, int customerId);
-
-        bool AddToWishList(int adId, int customerId);
+        bool RemoveFromSubscribedCategories(int CustomerId, int[] CatIds);
 
         IEnumerable<int> GetSuscribedCategories(int CustmerId);
         IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId);

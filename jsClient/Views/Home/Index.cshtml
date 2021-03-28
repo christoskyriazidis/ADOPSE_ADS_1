@@ -14,9 +14,11 @@
     <div>
         <h3>Upload</h3>
         <input type="file" onchange="UploadFile(event)"  />
-    </div>
+    </div>        
 </nav>
-
+<div>
+    <img src="https://localhost:44374/images/Ad/full/5873458.png" alt="Alternate Text" />
+</div>
 <script>
     function UploadFile(e) {
         console.log(e);
@@ -24,7 +26,7 @@
         console.log(file);
         var formData = new FormData();
         formData.append("file", file)
-        axios.post("https://localhost:44374/customer/profileImage", formData)
+        axios.post("https://localhost:44374/ad/image", formData)
     } 
 </script>
 

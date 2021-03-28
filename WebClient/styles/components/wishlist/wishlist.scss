@@ -4,7 +4,7 @@ $secondary-color: #3385d9;
 $alternative-color: #7bb6f1ad;
 wishlist-component {
     position: absolute;
-    
+
     z-index: 999;
     background-color: white;
     font-family: "Roboto", sans-serif;
@@ -14,6 +14,7 @@ wishlist-component {
     padding-bottom: 20px;
     box-shadow: 5px 5px 25px grey;
     .wishlistContainer {
+        
         ::-webkit-scrollbar {
             width: 10px;
         }

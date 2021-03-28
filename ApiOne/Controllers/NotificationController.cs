@@ -41,6 +41,23 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
+        [HttpDelete]
+        [Route("/category/subscribe")]
+        public IActionResult RemoveFromSubscribedCategories([FromBody] DeleteFromCategorySub CatIds)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "wrong request." });
+            }
+            int custId = 3;
+            var deleteResult = _adRepository.RemoveFromSubscribedCategories(custId,CatIds.CatIds);
+            if (deleteResult)
+            {
+                return Json(new { status = $"removed sub from categories!",CatIds=CatIds.CatIds });
+            }
+            return BadRequest(new { status = $" fail to remove sub from categories!" });
+        }
+
         [HttpGet]
         [Route("/category/subscribe")]
         public IActionResult GetSubscribedCategories()
@@ -96,7 +113,7 @@ namespace ApiOne.Controllers
             var deleteResult = _adRepository.RemoveFromWishList(custId, ids.AdIds);
             if (deleteResult)
             {
-                return Json(new { status = "removed from wishlist!" });
+                return Json(new { status = "removed from wishlist!",Adids=ids.AdIds });
             }
             return BadRequest(new { status = $" fail to remove from wishlist!" });
         }
