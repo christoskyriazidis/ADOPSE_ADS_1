@@ -15,19 +15,20 @@ namespace WpfClientt.viewModels {
 
         public ObservableCollection<Ad> ads { get; } = new ObservableCollection<Ad>();
         private IScroller<Ad> scroller;
+        private IAdService adService;
         public ICommand NextPageCommand { get; private set; }
         public ICommand PreviousPageCommand { get; private set; }
 
-        public AdsViewModel() {
-            HttpClient client = new HttpClient();
-            scroller = new AdServiceImpl(client).Scroller();
-            scroller.Init((scroll) => {
-                foreach (Ad ad in scroll.CurrentPage().Objects()) {
+        public AdsViewModel(IAdService adService) {
+            this.adService = adService;
+            this.scroller = this.adService.Scroller();
+            this.scroller.Init(scrll => {
+                foreach (Ad ad in scrll.CurrentPage().Objects()) {
                     ads.Add(ad);
                 }
             });
-            NextPageCommand = new DelegateCommand(OnMoveNext);
 
+            NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
         }
 
