@@ -237,7 +237,7 @@ namespace ApiOne.Controllers
         [Route("/ad/image")]
         public IActionResult SingleFileUpload(IFormFile file)
         {
-            int adId = 5873458;
+            int adId = 58734558;
             if (file.Length > 3145728)
             {
                 return BadRequest(new { error = "File is too big (max 3mb)" });
