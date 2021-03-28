@@ -10,7 +10,7 @@ namespace ApiOne.Models.Queries
 {
     public class AdParametresQueryFilterFront
     {
-        public AdPageSizeNumberParameters Params { get; set; }
+        public Pagination Params { get; set; }
         public IEnumerable Type { get; set; }
         public IEnumerable Category { get; set; }
         public IEnumerable Manufacturer { get; set; }

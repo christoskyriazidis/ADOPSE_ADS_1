@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Models.Queries
 {
-    public class AdPageSizeNumberParameters
+    public class Pagination
     {
         
         private int _pageNumber = 1;

@@ -39,14 +39,14 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, AdPageSizeNumberParameters Params)
+        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params)
         {
             try
             {
                 AdParametresQueryFilterFront adParametresQueryFilterFront = new AdParametresQueryFilterFront();
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = $"EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*) as AdCount FROM [Ad] where {adParametresFilter.FinalQuery}";
-                AdPagination adPagination = new AdPagination();
+                AdsWithPagination adPagination = new AdsWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { Filter=adParametresFilter.FinalQuery,Params.PageNumber, Params.PageSize }))
                 {
                     adParametresQueryFilterFront.Ads = results.Read<Ad>().ToList();
@@ -84,13 +84,13 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdPagination GetAds(AdPageSizeNumberParameters adParameters)
+        public AdsWithPagination GetAds(Pagination adParameters)
         {
             try
             { 
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
-                AdPagination adPagination = new AdPagination();
+                AdsWithPagination adPagination = new AdsWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
                 {
                     adPagination.Ads = results.Read<Ad>().ToList();
