@@ -109,8 +109,8 @@ namespace ApiOne
             app.UseFileServer(new FileServerOptions { 
             FileProvider= new PhysicalFileProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "Images")),
-                RequestPath= "/Images"
-                //EnableDirectoryBrowsing=true
+                RequestPath= "/Images",
+                EnableDirectoryBrowsing=true
             });;
 
             //app.UseCors("AllowAll");

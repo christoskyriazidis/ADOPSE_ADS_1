@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +25,7 @@ namespace ApiOne.Controllers
         [Route("/customer/profileImage")]
         public IActionResult SingleFileUpload(IFormFile file)
         {
+            int adId = 5873458;
             if (file.Length > 3145728)
             {
                 return BadRequest(new { error = "File is too big (max 3mb)" });
@@ -31,18 +34,18 @@ namespace ApiOne.Controllers
             {
                 return BadRequest(new { error = "Wrong file type" });
             }
-            var userId = 4325238454;
             var dir = _env.ContentRootPath;
-            var type = file.ContentType.Substring(file.ContentType.IndexOf("/")+1);
-            var AdPath = Path.Combine(dir, "Images", "Ad", $"{userId}.{type}");
-            using (var fileStream = new FileStream(AdPath, FileMode.Create, FileAccess.Write))
+            var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small", $"{adId}.png");
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(200, 200));
+            image.Save(smallSizeAdPath);
+            var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{adId}.png");
+            using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
             {
                 file.CopyTo(fileStream);
             }
-            return Json(new { success = "profile img successfully changed" });
+            return Ok();
         }
-
-
 
     }
 }

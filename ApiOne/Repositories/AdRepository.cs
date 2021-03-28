@@ -378,5 +378,21 @@ namespace ApiOne.Repositories
                 return false;
             }
         }
+
+        public bool RemoveFromSubscribedCategories(int CustomerId, int[] CatIds)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "DELETE FROM SubscribedCategories WHERE categoryId in @CatIds and customerId=@CustomerId";
+                var result = conn.Execute(sql, new { CustomerId, CatIds });
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
     }
 }
