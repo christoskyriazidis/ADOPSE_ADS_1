@@ -10,15 +10,15 @@ using WpfClientt.services;
 using System.Windows.Input;
 using System.Diagnostics;
 
-namespace WpfClientt.ViewModels {
-    public class AdScrollerViewModel {
+namespace WpfClientt.viewModels {
+    public class AdsViewModel : BaseViewModel,IViewModel {
 
         public ObservableCollection<Ad> ads { get; } = new ObservableCollection<Ad>();
         private IScroller<Ad> scroller;
         public ICommand NextPageCommand { get; private set; }
         public ICommand PreviousPageCommand { get; private set; }
 
-        public AdScrollerViewModel() {
+        public AdsViewModel() {
             HttpClient client = new HttpClient();
             scroller = new AdServiceImpl(client).Scroller();
             scroller.Init((scroll) => {

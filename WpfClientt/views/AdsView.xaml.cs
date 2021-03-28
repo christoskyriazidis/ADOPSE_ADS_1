@@ -10,14 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfClientt.views {
     /// <summary>
-    /// Interaction logic for GuestWindow.xaml
+    /// Interaction logic for AdsView.xaml
     /// </summary>
-    public partial class GuestWindow : Window {
-        public GuestWindow() {
+    public partial class AdsView : UserControl {
+        public AdsView() {
             InitializeComponent();
         }
     }

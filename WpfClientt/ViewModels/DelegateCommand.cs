@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WpfClientt.ViewModels {
+namespace WpfClientt.viewModels {
     class DelegateCommand : ICommand {
 
         public Action<object> executeAction;
