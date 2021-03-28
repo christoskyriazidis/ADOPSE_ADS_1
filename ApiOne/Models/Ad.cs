@@ -11,7 +11,7 @@ namespace ApiOne.Models
     {
         public int Id { get; set; }
 
-        [StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
+        //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 
@@ -45,6 +45,10 @@ namespace ApiOne.Models
         [Range(1, 100)]
         [Required(ErrorMessage = "Manufacturer is required")]
         public int Manufacturer { get; set; }
+
+        [Range(1, 10000)]
+        [Required(ErrorMessage = "Price is not null")]
+        public int Price { get; set; }
 
         public string LastUpdate { get; set; }
         public int Reports { get; set; }
