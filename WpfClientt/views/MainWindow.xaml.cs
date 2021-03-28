@@ -10,15 +10,14 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfClientt.views {
     /// <summary>
-    /// Interaction logic for RegisterView.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class RegisterView : UserControl {
-        public RegisterView() {
+    public partial class MainWindow : Window {
+        public MainWindow() {
             InitializeComponent();
         }
     }

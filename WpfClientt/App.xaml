@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WpfClientt"
-             StartupUri="views/GuestView.xaml">
+             xmlns:viewmodels="clr-namespace:WpfClientt.viewModels"
+             xmlns:menus="clr-namespace:WpfClientt.viewModels.menu"
+             xmlns:views="clr-namespace:WpfClientt.views">
     <Application.Resources>
         <SolidColorBrush x:Key="blue-light" Color="#99C2EC" />
 
@@ -47,31 +49,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Grid Background="{StaticResource blue-medium}" x:Key="guestMenu" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.6*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding AdsView}" />
-            <Button Grid.Column="1" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding LoginView}" />
-            <Button Grid.Column="2" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding RegisterView}" />
-        </Grid>
-
-        <Grid Background="{StaticResource blue-medium}" x:Key="customerMenu" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.13*" />
-                <ColumnDefinition Width="0.48*" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" />
-            <Button Grid.Column="1" Content="My Profile" Style="{StaticResource medium_blue_button}" />
-            <Button Grid.Column="2" Content="Create Ad" Style="{StaticResource medium_blue_button}" />
-            <Button Grid.Column="3" Content="Logout" Style="{StaticResource medium_blue_button}" />
-        </Grid>
 
         <Style  x:Key="centerRightAlignment" TargetType="FrameworkElement">
             <Style.Setters>
@@ -79,5 +56,42 @@
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style.Setters>
         </Style>
+
+        <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
+            <views:RegisterView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AdsViewModel}">
+            <views:AdsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type menus:GuestMenu}">
+            <Grid  Background="{StaticResource blue-medium}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.6*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding AdsView}" />
+                <Button Grid.Column="1" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding LoginView}" />
+                <Button Grid.Column="2" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding RegisterView}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type menus:LoginCustomerMenu}">
+            <Grid Background="{StaticResource blue-medium}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.13*" />
+                    <ColumnDefinition Width="0.48*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" />
+                <Button Grid.Column="1" Content="My Profile" Style="{StaticResource medium_blue_button}" />
+                <Button Grid.Column="2" Content="Create Ad" Style="{StaticResource medium_blue_button}" />
+                <Button Grid.Column="3" Content="Logout" Style="{StaticResource medium_blue_button}" />
+            </Grid>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>
