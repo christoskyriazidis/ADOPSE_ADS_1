@@ -9,26 +9,26 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     class CustomerServiceImpl : ICustomerService {
         private HttpClient client;
-        private string mainUrl = "https://6055bef691ea2900170d30d2.mockapi.io/customers";
+        private string mainUrl = "https://localhost:44374/customer";
 
         public CustomerServiceImpl(HttpClient client) {
             this.client = client;
         }
 
 
-        public void Create(Customer t) {
+        public Task Create(Customer t) {
             throw new NotImplementedException();
         }
 
-        public void Delete(Customer t) {
+        public Task Delete(Customer t) {
             throw new NotImplementedException();
         }
 
-        public bool Login(string username, string password) {
+        public Task<bool> Login(string username, string password) {
             throw new NotImplementedException();
         }
 
-        public Customer ReadById(long id) {
+        public Task<Customer> ReadById(long id) {
             throw new NotImplementedException();
         }
 
@@ -36,7 +36,7 @@ namespace WpfClientt.services {
             return new GenericScroller<Customer>(client, 10, mainUrl);
         }
 
-        public void Update(Customer t) {
+        public Task Update(Customer t) {
             throw new NotImplementedException();
         }
     }

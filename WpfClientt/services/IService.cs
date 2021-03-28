@@ -12,25 +12,25 @@ namespace WpfClientt.services {
         /// </summary>
         /// <param name="id"> The id of the entity to read.</param>
         /// <returns>Entity that has the given id or exception(if no entity found)</returns>
-        T ReadById(long id);
+        Task<T> ReadById(long id);
 
         /// <summary>
         /// Updates the given entity.
         /// </summary>
         /// <param name="t"></param>
-        void Update(T t);
+        Task Update(T t);
 
         /// <summary>
         /// Deletes the given entity
         /// </summary>
         /// <param name="t"></param>
-        void Delete(T t);
-        
+        Task Delete(T t);
+
         /// <summary>
         /// Creates new entity.
         /// </summary>
         /// <param name="t"></param>
-        void Create(T t);
+        Task Create(T t);
 
         /// <summary>
         /// Returns a scroller over the entities that are stored.

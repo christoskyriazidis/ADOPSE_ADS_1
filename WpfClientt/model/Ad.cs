@@ -9,31 +9,43 @@ using System.Threading.Tasks;
 namespace WpfClientt.model {
     public sealed class Ad {
 
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
+        [JsonPropertyName("state")]
         public long StateId { get; set; }
 
+        [JsonPropertyName("type")]
         public long TypeId { get; set; }
 
+        [JsonPropertyName("manufacturer")]
         public long ManufacturerId { get; set; }
 
+        [JsonPropertyName("condition")]
         public long ConditionId { get; set; }
 
+        [JsonPropertyName("category")]
         public long CategoryId { get; set; }
 
+        [JsonPropertyName("title")]
         public string Title { get; set; }
-        
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("Img")]
+        [JsonPropertyName("img")]
         public string Image { get; set; }
 
+        [JsonPropertyName("views")]
         public int Views { get; set; } = 0;
-        
+
+        [JsonPropertyName("reports")]
         public int Reports { get; set; } = 0;
 
+        [JsonPropertyName("customer")]
         public long CustomerId { get; set; }
 
+        [JsonPropertyName("price")]
         public double Price { get; set; }
 
         public Ad() { 

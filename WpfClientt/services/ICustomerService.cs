@@ -8,7 +8,7 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     public interface ICustomerService : IService<Customer>{
 
-        bool Login(string username, string password);
+        Task<bool> Login(string username, string password);
 
     }
 }

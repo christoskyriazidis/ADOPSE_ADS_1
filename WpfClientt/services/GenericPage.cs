@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     class GenericPage<T> : IPage<T> {
 
-        [JsonPropertyName("Objects")]
+        [JsonPropertyName("ads")]
         public IList<T> Entities { get; set; } = new List<T>();
 
-        [JsonPropertyName("PageNumber")]
+        [JsonPropertyName("currentPage")]
         public int PageNumber { get; set; }
 
-        [JsonPropertyName("NumberOfPages")]
+        [JsonPropertyName("totalPages")]
         public int NumOfPages { get; set; }
 
-        [JsonPropertyName("NextPage")]
+        [JsonPropertyName("nextPageUrl")]
         public string NextPageUrl { get; set; }
 
-        [JsonPropertyName("PreviousPage")]
+        [JsonPropertyName("previousPageUrl")]
         public string PreviousPageUrl { get; set; }
 
         public int Number() {
