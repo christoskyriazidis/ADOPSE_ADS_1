@@ -9,7 +9,7 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     class CustomerServiceImpl : ICustomerService {
         private HttpClient client;
-        private string mainUrl = "https://localhost:44374/customer";
+        private string mainUrl = ApiInfo.CustomerMainUrl();
 
         public CustomerServiceImpl(HttpClient client) {
             this.client = client;
