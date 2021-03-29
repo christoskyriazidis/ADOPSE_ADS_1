@@ -95,7 +95,6 @@ namespace ApiOne
                   options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
                       _ => "The field is required.");
               });
-
             services.AddSignalR();
         }
 

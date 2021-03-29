@@ -12,8 +12,7 @@ namespace ApiOne.Interfaces
     public interface ICustomerRepository
     {
         CustomersWithPagination GetCustomers(Pagination adParameters);
-        CustomerDetails GetCustomer();
-
+        CustomerDetails GetCustomer(int id);
 
     }
 }

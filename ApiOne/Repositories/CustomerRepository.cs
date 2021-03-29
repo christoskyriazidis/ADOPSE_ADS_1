@@ -16,7 +16,7 @@ namespace ApiOne.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public CustomerDetails GetCustomer()
+        public CustomerDetails GetCustomer(int id)
         {
             try
             {

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiOne.Models
+namespace ApiOne.Models.Ads
 {
-    public class Ad
+    public class CreateAd
     {
         public int Id { get; set; }
         public IFormFile FImg { set; get; }
@@ -51,31 +51,5 @@ namespace ApiOne.Models
         public string Date { get; set; }
         public string Img { get; set; }
         public int Customer { get; set; }
-        public Ad()
-        {
-        }
-
-        public Ad(int id, IFormFile fImg, string title, string description, int state, int type, int category, int condition, int manufacturer, int price, string lastUpdate, int reports, int views, string date, string img, int customer)
-        {
-            Id = id;
-            FImg = fImg;
-            Title = title;
-            Description = description;
-            State = state;
-            Type = type;
-            Category = category;
-            Condition = condition;
-            Manufacturer = manufacturer;
-            Price = price;
-            LastUpdate = lastUpdate;
-            Reports = reports;
-            Views = views;
-            Date = date;
-            Img = img;
-            Customer = customer;
-        }
     }
-
-
-
 }

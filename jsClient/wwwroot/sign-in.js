@@ -153,3 +153,49 @@ axios.interceptors.response.use(
 //}
 
 
+
+
+function createAd() {
+    const title = document.querySelector("#input-Title")
+    const description = document.querySelector("#input-Description")
+    const state = document.querySelector("#input-State")
+    const type = document.querySelector("#input-Type")
+    const category = document.querySelector("#input-Category")
+    const condition = document.querySelector("#input-Condition")
+    const manufacturer = document.querySelector("#input-Manufacturer")
+    const price = document.querySelector("#input-Price")
+    const imgg = document.querySelector("#imagee")
+
+    var formData = new FormData();
+    formData.append("Title", title)
+    formData.append("Description", description)
+    formData.append("State", state)
+    formData.append("Type", type)
+    formData.append("Category", category)
+    formData.append("Condition", condition)
+    formData.append("Manufacturer", manufacturer)
+    formData.append("Price", price)
+
+    axios.post('https://localhost:44374/ad', {
+        formData
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    //axios({
+    //    method: "POST",
+    //    url: "https://localhost:44374/ad",
+    //    data: formData,
+    //    headers: { "Content-Type": "application/json" },
+    //})
+    //    .then(function (response) {
+    //        console.log(response);
+    //    })
+    //    .catch(function (response) {
+    //        console.log(response);
+    //    });
+}

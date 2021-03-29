@@ -8,29 +8,61 @@
         <li><button id="btn-chat">Chat</button></li>
         <li><button style="display:none;" id="btn-signOut">signOut</button></li>
         <li><a href="https://localhost:44305/changePassword">changePassword</a></li>
-        
+
         <li id="username"></li>
     </ul>
     <div>
         <h3>Upload</h3>
-        <input type="file" onchange="UploadFile(event)"  />
-    </div>        
+        <input type="file" id="input-img" />
+    </div>
 </nav>
 <div>
     <img src="https://localhost:44374/images/servera/small/5873458.png" alt="Alternate Text" />
 </div>
+
+@*<form id="myform" action="/" enctype="multipart/form-data" method="post">
+    <input type="text" placeholder="Title" id="input-Title" />
+    <input type="text" placeholder="Description" id="input-Description" />
+    <input type="text" placeholder="State" id="input-State" />
+    <input type="text" placeholder="Img" id="input-Img" />
+    <input type="text" placeholder="Type" id="input-Type" />
+    <input type="text" placeholder="Category" id="input-Category" />
+    <input type="text" placeholder="Condition" id="input-Condition" />
+    <input type="text" placeholder="Manufacturer" id="input-Manufacturer" />
+    <input type="number" placeholder="Price" id="input-Price" />
+    <input type="file" id="imagee" />
+    <button type="submit">create</button>
+
+</form>*@
+
 <script>
-    function UploadFile(e) {
-        console.log(e);
-        var file = e.target.files[0];
+
+    function UploadFile() {
+        let imagefile = document.querySelector('#input-img')
+        let title = document.querySelector('#input-title')
+        var file = imagefile.files[0];
         console.log(file);
         var formData = new FormData();
-        formData.append("file", file)
-        axios.post("https://localhost:44374/ad/image", formData)
-    } 
+        formData.append("FImg", file)
+        formData.append("Title", "kskskskalas")
+        console.log(formData)
+        const options = {
+            headers: { 'Content-Type': 'application/json' }
+        };
+        axios.post("https://localhost:44374/ad", formData, options)
+    }
 </script>
 
-
+   @*var imagefile = document.querySelector('#input-img');
+    function UploadFile() {
+        var formData = new FormData();
+        formData.append("image", imagefile.files[0]);
+        axios.post("https://localhost:44374/ad/image", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
+    }*@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

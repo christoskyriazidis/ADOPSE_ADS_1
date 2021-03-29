@@ -70,12 +70,18 @@ namespace ApiOne.Controllers
             }
             return Json(customers);
         }
-
-
-
-
-
-
+        
+        [HttpGet]
+        [Route("/customer/{id}")]
+        public IActionResult GetCustomer(int id)
+        {
+            var customer = _customerRepo.GetCustomer(id);
+            if (customer==null)
+            {
+                return BadRequest(new { error = "wrong customer id" });
+            }
+            return Json(customer);
+        }
 
 
 

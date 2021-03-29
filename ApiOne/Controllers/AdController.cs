@@ -74,9 +74,9 @@ namespace ApiOne.Controllers
         //[Authorize]
         [Route("/ad")]
         [HttpPost]
-        [Produces("application/json")]
-        [Consumes("application/json")]
-        public IActionResult AddAd([FromBody] Ad ad)
+        //[Produces("application/json")]
+        //[Consumes("application/json")]
+        public IActionResult AddAd([FromForm] Ad ad)
         {
             if (!ModelState.IsValid)
             {
