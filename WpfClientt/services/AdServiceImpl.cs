@@ -24,6 +24,10 @@ namespace WpfClientt.services {
             throw new NotImplementedException();
         }
 
+        public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
+            throw new NotImplementedException();
+        }
+
         public Task<Ad> ReadById(long id) {
             throw new NotImplementedException();
         }

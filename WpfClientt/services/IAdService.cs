@@ -8,5 +8,7 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     public interface IAdService : IService<Ad> {
 
+        IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder);
+
     }
 }
