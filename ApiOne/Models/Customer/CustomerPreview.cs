@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Models
 {
-    public class Customer
+    public class CustomerPreview
     {
         public int Id { get; set; }
-        public int Reviews { get; set; }
         public string Username { get; set; }
+        public string ProfileImg { get; set; }
+        public int Rating { get; set; }
 
-        public Customer(int id, int reviews, string username)
+        public CustomerPreview(int id, string username, string profileImg, int rating)
         {
             Id = id;
-            Reviews = reviews;
             Username = username;
+            ProfileImg = profileImg;
+            Rating = rating;
         }
 
-        public Customer()
+        public CustomerPreview()
         {
         }
     }

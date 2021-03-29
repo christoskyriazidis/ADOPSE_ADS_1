@@ -143,7 +143,11 @@
     </ApplicationDefinition>
     <Compile Include="model\Ad.cs" />
     <Compile Include="model\Customer.cs" />
+    <Compile Include="model\Mapping.cs" />
     <Compile Include="services\AdServiceImpl.cs" />
+    <Compile Include="services\AdsFilterBuilder.cs" />
+    <Compile Include="services\ApiInfo.cs" />
+    <Compile Include="services\ApiMapper.cs" />
     <Compile Include="services\CustomerServiceImpl.cs" />
     <Compile Include="services\FactoryServices.cs" />
     <Compile Include="services\GenericPage.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="services\IPage.cs" />
     <Compile Include="services\IScroller.cs" />
     <Compile Include="services\IService.cs" />
+    <Compile Include="services\IMapper.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />

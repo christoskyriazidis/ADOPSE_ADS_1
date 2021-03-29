@@ -39,14 +39,14 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, AdPageSizeNumberParameters Params)
+        public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params)
         {
             try
             {
                 AdParametresQueryFilterFront adParametresQueryFilterFront = new AdParametresQueryFilterFront();
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = $"EXEC Dynamic_Ad_Filters @Filter,@pageSize,@pageNumber; SELECT count(*) as AdCount FROM [Ad] where {adParametresFilter.FinalQuery}";
-                AdPagination adPagination = new AdPagination();
+                AdsWithPagination adPagination = new AdsWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { Filter=adParametresFilter.FinalQuery,Params.PageNumber, Params.PageSize }))
                 {
                     adParametresQueryFilterFront.Ads = results.Read<Ad>().ToList();
@@ -84,13 +84,13 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdPagination GetAds(AdPageSizeNumberParameters adParameters)
+        public AdsWithPagination GetAds(Pagination adParameters)
         {
             try
             { 
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
-                AdPagination adPagination = new AdPagination();
+                AdsWithPagination adPagination = new AdsWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
                 {
                     adPagination.Ads = results.Read<Ad>().ToList();
@@ -98,12 +98,12 @@ namespace ApiOne.Repositories
                 };
                 int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
                 adPagination.PageSize = adParameters.PageSize;
+                adPagination.CurrentPage = adParameters.PageNumber;
                 int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1; 
                 adPagination.NextPageUrl= $"https://localhost:44374/ad?PageNumber={nextPageNumber}&PageSize={adParameters.PageSize}";
                 int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
                 adPagination.PreviousPageUrl = $"https://localhost:44374/ad?PageNumber={previousPageNumber}&PageSize={adParameters.PageSize}";
                 adPagination.LastPageUrl= $"https://localhost:44374/ad?PageNumber={lastPageNumber}&PageSize={adParameters.PageSize}"; ;
-                adPagination.CurrentPage = adParameters.PageNumber;
                 adPagination.TotalPages = lastPageNumber;
                 return adPagination;
             }

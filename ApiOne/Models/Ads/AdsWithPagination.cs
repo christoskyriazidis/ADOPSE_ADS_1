@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Models.Ads
 {
-    public class AdPagination
+    public class AdsWithPagination
     {
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
@@ -18,7 +18,7 @@ namespace ApiOne.Models.Ads
         public string LastPageUrl { get; set; }
         public List<Ad> Ads { get; set; }
 
-        public AdPagination(int pageSize, int currentPage, int totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<Ad> ads)
+        public AdsWithPagination(int pageSize, int currentPage, int totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<Ad> ads)
         {
             PageSize = pageSize;
             CurrentPage = currentPage;
@@ -30,7 +30,7 @@ namespace ApiOne.Models.Ads
             Ads = ads;
         }
 
-        public AdPagination()
+        public AdsWithPagination()
         {
 
         }

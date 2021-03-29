@@ -42,7 +42,7 @@ namespace ApiOne.Controllers
         [HttpGet]
         [Route("/ad")]
         [Produces("application/json")]
-        public IActionResult GetAds([FromQuery] AdPageSizeNumberParameters adParameters)
+        public IActionResult GetAds([FromQuery] Pagination adParameters)
         {
             if (!ModelState.IsValid)
             {
@@ -127,7 +127,7 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/filter")]
-        public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] AdPageSizeNumberParameters adParameters)
+        public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] Pagination adParameters)
         {
             if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
             {

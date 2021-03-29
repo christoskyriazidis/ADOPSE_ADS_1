@@ -10,11 +10,13 @@ namespace WpfClientt.services {
 
         private IAdService adService;
         private ICustomerService customerService;
+        private IMapper mapper;
 
         public FactoryServices() {
             HttpClient client = new HttpClient();
             adService = new AdServiceImpl(client);
             customerService = new CustomerServiceImpl(client);
+            this.mapper = new ApiMapper(client);
         }
 
         public IAdService AdServiceInstance() {
@@ -23,6 +25,10 @@ namespace WpfClientt.services {
 
         public ICustomerService CustomerServiceInstance() {
             return customerService;
+        }
+
+        public IMapper Mapper() {
+            return mapper;
         }
 
     }
