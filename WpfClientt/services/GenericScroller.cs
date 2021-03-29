@@ -19,7 +19,11 @@ namespace WpfClientt.services {
         public GenericScroller(HttpClient client, int size, string url) {
             this.client = client;
             this.size = size;
-            this.url = $"{url}?PageNumber=1&PageSize={size}";
+            if (url.Contains("?")) {
+                this.url = $"{url}&PageNumber=1&PageSize={size}";
+            } else {
+                this.url = $"{url}?PageNumber=1&PageSize={size}";
+            }
         }
 
         public async Task Init(Action<IScroller<T>> doAfterInit) {

@@ -6,8 +6,12 @@
              xmlns:viewmodels="clr-namespace:WpfClientt.viewModels"
              xmlns:menus="clr-namespace:WpfClientt.viewModels.menu"
              xmlns:views="clr-namespace:WpfClientt.views"
-             xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus">
+             xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
+             xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus"
+             xmlns:filters="clr-namespace:WpfClientt.viewModels.filters">
     <Application.Resources>
+        
+        <!--COLORS-->
         <SolidColorBrush x:Key="blue-light" Color="#99C2EC" />
 
         <SolidColorBrush x:Key="blue-medium" Color="#3385D9" />
@@ -25,7 +29,8 @@
         <SolidColorBrush x:Key="green-medium" Color="#00af4a" />
 
         <SolidColorBrush x:Key="green-dark" Color="#007E33"/>
-
+        
+        <!-- STYLES -->
         <Style x:Key="medium_green_button" TargetType="Button">
             <Style.Setters>
                 <Setter Property="Background" Value="{StaticResource green-medium}" />
@@ -52,6 +57,19 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="medium_red_button" TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Background" Value="{StaticResource red-medium}" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Foreground" Value="#fff" />
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource red-light}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style  x:Key="centerRightAlignment" TargetType="FrameworkElement">
             <Style.Setters>
                 <Setter Property="VerticalAlignment"  Value="Center"/>
@@ -59,12 +77,15 @@
             </Style.Setters>
         </Style>
 
+        <!--Data temapltes-->
         <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
             <views:RegisterView />
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewmodels:AdsViewModel}">
             <views:AdsView />
         </DataTemplate>
+        
         <DataTemplate DataType="{x:Type menus:GuestMenu}">
             <viewsMenu:GuestMenu />
         </DataTemplate>
@@ -73,50 +94,12 @@
             <viewsMenu:LoginCustomerMenu />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:Ad}">
-            <Border Height="300" Width="300" Background="{StaticResource blue-light}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="10" >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*" />
-                        <RowDefinition Height="0.05*" />
-                        <RowDefinition Height="0.01" />
-                        <RowDefinition Height="0.25*" />
-                        <RowDefinition Height="0.09*" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0.1*" />
-                            <RowDefinition Height="0.9*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions >
-                            <ColumnDefinition Width="0.5*" />
-                            <ColumnDefinition Width="0.5*" />
-                        </Grid.ColumnDefinitions >
-                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="0">
-                            <Image.Source>
-                                <BitmapImage UriSource="{Binding Image}" />
-                            </Image.Source>
-                        </Image>
-                        <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource green-light}" Canvas.ZIndex="1" CornerRadius="8">
-
-                            <TextBlock  Foreground="#fff" TextAlignment="Center" Grid.Column="0">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0}$">
-                                        <Binding  Path="Price" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </Border>
-                    </Grid>
-
-                    <TextBlock Text="{Binding Title}" TextAlignment="Center" Grid.Row="1" Foreground="#fff" />
-                    <TextBlock Grid.Row="3" Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#fff" />
-                    <Border Grid.Row="4" BorderThickness="1" CornerRadius="8" >
-                        <Button Content="Read More..." Style="{StaticResource medium_blue_button}" />
-                    </Border>
-                </Grid>
-            </Border>
+        <DataTemplate DataType="{x:Type filters:FilterViewModel}">
+            <viewsFilter:FilterView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type filters:FilterMemberViewModel}" >
+            <viewsFilter:FilterMemberView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

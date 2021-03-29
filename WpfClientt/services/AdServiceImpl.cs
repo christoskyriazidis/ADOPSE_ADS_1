@@ -25,7 +25,8 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
-            throw new NotImplementedException();
+            string url = $"{ApiInfo.FilterMainUrl()}?{adsFilterBuilder.build()}";
+            return new GenericScroller<Ad>(client, 10, url);
         }
 
         public Task<Ad> ReadById(long id) {

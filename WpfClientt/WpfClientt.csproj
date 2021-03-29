@@ -161,6 +161,9 @@
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
+    <Compile Include="viewModels\filters\Choice.cs" />
+    <Compile Include="viewModels\filters\FilterMemberViewModel.cs" />
+    <Compile Include="viewModels\filters\FilterViewModel.cs" />
     <Compile Include="viewModels\IViewModel.cs" />
     <Compile Include="viewModels\MainWindowViewModel.cs" />
     <Compile Include="viewModels\Mediator.cs" />
@@ -170,6 +173,12 @@
     <Compile Include="viewModels\RegisterViewModel.cs" />
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\FilterMemberView.xaml.cs">
+      <DependentUpon>FilterMemberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -189,6 +198,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="views\AdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\FilterMemberView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\FilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

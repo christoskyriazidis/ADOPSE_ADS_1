@@ -9,6 +9,9 @@ namespace WpfClientt.services {
 
         private string mainUrl = $"https://localhost:44374/filter?";
 
+        public string build() {
+            return "";
+        }
 
     }
 }

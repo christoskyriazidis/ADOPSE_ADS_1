@@ -38,7 +38,7 @@ namespace WpfClientt.viewModels {
 
         public MainWindowViewModel() {
             factory = new FactoryServices();
-            PageViewModels.Add(new AdsViewModel(factory.AdServiceInstance()));
+            PageViewModels.Add(new AdsViewModel(factory));
             PageViewModels.Add(new RegisterViewModel());
 
             CurrentMenuView = new GuestMenu();

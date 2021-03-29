@@ -34,5 +34,9 @@ namespace WpfClientt.services {
         public static string ManufacturerMainUrl() {
             return "https://localhost:44374/manufacturer";
         }
+
+        public static string FilterMainUrl() {
+            return "https://localhost:44374/filter";
+        }
     }
 }
