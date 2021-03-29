@@ -44,8 +44,15 @@ namespace ApiOne.Repositories
                     customersWithPagination.Customers = results.Read<CustomerDetails>().ToList();
                     customersWithPagination.TotalCustomers = results.Read<int>().FirstOrDefault();
                 };
-                customersWithPagination.PageSize = pagination.PageSize;
                 customersWithPagination.CurrentPage = pagination.PageNumber;
+                customersWithPagination.PageSize = pagination.PageSize;
+                int lastPageNumber = (customersWithPagination.TotalCustomers % pagination.PageSize == 0) ? customersWithPagination.TotalCustomers / pagination.PageSize : customersWithPagination.TotalCustomers / pagination.PageSize + 1;
+                int nextPageNumber = (pagination.PageNumber == lastPageNumber) ? lastPageNumber : pagination.PageNumber + 1;
+                customersWithPagination.NextPageUrl = $"https://localhost:44374/customer?PageNumber={nextPageNumber}&PageSize={pagination.PageSize}";
+                int previousPageNumber = (pagination.PageNumber < 2) ? 1 : pagination.PageNumber - 1;
+                customersWithPagination.PreviousPageUrl = $"https://localhost:44374/customer?PageNumber={previousPageNumber}&PageSize={pagination.PageSize}";
+                customersWithPagination.LastPageUrl = $"https://localhost:44374/customer?PageNumber={lastPageNumber}&PageSize={pagination.PageSize}"; ;
+                customersWithPagination.TotalPages = lastPageNumber;
                 return customersWithPagination;
             }
             catch (SqlException sqlEx)

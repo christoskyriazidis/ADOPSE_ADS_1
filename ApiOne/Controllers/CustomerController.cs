@@ -68,7 +68,6 @@ namespace ApiOne.Controllers
             {
                 return BadRequest(new { error = "customer Out of range" });
             }
-            //Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
             return Json(customers);
         }
 

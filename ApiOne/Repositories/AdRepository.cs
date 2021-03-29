@@ -98,12 +98,12 @@ namespace ApiOne.Repositories
                 };
                 int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
                 adPagination.PageSize = adParameters.PageSize;
+                adPagination.CurrentPage = adParameters.PageNumber;
                 int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1; 
                 adPagination.NextPageUrl= $"https://localhost:44374/ad?PageNumber={nextPageNumber}&PageSize={adParameters.PageSize}";
                 int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
                 adPagination.PreviousPageUrl = $"https://localhost:44374/ad?PageNumber={previousPageNumber}&PageSize={adParameters.PageSize}";
                 adPagination.LastPageUrl= $"https://localhost:44374/ad?PageNumber={lastPageNumber}&PageSize={adParameters.PageSize}"; ;
-                adPagination.CurrentPage = adParameters.PageNumber;
                 adPagination.TotalPages = lastPageNumber;
                 return adPagination;
             }
