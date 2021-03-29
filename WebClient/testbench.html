@@ -9,20 +9,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/components/adContainer/adContainer.css">
 </head>
 
 <body>
     <navbar-component logged="true"></navbar-component>
 
+    <ad-component title="My Title of a nice desk" condition="Used" price="599$"></ad-component>
+    <!-- <div class="adContainer">
+        <div class="itemData">
+            <a href="#">
+                <span class="image"></span>
+                <div class="itemInfo">
+                    <span class="title">Lorem ipsum dolor sit amet consectetur.</span>
+                    <span class="condition">Lorem, ipsum.</span>
+                    <span class="price">566$</span>
+                </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
-    <script src="scripts/index.js"></script>
-    <script src="/scripts/asyncMethods.js"></script>
+            </a>
+        </div>
+        <hr>
+        <div class="sellerData">
+            <a href="#">
+                <span class="sellerAvatar"></span>
+                <div class="filler"></div>
+                <span class="sellerReview"></span>
+            </a>
+        </div>
+    </div> -->
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js" defer></script>
+    <script src="scripts/index.js" defer></script>
+    <script src="/scripts/asyncMethods.js" defer></script>
     <script src="scripts/components/wishlistComponent.js" defer></script>
-
     <script src="scripts/components/navbarComponent.js" defer></script>
-    <script src="scripts/sign-in.js"></script>
-
+    <script src="scripts/sign-in.js" defer></script>
+    <script src="/scripts/components/adContainerComponent.js"></script>
+    
 </body>
 
 </html>

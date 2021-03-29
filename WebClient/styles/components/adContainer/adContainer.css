@@ -1,0 +1,164 @@
+body {
+  background-color: #ececec;
+}
+
+.adContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: white;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 400px;
+  width: 250px;
+  border-radius: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.adContainer .itemData {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 80%;
+}
+
+.adContainer .itemData a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-decoration: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  margin-top: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.adContainer .itemData a .image {
+  background-image: url("https://d.scdn.gr/images/sku_main_images/021959/21959254/xlarge_20200304122145_grafeio_ypologisti_goniako_120x48x73cm_eo408_2.jpeg");
+  background-color: rgba(241, 241, 241, 0.739);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 100%;
+  height: 130px;
+  min-height: 130px;
+  width: 100%;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.adContainer .itemData a .itemInfo {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  text-align: left;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.adContainer .itemData a .itemInfo .title {
+  font-weight: 600;
+}
+
+.adContainer .itemData a .itemInfo .price {
+  background-color: #3386d9;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 999px;
+  color: #ebebeb;
+}
+
+.adContainer .itemData a .itemInfo span {
+  margin-top: 10px;
+}
+
+.adContainer .sellerData {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 20%;
+}
+
+.adContainer .sellerData a {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-decoration: none;
+  color: black;
+}
+
+.adContainer .sellerData a .sellerAvatar {
+  background-image: url("https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/girl_female_woman_avatar-512.png");
+  height: 50px;
+  width: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 100%;
+  height: 40px;
+  min-height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.adContainer .sellerData a label {
+  font-size: small;
+  margin-left: -10px;
+}
+
+.adContainer .sellerData a .filler {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.adContainer .sellerData a .sellerReview {
+  background-color: white;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 100%;
+  height: 40px;
+  min-height: 40px;
+  width: 30%;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.adContainer hr {
+  border: 1px solid #7bb6f1ad;
+  border-radius: 55px;
+  width: 100%;
+}
+/*# sourceMappingURL=adContainer.css.map */

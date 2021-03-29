@@ -6,20 +6,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css">
-    <script src="/scripts/components/navbarComponent.js" defer></script>
+    <link rel="stylesheet" href="/styles/search/search.css">
+    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
+
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="/scripts/components/navbarComponent.js" defer></script>
     <script src="/scripts/sign-in.js" defer></script>
     <script src="/scripts/components/wishlistComponent.js" defer></script>
     <script src="/scripts/components/paginationComponent.js" defer></script>
+    <script src="/scripts/components/adContainerComponent.js"></script>
+    <script src="/scripts/dictionary.js"></script>
+    <script src="/scripts/components/notificationComponent.js"></script>
 </head>
 
 <body>
-    <navbar-component ></navbar-component>
-    <pagination-component current-page="6" last-page="8"></pagination-component>
+    <navbar-component></navbar-component>
+    <main>
+        <div class="optionsContainer">
+
+            <div class="title info">
+                <h2>Filters</h2>
+            </div>
+            <div class="info">
+                <h4>Categories</h4>
+            </div>
+
+            <div class="categoryGroup group"></div>
+            <div class="info">
+                <h4>Ad types</h4>
+            </div>
+            <div class="typeGroup group"></div>
+            <div class="info">
+                <h4>Condition</h4>
+            </div>
+            <div class="conditionGroup group"></div>
+            <div class="info">
+                <h4>State</h4>
+            </div>
+            <div class="stateGroup group"></div>
+            <div class="info">
+                <h4>Manufacturers</h4>
+            </div>
+            <div class="manufacturerGroup group"></div>
+            <button class="submitSearch">submit search</button>
+        </div>
+        <div class="mainContentArea">
+            <div class="paginationArea"><pagination-component current-page="1" last-page="8"></pagination-component></div>
+            <div class="contentContainer"></div>
+            <div class="paginationArea"><pagination-component current-page="1" last-page="8"></pagination-component></div>
+        </div>
+    </main>
+
 </body>
+<script>
 
 
+
+
+    const categoryArray = []
+    const fillCategories = (data) => {
+
+        const categories = document.querySelector(".categoryGroup")
+        let categoryItems = ""
+        for (object of data) {
+            categoryItems += `<input type="radio" name="category"  class="category" id="cat${object.id}">
+                              <label for="cat${object.id}">${object.title}</label><br>`
+        }
+        categories.innerHTML = categoryItems
+    }
+    const fillType = (data) => {
+        const types = document.querySelector(".typeGroup")
+        let typeItems = ""
+        for (object of data) {
+            typeItems += `<input type="checkbox" class="type" id="typ${object.id}">
+                          <label for="typ${object.id}">${object.title}</label><br>`
+        }
+        types.innerHTML = typeItems
+    }
+    const fillManufacturer = (data) => {
+        const manufacturers = document.querySelector(".manufacturerGroup")
+        let manufacturerItems = ""
+        for (object of data) {
+            manufacturerItems += `<input type="checkbox" class="manufacturer" id="man${object.id}">
+                              <label for="man${object.id}">${object.title}</label><br>`
+        }
+        manufacturers.innerHTML = manufacturerItems
+    }
+    const fillCondition = (data) => {
+        const conditions = document.querySelector(".conditionGroup")
+        let conditionItems = ""
+        for (object of data) {
+            conditionItems += `<input type="checkbox" class="condition" id="con${object.id}">
+                              <label for="con${object.id}">${object.title}</label><br>`
+        }
+        conditions.innerHTML = conditionItems
+    }
+    const fillState = (data) => {
+        const states = document.querySelector(".stateGroup")
+        let stateItems = ""
+        for (object of data) {
+            stateItems += `<input type="checkbox" class="condition" id="${object.id}">
+                              <label for="${object.id}">${object.title}</label><br>`
+        }
+        states.innerHTML = stateItems
+    }
+    axios.get("https://localhost:44374/category")
+        .then((response) => response.data)
+        .then(fillCategories)
+    axios.get("https://localhost:44374/type")
+        .then((response) => response.data)
+        .then(fillType)
+    axios.get("https://localhost:44374/manufacturer")
+        .then((response) => response.data)
+        .then(fillManufacturer)
+    axios.get("https://localhost:44374/condition")
+        .then((response) => response.data)
+        .then(fillCondition)
+    axios.get("https://localhost:44374/state")
+        .then((response) => response.data)
+        .then(fillState)
+
+
+
+
+
+</script>
+
+<script>
+
+
+</script>
 
 
 
