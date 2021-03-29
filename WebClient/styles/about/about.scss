@@ -1,0 +1,17 @@
+$primary-color: #337bc3;
+$secondary-color: #3386d9;
+$alternative-color: #7bb6f1ad;
+$secondary-font-color: #243649fa;
+$primary-font-color: #ebebeb;
+$shadow-color: #2020209b;
+$attention-color: #1f271b9b;
+*{
+    margin:0px;
+}
+main{
+    div{
+        height:100px;
+        width:100px;
+        background-color:$primary-color;
+    }
+}

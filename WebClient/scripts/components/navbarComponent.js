@@ -21,7 +21,7 @@ class NavbarComponent extends HTMLElement {
                     <li><button style="" onclick="signOut()" >signOut</button></li>
                     <li><a class="hide" href="#">My account</a></li>
                     <li><a href="#" onclick="attachWishlist(event)" class="wishlist">wishlist</a></li>
-                    <li><a href="#" class="notifications hide">Notifications</a></li>
+                    <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
                     <li><a href="#" class="hide">Chats</a></li>
                 `
                 break;
@@ -59,7 +59,7 @@ class NavbarComponent extends HTMLElement {
             <div class="secondNavListContainer">
                 <ul>
                     <div class="vl"> </div>
-                    <li><a href="./search/index.html">Ads</a></li>
+                    <li><a href="/home/search/index.html">Ads</a></li>
                     <div class="vl"> </div>
                     <li><a href="">Categories</a></li>
                     <div class="vl"> </div>
@@ -96,17 +96,40 @@ const attachWishlist = (event) => {
     }
     let x = document.querySelector(".wishlist").getBoundingClientRect().left;
     let y = document.querySelector(".wishlist").getBoundingClientRect().bottom;
-
     const wishlistComponent = document.querySelector("wishlist-component");
-
-
-
     wishlistComponent.style.display = "block";
-
     wishlistComponent.style.left = x + 'px';
     wishlistComponent.style.top = y + 'px';
 
 
 }
+const attachNotifications = (event) => {
+    console.log("haha");
 
+    if (!document.querySelector("notification-component")) {
+        let notification = document.createElement("notification-component")
+        document.querySelector("navbar-component").appendChild(notification);
+        document.body.addEventListener("click", (event) => {
+            if (!((
+                event.pageY > notificationComponent.offsetTop &&
+                event.pageY < notificationComponent.offsetTop + notificationComponent.offsetHeight &&
+                event.pageX < notificationComponent.offsetLeft + notificationComponent.offsetWidth &&
+                event.pageX > notificationComponent.offsetLeft)
+                || event.target.classList.contains("notification"))) {
+                    notification.style.display = 'none'
+            }
+        })
+
+    } else {
+        document.querySelector("notification-component").style.display = "block";
+    }
+    let x = document.querySelector(".notification").getBoundingClientRect().left;
+    let y = document.querySelector(".notification").getBoundingClientRect().bottom;
+    const notificationComponent = document.querySelector("notification-component");
+    notificationComponent.style.display = "block";
+    notificationComponent.style.left = x + 'px';
+    notificationComponent.style.top = y + 'px';
+
+
+}
 customElements.define("navbar-component", NavbarComponent)
