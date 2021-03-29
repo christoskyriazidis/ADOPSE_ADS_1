@@ -52,7 +52,9 @@
                             <TextBlock Grid.Column="1" Text="views" Foreground="#fff"/>
                         </Grid>
                         <Border Grid.Row="1" Grid.Column="4" Padding="5">
-                            <Button Content="Read More..." Style="{StaticResource medium_blue_button}" Height="30" />
+                            <Button Content="Read More..." Style="{StaticResource medium_blue_button}" 
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=DataContext.ReadMoreCommand}" 
+                                    CommandParameter="{Binding Id}" Height="30" />
                         </Border>
                     </Grid>
                 </DataTemplate>
@@ -64,8 +66,8 @@
                 <ColumnDefinition Width="0.8*" />
                 <ColumnDefinition Width="0.1*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Previous Page" Style="{StaticResource medium_green_button}" Grid.Column="0" Command="{Binding PreviousPageCommand}" />
-            <Button Content="Next Page" Style="{StaticResource medium_green_button}" Grid.Column="2" Command="{Binding NextPageCommand}" />
+            <Button Content="Previous Page" Style="{StaticResource medium_blue_button}" Grid.Column="0" Command="{Binding PreviousPageCommand}" />
+            <Button Content="Next Page" Style="{StaticResource medium_blue_button}" Grid.Column="2" Command="{Binding NextPageCommand}" />
         </Grid>
     </Grid>
 </UserControl>

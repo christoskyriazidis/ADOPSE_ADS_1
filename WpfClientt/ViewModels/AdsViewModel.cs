@@ -18,6 +18,7 @@ namespace WpfClientt.viewModels {
         private IAdService adService;
         public ICommand NextPageCommand { get; private set; }
         public ICommand PreviousPageCommand { get; private set; }
+        public ICommand ReadMoreCommand { get; private set; }
 
         public AdsViewModel(IAdService adService) {
             this.adService = adService;
@@ -29,6 +30,7 @@ namespace WpfClientt.viewModels {
             });
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
+            ReadMoreCommand = new DelegateCommand(OnReadMore);
         }
 
         private async void OnMoveNext(object param) {
@@ -49,8 +51,8 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        private void OnReadMore(object param) { 
-        
+        private void OnReadMore(object param) {
+            Mediator.Notify("AdView", param ?? throw new ArgumentNullException("The id should not be null"));
         }
 
 
