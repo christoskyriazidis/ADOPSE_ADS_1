@@ -25,7 +25,8 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
-            string url = $"{ApiInfo.FilterMainUrl()}?{adsFilterBuilder.build()}";
+            string url = adsFilterBuilder.build();
+            adsFilterBuilder.ClearFilters();
             return new GenericScroller<Ad>(client, 10, url);
         }
 

@@ -36,7 +36,7 @@ namespace WpfClientt.services {
         }
 
         public static string FilterMainUrl() {
-            return "https://localhost:44374/filter";
+            return "https://localhost:44374/filter?";
         }
     }
 }
