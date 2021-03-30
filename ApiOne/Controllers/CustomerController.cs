@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nest;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
@@ -98,6 +99,77 @@ namespace ApiOne.Controllers
             var usernamee = claims.FirstOrDefault(c => c.Type == "usernameeee")?.Value;
 
             return Json(new { secret = "very secret" });
+        }
+        [Route("/search")]
+        public IActionResult yesNo([FromQuery] string name)
+        {
+            var settings = new ConnectionSettings(new Uri("http://localhost:9100/"))
+                .DefaultIndex("people");
+
+            var client = new ElasticClient(settings);
+            var searchResponse = client.Search<Person>(s => s
+           .From(0)
+           .Size(10)
+           .Query(q => q
+                .Match(m => m
+                   .Field(f => f.FirstName)
+                   .Query(name)
+                )
+               )
+            );
+
+            var searchId = client.Search<Person>(s => s
+            .Query(q => q.Range(m => m.Field(f => f.Id).GreaterThan(5)
+            ))
+            );
+
+            var stringSearch = client.Search<Person>(s=>s
+            .Query(q=>q
+            .QueryString(qs=>qs
+            .Query("mar")))
+            );
+
+            var people = searchResponse.Documents;
+            var secondS = searchId.Documents;
+            var stringSearchres = stringSearch.Documents;
+            return Ok(people);
+        }
+
+
+        [Route("/yes")]
+        public async Task<IActionResult> yes()
+        {
+            var settings = new ConnectionSettings(new Uri("http://localhost:9100/"))
+                .DefaultIndex("people");
+
+            var client = new ElasticClient(settings);
+            List<Person> persons = new List<Person>();
+             for(int i = 0; i < 10; i++)
+            {
+                persons.Add(new Person(i,$"mart",$"lastname{i}"));
+           
+            }
+             foreach(var i in persons)
+            {
+                var indexResponse = client.IndexDocument(i);
+                var asyncIndexResponse = await client.IndexDocumentAsync(i);
+            }
+                
+
+            var searchResponse = client.Search<Person>(s => s
+            .From(0)
+            .Size(10)
+            .Query(q => q
+                 .Match(m => m
+                    .Field(f => f.FirstName)
+                    .Query("Mart1")
+                 )
+                )
+           );
+
+            var people = searchResponse.Documents;
+
+            return Ok(people);
         }
     }
 }
