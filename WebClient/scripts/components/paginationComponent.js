@@ -1,16 +1,25 @@
 class PaginationComponent extends HTMLElement {
-    static get observedAttributes() { return ['current-page', 'last-page', 'nextUrl', 'previousUrl']; }
+    static get observedAttributes() { return ['current-page', 'last-page', 'nextUrl', 'previousUrl','filter','current-url']; }
     constructor() {
         super();
         this.render();
+
     }
     attributeChangedCallback(name, oldValue, newValue) {
-        switch(name){
+        switch (name) {
             case "current-page":
                 this.render();
                 break;
+            case "filter":
+                this.render();
+                break;
+            case "current-url":
+                
+                    this.render();
+                
+                break;
         }
-        
+
     }
     get currentPage() {
         return this.getAttribute("current-page")
@@ -28,39 +37,58 @@ class PaginationComponent extends HTMLElement {
     get lastPageUrl() {
         return this.getAttribute("last-page-url")
     }
+    get filter() {
+        return this.getAttribute("filter")
+    }
+    get currentUrl() {
+        return this.getAttribute("current-url")
+    }
 
+    
 
     render() {
-        const currentPage = Number.parseInt(this.currentPage);
-        const lastPage = Number.parseInt(this.lastPage);
-        const previousPageUrl = this.previousPageUrl;
-        const lastPageUrl = this.lastPageUrl;
-        const nextPageUrl = this.nextPageUrl;
+        console.log(this.currentPage);
+        let currentPage = Number.parseInt(this.currentPage);
+        let lastPage = Number.parseInt(this.lastPage);
+        let previousPageUrl = this.previousPageUrl;
+        let lastPageUrl = this.lastPageUrl;
+        let nextPageUrl = this.nextPageUrl;
+        let filter = this.filter;
+        let firstUrl=this.currentUrl;
+
+        if (filter) {
+            lastPageUrl += filter;
+            nextPageUrl += filter;
+            previousPageUrl += filter;
+            firstUrl += filter;
+        }
         //console.log(currentPage,lastPage,previousPageUrl,lastPageUrl,nextPageUrl);
         //    ` <li class="dots"><span>...</span></li>
         //     <li class="currentPage"><span>${currentPage}</span></li>
         //     <li class="dots"><span>...</span></li>`
         let middle;
-        console.log(currentPage==4)
+
+        console.log(currentPage == 4)
         switch (currentPage) {
             case 1:
+                this.firstPageUrl = window.location.href;
                 middle = ``;
-                middle += checkNext(currentPage, lastPage,nextPageUrl);
+                middle += checkNext(currentPage, lastPage, nextPageUrl);
                 break;
             case 2:
                 middle = `<li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage,nextPageUrl);
+                middle += checkNext(currentPage, lastPage, nextPageUrl);
                 break;
             case 3:
                 middle = `<li class="previousPage" onclick="callPage('${previousPageUrl}')"><span>${currentPage - 1}</span></li>
                         <li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage,nextPageUrl);
+                middle += checkNext(currentPage, lastPage, nextPageUrl);
                 break;
-            default :
+            default:
                 middle = `<li class="dots"><span>...</span></li>
                         <li class="previousPage" onclick="callPage('${previousPageUrl}')"><span>${currentPage - 1}</span></li>
                         <li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage,nextPageUrl);
+                middle += checkNext(currentPage, lastPage, nextPageUrl);
                 break;
         }
         if (lastPage == currentPage) {
@@ -71,7 +99,7 @@ class PaginationComponent extends HTMLElement {
         <div class="paginationContainer">
             <ul>
                 <li class="goToPrevious"><span onclick="callPage('${previousPageUrl}')">&lt;</span></li>
-                <li class="firstPage ${currentPage == 1 ? "currentPage" : ""}"><span onclick="callPage('${''}')">1</span></li>
+                <li class="firstPage ${currentPage == 1 ? "currentPage" : ""}"><span onclick="callPage('${firstUrl}')">1</span></li>
                 ${middle}
                 <li class="lastPage ${currentPage == lastPage ? "currentPage" : ""}"> <span onclick="callPage('${lastPageUrl}')">${lastPage}</span></li>
                 <li class="goToNext"><span onclick="callPage('${nextPageUrl}')">&gt;</span></li>
@@ -80,7 +108,7 @@ class PaginationComponent extends HTMLElement {
         <link rel="stylesheet" href="/styles/components/pagination/pagination.css">`
     }
 }
-const checkNext = (currentPage, lastPage,nextPageUrl) => {
+const checkNext = (currentPage, lastPage, nextPageUrl) => {
     if (lastPage - currentPage >= 3) {
         return ` <li class="nextPage"><span onclick="callPage('${nextPageUrl}')">${currentPage + 1}</span></li>
                 <li class="dots"><span>...</span></li>`
@@ -91,10 +119,12 @@ const checkNext = (currentPage, lastPage,nextPageUrl) => {
     return ``;
 }
 const checkLast = (currentPage) => {
-    if(currentPage){
+    if (currentPage) {
 
     }
 }
+
+
 customElements.define("pagination-component", PaginationComponent)
 {/* <li class="dots"><span>...</span></li>
         <li class="currentPageLeft"><span>4</span></li>

@@ -16,9 +16,10 @@
     <script src="/scripts/sign-in.js" defer></script>
     <script src="/scripts/components/wishlistComponent.js" defer></script>
     <script src="/scripts/components/paginationComponent.js" defer></script>
-    <script src="/scripts/components/adContainerComponent.js"></script>
+    <script src="/scripts/components/adContainerComponent.js" defer></script>
     <script src="/scripts/dictionary.js"></script>
-    <script src="/scripts/components/notificationComponent.js"></script>
+    <script src="/scripts/filters.js"></script>
+    <script src="/scripts/components/notificationComponent.js" defer></script>
 </head>
 
 <body>
@@ -53,84 +54,103 @@
             <button class="submitSearch">submit search</button>
         </div>
         <div class="mainContentArea">
-            <div class="paginationArea"><pagination-component current-page="1" last-page="8"></pagination-component></div>
+            <div class="paginationArea">
+                <pagination-component current-page="1" last-page="8"></pagination-component>
+            </div>
             <div class="contentContainer"></div>
-            <div class="paginationArea"><pagination-component current-page="1" last-page="8"></pagination-component></div>
+            <div class="paginationArea">
+                <pagination-component current-page="1" last-page="8" ></pagination-component>
+            </div>
         </div>
     </main>
 
 </body>
 <script>
-
-
-
-
-    const categoryArray = []
-    const fillCategories = (data) => {
-
+    const resourceServer="https://localhost:44374";
+    const fillCategories = (value, id) => {
         const categories = document.querySelector(".categoryGroup")
-        let categoryItems = ""
-        for (object of data) {
-            categoryItems += `<input type="radio" name="category"  class="category" id="cat${object.id}">
-                              <label for="cat${object.id}">${object.title}</label><br>`
-        }
-        categories.innerHTML = categoryItems
+        categories.innerHTML += `<input type="radio" name="category"   id="cat${id}">
+                                 <label for="cat${id}">${value}</label><br>`
     }
-    const fillType = (data) => {
+    const fillType = (value, id) => {
         const types = document.querySelector(".typeGroup")
-        let typeItems = ""
-        for (object of data) {
-            typeItems += `<input type="checkbox" class="type" id="typ${object.id}">
-                          <label for="typ${object.id}">${object.title}</label><br>`
-        }
-        types.innerHTML = typeItems
+        types.innerHTML += `<input type="checkbox" name="type" id="typ${id}">
+                            <label for="typ${id}">${value}</label><br>`
     }
-    const fillManufacturer = (data) => {
+
+    const fillManufacturer = (value, id) => {
         const manufacturers = document.querySelector(".manufacturerGroup")
-        let manufacturerItems = ""
-        for (object of data) {
-            manufacturerItems += `<input type="checkbox" class="manufacturer" id="man${object.id}">
-                              <label for="man${object.id}">${object.title}</label><br>`
-        }
-        manufacturers.innerHTML = manufacturerItems
+        manufacturers.innerHTML += `<input type="checkbox" name="manufacturer" id="man${id}">
+                                     <label for="man${id}">${value}</label><br>`
     }
-    const fillCondition = (data) => {
+    const fillCondition = (value, id) => {
+
         const conditions = document.querySelector(".conditionGroup")
-        let conditionItems = ""
-        for (object of data) {
-            conditionItems += `<input type="checkbox" class="condition" id="con${object.id}">
-                              <label for="con${object.id}">${object.title}</label><br>`
-        }
-        conditions.innerHTML = conditionItems
+        conditions.innerHTML += `<input type="checkbox" name="condition" id="con${id}">
+                                  <label for="con${id}">${value}</label><br>`
     }
-    const fillState = (data) => {
+    const fillState = (value, id) => {
+        console.log(value);
         const states = document.querySelector(".stateGroup")
-        let stateItems = ""
-        for (object of data) {
-            stateItems += `<input type="checkbox" class="condition" id="${object.id}">
-                              <label for="${object.id}">${object.title}</label><br>`
-        }
-        states.innerHTML = stateItems
+        states.innerHTML += `<input type="checkbox" name="state" id="sta${id}">
+                             <label for="sta${id}">${value}</label><br>`
     }
-    axios.get("https://localhost:44374/category")
-        .then((response) => response.data)
-        .then(fillCategories)
-    axios.get("https://localhost:44374/type")
-        .then((response) => response.data)
-        .then(fillType)
-    axios.get("https://localhost:44374/manufacturer")
-        .then((response) => response.data)
-        .then(fillManufacturer)
-    axios.get("https://localhost:44374/condition")
-        .then((response) => response.data)
-        .then(fillCondition)
-    axios.get("https://localhost:44374/state")
-        .then((response) => response.data)
-        .then(fillState)
+    let currentPage;
+    let dictMaps;
+    let dict = new Dictionary();
+    dict.init().then(maps => {
+        maps.cat.forEach(fillCategories)
+        maps.sta.forEach(fillState)
+        maps.man.forEach(fillManufacturer)
+        maps.typ.forEach(fillType)
+        maps.con.forEach(fillCondition)
+        dictMaps = maps
+    }).then(() => {
+        callPage(`${resourceServer}/ad?PageNumber=1&PageSize=5`)
+        saveLast(`?PageNumber=1&PageSize=5`)
+    })
 
 
+    const populateContentArea = (data) => {
+
+        document.querySelector(".contentContainer").innerHTML = '';
+        let allAds = ""
+        for (object of data.ads) {
+            allAds += `<ad-component title="${object.title}" condition="${dictMaps.con.get(object.condition)}" price="${object.price}" item-image="${object.img}" id="${object.id}"></ad-component>`
+        }
+        document.querySelector(".contentContainer").innerHTML += allAds;
+        const pagers = document.querySelectorAll('pagination-component')
+
+        for (prop in data) {
+
+            for (pager of pagers) {
+
+                pager.setAttribute("current-page", data['currentPage'])
+                pager.setAttribute("next-page", data['nextPageUrl'])
+                pager.setAttribute("previous-page", data['previousPageUrl'])
+                pager.setAttribute('last-page-url', data['lastPageUrl'])
+                pager.setAttribute("last-page", data['totalPages'])
+            }
+
+        }
 
 
+    }
+    let lastCall;
+    const callPage = (page) => axios.get(page).then((response) => response.data).then((data) => {
+        populateContentArea(data)
+        currentPage = data.currentPage;
+    })
+    const saveLast=(currentUrl)=>{
+        lastCall=currentUrl;
+        for (pager of document.querySelectorAll("pagination-component")) {
+        pager.setAttribute("current-url", `${resourceServer}/${finalQuery!=null?`filter/${finalQuery}`:`ad`}${currentUrl}`)
+        
+    }
+    }
+    const searchbtn = document.querySelector(".submitSearch")
+    searchbtn.addEventListener("click", createQueryString)
+    //callPage("https://localhost:44374/ad?PageNumber=1&PageSize=10")
 
 </script>
 

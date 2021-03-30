@@ -100,40 +100,7 @@ namespace ApiOne.Controllers
 
             return Json(new { secret = "very secret" });
         }
-        [Route("/search")]
-        public IActionResult yesNo([FromQuery] string name)
-        {
-            var settings = new ConnectionSettings(new Uri("http://localhost:9100/"))
-                .DefaultIndex("people");
-
-            var client = new ElasticClient(settings);
-            var searchResponse = client.Search<Person>(s => s
-           .From(0)
-           .Size(10)
-           .Query(q => q
-                .Match(m => m
-                   .Field(f => f.FirstName)
-                   .Query(name)
-                )
-               )
-            );
-
-            var searchId = client.Search<Person>(s => s
-            .Query(q => q.Range(m => m.Field(f => f.Id).GreaterThan(5)
-            ))
-            );
-
-            var stringSearch = client.Search<Person>(s=>s
-            .Query(q=>q
-            .QueryString(qs=>qs
-            .Query("mar")))
-            );
-
-            var people = searchResponse.Documents;
-            var secondS = searchId.Documents;
-            var stringSearchres = stringSearch.Documents;
-            return Ok(people);
-        }
+        
 
 
         [Route("/yes")]

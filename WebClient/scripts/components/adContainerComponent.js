@@ -52,30 +52,7 @@ class AdContainerComponent extends HTMLElement {
         `
     }
 }
-const populateContentArea = (data) => {
-    let allAds = ""
-    document.querySelector(".contentContainer").innerHTML='';
-    for (object of data.ads) {
-
-        allAds += `<ad-component title="${object.title}" condition="Used" price="${object.price}" item-image="${object.img}" id="${object.id}"></ad-component>`
-    }
-    document.querySelector(".contentContainer").innerHTML += allAds;
-    const pagers = document.querySelectorAll('pagination-component')
-
-    for (prop in data) {
-
-        for (pager of pagers) {
-            pager.setAttribute("current-page", data['currentPage'])
-            pager.setAttribute("next-page", data['nextPageUrl'])
-            pager.setAttribute("previous-page", data['previousPageUrl'])
-            pager.setAttribute('last-page-url', data['lastPageUrl'])
-            pager.setAttribute("last-page", data['totalPages'])
-        }
-    }
-   
-}
-const callPage = (page) => axios.get(page).then((response) => response.data).then(populateContentArea)
-callPage("https://localhost:44374/ad?PageSize=6");
+;
 
 customElements.define("ad-component", AdContainerComponent)
 //<span class="sellerAvatar favourite" style='background-image:url(https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/girl_female_woman_avatar-512.png)'></span>
