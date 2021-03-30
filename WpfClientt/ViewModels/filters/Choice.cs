@@ -10,6 +10,11 @@ namespace WpfClientt.viewModels.filters {
 
         public long Code { get; private set; }
 
+        public bool Selected { 
+            get; 
+            set; 
+        } = false;
+
         public Choice(string title, long code) {
             Title = title;
             Code = code;

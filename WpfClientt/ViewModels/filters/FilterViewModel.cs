@@ -11,8 +11,10 @@ namespace WpfClientt.viewModels.filters {
     public class FilterViewModel : BaseViewModel {
 
         private ObservableCollection<Ad> ads;
+        private AdsFilterBuilder filterBuilder;
 
         public ObservableCollection<FilterMemberViewModel> FilterMemebers { get; private set; } = new ObservableCollection<FilterMemberViewModel>();
+
 
         public FilterViewModel(ObservableCollection<Ad> ads,FactoryServices factory) {
             this.ads = ads;
