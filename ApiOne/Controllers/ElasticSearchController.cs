@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiOne.Models.Ads;
+using Microsoft.AspNetCore.Mvc;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -44,49 +45,68 @@ namespace ApiOne.Controllers
 
             return Ok(people);
         }
+        //[Route("/search")]
+        //public IActionResult ReturnSearchResult([FromQuery] string name) {
+        //    var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
+        //        .DefaultIndex("people");
+
+        //    var client = new ElasticClient(settings);
+        //    var searchResponse = client.Search<Person>(s => s
+        //   .From(0)
+        //   .Size(10)
+        //   .Query(q => q
+        //        .Match(m => m
+        //           .Field(f => f.FirstName)
+        //           .Query(name)
+        //        )
+        //       )
+        //    );
+
+        //    var searchId = client.Search<Person>(s => s
+        //    .Query(q => q.Range(m => m.Field(f => f.Id).GreaterThan(5)
+        //    ))
+        //    );
+
+        //    var stringSearch = client.Search<Person>(s => s
+        //    .Query(q => q
+        //    .QueryString(qs => qs
+        //    .Query("mar")))
+        //    );
+
+        //    var myQuery = client.Search<Person>(s => s
+        //        .Query(q=>q
+        //            .Wildcard(qs=>qs
+        //                .Field(f=>f.FirstName)
+        //                .Value("v*")
+        //            )
+        //        )
+        //    );
+
+        //    var people = searchResponse.Documents;
+        //    var secondS = searchId.Documents;
+        //    var stringSearchres = stringSearch.Documents;
+        //    var quequeque = myQuery.Documents;
+        //    return Ok(quequeque);
+        //}
+
         [Route("/search")]
-        public IActionResult ReturnSearchResult([FromQuery] string name) {
+        public IActionResult ReturnSearchResult([FromQuery] string title) {
             var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-                .DefaultIndex("people");
-
+                .DefaultIndex("ads");
             var client = new ElasticClient(settings);
-            var searchResponse = client.Search<Person>(s => s
-           .From(0)
-           .Size(10)
-           .Query(q => q
-                .Match(m => m
-                   .Field(f => f.FirstName)
-                   .Query(name)
-                )
-               )
-            );
-
-            var searchId = client.Search<Person>(s => s
-            .Query(q => q.Range(m => m.Field(f => f.Id).GreaterThan(5)
-            ))
-            );
-
-            var stringSearch = client.Search<Person>(s => s
-            .Query(q => q
-            .QueryString(qs => qs
-            .Query("mar")))
-            );
-
-            var myQuery = client.Search<Person>(s => s
-                .Query(q=>q
-                    .Wildcard(qs=>qs
-                        .Field(f=>f.FirstName)
-                        .Value("v*")
+            var myQuery = client.Search<CompleteAd>(s => s
+                .Query(q => q
+                  .Bool(b => b
+                    .Should(m => m
+                      .Wildcard(c => c
+                        .Field("title").Value("*" + title.ToLower() + "*")
+                      )
                     )
+                  )
                 )
             );
 
-            var people = searchResponse.Documents;
-            var secondS = searchId.Documents;
-            var stringSearchres = stringSearch.Documents;
-            var quequeque = myQuery.Documents;
-            return Ok(quequeque);
+            return Ok(myQuery.Documents);
         }
-
     }
 }
