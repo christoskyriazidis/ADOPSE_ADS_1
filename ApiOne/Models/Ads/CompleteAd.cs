@@ -17,8 +17,8 @@ namespace ApiOne.Models.Ads
         public int Reports{ get; set; }
         public int Price { get; set; }
         public string Title { get; set; }
-        public string LastUpdate { get; set; }
-        public string Date { get; set; }
+        public string Lastupdate { get; set; }
+        public string Createdate { get; set; }
         public string Description { get; set; }
         public int State { get; set; }
         public string Img { get; set; }
@@ -27,7 +27,7 @@ namespace ApiOne.Models.Ads
                 
         }
 
-        public CompleteAd(int id, int views, int type, int category, int condition, int customer, int manufacturer, int reports, int price, string title, string lastUpdate, string date, string description, int state, string img)
+        public CompleteAd(int id, int views, int type, int category, int condition, int customer, int manufacturer, int reports, int price, string title, string lastupdate, string createdate, string description, int state, string img)
         {
             Id = id;
             Views = views;
@@ -39,8 +39,8 @@ namespace ApiOne.Models.Ads
             Reports = reports;
             Price = price;
             Title = title;
-            LastUpdate = lastUpdate;
-            Date = date;
+            Lastupdate = lastupdate;
+            Createdate = createdate;
             Description = description;
             State = state;
             Img = img;
