@@ -7,24 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="200">
     <Border Padding="5">
-        <Grid>
-            <Grid.RowDefinitions >
-                <RowDefinition Height="0.89*"/>
-                <RowDefinition Height="0.05*"/>
-                <RowDefinition Height="0.01*"/>
-                <RowDefinition Height="0.05*"/>
-
-            </Grid.RowDefinitions>
-            <ItemsControl ItemsSource="{Binding FilterMemebers}" Grid.Row="0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel IsItemsHost="True" Orientation="Vertical" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-            </ItemsControl>    
-            <Button Content="Search" Grid.Row="1" Style="{StaticResource medium_blue_button}" />
-            <Button Content="Reset" Grid.Row="3" Style="{StaticResource medium_red_button}" />
-        </Grid>
+        <ItemsControl ItemsSource="{Binding FilterMemebers}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel IsItemsHost="True" Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>  
     </Border>
     
 </UserControl>

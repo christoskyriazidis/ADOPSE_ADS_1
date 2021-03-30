@@ -10,30 +10,40 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels.filters {
     public class FilterViewModel : BaseViewModel {
 
-        private ObservableCollection<Ad> ads;
-        private AdsFilterBuilder filterBuilder;
+        private AdsFilterBuilder filterBuilder = new AdsFilterBuilder();
 
         public ObservableCollection<FilterMemberViewModel> FilterMemebers { get; private set; } = new ObservableCollection<FilterMemberViewModel>();
 
-
-        public FilterViewModel(ObservableCollection<Ad> ads,FactoryServices factory) {
-            this.ads = ads;
+        public FilterViewModel(FactoryServices factory) {
             IMapper mapper = factory.Mapper();
             mapper.LoadCategories(categories => {
-                FilterMemebers.Add(new FilterMemberViewModel(categories, "Categories"));
+                FilterMemebers.Add(new FilterMemberViewModel(categories, "Categories", filterBuilder.AddCategoryFilter));
             });
             mapper.LoadConditions(conditions => {
-                FilterMemebers.Add(new FilterMemberViewModel(conditions, "Conditions"));
+                FilterMemebers.Add(new FilterMemberViewModel(conditions, "Conditions",filterBuilder.AddConditionFilter));
             });
             mapper.LoadManufacturers(manufacturers => {
-                FilterMemebers.Add(new FilterMemberViewModel(manufacturers, "Manufacturers"));
+                FilterMemebers.Add(new FilterMemberViewModel(manufacturers, "Manufacturers",filterBuilder.AddManufacturerFilter));
             });
             mapper.LoadStates(states => {
-                FilterMemebers.Add(new FilterMemberViewModel(states, "States"));
+                FilterMemebers.Add(new FilterMemberViewModel(states, "States",filterBuilder.AddStateFilter));
             });
             mapper.LoadTypes(types => {
-                FilterMemebers.Add(new FilterMemberViewModel(types, "Types"));
+                FilterMemebers.Add(new FilterMemberViewModel(types, "Types",filterBuilder.AddTypeFilter));
             });
+        }
+
+        public AdsFilterBuilder GetFilterBuilder() {
+            foreach (FilterMemberViewModel filterMember in FilterMemebers) {
+                filterMember.Finish();
+            }
+            return filterBuilder;
+        }
+
+        public void Reset() {
+            foreach (FilterMemberViewModel filterMember in FilterMemebers) {
+                filterMember.Reset();
+            }
         }
 
     }

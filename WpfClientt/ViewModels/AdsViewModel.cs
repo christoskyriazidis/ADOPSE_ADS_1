@@ -36,13 +36,8 @@ namespace WpfClientt.viewModels {
         public AdsViewModel(FactoryServices factory) {
             adService = factory.AdServiceInstance();
             scroller = this.adService.Scroller();
-            scroller.Init(scrll => {
-                Enabled = true;
-                foreach (Ad ad in scrll.CurrentPage().Objects()) {
-                    ads.Add(ad);
-                }
-            });
-            FilterViewModel = new FilterViewModel(ads,factory);
+            scroller.Init(AddCurrentPageAds);
+            FilterViewModel = new FilterViewModel(factory);
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
             ReadMoreCommand = new DelegateCommand(OnReadMore);
@@ -72,12 +67,26 @@ namespace WpfClientt.viewModels {
             Mediator.Notify("AdView", param ?? throw new ArgumentNullException("The id should not be null"));
         }
 
-        private void OnSearch(object param) { 
-        
+        private void OnSearch(object param) {
+            Enabled = false;
+            ads.Clear();
+            scroller = adService.Fiter(FilterViewModel.GetFilterBuilder());
+            scroller.Init(AddCurrentPageAds);
         }
 
         private void OnReset(object param) {
+            Enabled = false;
+            FilterViewModel.Reset();
+            ads.Clear();
+            scroller = adService.Scroller();
+            scroller.Init(AddCurrentPageAds);
+        }
 
+        private void AddCurrentPageAds(IScroller<Ad> scroller) {
+            Enabled = true;
+            foreach (Ad ad in scroller.CurrentPage().Objects()) {
+                ads.Add(ad);
+            }
         }
 
 

@@ -158,11 +158,10 @@
     <Compile Include="services\IScroller.cs" />
     <Compile Include="services\IService.cs" />
     <Compile Include="services\IMapper.cs" />
-    <Compile Include="Test.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
-    <Compile Include="viewModels\filters\Choice.cs" />
+    <Compile Include="viewModels\filters\ChoiceViewModel.cs" />
     <Compile Include="viewModels\filters\FilterMemberViewModel.cs" />
     <Compile Include="viewModels\filters\FilterViewModel.cs" />
     <Compile Include="viewModels\IViewModel.cs" />

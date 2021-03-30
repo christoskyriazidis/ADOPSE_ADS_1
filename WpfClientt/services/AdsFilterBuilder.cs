@@ -48,6 +48,14 @@ namespace WpfClientt.services {
                 );
         }
 
+        public void ClearFilters() {
+            categories.Clear();
+            conditions.Clear();
+            states.Clear();
+            types.Clear();
+            manufacturers.Clear();
+        }
+
         private string LongToString(long l) => l.ToString();
 
         private string PrefixIfNotEmpty(string prefix, string str) {
