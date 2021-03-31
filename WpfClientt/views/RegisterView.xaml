@@ -34,13 +34,13 @@
                 <ColumnDefinition Width="0.7*" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="0" Grid.Column="2" Height="30" />
+            <TextBox Grid.Row="0" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"   />
 
             <TextBlock Text="Password:" Grid.Row="1" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="1" Grid.Column="2" Height="30" />
+            <PasswordBox Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
 
             <TextBlock Text="Retype Password:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="2" Grid.Column="2" Height="30" />
+            <PasswordBox Grid.Row="2" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
 
             <Button Grid.Column="2" Grid.Row="3" Height="30" Content="Register" Style="{StaticResource medium_blue_button}" />
         </Grid>

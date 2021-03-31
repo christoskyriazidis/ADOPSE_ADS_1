@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfClientt.services {
+namespace WpfClientt.services.filtering {
     public sealed class AdsFilterBuilder {
 
         private string mainUrl = ApiInfo.FilterMainUrl();

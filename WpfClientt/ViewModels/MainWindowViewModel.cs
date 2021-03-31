@@ -66,6 +66,6 @@ namespace WpfClientt.viewModels {
 
         private void ChangeToLoginView(object obj) { 
         
-        }
+        } 
     }
 }

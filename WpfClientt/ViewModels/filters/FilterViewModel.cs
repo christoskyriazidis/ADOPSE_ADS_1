@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WpfClientt.model;
 using WpfClientt.services;
+using WpfClientt.services.filtering;
 
 namespace WpfClientt.viewModels.filters {
     public class FilterViewModel : BaseViewModel {
-
         private AdsFilterBuilder filterBuilder = new AdsFilterBuilder();
 
         public ObservableCollection<FilterMemberViewModel> FilterMemebers { get; private set; } = new ObservableCollection<FilterMemberViewModel>();

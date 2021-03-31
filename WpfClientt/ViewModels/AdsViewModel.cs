@@ -15,7 +15,7 @@ namespace WpfClientt.viewModels {
     public class AdsViewModel : BaseViewModel, IViewModel {
         private bool enabled = false;
 
-        public ObservableCollection<Ad> ads { get; } = new ObservableCollection<Ad>();
+        public ObservableCollection<Ad> Ads { get; } = new ObservableCollection<Ad>();
         private IScroller<Ad> scroller;
         private IAdService adService;
 
@@ -47,18 +47,18 @@ namespace WpfClientt.viewModels {
 
         private async void OnMoveNext(object param) {
             if (await scroller.MoveNext()) {
-                ads.Clear();
+                Ads.Clear();
                 foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                    ads.Add(ad);
+                    Ads.Add(ad);
                 }
             }
         }
 
         private async void OnMoveBack(object param) {
             if (await scroller.MoveBack()) {
-                ads.Clear();
+                Ads.Clear();
                 foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                    ads.Add(ad);
+                    Ads.Add(ad);
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace WpfClientt.viewModels {
 
         private void OnSearch(object param) {
             Enabled = false;
-            ads.Clear();
+            Ads.Clear();
             scroller = adService.Fiter(FilterViewModel.GetFilterBuilder());
             scroller.Init(AddCurrentPageAds);
         }
@@ -77,7 +77,7 @@ namespace WpfClientt.viewModels {
         private void OnReset(object param) {
             Enabled = false;
             FilterViewModel.Reset();
-            ads.Clear();
+            Ads.Clear();
             scroller = adService.Scroller();
             scroller.Init(AddCurrentPageAds);
         }
@@ -85,7 +85,7 @@ namespace WpfClientt.viewModels {
         private void AddCurrentPageAds(IScroller<Ad> scroller) {
             Enabled = true;
             foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                ads.Add(ad);
+                Ads.Add(ad);
             }
         }
 

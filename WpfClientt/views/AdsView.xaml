@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
             
             <!--Ads-->
-            <ItemsControl ItemsSource="{Binding ads}" Grid.Row="0" Grid.Column="0">
+            <ItemsControl ItemsSource="{Binding Ads}" Grid.Row="0" Grid.Column="0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" />

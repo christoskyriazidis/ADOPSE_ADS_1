@@ -145,7 +145,7 @@
     <Compile Include="model\Customer.cs" />
     <Compile Include="model\Mapping.cs" />
     <Compile Include="services\AdServiceImpl.cs" />
-    <Compile Include="services\AdsFilterBuilder.cs" />
+    <Compile Include="services\filtering\AdsFilterBuilder.cs" />
     <Compile Include="services\ApiInfo.cs" />
     <Compile Include="services\ApiMapper.cs" />
     <Compile Include="services\CustomerServiceImpl.cs" />
