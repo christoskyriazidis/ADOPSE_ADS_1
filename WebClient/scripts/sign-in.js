@@ -20,6 +20,7 @@ userManager.getUser().then(user => {
         document.querySelector("navbar-component").setAttribute("logged","true")
         body.innerHTML += me.profile.username;
     }
+    
     else {
      
     }
