@@ -7,25 +7,15 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     public interface IMapper {
 
-        Task<string> MapCategory(long id);
+        Task<IDictionary<long,string>> LoadCategories();
 
-        Task<string> MapCondition(long id);
+        Task<IDictionary<long, string>> LoadConditions();
 
-        Task<string> MapState(long id);
+        Task<IDictionary<long, string>> LoadTypes();
 
-        Task<string> MapType(long id);
+        Task<IDictionary<long, string>> LoadManufacturers();
 
-        Task<string> MapManufacturer(long id);
-
-        Task LoadCategories(Action<IDictionary<long,string>> afterLoad);
-
-        Task LoadConditions(Action<IDictionary<long, string>> afterLoad);
-
-        Task LoadTypes(Action<IDictionary<long, string>> afterLoad);
-
-        Task LoadManufacturers(Action<IDictionary<long, string>> afterLoad);
-
-        Task LoadStates(Action<IDictionary<long, string>> afterLoad);
+        Task<IDictionary<long, string>> LoadStates();
 
     }
 }

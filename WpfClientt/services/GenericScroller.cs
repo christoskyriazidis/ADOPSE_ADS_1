@@ -26,9 +26,8 @@ namespace WpfClientt.services {
             }
         }
 
-        public async Task Init(Action<IScroller<T>> doAfterInit) {
+        public async Task Init() {
             await SetCurrentPage();
-            doAfterInit(this);
         }
 
         public IPage<T> CurrentPage() {

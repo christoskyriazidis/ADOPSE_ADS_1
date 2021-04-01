@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
             
             <!--Ads-->
-            <ItemsControl ItemsSource="{Binding ads}" Grid.Row="0" Grid.Column="0">
+            <ItemsControl ItemsSource="{Binding Ads}" Grid.Row="0" Grid.Column="0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" />
@@ -64,7 +64,9 @@
                                 <TextBlock Text="{Binding Title}" TextAlignment="Center" Grid.Row="1" Foreground="#fff" />
                                 <TextBlock Grid.Row="3" Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#fff" />
                                 <Border Grid.Row="4" BorderThickness="1" CornerRadius="8" >
-                                    <Button Content="Read More..." Style="{StaticResource medium_blue_button}" />
+                                    <Button Content="Read More..." Style="{StaticResource medium_blue_button}" 
+                                            Command="{Binding DataContext.ReadMoreCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Id}"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -83,8 +85,8 @@
                     <ColumnDefinition Width="0.2*" />
                     <ColumnDefinition Width="0.4*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Search" Grid.Column="0" Style="{StaticResource medium_blue_button}" Margin="5,0,0,0" Command="{Binding SearchCommand}" IsEnabled="{Binding Enabled}"/>
-                <Button Content="Reset" Grid.Column="2" Style="{StaticResource medium_red_button}" Margin="0,0,5,0" Command="{Binding ResetCommand}" IsEnabled="{Binding Enabled}"/>
+                <Button Content="Search" Grid.Column="0" Style="{StaticResource medium_blue_button}" Margin="5,0,0,0" Command="{Binding SearchCommand}" IsEnabled="{Binding Enabled}" />
+                <Button Content="Reset" Grid.Column="2" Style="{StaticResource medium_red_button}" Margin="0,0,5,0" Command="{Binding ResetCommand}" IsEnabled="{Binding Enabled}" />
             </Grid>
             
             <!--Pagination-->

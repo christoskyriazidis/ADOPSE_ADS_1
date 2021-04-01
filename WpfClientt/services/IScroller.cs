@@ -11,7 +11,7 @@ namespace WpfClientt.services {
         /// Initializes the scroller.Must be called before use!
         /// Must not call any other method of this class until Init has completed.
         /// </summary>
-        Task Init(Action<IScroller<T>> doAfterInit);
+        Task Init();
 
         /// <summary>
         /// Returns the current page.

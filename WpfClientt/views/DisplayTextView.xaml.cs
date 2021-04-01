@@ -13,15 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfClientt.views
-{
+namespace WpfClientt.views {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for DisplayTextView.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
-    {
-        public UserControl1()
-        {
+    public partial class DisplayTextView : UserControl {
+        public DisplayTextView() {
             InitializeComponent();
         }
     }

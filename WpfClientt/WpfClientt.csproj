@@ -145,7 +145,7 @@
     <Compile Include="model\Customer.cs" />
     <Compile Include="model\Mapping.cs" />
     <Compile Include="services\AdServiceImpl.cs" />
-    <Compile Include="services\AdsFilterBuilder.cs" />
+    <Compile Include="services\filtering\AdsFilterBuilder.cs" />
     <Compile Include="services\ApiInfo.cs" />
     <Compile Include="services\ApiMapper.cs" />
     <Compile Include="services\CustomerServiceImpl.cs" />
@@ -158,6 +158,7 @@
     <Compile Include="services\IScroller.cs" />
     <Compile Include="services\IService.cs" />
     <Compile Include="services\IMapper.cs" />
+    <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
@@ -171,8 +172,15 @@
     <Compile Include="viewModels\menu\IMenu.cs" />
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
     <Compile Include="viewModels\RegisterViewModel.cs" />
+    <Compile Include="viewModels\DisplayTextViewModel.cs" />
+    <Compile Include="views\AdsDetailView.xaml.cs">
+      <DependentUpon>AdsDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\DisplayTextView.xaml.cs">
+      <DependentUpon>DisplayTextView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\filters\FilterMemberView.xaml.cs">
       <DependentUpon>FilterMemberView.xaml</DependentUpon>
@@ -195,15 +203,20 @@
     <Compile Include="views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\AdDetails.xaml.cs">
-      <DependentUpon>AdDetails.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WpfEmbeddedBrowser.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="views\AdsDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\AdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\DisplayTextView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,10 +245,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\RegisterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="views\AdDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WpfClientt.services.filtering;
+using System.IO;
+using System.Text.Json;
 
 namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
@@ -20,8 +23,12 @@ namespace WpfClientt.services {
             throw new NotImplementedException();
         }
 
-        public Task Delete(Ad ad) {
-            throw new NotImplementedException();
+        public async Task Delete(Ad ad) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"{mainUrl}/{ad.Id}");
+            HttpResponseMessage response =  await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode) {
+                throw new ApplicationException("Unsuccessful delete request");
+            }
         }
 
         public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
@@ -30,8 +37,11 @@ namespace WpfClientt.services {
             return new GenericScroller<Ad>(client, 10, url);
         }
 
-        public Task<Ad> ReadById(long id) {
-            throw new NotImplementedException();
+        public async Task<Ad> ReadById(long id) {
+            Stream stream = await client.GetStreamAsync($"{mainUrl}/{id}");
+            Ad ad = await JsonSerializer.DeserializeAsync<Ad>(stream);
+
+            return ad;
         }
 
         public IScroller<Ad> Scroller() {
