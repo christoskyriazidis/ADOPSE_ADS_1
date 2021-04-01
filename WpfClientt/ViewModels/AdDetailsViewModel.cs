@@ -8,8 +8,8 @@ using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
     public class AdDetailsViewModel : BaseViewModel,IViewModel {
+        private static AdDetailsViewModel instance;
 
-        private IAdService adService;
         private Ad ad;
 
         public Ad DisplayedAd {
@@ -22,14 +22,17 @@ namespace WpfClientt.viewModels {
             } 
         }
 
-        private AdDetailsViewModel(FactoryServices factory, Ad ad) {
-            adService = factory.AdServiceInstance();
+        private AdDetailsViewModel() {
             DisplayedAd = ad;
         }
 
         public async static Task<AdDetailsViewModel> GetInstance(FactoryServices factory, long id) {
+            if (instance == null) {
+                instance = new AdDetailsViewModel();
+            }
             Ad ad = await factory.AdServiceInstance().ReadById(id);
-            return new AdDetailsViewModel(factory, ad);
+            instance.DisplayedAd = ad;
+            return instance;
         }
 
     }

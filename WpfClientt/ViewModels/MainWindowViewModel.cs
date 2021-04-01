@@ -72,6 +72,7 @@ namespace WpfClientt.viewModels {
         }
 
         private async void ChangeToAdDetailsView(object param) {
+            ChangeToDisplayView("Loading Page");
             long id = (long)param;
             CurrentPageViewModel = await AdDetailsViewModel.GetInstance(factory, id);
         }
