@@ -11,7 +11,6 @@ namespace ApiOne.Models
     public class Ad
     {
         public int Id { get; set; }
-        public IFormFile FImg { set; get; }
 
         //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
         [Required(ErrorMessage = "Title is required")]
@@ -48,17 +47,16 @@ namespace ApiOne.Models
         public string LastUpdate { get; set; }
         public int Reports { get; set; }
         public int Views { get; set; }
-        public string Date { get; set; }
+        public string CreateDate { get; set; }
         public string Img { get; set; }
         public int Customer { get; set; }
         public Ad()
         {
         }
 
-        public Ad(int id, IFormFile fImg, string title, string description, int state, int type, int category, int condition, int manufacturer, int price, string lastUpdate, int reports, int views, string date, string img, int customer)
+        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
         {
             Id = id;
-            FImg = fImg;
             Title = title;
             Description = description;
             State = state;
@@ -70,7 +68,7 @@ namespace ApiOne.Models
             LastUpdate = lastUpdate;
             Reports = reports;
             Views = views;
-            Date = date;
+            CreateDate = createDate;
             Img = img;
             Customer = customer;
         }

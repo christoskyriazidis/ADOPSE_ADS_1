@@ -10,10 +10,8 @@ namespace ApiOne.Models.Ads
 {
     public class CreateAd
     {
-        public int Id { get; set; }
-        public IFormFile FImg { set; get; }
+        public IFormFile Img { set; get; }
 
-        //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 
@@ -46,10 +44,7 @@ namespace ApiOne.Models.Ads
         public int Price { get; set; }
 
         public string LastUpdate { get; set; }
-        public int Reports { get; set; }
-        public int Views { get; set; }
-        public string Date { get; set; }
-        public string Img { get; set; }
+        public string CreateDate { get; set; }
         public int Customer { get; set; }
     }
 }

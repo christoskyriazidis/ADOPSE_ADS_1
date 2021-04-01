@@ -2,6 +2,7 @@
 using ApiOne.Hubs;
 using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
+using Nest;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -76,16 +78,18 @@ namespace ApiOne.Controllers
         [HttpPost]
         //[Produces("application/json")]
         //[Consumes("application/json")]
-        public IActionResult AddAd([FromForm] Ad ad)
+        public IActionResult AddAd([FromForm] CreateAd ad)
         {
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
-            if (_adRepository.InsertAd(ad))
+            ad.Customer = 3;
+            int result = _adRepository.InsertAd(ad);
+            if (result != -1)
             {
-                return Ok(ad);
+                SingleFileUpload(ad.Img, result);
             }
             return Json(new { error = "error" });
         }
@@ -127,7 +131,7 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/filter")]
-        public IActionResult Testt([FromQuery] ParamTypesFilter paramTypeFilter,[FromQuery] Pagination adParameters)
+        public IActionResult Testt([FromQuery] AdFiltersFromParam paramTypeFilter,[FromQuery] Pagination adParameters)
         {
             if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
             {
@@ -233,11 +237,10 @@ namespace ApiOne.Controllers
 
 
     
-        [HttpPost]
-        [Route("/ad/image")]
-        public IActionResult SingleFileUpload(IFormFile file)
+        //[HttpPost]
+        //[Route("/ad/image")]
+        public IActionResult SingleFileUpload(IFormFile file,int adId)
         {
-            int adId = 58734558;
             if (file.Length > 3145728)
             {
                 return BadRequest(new { error = "File is too big (max 3mb)" });
@@ -255,20 +258,11 @@ namespace ApiOne.Controllers
             using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
             {
                 file.CopyTo(fileStream);
+                
             }
             return Ok();
         }
 
-
-
-
-        ////[Authorize]
-        //[HttpGet]
-        //[Route("/notification")]
-        //public IActionResult GetWishListNotification()
-        //{
-        //    return Json(database.GetWishListNotification(1));
-        //}
 
         [HttpGet]
         [Route("/test")]
@@ -281,6 +275,76 @@ namespace ApiOne.Controllers
             }
             return Ok();
         }
+
+        [Route("/yes")]
+        public IActionResult SearchWithFilters([FromQuery] AdFiltersFromParam paramTypeFilter, Pagination pagination)
+        {
+            //if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category) && string.IsNullOrEmpty(paramTypeFilter.Title) && string.IsNullOrEmpty(paramTypeFilter.Description))
+            //{
+            //    return BadRequest(new { error = "you should use at least one filter" });
+            //}
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            AdFiltersFromParamClient adFiltersFromParamClient = new AdFiltersFromParamClient(pagination);
+            foreach (var prop in paramTypeFilter.GetType().GetProperties())
+            {
+                var value = prop.GetValue(paramTypeFilter, null);
+                if (value != null && prop.Name != "Title" && prop.Name != "Description")
+                {
+                    var filterArray = value.ToString().Split("_");
+                    var filterIntArray = filterArray.Select(Int32.Parse).ToList();
+                    adFiltersFromParamClient.GetType().GetProperty(prop.Name).SetValue(adFiltersFromParamClient, filterIntArray);
+                }
+            }
+
+            var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
+                .DefaultIndex("ads");
+
+            var client = new ElasticClient(settings);
+
+            var searchRequest = new SearchRequest<CompleteAd>
+            {
+                Query = new MatchAllQuery(),
+            };
+
+            var searchResponse11 = client.Search<CompleteAd>(s => s
+           .Size(100)
+               .Query(q => q
+                .Regexp(r => r
+                        .Field(f => f.Title)
+                        .Value($"{paramTypeFilter.Title}")
+                    )
+                ||
+                    q.Regexp(r => r
+                        .Field(f => f.Description)
+                        .Value($"{paramTypeFilter.Description}")
+                        )
+                &&
+
+                    q.Terms(t => t
+                        .Field(f => f.Manufacturer)
+                        .Terms<int>(adFiltersFromParamClient.Manufacturer)
+                    )
+                &&
+                    q.Range(r => r.
+                        Field(f => f.Price)
+                        .GreaterThanOrEquals(0)
+                        .LessThanOrEquals(1000)
+                        )
+                &&
+                q.Terms(t => t
+                        .Field(f => f.Type)
+                        .Terms<int>(adFiltersFromParamClient.Type)
+                    )
+                )
+          );
+
+            return Ok(searchResponse11);
+        }
+
 
     }
 }

@@ -83,46 +83,46 @@ namespace ApiOne.Controllers
         //    return Ok(quequeque);
         //}
 
-        [Route("/search")]
-        public IActionResult ReturnSearchResult([FromQuery] string title, [FromQuery] Pagination pager) {
-            var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-                .DefaultIndex("ads");
-            string[] array = { "1"  };
-            var client = new ElasticClient(settings);
-            var myQuery = client.Search<CompleteAd>(s => s
-                .From((pager.PageNumber - 1) * pager.PageSize)
-                .Size(pager.PageSize)
+        //[Route("/search")]
+        //public IActionResult ReturnSearchResult([FromQuery] string title, [FromQuery] Pagination pager) {
+        //    var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
+        //        .DefaultIndex("ads");
+        //    string[] array = { "1"  };
+        //    var client = new ElasticClient(settings);
+        //    var myQuery = client.Search<CompleteAd>(s => s
+        //        .From((pager.PageNumber - 1) * pager.PageSize)
+        //        .Size(pager.PageSize)
                 
                 
 
-                .Query(q => q
-                .Bool(b => b
-                    .Must(mu => mu
-                        .Match(m => m
-                            .Field(f => f.State)
-                            .Query(q => q.)
-                        )
-                        )
-                     .Must(mu => mu
-                        .Match(m => m
-                            .Field(f => f.State)
-                            .Query("1")
-                        )
-                    )
-            )));
+        //        .Query(q => q
+        //        .Bool(b => b
+        //            .Must(mu => mu
+        //                .Match(m => m
+        //                    .Field(f => f.State)
+        //                    .Query(q => q.)
+        //                )
+        //                )
+        //             .Must(mu => mu
+        //                .Match(m => m
+        //                    .Field(f => f.State)
+        //                    .Query("1")
+        //                )
+        //            )
+        //    )));
 
-            //.Query(q2 => q2
-            //    .Wildcard(qs => qs
-            //        .Field(f => f.Title)
-            //        .Value("*" + title + "*")
-            //    )
-            //)
+        //    //.Query(q2 => q2
+        //    //    .Wildcard(qs => qs
+        //    //        .Field(f => f.Title)
+        //    //        .Value("*" + title + "*")
+        //    //    )
+        //    //)
 
-            //)
+        //    //)
 
 
-            //.Query(b => b.Terms(t => t.Field(f => f.Category).Terms(array)))
-            return Ok(myQuery.Documents);
-        }
+        //    //.Query(b => b.Terms(t => t.Field(f => f.Category).Terms(array)))
+        //    return Ok(myQuery.Documents);
+        //}
     }
 }

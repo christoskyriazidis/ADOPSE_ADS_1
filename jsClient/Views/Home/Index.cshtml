@@ -11,58 +11,73 @@
 
         <li id="username"></li>
     </ul>
-    <div>
-        <h3>Upload</h3>
-        <input type="file" id="input-img" />
-    </div>
 </nav>
 <div>
     <img src="https://localhost:44374/images/servera/small/5873458.png" alt="Alternate Text" />
 </div>
 
-@*<form id="myform" action="/" enctype="multipart/form-data" method="post">
+<div>
     <input type="text" placeholder="Title" id="input-Title" />
     <input type="text" placeholder="Description" id="input-Description" />
     <input type="text" placeholder="State" id="input-State" />
-    <input type="text" placeholder="Img" id="input-Img" />
     <input type="text" placeholder="Type" id="input-Type" />
     <input type="text" placeholder="Category" id="input-Category" />
     <input type="text" placeholder="Condition" id="input-Condition" />
     <input type="text" placeholder="Manufacturer" id="input-Manufacturer" />
     <input type="number" placeholder="Price" id="input-Price" />
-    <input type="file" id="imagee" />
-    <button type="submit">create</button>
+    <input type="file" id="input-img" />
+    <button onclick="UploadFile()">create</button>
+</div>
 
-</form>*@
 
 <script>
-
+        var imagefile = document.querySelector('#input-img');
+        let title = document.querySelector('#input-Title')
+        let description = document.querySelector('#input-Description')
+        let state = document.querySelector('#input-State')
+        let type = document.querySelector('#input-Type')
+        let category = document.querySelector('#input-Category')
+        let condition = document.querySelector('#input-Condition')
+        let manufacturer = document.querySelector('#input-Manufacturer')
+        let price = document.querySelector('#input-Price')
     function UploadFile() {
-        let imagefile = document.querySelector('#input-img')
-        let title = document.querySelector('#input-title')
-        var file = imagefile.files[0];
-        console.log(file);
-        var formData = new FormData();
-        formData.append("FImg", file)
-        formData.append("Title", "kskskskalas")
-        console.log(formData)
-        const options = {
-            headers: { 'Content-Type': 'application/json' }
-        };
-        axios.post("https://localhost:44374/ad", formData, options)
-    }
-</script>
 
-   @*var imagefile = document.querySelector('#input-img');
-    function UploadFile() {
         var formData = new FormData();
-        formData.append("image", imagefile.files[0]);
-        axios.post("https://localhost:44374/ad/image", formData, {
+        formData.append("Img", imagefile.files[0]);
+        formData.append("Title", title.value);
+        formData.append("Description", description.value);
+        formData.append("State", state.value);
+        formData.append("Type", type.value);
+        formData.append("Category", category.value);
+        formData.append("Condition", condition.value);
+        formData.append("Manufacturer", manufacturer.value);
+        formData.append("Price", price.value);
+
+        axios.post("https://localhost:44374/ad", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-                }
-            })
+            }
+        })
+    }
+     
+
+    @*function UploadFile() {
+        var uploadImg = img.files[0];
+        var formData = new FormData();
+        formData.append("file", uploadImg)
+        formData.append("Description", title)
+        formData.append("State", state)
+        formData.append("Type", type)
+        formData.append("Category", category)
+        formData.append("Condition", condition)
+        formData.append("Manufacturer", manufacturer)
+        formData.append("Price", price)
+        
+        axios.post("https://localhost:44374/ad", formData)
     }*@
+</script>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
