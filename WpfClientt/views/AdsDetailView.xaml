@@ -74,7 +74,6 @@
                 <Label x:Name="Ad_Title" Content="OnePlus 7 Pro" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" Grid.Row="1"/>
                 <Line X1="300" Margin="10,0,0,0" Stroke="Gray" StrokeThickness="1" Grid.Row="1" VerticalAlignment="Bottom"/>
 
-
                 <Grid Grid.Column="1" Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.33*"/>
