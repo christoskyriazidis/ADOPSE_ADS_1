@@ -81,7 +81,6 @@ namespace identityServerNew
                     PostLogoutRedirectUris ={"http://localhost:5501/Home/Index.html"},
                     
                     AllowedCorsOrigins={"http://localhost:5501"},
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
