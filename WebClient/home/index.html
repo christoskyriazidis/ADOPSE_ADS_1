@@ -8,9 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
     <script src="/scripts/components/navbarComponent.js" defer></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
+    
     <script src="/scripts/components/wishlistComponent.js" defer></script>
     <script src="/scripts/components/paginationComponent.js" defer></script>
     <title>Easy Market</title>
@@ -24,17 +26,9 @@
         <input type="file" onchange="UploadFile(event)"  />
     </div> -->
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ 
 <script>
-    axios.get("https://localhost:44374/awdd")
-    .then(console.log)
-     .catch(err => {
-            // alert(err)
-         console.error(err);
-         if (err.status === 401) {
-            signIn();
-         }
-    })
+    
     function UploadFile(e) { 
         console.log(e);
         var file = e.target.files[0];
