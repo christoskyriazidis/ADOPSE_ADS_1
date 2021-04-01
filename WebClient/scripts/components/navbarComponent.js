@@ -80,6 +80,7 @@ const attachWishlist = (event) => {
     if (!document.querySelector("wishlist-component")) {
         let wishlist = document.createElement("wishlist-component")
         document.querySelector("navbar-component").appendChild(wishlist);
+        
         document.body.addEventListener("click", (event) => {
             if (!((
                 event.pageY > wishlistComponent.offsetTop &&
@@ -104,9 +105,10 @@ const attachWishlist = (event) => {
 
 }
 const attachNotifications = (event) => {
-    console.log("haha");
+  
 
     if (!document.querySelector("notification-component")) {
+       
         let notification = document.createElement("notification-component")
         document.querySelector("navbar-component").appendChild(notification);
         document.body.addEventListener("click", (event) => {
@@ -121,6 +123,7 @@ const attachNotifications = (event) => {
         })
 
     } else {
+
         document.querySelector("notification-component").style.display = "block";
     }
     let x = document.querySelector(".notification").getBoundingClientRect().left;

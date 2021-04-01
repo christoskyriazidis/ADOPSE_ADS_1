@@ -1,26 +1,84 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/search/search.css">
-    <script src="/scripts/components/navbarComponent.js" defer></script>
+    <link rel="stylesheet" href="/styles/ad-overview/ad-overview.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
-    <script src="/scripts/sign-in.js" defer></script>
-    <script src="/scripts/components/wishlistComponent.js" defer></script>
-    <script src="/scripts/components/paginationComponent.js" defer></script>
-    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
-    <script src="/scripts/components/adContainerComponent.js"></script>
-    <script src="/scripts/dictionary.js"></script>
+
+
 </head>
+
 <body>
     <navbar-component></navbar-component>
+    <main>
+        <div class="contentContainer">
+
+            <div class="title">
+               
+            </div>
+            <div class="image">
+                <div class="imageContainer"></div>
+            </div>
+            <hr>
+            <div class="interactionBar">
+                <div class="addToWishlist"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 391.837 391.837"
+                        style="enable-background:new 0 0 391.837 391.837;" xml:space="preserve">
+
+                        <path style="fill:#D7443E;" d="M285.257,35.528c58.743,0.286,106.294,47.836,106.58,106.58
+                       c0,107.624-195.918,214.204-195.918,214.204S0,248.165,0,142.108c0-58.862,47.717-106.58,106.58-106.58l0,0
+                       c36.032-0.281,69.718,17.842,89.339,48.065C215.674,53.517,249.273,35.441,285.257,35.528z" />
+
+
+                    </svg> add to wishlist!
+                </div>
+                <div class="socialMediaButtons">
+                    <div class="addToFacebook"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
+                            style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                            <path style="fill:#1976D2;" d="M448,0H64C28.704,0,0,28.704,0,64v384c0,35.296,28.704,64,64,64h384c35.296,0,64-28.704,64-64V64
+                       C512,28.704,483.296,0,448,0z" />
+                            <path style="fill:#FAFAFA;" d="M432,256h-80v-64c0-17.664,14.336-16,32-16h32V96h-64l0,0c-53.024,0-96,42.976-96,96v64h-64v80h64
+                       v176h96V336h48L432,256z" />
+
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <div class="mainContentArea">
+                <div class="description">
+                    <h4>Description :</h4>
+                </div>
+            </div>
+
+        </div>
+    </main>
     <script>
-        let adId=window.location.href
-        console.log(adId);
+        axios.get("https://localhost:44374/ad/38")
+            .then((response) => response.data)
+            .then(data=>{
+                document.querySelector(".description").innerHTML+=data.description
+                document.querySelector(".title").innerHTML=`<h1>${data.title}</h1>`
+                document.querySelector(".imageContainer").style.backgroundImage=`url(${data.img.replace("small","full")})`;
+                // document.querySelector(".description").innerHTML=data.description
+                // document.querySelector(".description").innerHTML=data.description
+            })
+            .catch(x => console.log(x))
+            .finally()
+
     </script>
+    <script src="/scripts/components/navbarComponent.js"></script>
+    <script src="/scripts/components/wishlistComponent.js"></script>
+    <script src="/scripts/components/paginationComponent.js"></script>
+    <script src="/scripts/sign-in.js"></script>
+    <footer></footer>
 </body>
+
 </html>

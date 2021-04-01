@@ -11,13 +11,11 @@ export default class SearchController {
     pageSize = 10;
     currentPageNumber = 1;
     lastPageNumber;
-    dict;
     dictMaps;
-    finalQuery = "&";
     allFilters = null;
     constructor() {
-        this.dict = new Dictionary();
-        this.dict.init().then(maps => {
+        let dict = new Dictionary();
+        dict.init().then(maps => {
             maps.cat.forEach(this.fillCategories)
             maps.sta.forEach(this.fillState)
             maps.man.forEach(this.fillManufacturer)

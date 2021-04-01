@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="/styles/search/search.css">
     <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
 
-    <script src="/scripts/search.js" type="module"></script>
+   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
-    
-    <script src="/scripts/sign-in.js" ></script>
+    <script src="/scripts/search.js" type="module"></script>
+
 
     <script src="/scripts/filters.js"></script>
 
@@ -21,7 +21,8 @@
 </head>
 
 <body>
-    <navbar-component></navbar-component>
+    <navbar-component logged="true"></navbar-component>
+  
     <main>
         <div class="optionsContainer">
 
@@ -53,11 +54,11 @@
         </div>
         <div class="mainContentArea">
             <div class="paginationArea">
-                <pagination-component current-page="1" last-page="1"></pagination-component>
+                <pagination-component ></pagination-component>
             </div>
             <div class="contentContainer"></div>
             <div class="paginationArea">
-                <pagination-component current-page="1" last-page="1"></pagination-component>
+                <pagination-component ></pagination-component>
             </div>
         </div>
     </main>
@@ -80,10 +81,12 @@
 
 
 </script>
+
 <script src="/scripts/components/navbarComponent.js" ></script>
 <script src="/scripts/components/wishlistComponent.js" ></script>
+<script src="/scripts/components/notificationComponent.js" ></script>
 <script src="/scripts/components/paginationComponent.js" ></script>
 <script src="/scripts/components/adContainerComponent.js" ></script>
-<script src="/scripts/components/notificationComponent.js" ></script>
+
 
 </html>

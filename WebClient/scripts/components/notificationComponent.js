@@ -5,7 +5,7 @@ class NotificationComponent extends HTMLElement {
     constructor() {
         super();
         console.log('hi')
-        
+        console.log("haha");
         axios.get("https://localhost:44374/wishlist/notification")
             .then((response)=>response.data)
             .then(handleApiDataNotifications)
@@ -15,22 +15,21 @@ class NotificationComponent extends HTMLElement {
 
     }
     connectedCallback() {
-
+        
     }
     render=(html)=>{
-
+        
         this.innerHTML = html
     }
 }
 
 //style="background-image:url('${object.productphoto}')
 function handleApiDataNotifications(data) {
-    
     let allItems = "";
     for (object of data) {
         const item = `
         <li>
-            <a href="#awfawf">
+            <a href="#">
                 <span class="itemImage qwe" style='background-image:url(${object.img})' alt=""></span>
                 <div class="itemDescription">
                     <span class="title">${object.title}</span>
@@ -58,6 +57,7 @@ function handleApiDataNotifications(data) {
     </div>
     <style>@import "/styles/components/notification/notification.css"</style>
     `
+    console.log(html);
     return html;
 }
 customElements.define("notification-component", NotificationComponent)

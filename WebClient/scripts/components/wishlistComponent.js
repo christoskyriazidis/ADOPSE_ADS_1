@@ -4,7 +4,7 @@
 class WishlistComponent extends HTMLElement {
     constructor() {
         super();
-        console.log('hi')
+      
         
         axios.get("https://localhost:44374/wishlist")
             .then((response)=>response.data)
@@ -18,8 +18,9 @@ class WishlistComponent extends HTMLElement {
 
     }
     render=(html)=>{
-
+       
         this.innerHTML = html
+       
     }
 }
 
