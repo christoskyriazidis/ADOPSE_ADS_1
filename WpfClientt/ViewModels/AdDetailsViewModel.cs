@@ -22,9 +22,14 @@ namespace WpfClientt.viewModels {
             } 
         }
 
-        public AdDetailsViewModel(FactoryServices factory, long id) {
+        private AdDetailsViewModel(FactoryServices factory, Ad ad) {
             adService = factory.AdServiceInstance();
-            DisplayedAd = adService.ReadById(id).Result;
+            DisplayedAd = ad;
+        }
+
+        public async static Task<AdDetailsViewModel> GetInstance(FactoryServices factory, long id) {
+            Ad ad = await factory.AdServiceInstance().ReadById(id);
+            return new AdDetailsViewModel(factory, ad);
         }
 
     }

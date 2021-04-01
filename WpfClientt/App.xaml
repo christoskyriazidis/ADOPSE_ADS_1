@@ -85,6 +85,10 @@
         <DataTemplate DataType="{x:Type viewmodels:AdsViewModel}">
             <views:AdsView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:AdDetailsViewModel}">
+            <views:AdsDetailView />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type menus:GuestMenu}">
             <viewsMenu:GuestMenu />

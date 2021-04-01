@@ -47,6 +47,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("AdsView", ChangeToAdsView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
+            Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
         }
 
         private void ChangeViewModel(IViewModel viewModel) {
@@ -66,6 +67,11 @@ namespace WpfClientt.viewModels {
 
         private void ChangeToLoginView(object obj) { 
         
-        } 
+        }
+
+        private async void ChangeToAdDetailsView(object param) {
+            long id = (long)param;
+            CurrentPageViewModel = await AdDetailsViewModel.GetInstance(factory, id);
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace WpfClientt.viewModels {
         }
 
         private void OnReadMore(object param) {
-            Mediator.Notify("AdView", param ?? throw new ArgumentNullException("The id should not be null"));
+            Mediator.Notify("AdDetailsView", param ?? throw new ArgumentNullException("The id should not be null"));
         }
 
         private void OnSearch(object param) {
