@@ -1,4 +1,4 @@
-class Dictionary {
+export default class Dictionary {
     constructor() {
        
     }

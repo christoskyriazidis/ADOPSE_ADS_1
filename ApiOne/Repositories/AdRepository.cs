@@ -131,22 +131,21 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool InsertAd(Ad ad)
+        public int InsertAd(CreateAd ad)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                ad.Date = DateTime.Now.ToString();
+                ad.CreateDate = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
-                string sql = "  INSERT INTO [Ad] (title,Description,Date,State,Img,Type,Category,Condition,Customer,Manufacturer,LastUpdate,Price)" +
-                            "VALUES (@Title,@Description,@Date,@State,@Img,@Type,@Category,@Condition,@Customer,@Manufacturer,@LastUpdate,@Price)";
-                var result = conn.Execute(sql, new { ad.Title,ad.Description,ad.Date,ad.State,ad.Img,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price });
-                return true;
+                string sql = "  exec insert_ad_with_img  @title,@description,@createDate,@state,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price";
+                var result = conn.Query<int>(sql, new { ad.Title,ad.Description,ad.CreateDate,ad.State,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
+                return result;
             }
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx);
-                return false;
+                return -1;
             }
         }
 

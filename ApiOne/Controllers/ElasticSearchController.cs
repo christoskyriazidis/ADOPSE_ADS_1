@@ -93,23 +93,23 @@ namespace ApiOne.Controllers
                 .From((pager.PageNumber - 1) * pager.PageSize)
                 .Size(pager.PageSize)
                 
-                
+                );
 
-                .Query(q => q
-                .Bool(b => b
-                    .Must(mu => mu
-                        .Match(m => m
-                            .Field(f => f.State)
-                            .Query(q => q.)
-                        )
-                        )
-                     .Must(mu => mu
-                        .Match(m => m
-                            .Field(f => f.State)
-                            .Query("1")
-                        )
-                    )
-            )));
+            //    .Query(q => q
+            //    .Bool(b => b
+            //        .Must(mu => mu
+            //            .Match(m => m
+            //                .Field(f => f.State)
+            //                .Query(q=>q.)
+            //            )
+            //            )
+            //         .Must(mu => mu
+            //            .Match(m => m
+            //                .Field(f => f.State)
+            //                .Query("1")
+            //            )
+            //        )
+            //)));
 
             //.Query(q2 => q2
             //    .Wildcard(qs => qs

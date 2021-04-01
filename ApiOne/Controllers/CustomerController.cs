@@ -1,10 +1,12 @@
 ﻿using ApiOne.Interfaces;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nest;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -101,42 +103,6 @@ namespace ApiOne.Controllers
             return Json(new { secret = "very secret" });
         }
         
-
-
-        [Route("/yes")]
-        public async Task<IActionResult> yes()
-        {
-            var settings = new ConnectionSettings(new Uri("http://localhost:9100/"))
-                .DefaultIndex("people");
-
-            var client = new ElasticClient(settings);
-            List<Person> persons = new List<Person>();
-             for(int i = 0; i < 10; i++)
-            {
-                persons.Add(new Person(i,$"mart",$"lastname{i}"));
-           
-            }
-             foreach(var i in persons)
-            {
-                var indexResponse = client.IndexDocument(i);
-                var asyncIndexResponse = await client.IndexDocumentAsync(i);
-            }
-                
-
-            var searchResponse = client.Search<Person>(s => s
-            .From(0)
-            .Size(10)
-            .Query(q => q
-                 .Match(m => m
-                    .Field(f => f.FirstName)
-                    .Query("Mart1")
-                 )
-                )
-           );
-
-            var people = searchResponse.Documents;
-
-            return Ok(people);
-        }
+        
     }
 }

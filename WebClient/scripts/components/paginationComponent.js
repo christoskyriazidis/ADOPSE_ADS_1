@@ -1,24 +1,15 @@
 class PaginationComponent extends HTMLElement {
-    static get observedAttributes() { return ['current-page', 'last-page', 'nextUrl', 'previousUrl','filter','current-url']; }
+    static get observedAttributes() { return ['current-page', 'last-page', 'filter',]; }
     constructor() {
         super();
-        this.render();
+        console.log("ahsfhaaiowfhaowufhawoiufhwaoi")
 
+        this.render();
     }
     attributeChangedCallback(name, oldValue, newValue) {
-        switch (name) {
-            case "current-page":
-                this.render();
-                break;
-            case "filter":
-                this.render();
-                break;
-            case "current-url":
-                
-                    this.render();
-                
-                break;
-        }
+
+        this.render();
+
 
     }
     get currentPage() {
@@ -28,93 +19,146 @@ class PaginationComponent extends HTMLElement {
         return this.getAttribute("last-page")
     }
 
-    get nextPageUrl() {
-        return this.getAttribute("next-page")
-    }
-    get previousPageUrl() {
-        return this.getAttribute("previous-page")
-    }
-    get lastPageUrl() {
-        return this.getAttribute("last-page-url")
-    }
+
     get filter() {
         return this.getAttribute("filter")
     }
-    get currentUrl() {
-        return this.getAttribute("current-url")
-    }
 
-    
+
+
 
     render() {
-        console.log(this.currentPage);
+
         let currentPage = Number.parseInt(this.currentPage);
         let lastPage = Number.parseInt(this.lastPage);
-        let previousPageUrl = this.previousPageUrl;
-        let lastPageUrl = this.lastPageUrl;
         let nextPageUrl = this.nextPageUrl;
-        let filter = this.filter;
-        let firstUrl=this.currentUrl;
 
-        if (filter) {
-            lastPageUrl += filter;
-            nextPageUrl += filter;
-            previousPageUrl += filter;
-            firstUrl += filter;
-        }
-        //console.log(currentPage,lastPage,previousPageUrl,lastPageUrl,nextPageUrl);
+
+
+
         //    ` <li class="dots"><span>...</span></li>
         //     <li class="currentPage"><span>${currentPage}</span></li>
         //     <li class="dots"><span>...</span></li>`
         let middle;
 
-        console.log(currentPage == 4)
+
         switch (currentPage) {
             case 1:
-                this.firstPageUrl = window.location.href;
+
                 middle = ``;
-                middle += checkNext(currentPage, lastPage, nextPageUrl);
+                middle += checkNext(currentPage, lastPage);
                 break;
             case 2:
-                middle = `<li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage, nextPageUrl);
-                break;
+                if (lastPage > 3) {
+                    middle = `
+                   
+                    <li class="currentPage"><span>${currentPage}</span></li>`;
+                    middle += checkNext(currentPage, lastPage, nextPageUrl);
+                    break;
+                }
+                if (lastPage == 3) {
+                    middle = `
+                    
+                    <li class="currentPage"><span>${currentPage}</span></li>`;
+                    middle += checkNext(currentPage, lastPage, nextPageUrl);
+                    break;
+                }
+
+
             case 3:
-                middle = `<li class="previousPage" onclick="callPage('${previousPageUrl}')"><span>${currentPage - 1}</span></li>
-                        <li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage, nextPageUrl);
+
+                if (lastPage == 3) {
+                    middle = `
+                    <li class="previousPage"  onclick="searchController.callPrevious()"><span>${currentPage - 1}</span></li>
+                    `
+                    middle += checkNext(currentPage, lastPage);
+                } if (lastPage > 3) {
+                    middle = `
+                    <li class="previousPage"  onclick="searchController.callPrevious()"><span>${currentPage - 1}</span></li>
+                    <li class="currentPage"><span>${currentPage}</span></li>`
+                    middle += checkNext(currentPage, lastPage);
+                }
+
                 break;
             default:
                 middle = `<li class="dots"><span>...</span></li>
-                        <li class="previousPage" onclick="callPage('${previousPageUrl}')"><span>${currentPage - 1}</span></li>
+                        <li class="previousPage"  onclick="searchController.callPrevious()"><span>${currentPage - 1}</span></li>
                         <li class="currentPage"><span>${currentPage}</span></li>`;
-                middle += checkNext(currentPage, lastPage, nextPageUrl);
+                middle += checkNext(currentPage, lastPage);
                 break;
         }
         if (lastPage == currentPage) {
-            middle = `<li class="dots"><span>...</span></li>
-                    <li class="previousPage"><span onclick="callPage('${previousPageUrl}')">${currentPage - 1}</span></li>`;
+            if (lastPage > 4) {
+
+                middle = `<li class="dots"><span>...</span></li>
+                <li class="previousPage"  onclick="searchController.callPrevious()"><span >${currentPage - 1}</span></li>`;
+            }
+            if (lastPage == 3) {
+
+                middle = `
+                <li class="previousPage"  onclick="searchController.callPrevious()"><span >${currentPage - 1}</span></li>`;
+            }
+
         }
-        this.innerHTML = `
-        <div class="paginationContainer">
+        if (lastPage == 1) {
+            this.innerHTML = `
+            <div div class="paginationContainer" >
             <ul>
-                <li class="goToPrevious"><span onclick="callPage('${previousPageUrl}')">&lt;</span></li>
-                <li class="firstPage ${currentPage == 1 ? "currentPage" : ""}"><span onclick="callPage('${firstUrl}')">1</span></li>
-                ${middle}
-                <li class="lastPage ${currentPage == lastPage ? "currentPage" : ""}"> <span onclick="callPage('${lastPageUrl}')">${lastPage}</span></li>
-                <li class="goToNext"><span onclick="callPage('${nextPageUrl}')">&gt;</span></li>
-            </ul>
-        </div>
+                <li class="firstPage ${currentPage == 1 ? " currentPage" : ""}" ><span  onclick="searchController.callFirst()">1</span></li>
+            </ul >
+        </div >
         <link rel="stylesheet" href="/styles/components/pagination/pagination.css">`
+        }
+        if (lastPage == 2) {
+            this.innerHTML = `
+                <div div class="paginationContainer" >
+                    <ul>
+                        <li class="goToPrevious"><span  onclick="searchController.callPrevious()">&lt;</span></li>
+                        <li class="firstPage ${currentPage == 1 ? " currentPage" : ""}"><span  onclick="searchController.callFirst()">1</span></li>
+                        <li class="lastPage ${currentPage == lastPage ? " currentPage" : ""}" > <span onclick="searchController.callLast()">${lastPage}</span></li >
+                        <li class="goToNext""><span  onclick="searchController.callNext()">&gt;</span></li>
+                    </ul >
+                </div >
+                <link rel="stylesheet" href="/styles/components/pagination/pagination.css">`
+        }
+        if (lastPage == 3) {
+            this.innerHTML = `
+            <div div class="paginationContainer" >
+                <ul>
+                    <li class="goToPrevious"><span onclick="searchController.callPrevious()">&lt;</span></li>
+                    <li class="firstPage ${currentPage == 1 ? " currentPage" : ""}"><span onclick="searchController.callFirst()">1</span></li>
+                    ${middle}
+                    <li class="lastPage ${currentPage == lastPage ? " currentPage" : ""}" > <span  onclick="searchController.callLast()">${lastPage}</span></li >
+                    <li class="goToNext"><span  onclick="searchController.callNext()">&gt;</span></li>
+                </ul >
+            </div >
+            <link rel="stylesheet" href="/styles/components/pagination/pagination.css">`
+        }
+        if (lastPage > 3) {
+            console.log("ahahah");
+            this.innerHTML = `
+            <div div class="paginationContainer" >
+                <ul>
+                    <li class="goToPrevious"><span onclick="searchController.callPrevious()">&lt;</span></li>
+                    <li class="firstPage ${currentPage == 1 ? " currentPage" : ""}"><span onclick="searchController.callFirst()">1</span></li>
+                    ${middle}
+                    <li class="lastPage ${currentPage == lastPage ? " currentPage" : ""}" > <span  onclick="searchController.callLast()">${lastPage}</span></li >
+                    <li class="goToNext"><span  onclick="searchController.callNext()">&gt;</span></li>
+                </ul >
+            </div >
+            <link rel="stylesheet" href="/styles/components/pagination/pagination.css">`
+        }
+
     }
 }
-const checkNext = (currentPage, lastPage, nextPageUrl) => {
+
+const checkNext = (currentPage, lastPage) => {
     if (lastPage - currentPage >= 3) {
-        return ` <li class="nextPage"><span onclick="callPage('${nextPageUrl}')">${currentPage + 1}</span></li>
-                <li class="dots"><span>...</span></li>`
+        return ` <li class="nextPage" ><span  onclick="searchController.callNext()">${currentPage + 1}</span></li>
+                    <li class="dots"><span>...</span></li>`
     }
     if (lastPage - currentPage >= 2) {
-        return `<li class="nextPage"><span onclick="callPage('${nextPageUrl}')">${currentPage + 1}</span></li>`
+        return `<li class="nextPage"><span  onclick="searchController.callNext()">${currentPage + 1}</span></li>`
     }
     return ``;
 }
@@ -125,10 +169,9 @@ const checkLast = (currentPage) => {
 }
 
 
-customElements.define("pagination-component", PaginationComponent)
-{/* <li class="dots"><span>...</span></li>
+customElements.define("pagination-component", PaginationComponent) /* <li class="dots"><span>...</span></li>
         <li class="currentPageLeft"><span>4</span></li>
         <li class="currentPage"><span>5</span></li>
         <li class="currentPageRight"><span>6</span></li>
-        <li class="dots"><span>...</span></li> */}
+        <li class="dots"><span>...</span></li> */
 
