@@ -158,6 +158,7 @@
     <Compile Include="services\IScroller.cs" />
     <Compile Include="services\IService.cs" />
     <Compile Include="services\IMapper.cs" />
+    <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
