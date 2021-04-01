@@ -172,6 +172,9 @@
     <Compile Include="viewModels\menu\IMenu.cs" />
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
     <Compile Include="viewModels\RegisterViewModel.cs" />
+    <Compile Include="views\AdsDetailView.xaml.cs">
+      <DependentUpon>AdsDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
     </Compile>
@@ -196,14 +199,15 @@
     <Compile Include="views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\AdDetails.xaml.cs">
-      <DependentUpon>AdDetails.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WpfEmbeddedBrowser.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="views\AdsDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\AdsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -233,10 +237,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\RegisterView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="views\AdDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
