@@ -29,7 +29,7 @@ class AdContainerComponent extends HTMLElement {
         this.innerHTML = `
             <div class="adContainer">
                 <div class="itemData">
-                    <a href="http://127.0.0.1:5501/home/ad/index.html?id=${this.id}">
+                    <a href="http://localhost:5501/home/ad/index.html?id=${this.id}">
                         <span class="image" style='background-image:url(${this.itemImage})'></span>
                         <div class="itemInfo">
                             <span class="title">${this.title}</span>
@@ -41,7 +41,7 @@ class AdContainerComponent extends HTMLElement {
                 </div>
                 <hr>
                 <div class="sellerData">
-                    <a href="http://127.0.0.1:5501/home/customer/index.html?id=${this.customerId}">
+                    <a href="http://localhost:5501/home/customer/index.html?id=${this.customerId}">
                         <span class="sellerAvatar" name="avatar" ></span>
                         <label for="avatar">Takhs${this.username}</label>
                         <span class="filler"  ></span>

@@ -61,7 +61,8 @@
         </div>
     </main>
     <script>
-        axios.get("https://localhost:44374/ad/38")
+        let urlParams = new URLSearchParams(window.location.search);
+        axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
             .then((response) => response.data)
             .then(data=>{
                 document.querySelector(".description").innerHTML+=data.description

@@ -3,8 +3,8 @@ var config = {
     authority: "https://localhost:44305/",
     client_id: "client_id_js",
     response_type: "code",
-    redirect_uri: "http://127.0.0.1:5501/home/signin.html",
-    post_logout_redirect_uri: "http://127.0.0.1:5501/Home/Index.html",
+    redirect_uri: "http://localhost:5501/home/signin.html",
+    post_logout_redirect_uri: "http://localhost:5501/Home/Index.html",
     scope: "openid ApiOne credentials",
 }
 
