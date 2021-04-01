@@ -189,8 +189,14 @@
     <Compile Include="views\menus\LoginCustomerMenu.xaml.cs">
       <DependentUpon>LoginCustomerMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\Profile.xaml.cs">
+      <DependentUpon>Profile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\AdDetails.xaml.cs">
+      <DependentUpon>AdDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfEmbeddedBrowser.cs" />
     <Compile Include="App.xaml.cs">
@@ -221,7 +227,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\Profile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\RegisterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\AdDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
