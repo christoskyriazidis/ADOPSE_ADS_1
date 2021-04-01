@@ -15,13 +15,9 @@ namespace ApiOne.Models.Ads
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 
-        [StringLength(100, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
+        //[StringLength(100, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
         [Required(ErrorMessage = "Description is required (min 15 charactes)")]
         public string Description { get; set; }
-
-        [Range(1, 4)]
-        [Required(ErrorMessage = "State is required (min 15 charactes)")]
-        public int State { get; set; }
 
         [Range(1, 4)]
         [Required(ErrorMessage = "Type is required")]
@@ -41,8 +37,9 @@ namespace ApiOne.Models.Ads
 
         [Range(1, 10000)]
         [Required(ErrorMessage = "Price is not null")]
-        public int Price { get; set; }
 
+        public int Price { get; set; }
+        public int State { get; set; }
         public string LastUpdate { get; set; }
         public string CreateDate { get; set; }
         public int Customer { get; set; }

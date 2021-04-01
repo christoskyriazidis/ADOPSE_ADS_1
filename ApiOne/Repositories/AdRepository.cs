@@ -38,7 +38,6 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
-
         public AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params)
         {
             try
@@ -138,8 +137,8 @@ namespace ApiOne.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.CreateDate = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
-                string sql = "  exec insert_ad_with_img  @title,@description,@createDate,@state,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price";
-                var result = conn.Query<int>(sql, new { ad.Title,ad.Description,ad.CreateDate,ad.State,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
+                string sql = "  exec insert_ad_with_img  @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price";
+                var result = conn.Query<int>(sql, new { ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
                 return result;
             }
             catch (SqlException sqlEx)
@@ -155,21 +154,20 @@ namespace ApiOne.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.LastUpdate = DateTime.Now.ToString();
-                string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Img=@Img,Type=@Type,Category=@Category,Condition=@Condition," +
-                                "Customer=@Customer,Manufacturer=@Manufacturer where id=@Id";
+                string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Type=@Type,Category=@Category,Condition=@Condition," +
+                                "Manufacturer=@Manufacturer,Price=@Price where id=@Id";
                 var result = conn.Execute(sql, new
                 {
                     ad.Title,
                     ad.Description,
                     ad.LastUpdate,
                     ad.State,
-                    ad.Img,
                     ad.Type,
                     ad.Category,
                     ad.Condition,
-                    ad.Customer,
                     ad.Manufacturer,
-                    ad.Id
+                    ad.Id,
+                    ad.Price
                 });
                 return ad;
             }
@@ -179,7 +177,6 @@ namespace ApiOne.Repositories
                 return null;
             };
         }
-
 
         public bool SubscribeToCategory(int categoryId, int customerId)
         {

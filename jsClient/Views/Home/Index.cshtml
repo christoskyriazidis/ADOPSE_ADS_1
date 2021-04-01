@@ -19,7 +19,6 @@
 <div>
     <input type="text" placeholder="Title" id="input-Title" />
     <input type="text" placeholder="Description" id="input-Description" />
-    <input type="text" placeholder="State" id="input-State" />
     <input type="text" placeholder="Type" id="input-Type" />
     <input type="text" placeholder="Category" id="input-Category" />
     <input type="text" placeholder="Condition" id="input-Condition" />
@@ -34,7 +33,6 @@
         var imagefile = document.querySelector('#input-img');
         let title = document.querySelector('#input-Title')
         let description = document.querySelector('#input-Description')
-        let state = document.querySelector('#input-State')
         let type = document.querySelector('#input-Type')
         let category = document.querySelector('#input-Category')
         let condition = document.querySelector('#input-Condition')
@@ -46,7 +44,6 @@
         formData.append("Img", imagefile.files[0]);
         formData.append("Title", title.value);
         formData.append("Description", description.value);
-        formData.append("State", state.value);
         formData.append("Type", type.value);
         formData.append("Category", category.value);
         formData.append("Condition", condition.value);

@@ -10,6 +10,8 @@ namespace ApiOne.Models
 {
     public class Ad
     {
+        [Required(ErrorMessage = "Id is required")]
+        [Range(1, 10000)]
         public int Id { get; set; }
 
         //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
