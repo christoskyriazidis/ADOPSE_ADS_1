@@ -77,6 +77,13 @@
             </Style.Setters>
         </Style>
 
+        <Style  x:Key="centerAlignment" TargetType="FrameworkElement">
+            <Style.Setters>
+                <Setter Property="VerticalAlignment"  Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style.Setters>
+        </Style>
+
         <!--Data temapltes-->
         <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
             <views:RegisterView />
@@ -88,6 +95,10 @@
 
         <DataTemplate DataType="{x:Type viewmodels:AdDetailsViewModel}">
             <views:AdsDetailView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:DisplayTextViewModel}">
+            <views:DisplayTextView/>
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type menus:GuestMenu}">

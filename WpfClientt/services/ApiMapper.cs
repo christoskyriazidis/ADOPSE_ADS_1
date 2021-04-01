@@ -24,69 +24,45 @@ namespace WpfClientt.services {
             this.client = client;
         }
 
-        public async Task<string> MapCategory(long id) {
-            await LoadCategories(dictionary => { });
-            return TruGetOrElseDefault(id, categories);
-        }
-
-        public async Task<string> MapCondition(long id) {
-            await LoadConditions(dictionary => { });
-            return TruGetOrElseDefault(id, conditions);
-        }
-
-        public async Task<string> MapState(long id) {
-            await LoadStates(dictionary => { });
-            return TruGetOrElseDefault(id, states);
-        }
-        public async Task<string> MapManufacturer(long id) {
-            await LoadManufacturers(dictionary => { });
-            return TruGetOrElseDefault(id, manufacturers);
-        }
-
-        public async Task<string> MapType(long id) {
-            await LoadTypes(dictionary => { });
-            return TruGetOrElseDefault(id, types);
-        }
-
         private async Task LoadInto(string url,IDictionary<long,string> dictionary) {
             Stream stream = await client.GetStreamAsync(url);
             List<Mapping> mappings = await JsonSerializer.DeserializeAsync<List<Mapping>>(stream);
             mappings.ForEach(mapping => dictionary.Add(mapping.id,mapping.title));
         }
 
-        public async Task LoadCategories(Action<IDictionary<long, string>> afterLoad) {
+        public async Task<IDictionary<long, string>> LoadCategories() {
             if (categories.Count == 0) {
                 await LoadInto(ApiInfo.CategoriesMainUrl(), categories);
             }
-            afterLoad.Invoke(categories);
+            return categories;
         }
 
-        public async Task LoadConditions(Action<IDictionary<long, string>> afterLoad) {
+        public async Task<IDictionary<long, string>> LoadConditions() {
             if (conditions.Count == 0) {
                 await LoadInto(ApiInfo.ConditionsMainUrl(), conditions);
             }
-            afterLoad.Invoke(conditions);
+            return conditions;
         }
 
-        public async Task LoadTypes(Action<IDictionary<long, string>> afterLoad) {
+        public async Task<IDictionary<long, string>> LoadTypes() {
             if (types.Count == 0) {
                 await LoadInto(ApiInfo.TypeMainUrl(), types);
             }
-            afterLoad.Invoke(types);
+            return types;
         }
 
-        public async Task LoadManufacturers(Action<IDictionary<long, string>> afterLoad) {
+        public async Task<IDictionary<long, string>> LoadManufacturers() {
             if (manufacturers.Count == 0) {
                 await LoadInto(ApiInfo.ManufacturerMainUrl(), manufacturers);
             }
-            afterLoad.Invoke(manufacturers);
+            return manufacturers;
         }
 
-        public async Task LoadStates(Action<IDictionary<long, string>> afterLoad) {
+        public async Task<IDictionary<long, string>> LoadStates() {
             if (states.Count == 0) {
                 await LoadInto(ApiInfo.StatesMainUrl(), states);
             }
-            afterLoad.Invoke(states);
+            return states;
         }
 
         private string TruGetOrElseDefault(long id, IDictionary<long, string> dictionary) {

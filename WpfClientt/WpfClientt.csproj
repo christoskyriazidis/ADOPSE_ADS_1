@@ -172,11 +172,15 @@
     <Compile Include="viewModels\menu\IMenu.cs" />
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
     <Compile Include="viewModels\RegisterViewModel.cs" />
+    <Compile Include="viewModels\DisplayTextViewModel.cs" />
     <Compile Include="views\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\DisplayTextView.xaml.cs">
+      <DependentUpon>DisplayTextView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\filters\FilterMemberView.xaml.cs">
       <DependentUpon>FilterMemberView.xaml</DependentUpon>
@@ -209,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\AdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\DisplayTextView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

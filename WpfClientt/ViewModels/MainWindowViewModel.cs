@@ -13,8 +13,7 @@ namespace WpfClientt.viewModels {
         private IViewModel _currentPageViewModel;
         private IMenu _currentMenuView;
         private FactoryServices factory;
-
-        public List<IViewModel> PageViewModels { get; } = new List<IViewModel>();
+        private IList<IViewModel> viewModels = new List<IViewModel>();
 
         public IViewModel CurrentPageViewModel {
             get {
@@ -38,11 +37,8 @@ namespace WpfClientt.viewModels {
 
         public MainWindowViewModel() {
             factory = new FactoryServices();
-            PageViewModels.Add(new AdsViewModel(factory));
-            PageViewModels.Add(new RegisterViewModel());
-
             CurrentMenuView = new GuestMenu();
-            CurrentPageViewModel = PageViewModels[0];
+            ChangeToDisplayView("Welcome To Easy Market!");
 
             Mediator.Subscribe("AdsView", ChangeToAdsView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
@@ -51,22 +47,28 @@ namespace WpfClientt.viewModels {
         }
 
         private void ChangeViewModel(IViewModel viewModel) {
-            if (!PageViewModels.Contains(viewModel)) {
-                PageViewModels.Add(viewModel);
+            if (!viewModels.Contains(viewModel)) {
+                viewModels.Add(viewModel);
             }
-            CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
+            CurrentPageViewModel = viewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
-        private void ChangeToAdsView(object obj) {
-            ChangeViewModel(PageViewModels[0]);
+        private async void ChangeToAdsView(object obj) {
+            ChangeToDisplayView("Loading Page");
+            ChangeViewModel(await AdsViewModel.GetInstance(factory)); ;
         }
 
-        private void ChangeToRegisterView(object obj) {
-            ChangeViewModel(PageViewModels[1]);
+        private async void ChangeToRegisterView(object obj) {
+            ChangeToDisplayView("Loading Page");
+            ChangeViewModel(await RegisterViewModel.GetInstance(factory));
         }
 
         private void ChangeToLoginView(object obj) { 
         
+        }
+
+        private void ChangeToDisplayView(string text) {
+            ChangeViewModel(DisplayTextViewModel.GetInstance(text));
         }
 
         private async void ChangeToAdDetailsView(object param) {

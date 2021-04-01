@@ -13,6 +13,7 @@ using WpfClientt.viewModels.filters;
 
 namespace WpfClientt.viewModels {
     public class AdsViewModel : BaseViewModel, IViewModel {
+        private static AdsViewModel viewModel;
         private bool enabled = false;
 
         public ObservableCollection<Ad> Ads { get; } = new ObservableCollection<Ad>();
@@ -33,16 +34,25 @@ namespace WpfClientt.viewModels {
         }
         public FilterViewModel FilterViewModel { get; set; }
 
-        public AdsViewModel(FactoryServices factory) {
+        private AdsViewModel(IScroller<Ad> scroller,FactoryServices factory,FilterViewModel filterViewModel) {
+            AddCurrentPageAds(scroller);
             adService = factory.AdServiceInstance();
-            scroller = this.adService.Scroller();
-            scroller.Init(AddCurrentPageAds);
-            FilterViewModel = new FilterViewModel(factory);
+            FilterViewModel = filterViewModel;
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
             ReadMoreCommand = new DelegateCommand(OnReadMore);
             SearchCommand = new DelegateCommand(OnSearch);
             ResetCommand = new DelegateCommand(OnReset);
+        }
+
+        public async static Task<AdsViewModel> GetInstance(FactoryServices factory) {
+            if (viewModel == null) {
+                IScroller<Ad> scroller = factory.AdServiceInstance().Scroller();
+                await scroller.Init();
+                FilterViewModel filterViewModel = await FilterViewModel.GetInstance(factory);
+                viewModel = new AdsViewModel(scroller, factory,filterViewModel);
+            }
+            return viewModel;
         }
 
         private async void OnMoveNext(object param) {
@@ -67,23 +77,24 @@ namespace WpfClientt.viewModels {
             Mediator.Notify("AdDetailsView", param ?? throw new ArgumentNullException("The id should not be null"));
         }
 
-        private void OnSearch(object param) {
+        private async void OnSearch(object param) {
             Enabled = false;
-            Ads.Clear();
             scroller = adService.Fiter(FilterViewModel.GetFilterBuilder());
-            scroller.Init(AddCurrentPageAds);
+            await scroller.Init();
+            AddCurrentPageAds(scroller);
         }
 
-        private void OnReset(object param) {
+        private async void OnReset(object param) {
             Enabled = false;
             FilterViewModel.Reset();
-            Ads.Clear();
             scroller = adService.Scroller();
-            scroller.Init(AddCurrentPageAds);
+            await scroller.Init();
+            AddCurrentPageAds(scroller);
         }
 
         private void AddCurrentPageAds(IScroller<Ad> scroller) {
             Enabled = true;
+            Ads.Clear();
             foreach (Ad ad in scroller.CurrentPage().Objects()) {
                 Ads.Add(ad);
             }
