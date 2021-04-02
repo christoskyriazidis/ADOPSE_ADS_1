@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jsClient", "jsClient\jsClie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClientt", "WpfClientt\WpfClientt.csproj", "{0E25AAEB-C195-4265-96D5-00F70D56E469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{9532ED97-49AB-47F8-95B5-113A038739EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClientApp", "WebApplication1\WebClientApp.csproj", "{9532ED97-49AB-47F8-95B5-113A038739EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
