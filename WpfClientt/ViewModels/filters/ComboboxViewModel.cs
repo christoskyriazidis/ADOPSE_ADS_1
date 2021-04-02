@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.viewModels.filters {
-    public sealed class ChoiceViewModel : BaseViewModel {
+    public sealed class ComboboxViewModel : BaseViewModel {
         private bool selected = false;
 
         public string Title { get; private set; }
@@ -20,7 +20,7 @@ namespace WpfClientt.viewModels.filters {
             } 
         }
 
-        public ChoiceViewModel(string title, long code) {
+        public ComboboxViewModel(string title, long code) {
             Title = title;
             Code = code;
         }

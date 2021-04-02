@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels.filters {
-    public class FilterMemberViewModel{
+    public class MultipleChoicesFilterMember : FilterMember {
         public string Title { get; private set; }
-        public ObservableCollection<ChoiceViewModel> Choices { get; private set; } = new ObservableCollection<ChoiceViewModel>();
+        public ObservableCollection<ComboboxViewModel> Choices { get; private set; } = new ObservableCollection<ComboboxViewModel>();
         private Action<long> finishAction;
 
-        public FilterMemberViewModel(IDictionary<long, string> filters, string title, Action<long> finishAction) {
+        public MultipleChoicesFilterMember(IDictionary<long, string> filters, string title, Action<long> finishAction) {
             this.Title = title;
-            filters.Select(pair => new ChoiceViewModel(pair.Value, pair.Key))
+            filters.Select(pair => new ComboboxViewModel(pair.Value, pair.Key))
                 .ToList().ForEach(choice => Choices.Add(choice));
             this.finishAction = finishAction;
         }
 
-        internal void Finish() {
+        public void Finish() {
             Choices
                 .Where(choice => choice.Selected)
                 .Select(choice => choice.Code)
@@ -27,8 +27,8 @@ namespace WpfClientt.viewModels.filters {
                 .ForEach(finishAction);
         }
 
-        internal void Reset() {
-            foreach (ChoiceViewModel choice in Choices) {
+        public void Reset() {
+            foreach (ComboboxViewModel choice in Choices) {
                 choice.Selected = false;
             }
         }

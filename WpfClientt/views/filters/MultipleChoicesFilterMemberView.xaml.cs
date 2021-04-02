@@ -17,8 +17,8 @@ namespace WpfClientt.views.filters {
     /// <summary>
     /// Interaction logic for FilterMemberView.xaml
     /// </summary>
-    public partial class FilterMemberView : UserControl {
-        public FilterMemberView() {
+    public partial class MultipleChoicesFilterMemberView : UserControl {
+        public MultipleChoicesFilterMemberView() {
             InitializeComponent();
         }
     }

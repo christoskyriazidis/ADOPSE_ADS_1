@@ -113,8 +113,14 @@
             <viewsFilter:FilterView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:FilterMemberViewModel}" >
-            <viewsFilter:FilterMemberView />
+        <DataTemplate DataType="{x:Type filters:MultipleChoicesFilterMember}" >
+            <viewsFilter:MultipleChoicesFilterMemberView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type filters:SingleChoiceFilterMember}">
+            <viewsFilter:SingleChoiceFilterMemberView />
+        </DataTemplate>
+        
+        
     </Application.Resources>
 </Application>
