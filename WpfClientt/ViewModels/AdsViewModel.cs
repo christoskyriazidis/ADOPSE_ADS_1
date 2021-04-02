@@ -35,6 +35,7 @@ namespace WpfClientt.viewModels {
         public FilterViewModel FilterViewModel { get; set; }
 
         private AdsViewModel(IScroller<Ad> scroller,FactoryServices factory,FilterViewModel filterViewModel) {
+            this.scroller = scroller;
             AddCurrentPageAds(scroller);
             adService = factory.AdServiceInstance();
             FilterViewModel = filterViewModel;

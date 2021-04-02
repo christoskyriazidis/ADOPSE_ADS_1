@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     public interface IMapper {
 
-        Task<IDictionary<long,string>> LoadCategories();
+        Task<IDictionary<long,string>> Categories();
 
-        Task<IDictionary<long, string>> LoadConditions();
+        Task<IDictionary<long, string>> Conditions();
 
-        Task<IDictionary<long, string>> LoadTypes();
+        Task<IDictionary<long, string>> Types();
 
-        Task<IDictionary<long, string>> LoadManufacturers();
+        Task<IDictionary<long, string>> Manufacturers();
 
-        Task<IDictionary<long, string>> LoadStates();
+        Task<IDictionary<long, string>> States();
 
     }
 }

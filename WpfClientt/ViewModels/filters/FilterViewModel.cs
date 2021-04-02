@@ -31,11 +31,11 @@ namespace WpfClientt.viewModels.filters {
         public async static Task<FilterViewModel> GetInstance(FactoryServices factory) {
             if (instance == null) {
                 IMapper mapper = factory.Mapper();
-                var categories = await mapper.LoadCategories();
-                var conditions = await mapper.LoadConditions();
-                var manufacturers = await mapper.LoadManufacturers();
-                var states = await mapper.LoadStates();
-                var types = await mapper.LoadTypes();
+                var categories = await mapper.Categories();
+                var conditions = await mapper.Conditions();
+                var manufacturers = await mapper.Manufacturers();
+                var states = await mapper.States();
+                var types = await mapper.Types();
                 instance = new FilterViewModel(factory, categories, conditions, manufacturers, states, types);
             }
             return instance; 
