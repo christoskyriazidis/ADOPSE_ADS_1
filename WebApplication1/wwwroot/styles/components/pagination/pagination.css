@@ -1,0 +1,52 @@
+pagination-component {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+pagination-component .paginationContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+pagination-component .paginationContainer ul {
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+pagination-component .paginationContainer ul :not(.dots) {
+  margin: 5px;
+}
+
+pagination-component .paginationContainer ul :not(.dots) span {
+  cursor: pointer;
+  padding: 5px;
+}
+
+pagination-component .paginationContainer ul :not(.dots) span:hover {
+  background-color: rgba(143, 142, 142, 0.424);
+  border-radius: 10px;
+}
+
+pagination-component .paginationContainer ul .dots {
+  margin: 5px;
+}
+
+.currentPage span {
+  border-radius: 10px;
+  height: 25px;
+  width: 25px;
+  background-color: #1b6dc1;
+  color: #ebebeb;
+}
+/*# sourceMappingURL=pagination.css.map */
