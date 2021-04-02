@@ -14,20 +14,20 @@ namespace WpfClientt.services {
 
         private string defaultValue = "unknow";
         private HttpClient client;
-        private IDictionary<long, string> categories = new ConcurrentDictionary<long, string>();
-        private IDictionary<long, string> conditions = new ConcurrentDictionary<long, string>();
-        private IDictionary<long, string> states = new ConcurrentDictionary<long, string>();
-        private IDictionary<long, string> types = new ConcurrentDictionary<long, string>();
-        private IDictionary<long, string> manufacturers = new ConcurrentDictionary<long, string>();
+        private ConcurrentDictionary<long, string> categories = new ConcurrentDictionary<long, string>();
+        private ConcurrentDictionary<long, string> conditions = new ConcurrentDictionary<long, string>();
+        private ConcurrentDictionary<long, string> states = new ConcurrentDictionary<long, string>();
+        private ConcurrentDictionary<long, string> types = new ConcurrentDictionary<long, string>();
+        private ConcurrentDictionary<long, string> manufacturers = new ConcurrentDictionary<long, string>();
 
         public ApiMapper(HttpClient client) {
             this.client = client;
         }
 
-        private async Task LoadInto(string url,IDictionary<long,string> dictionary) {
+        private async Task LoadInto(string url, ConcurrentDictionary<long,string> dictionary) {
             Stream stream = await client.GetStreamAsync(url);
             List<Mapping> mappings = await JsonSerializer.DeserializeAsync<List<Mapping>>(stream);
-            mappings.ForEach(mapping => dictionary.Add(mapping.id,mapping.title));
+            mappings.ForEach(mapping => dictionary.TryAdd(mapping.id,mapping.title));
         }
 
         public async Task<IDictionary<long, string>> Categories() {

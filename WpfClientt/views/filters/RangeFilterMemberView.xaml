@@ -14,5 +14,17 @@
         <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource blue-medium}" Grid.Row="0" Margin="0,0,0,5">
             <TextBlock Text="{Binding Title}" FontSize="24" TextAlignment="Center" VerticalAlignment="Center" />
         </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*" />
+                <ColumnDefinition Width="0.1*" />
+                <ColumnDefinition Width="0.4*" />
+            </Grid.ColumnDefinitions>
+            <TextBox Height="20" Margin="10,0,10,0" Text="{Binding Min}" Grid.Column="0" />
+            <TextBlock Text="--" Style="{StaticResource centerAlignment}" Grid.Column="1"  />
+            <TextBox Height="20" Margin="10,0,10,0" Text="{Binding Max}" Grid.Column="2" />
+
+
+        </Grid>
     </Grid>
 </UserControl>
