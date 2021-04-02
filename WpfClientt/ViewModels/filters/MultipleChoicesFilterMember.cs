@@ -9,12 +9,12 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels.filters {
     public class MultipleChoicesFilterMember : FilterMember {
         public string Title { get; private set; }
-        public ObservableCollection<ComboboxViewModel> Choices { get; private set; } = new ObservableCollection<ComboboxViewModel>();
+        public ObservableCollection<Checkbox> Choices { get; private set; } = new ObservableCollection<Checkbox>();
         private Action<long> finishAction;
 
         public MultipleChoicesFilterMember(IDictionary<long, string> filters, string title, Action<long> finishAction) {
             this.Title = title;
-            filters.Select(pair => new ComboboxViewModel(pair.Value, pair.Key))
+            filters.Select(pair => new Checkbox(pair.Value, pair.Key))
                 .ToList().ForEach(choice => Choices.Add(choice));
             this.finishAction = finishAction;
         }
@@ -28,7 +28,7 @@ namespace WpfClientt.viewModels.filters {
         }
 
         public void Reset() {
-            foreach (ComboboxViewModel choice in Choices) {
+            foreach (Checkbox choice in Choices) {
                 choice.Selected = false;
             }
         }
