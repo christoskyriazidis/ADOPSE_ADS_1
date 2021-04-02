@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -162,8 +163,10 @@
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
-    <Compile Include="viewModels\filters\ComboboxViewModel.cs" />
+    <Compile Include="viewModels\filters\Checkbox.cs" />
     <Compile Include="viewModels\filters\FilterMember.cs" />
+    <Compile Include="viewModels\filters\MinMaxFilterMember.cs" />
+    <Compile Include="viewModels\filters\MinMaxPriceFilterMember.cs" />
     <Compile Include="viewModels\filters\MultipleChoicesFilterMember.cs" />
     <Compile Include="viewModels\filters\FilterViewModel.cs" />
     <Compile Include="viewModels\filters\RadioButtonViewModel.cs" />
@@ -190,6 +193,9 @@
     </Compile>
     <Compile Include="views\filters\FilterView.xaml.cs">
       <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\RangeFilterMemberView.xaml.cs">
+      <DependentUpon>RangeFilterMemberView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\filters\SingleChoiceFilterMemberView.xaml.cs">
       <DependentUpon>SingleChoiceFilterMemberView.xaml</DependentUpon>
@@ -231,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\filters\FilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\RangeFilterMemberView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

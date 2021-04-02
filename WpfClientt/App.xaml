@@ -121,6 +121,9 @@
             <viewsFilter:SingleChoiceFilterMemberView />
         </DataTemplate>
         
-        
+        <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
+            <viewsFilter:RangeFilterMemberView />
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

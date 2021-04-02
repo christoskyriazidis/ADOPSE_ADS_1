@@ -26,6 +26,8 @@ namespace WpfClientt.viewModels.filters {
             FilterMemebers.Add(new MultipleChoicesFilterMember(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
             FilterMemebers.Add(new MultipleChoicesFilterMember(states, "States", filterBuilder.AddStateFilter));
             FilterMemebers.Add(new MultipleChoicesFilterMember(types, "Types", filterBuilder.AddTypeFilter));
+            FilterMemebers.Add(new MinMaxPriceFilterMember("Price Range", (min, max) => {
+            }));
         }
 
         public async static Task<FilterViewModel> GetInstance(FactoryServices factory) {
