@@ -15,7 +15,7 @@ namespace WpfClientt.viewModels.filters {
                 return selected;
             }
             set {
-                selected = value;
+                selected = !selected;
                 OnPropertyChanged("Selected");
             }
         }

@@ -11,7 +11,7 @@ using WpfClientt.services;
 using WpfClientt.services.filtering;
 
 namespace WpfClientt.viewModels.filters {
-    public class FilterViewModel : BaseViewModel {
+    public class FilterViewModel {
         private static FilterViewModel instance;
         private AdsFilterBuilder filterBuilder = new AdsFilterBuilder();
 

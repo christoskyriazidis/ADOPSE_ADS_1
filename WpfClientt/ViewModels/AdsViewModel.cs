@@ -58,19 +58,13 @@ namespace WpfClientt.viewModels {
 
         private async void OnMoveNext(object param) {
             if (await scroller.MoveNext()) {
-                Ads.Clear();
-                foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                    Ads.Add(ad);
-                }
+                AddCurrentPageAds(scroller);
             }
         }
 
         private async void OnMoveBack(object param) {
             if (await scroller.MoveBack()) {
-                Ads.Clear();
-                foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                    Ads.Add(ad);
-                }
+                AddCurrentPageAds(scroller);
             }
         }
 

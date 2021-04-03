@@ -10,27 +10,27 @@ using WpfClientt.viewModels.menu;
 namespace WpfClientt.viewModels {
     public class MainWindowViewModel : BaseViewModel {
 
-        private IViewModel _currentPageViewModel;
-        private IMenu _currentMenuView;
+        private IViewModel currentPageView;
+        private IMenu currentMenuView;
         private FactoryServices factory;
         private IList<IViewModel> viewModels = new List<IViewModel>();
 
         public IViewModel CurrentPageViewModel {
             get {
-                return _currentPageViewModel;
+                return currentPageView;
             }
             set {
-                _currentPageViewModel = value;
+                currentPageView = value;
                 OnPropertyChanged("CurrentPageViewModel");
             }
         }
 
         public IMenu CurrentMenuView {
             get {
-                return _currentMenuView;
+                return currentMenuView;
             }
             set {
-                _currentMenuView = value;
+                currentMenuView = value;
                 OnPropertyChanged("CurrentMenuView");
             }
         }

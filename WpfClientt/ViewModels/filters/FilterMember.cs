@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfClientt.viewModels.filters {
     public interface FilterMember {
+
         void Finish();
 
         void Reset();

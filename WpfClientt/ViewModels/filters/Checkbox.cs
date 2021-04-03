@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace WpfClientt.viewModels.filters {
     public sealed class Checkbox : BaseViewModel {
         private bool selected = false;
-
         public string Title { get; private set; }
         public long Code { get; private set; }
         public bool Selected {
