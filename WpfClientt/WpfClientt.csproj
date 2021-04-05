@@ -185,6 +185,9 @@
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\CreateAdView.xaml.cs">
+      <DependentUpon>CreateAdView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\DisplayTextView.xaml.cs">
       <DependentUpon>DisplayTextView.xaml</DependentUpon>
     </Compile>
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\AdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\CreateAdView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
