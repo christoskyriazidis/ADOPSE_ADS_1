@@ -100,6 +100,10 @@
         <DataTemplate DataType="{x:Type viewmodels:DisplayTextViewModel}">
             <views:DisplayTextView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CreateAdViewModel}">
+            <views:CreateAdView />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type menus:GuestMenu}">
             <viewsMenu:GuestMenu />

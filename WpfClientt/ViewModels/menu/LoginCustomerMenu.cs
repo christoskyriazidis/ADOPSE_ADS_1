@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfClientt.viewModels.menu {
     public class LoginCustomerMenu : IMenu {
+
+
     }
 }
