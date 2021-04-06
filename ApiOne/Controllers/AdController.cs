@@ -241,6 +241,20 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "kati pige la8os me ta manufacturers" });
         }
 
+        //[Authorize]
+        [HttpPut]
+        [Route("/ad/image")]
+        public IActionResult UpdateImage(IFormFile img,int adId)
+        {
+
+            SingleFileUpload(img, adId);
+            if (_adRepository.UpdateAdImg(adId))
+            {
+                return Json(new { message="img successfully changed!!"});
+            }
+            return BadRequest(new {error="something went wrong with img update" });
+        }
+
         public IActionResult SingleFileUpload(IFormFile file,int adId)
         {
             if (file.Length > 3145728)

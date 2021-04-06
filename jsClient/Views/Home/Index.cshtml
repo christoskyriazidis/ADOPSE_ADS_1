@@ -42,15 +42,9 @@
 
         var formData = new FormData();
         formData.append("Img", imagefile.files[0]);
-        formData.append("Title", title.value);
-        formData.append("Description", description.value);
-        formData.append("Type", type.value);
-        formData.append("Category", category.value);
-        formData.append("Condition", condition.value);
-        formData.append("Manufacturer", manufacturer.value);
-        formData.append("Price", price.value);
+        formData.append("adId", 48);
 
-        axios.post("https://localhost:44374/ad", formData, {
+        axios.put("https://localhost:44374/ad/image", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

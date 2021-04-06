@@ -179,6 +179,22 @@ namespace ApiOne.Repositories
             };
         }
 
+        public bool UpdateAdImg(int adId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = $"UPDATE [Ad] SET Img='https://localhost:44374/images/serverA/small/{adId}.png' where id=@Id";
+                var result = conn.Execute(sql, new { Id = adId });
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+        
         public bool SubscribeToCategory(int categoryId, int customerId)
         {
             try
