@@ -61,5 +61,21 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
+
+        public CustomerDetails GetMyProfileInfo(int id)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT id,username,reviews,profileImg,Name,LastName,Address,rating FROM [Customer]";
+                var customers = conn.Query<CustomerDetails>(sql).FirstOrDefault();
+                return customers;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
     }
 }

@@ -11,41 +11,7 @@ namespace ApiOne.Controllers
 {
     public class ElasticSearchController : Controller
     {
-        [Route("/elastic")]
-        public async Task<IActionResult> yes()
-        {
-            var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-                .DefaultIndex("people");
-
-            var client = new ElasticClient(settings);
-            List<Person> persons = new List<Person>();
-            for (int i = 0; i < 10; i++)
-            {
-                persons.Add(new Person(i, $"mart", $"lastname{i}"));
-                persons.Add(new Person(i+10, $"vaggel", $"lastname{i}"));
-            }
-            foreach (var i in persons)
-            {
-                var indexResponse = client.IndexDocument(i);
-                var asyncIndexResponse = await client.IndexDocumentAsync(i);
-            }
-
-
-            var searchResponse = client.Search<Person>(s => s
-            .From(0)
-            .Size(10)
-            .Query(q => q
-                 .Match(m => m
-                    .Field(f => f.FirstName)
-                    .Query("mart")
-                 )
-                )
-           );
-
-            var people = searchResponse.Documents;
-
-            return Ok(people);
-        }
+       
         //[Route("/search")]
         //public IActionResult ReturnSearchResult([FromQuery] string name) {
         //    var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))

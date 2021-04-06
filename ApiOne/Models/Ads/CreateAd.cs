@@ -10,20 +10,22 @@ namespace ApiOne.Models.Ads
 {
     public class CreateAd
     {
+        public string NewImg { set; get; }
         public IFormFile Img { set; get; }
 
+        [StringLength(200, MinimumLength = 15)]
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 
-        //[StringLength(100, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
+        [StringLength(250, MinimumLength = 20)]
         [Required(ErrorMessage = "Description is required (min 15 charactes)")]
         public string Description { get; set; }
 
-        [Range(1, 4)]
+        [Range(1, 10)]
         [Required(ErrorMessage = "Type is required")]
         public int Type { get; set; }
 
-        [Range(1, 5)]
+        [Range(1, 50)]
         [Required(ErrorMessage = "Category is required")]
         public int Category { get; set; }
 
@@ -36,8 +38,7 @@ namespace ApiOne.Models.Ads
         public int Manufacturer { get; set; }
 
         [Range(1, 10000)]
-        [Required(ErrorMessage = "Price is not null")]
-
+        [Required(ErrorMessage = "Price is required")]
         public int Price { get; set; }
         public int State { get; set; }
         public string LastUpdate { get; set; }

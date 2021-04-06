@@ -25,36 +25,9 @@ namespace ApiOne.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly ICustomerRepository _customerRepo = new CustomerRepository();
 
-
         public CustomerController(IWebHostEnvironment webHostEnvironment )
         {
             _env = webHostEnvironment;
-        }
-
-        [HttpPost]
-        [Route("/customer/profileImage")]
-        public IActionResult SingleFileUpload(IFormFile file)
-        {
-            int adId = 5873458;
-            if (file.Length > 3145728)
-            {
-                return BadRequest(new { error = "File is too big (max 3mb)" });
-            }
-            if (file.ContentType != "image/png" && file.ContentType != "image/jpeg" && file.ContentType != "image/jpg")
-            {
-                return BadRequest(new { error = "Wrong file type" });
-            }
-            var dir = _env.ContentRootPath;
-            var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small", $"{adId}.png");
-            using var image = Image.Load(file.OpenReadStream());
-            image.Mutate(x => x.Resize(200, 200));
-            image.Save(smallSizeAdPath);
-            var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{adId}.png");
-            using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
-            {
-                file.CopyTo(fileStream);
-            }
-            return Ok();
         }
 
 
@@ -88,6 +61,15 @@ namespace ApiOne.Controllers
 
 
 
+
+        [HttpGet]
+        [Route("/profile")]
+        public IActionResult GetProfile()
+        {
+            int cid = 3;
+            return Json(_customerRepo.GetMyProfileInfo(cid));
+        }
+
         [HttpGet]
         [Route("/secret")]
         [Authorize(Policy = "Admin")]
@@ -102,7 +84,31 @@ namespace ApiOne.Controllers
 
             return Json(new { secret = "very secret" });
         }
-        
-        
+
+
+        public IActionResult SingleFileUpload(IFormFile file)
+        {
+            int adId = 5873458;
+            if (file.Length > 3145728)
+            {
+                return BadRequest(new { error = "File is too big (max 3mb)" });
+            }
+            if (file.ContentType != "image/png" && file.ContentType != "image/jpeg" && file.ContentType != "image/jpg")
+            {
+                return BadRequest(new { error = "Wrong file type" });
+            }
+            var dir = _env.ContentRootPath;
+            var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small", $"{adId}.png");
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(200, 200));
+            image.Save(smallSizeAdPath);
+            var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{adId}.png");
+            using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
+            {
+                file.CopyTo(fileStream);
+            }
+            return Ok();
+        }
+
     }
 }

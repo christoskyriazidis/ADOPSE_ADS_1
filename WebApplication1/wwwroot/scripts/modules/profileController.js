@@ -51,7 +51,11 @@ export default class ProfileController {
                 'Content-Type': 'multipart/form-data'
             }
             
-        }).catch(console.log)
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error.response.data)
+            });
     }
 }
 

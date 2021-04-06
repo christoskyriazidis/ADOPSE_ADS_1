@@ -85,13 +85,21 @@ namespace ApiOne.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
+            //vazoume to id tou xrhsth sto object Ad 
             ad.Customer = 3;
+            //koitaw an einai null to img 
+            if (ad.Img == null) ad.NewImg = "No";
+            else ad.NewImg = "NewImg";
             int result = _adRepository.InsertAd(ad);
-            if (result != -1)
+            switch (result)
             {
-                SingleFileUpload(ad.Img, result);
+                case -2: return Json(new { error = "something went wrong with ad creation! " });
+                case -1: return Json(new { success = "ad Added successfully created.! with default img!" });
+                case > 0:
+                    SingleFileUpload(ad.Img, result);
+                    return Json(new { success = "ad Added successfully created.! with users img!" });
+                default: return Json(new { error = "something went wrong with ad creation! " });
             }
-            return Json(new { error = "error" });
         }
 
         [HttpPut]
@@ -233,12 +241,6 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "kati pige la8os me ta manufacturers" });
         }
 
-
-
-
-    
-        //[HttpPost]
-        //[Route("/ad/image")]
         public IActionResult SingleFileUpload(IFormFile file,int adId)
         {
             if (file.Length > 3145728)

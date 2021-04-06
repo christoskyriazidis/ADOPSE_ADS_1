@@ -137,14 +137,15 @@ namespace ApiOne.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.CreateDate = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
-                string sql = "  exec insert_ad_with_img  @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price";
-                var result = conn.Query<int>(sql, new { ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
-                return result;
+
+                string sql = "  exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img";
+                var result = conn.Query<int>(sql, new { Img=ad.NewImg,ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
+                return result;  
             }
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx);
-                return -1;
+                return -2;
             }
         }
 
