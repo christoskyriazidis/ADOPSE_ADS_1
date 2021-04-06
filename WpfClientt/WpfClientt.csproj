@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -161,10 +162,16 @@
     <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
+    <Compile Include="viewModels\CreateAdViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
-    <Compile Include="viewModels\filters\ChoiceViewModel.cs" />
-    <Compile Include="viewModels\filters\FilterMemberViewModel.cs" />
+    <Compile Include="viewModels\filters\Checkbox.cs" />
+    <Compile Include="viewModels\filters\FilterMember.cs" />
+    <Compile Include="viewModels\filters\MinMaxFilterMember.cs" />
+    <Compile Include="viewModels\filters\MinMaxPriceFilterMember.cs" />
+    <Compile Include="viewModels\filters\MultipleChoicesFilterMember.cs" />
     <Compile Include="viewModels\filters\FilterViewModel.cs" />
+    <Compile Include="viewModels\filters\RadioButtonViewModel.cs" />
+    <Compile Include="viewModels\filters\SingleChoiceFilterMember.cs" />
     <Compile Include="viewModels\IViewModel.cs" />
     <Compile Include="viewModels\MainWindowViewModel.cs" />
     <Compile Include="viewModels\Mediator.cs" />
@@ -179,14 +186,23 @@
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\CreateAdView.xaml.cs">
+      <DependentUpon>CreateAdView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\DisplayTextView.xaml.cs">
       <DependentUpon>DisplayTextView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\filters\FilterMemberView.xaml.cs">
-      <DependentUpon>FilterMemberView.xaml</DependentUpon>
+    <Compile Include="views\filters\MultipleChoicesFilterMemberView.xaml.cs">
+      <DependentUpon>MultipleChoicesFilterMemberView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\filters\FilterView.xaml.cs">
       <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\RangeFilterMemberView.xaml.cs">
+      <DependentUpon>RangeFilterMemberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\SingleChoiceFilterMemberView.xaml.cs">
+      <DependentUpon>SingleChoiceFilterMemberView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -216,15 +232,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\CreateAdView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\DisplayTextView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\filters\FilterMemberView.xaml">
+    <Page Include="views\filters\MultipleChoicesFilterMemberView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\filters\FilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\RangeFilterMemberView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\SingleChoiceFilterMemberView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

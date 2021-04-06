@@ -10,27 +10,27 @@ using WpfClientt.viewModels.menu;
 namespace WpfClientt.viewModels {
     public class MainWindowViewModel : BaseViewModel {
 
-        private IViewModel _currentPageViewModel;
-        private IMenu _currentMenuView;
+        private IViewModel currentPageView;
+        private IMenu currentMenuView;
         private FactoryServices factory;
         private IList<IViewModel> viewModels = new List<IViewModel>();
 
         public IViewModel CurrentPageViewModel {
             get {
-                return _currentPageViewModel;
+                return currentPageView;
             }
             set {
-                _currentPageViewModel = value;
+                currentPageView = value;
                 OnPropertyChanged("CurrentPageViewModel");
             }
         }
 
         public IMenu CurrentMenuView {
             get {
-                return _currentMenuView;
+                return currentMenuView;
             }
             set {
-                _currentMenuView = value;
+                currentMenuView = value;
                 OnPropertyChanged("CurrentMenuView");
             }
         }
@@ -44,6 +44,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
+            Mediator.Subscribe("CreateView", ChangeToCreateAdView);
         }
 
         private void ChangeViewModel(IViewModel viewModel) {
@@ -63,8 +64,12 @@ namespace WpfClientt.viewModels {
             ChangeViewModel(await RegisterViewModel.GetInstance(factory));
         }
 
-        private void ChangeToLoginView(object obj) { 
+        private async void ChangeToLoginView(object obj) { 
         
+        }
+
+        private async void ChangeToCreateAdView(object obj) {
+            ChangeViewModel(await CreateAdViewModel.GetInstance(factory));
         }
 
         private void ChangeToDisplayView(string text) {

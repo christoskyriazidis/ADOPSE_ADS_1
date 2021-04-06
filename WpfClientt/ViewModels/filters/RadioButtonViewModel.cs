@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.viewModels.filters {
-    public sealed class ChoiceViewModel : BaseViewModel {
+    public class RadioButtonViewModel : BaseViewModel {
         private bool selected = false;
 
         public string Title { get; private set; }
@@ -15,14 +15,16 @@ namespace WpfClientt.viewModels.filters {
                 return selected;
             }
             set {
-                selected = value;
+                selected = !selected;
                 OnPropertyChanged("Selected");
-            } 
+            }
         }
+        public string GroupName { get; private set; }
 
-        public ChoiceViewModel(string title, long code) {
+        public RadioButtonViewModel(string title, long code,string groupName) {
             Title = title;
             Code = code;
+            GroupName = groupName;
         }
     }
 }

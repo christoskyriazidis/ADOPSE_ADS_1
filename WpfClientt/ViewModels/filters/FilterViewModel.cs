@@ -11,45 +11,47 @@ using WpfClientt.services;
 using WpfClientt.services.filtering;
 
 namespace WpfClientt.viewModels.filters {
-    public class FilterViewModel : BaseViewModel {
+    public class FilterViewModel {
         private static FilterViewModel instance;
         private AdsFilterBuilder filterBuilder = new AdsFilterBuilder();
 
-        public ObservableCollection<FilterMemberViewModel> FilterMemebers { get; private set; } = new ObservableCollection<FilterMemberViewModel>();
+        public ObservableCollection<FilterMember> FilterMemebers { get; private set; } = new ObservableCollection<FilterMember>();
 
         private FilterViewModel(FactoryServices factory,IDictionary<long,string> categories,
             IDictionary<long, string> conditions, IDictionary<long, string> manufacturers, IDictionary<long, string> states,
             IDictionary<long, string> types) {
             IMapper mapper = factory.Mapper();
-            FilterMemebers.Add(new FilterMemberViewModel(categories, "Categories", filterBuilder.AddCategoryFilter));
-            FilterMemebers.Add(new FilterMemberViewModel(conditions, "Conditions", filterBuilder.AddConditionFilter));
-            FilterMemebers.Add(new FilterMemberViewModel(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
-            FilterMemebers.Add(new FilterMemberViewModel(states, "States", filterBuilder.AddStateFilter));
-            FilterMemebers.Add(new FilterMemberViewModel(types, "Types", filterBuilder.AddTypeFilter));
+            FilterMemebers.Add(new SingleChoiceFilterMember(categories, "Categories", filterBuilder.AddCategoryFilter,"CategoryGroup"));
+            FilterMemebers.Add(new MultipleChoicesFilterMember(conditions, "Conditions", filterBuilder.AddConditionFilter));
+            FilterMemebers.Add(new MultipleChoicesFilterMember(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
+            FilterMemebers.Add(new MultipleChoicesFilterMember(states, "States", filterBuilder.AddStateFilter));
+            FilterMemebers.Add(new MultipleChoicesFilterMember(types, "Types", filterBuilder.AddTypeFilter));
+            FilterMemebers.Add(new MinMaxPriceFilterMember("Price Range", (min, max) => {
+            }));
         }
 
         public async static Task<FilterViewModel> GetInstance(FactoryServices factory) {
             if (instance == null) {
                 IMapper mapper = factory.Mapper();
-                var categories = await mapper.LoadCategories();
-                var conditions = await mapper.LoadConditions();
-                var manufacturers = await mapper.LoadManufacturers();
-                var states = await mapper.LoadStates();
-                var types = await mapper.LoadTypes();
+                var categories = await mapper.Categories();
+                var conditions = await mapper.Conditions();
+                var manufacturers = await mapper.Manufacturers();
+                var states = await mapper.States();
+                var types = await mapper.Types();
                 instance = new FilterViewModel(factory, categories, conditions, manufacturers, states, types);
             }
             return instance; 
         }
 
         public AdsFilterBuilder GetFilterBuilder() {
-            foreach (FilterMemberViewModel filterMember in FilterMemebers) {
+            foreach (FilterMember filterMember in FilterMemebers) {
                 filterMember.Finish();
             }
             return filterBuilder;
         }
 
         public void Reset() {
-            foreach (FilterMemberViewModel filterMember in FilterMemebers) {
+            foreach (FilterMember filterMember in FilterMemebers) {
                 filterMember.Reset();
             }
         }

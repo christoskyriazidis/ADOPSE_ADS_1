@@ -19,9 +19,9 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Background="#1B6DC1"/>
-        <Border CornerRadius="10" Margin="10">
+        <Border CornerRadius="10" Margin="20,10">
             <Border.Background>
-                <ImageBrush Stretch="Fill" ImageSource="https://randomuser.me/api/portraits/lego/1.jpg"/>
+                <ImageBrush ImageSource="https://randomuser.me/api/portraits/lego/1.jpg"/>
             </Border.Background>
         </Border>
         <Line X1="800" Stroke="Black" StrokeThickness="2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
@@ -44,18 +44,20 @@
                 <ColumnDefinition Width="0.05*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="18*"/>
+                <RowDefinition Height="19*"/>
+                <RowDefinition Height="71*"/>
+                <RowDefinition Height="54*"/>
+                <RowDefinition Height="18*"/>
             </Grid.RowDefinitions>
-            
+
             <Border Grid.RowSpan="3" Grid.Row="1" Background="#99C2EC" CornerRadius="8" Grid.Column="1"/>
-            <Label Content="About" Grid.Column="1" Grid.Row="1"/>
-            <Label Content="Birth Date: " Grid.Column="1" Grid.Row="2"/>
-            <Label Content="City: " Grid.Column="1" Grid.Row="3"/>
-            
+            <Label Content="About: " Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"/>
+            <Label Grid.Row="2" Grid.Column="1"  FontSize="10">
+                <Label.Content>
+                    <AccessText TextWrapping="Wrap" Text="This is an awsome person!" />
+                </Label.Content>
+            </Label>
         </Grid>
     </Grid>
 </UserControl>

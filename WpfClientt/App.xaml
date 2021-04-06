@@ -100,6 +100,10 @@
         <DataTemplate DataType="{x:Type viewmodels:DisplayTextViewModel}">
             <views:DisplayTextView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CreateAdViewModel}">
+            <views:CreateAdView />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type menus:GuestMenu}">
             <viewsMenu:GuestMenu />
@@ -113,8 +117,17 @@
             <viewsFilter:FilterView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:FilterMemberViewModel}" >
-            <viewsFilter:FilterMemberView />
+        <DataTemplate DataType="{x:Type filters:MultipleChoicesFilterMember}" >
+            <viewsFilter:MultipleChoicesFilterMemberView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type filters:SingleChoiceFilterMember}">
+            <viewsFilter:SingleChoiceFilterMemberView />
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
+            <viewsFilter:RangeFilterMemberView />
+        </DataTemplate>
+
     </Application.Resources>
 </Application>
