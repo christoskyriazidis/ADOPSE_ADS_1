@@ -246,7 +246,6 @@ namespace ApiOne.Controllers
         [Route("/ad/image")]
         public IActionResult UpdateImage(IFormFile img,int adId)
         {
-
             SingleFileUpload(img, adId);
             if (_adRepository.UpdateAdImg(adId))
             {
