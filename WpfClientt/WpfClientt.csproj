@@ -213,8 +213,8 @@
     <Compile Include="views\menus\LoginCustomerMenu.xaml.cs">
       <DependentUpon>LoginCustomerMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\Profile.xaml.cs">
-      <DependentUpon>Profile.xaml</DependentUpon>
+    <Compile Include="views\ProfileSettings.xaml.cs">
+      <DependentUpon>ProfileSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
@@ -268,7 +268,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\Profile.xaml">
+    <Page Include="views\ProfileSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
