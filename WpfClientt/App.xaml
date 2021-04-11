@@ -104,6 +104,10 @@
         <DataTemplate DataType="{x:Type viewmodels:CreateAdViewModel}">
             <views:CreateAdView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ProfileViewModel}">
+            <views:ProfileSettings />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type menus:GuestMenu}">
             <viewsMenu:GuestMenu />
