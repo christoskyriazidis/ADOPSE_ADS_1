@@ -4,19 +4,34 @@ $secondary-color: #3385d9;
 $alternative-color: #7bb6f1ad;
 $secondary-font-color: #243649fa;
 $primary-font-color: #ebebeb;
-$shadow-color: #2020209b;
+$shadow-color: #20202073;
 $attention-color: #1f271b9b;
 nav {
     .primary-nav {
         display: flex;
         width: 100vw;
-        height: 6vh;
+        height: 70px;
         box-shadow: 0px 2px 10px $shadow-color;
         position: sticky;
         z-index: 3;
         background-color: $secondary-color;
         .brandLogo {
-            margin-left: 20px;
+            height: 90%;
+            width: 140px;
+            a {
+                background-image: url("/styles/graphics/logo.png");
+                border-radius: 5px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                height: 100%;
+                width: 100%;
+            }
+            margin-left: 50px;
+            display: flex;
+
+            align-self: center;
+            justify-self: center;
+            cursor: pointer;
         }
         .navListContainer {
             flex-grow: 1;
@@ -46,7 +61,6 @@ nav {
                             background-color: $alternative-color;
                         }
                     }
-                    
                 }
                 .attention {
                     background-color: $attention-color;
@@ -81,7 +95,7 @@ nav {
                 align-items: center;
                 padding: 0px;
                 margin: 0px;
-                margin-left: 150px;
+                margin-left: 55px;
                 li {
                     display: flex;
                     align-items: center;
@@ -94,13 +108,51 @@ nav {
                         padding: 12px;
                         border-radius: 10px;
                     }
-                   
                 }
                 .vl {
-                    border: 1px solid #1f1e1e3d;
+                    border-left: 2px solid #1f1e1e3d;
                     border-radius: 10px;
                     height: 60%;
                 }
+            }
+        }
+    }
+}
+.my-account-dropdown {
+    position: absolute;
+    z-index: 999;
+    background-color: rgb(255, 255, 255);
+    font-family: "Roboto", sans-serif;
+    width: 300px;
+    border: 0.5px solid $shadow-color;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 5px 5px 25px grey;
+
+    align-items: center;
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        list-style: none;
+        flex-grow: 1;
+        padding: 0px;
+        li {
+            margin: 2px;
+            margin-left: 10px;
+            margin-right: 10px;
+            a {
+                &:hover {
+                    background-color: #3386d960;
+                }
+
+                border-radius: 10px;
+                padding: 5px;
+                padding-left: 20px;
+                display: flex;
+                flex-grow: 1;
+                text-decoration: none;
+                color: black;
             }
         }
     }

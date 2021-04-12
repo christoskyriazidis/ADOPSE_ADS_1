@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="/scripts/profile.js" type="module"></script>
+</head>
+
+<body>
+    <navbar-component logged="true"></navbar-component>
+    <div>
+        <input type="text" class="title" placeholder="title">
+        <input type="number" class="price" placeholder="price">
+        <input type="file" class="image" value="add image">
+        <textarea class="description"> </textarea>
+        <div class="info">
+            <h4>Categories</h4>
+        </div>
+
+        <div class=" group"><select name="" id="categoryGroup"> </select></div>
+        <div class="info">
+            <h4>Ad types</h4>
+        </div>
+        <div class=" group"><select name="" id="typeGroup"> </select></div>
+        <div class="info">
+            <h4>Condition</h4>
+        </div>
+        <div class=" group"><select name="" id="conditionGroup"> </select></div>
+
+        <div class="info">
+            <h4>Manufacturers</h4>
+        </div>
+        <div class=" group"><select name="" id="manufacturerGroup"> </select></div>
+        <div class="info">
+            <h4>State</h4>
+        </div>
+        <div class=" group"><select name="" id="stateGroup"> </select></div>
+        <button class="editAd">edit ad</button>
+        <button class="changeImage"></button>
+<script>
+    let urlParams = new URLSearchParams(window.location.search);
+    axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
+        .then((response) => response.data)
+        .then(data => {
+            document.querySelector(".description").innerHTML += data.description
+            document.querySelector(".title").value = data.title
+            document.querySelector(".price").value = data.price;
+            document.querySelector("#")
+            // document.querySelector(".description").innerHTML=data.description
+            // document.querySelector(".description").innerHTML=data.description
+        })
+        .catch(x => console.log(x))
+        .finally()
+   
+</script>
+<script src="/scripts/components/navbarComponent.js"></script>
+<script src="/scripts/components/wishlistComponent.js"></script>
+<script src="/scripts/components/notificationComponent.js"></script>
+
+</html>

@@ -21,15 +21,16 @@ export default class SearchController {
             maps.man.forEach(this.fillManufacturer)
             maps.typ.forEach(this.fillType)
             maps.con.forEach(this.fillCondition)
+            console.log(maps);
             this.dictMaps = maps
         }).then(() => {
             this.setLink(1);
         })
-       
+
     }
 
     setLink = (num) => {
-        this.currentPageNumber=num;
+        this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search
@@ -103,7 +104,7 @@ export default class SearchController {
     }).catch(console.log)
     callNext() {
         if (this.lastPageNumber > this.currentPageNumber) {
-            
+
             this.setLink(++this.currentPageNumber);
         }
     }
@@ -121,13 +122,29 @@ export default class SearchController {
     }
     set link(something) { this.link = something; console.log(something) }
     populateContentArea = (data) => {
+        
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.ads) {
-            allAds += `<ad-component title="${object.title}" condition="${this.dictMaps.con.get(object.condition)}" price="${object.price}" item-image="${object.img}" id="${object.id}"></ad-component>`
+            
+            axios.get(`https://localhost:44374/customer/${object.customer}`)
+                .then((response) => response.data)
+                .then((customer) =>
+                    `<ad-component title="${object.title}"
+                    customer-image="${customer.profileImg}"
+                    customer-name="${customer.username}"
+                    customer-rating="${customer.rating}"
+                    customer-id="${object.customer}"
+                    condition="${this.dictMaps.con.get(object.condition)}"
+                    price="${object.price}"
+                    item-image="${object.img}"
+                    id="${object.id}"></ad-component>`
+                )
+                .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
+                .catch(console.log)
         }
-        document.querySelector(".contentContainer").innerHTML += allAds;
+
         const pagers = document.querySelectorAll('pagination-component')
 
 
@@ -135,11 +152,7 @@ export default class SearchController {
         for (let pager of pagers) {
             console.log(this.currentPageNumber);
             pager.setAttribute("current-page", this.currentPageNumber)
-            pager.setAttribute("next-page", data['nextPageUrl'])
-            pager.setAttribute("previous-page", data['previousPageUrl'])
-            pager.setAttribute('last-page-url', data['lastPageUrl'])
             pager.setAttribute("last-page", data['totalPages'])
-            
         }
 
 
