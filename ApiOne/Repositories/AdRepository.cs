@@ -138,7 +138,7 @@ namespace ApiOne.Repositories
                 ad.CreateDate = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
 
-                string sql = "  exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img,@SubCategoryId";
+                string sql = "exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img,@SubCategoryId";
                 var result = conn.Query<int>(sql, new { Img=ad.NewImg,ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price,ad.SubCategoryId }).FirstOrDefault();
                 return result;  
             }

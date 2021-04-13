@@ -43,6 +43,7 @@ namespace ApiOne.Models
         public int Manufacturer { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int SubCategoryId { get; set; }
 
         [Range(1, 10000)]
