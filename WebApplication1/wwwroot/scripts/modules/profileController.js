@@ -64,7 +64,7 @@ export default class ProfileController {
         formData.append("Description", document.querySelector(".description").value);
         formData.append("Type", document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value);
         formData.append("Category", document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value);
-        formData.append("SubCategory", document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value);
+        formData.append("SubCategoryId", document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value);
         formData.append("Condition", document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value);
         formData.append("Manufacturer", document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value);
         formData.append("Price", document.querySelector(".price").value);
@@ -129,17 +129,19 @@ class Ad {
     description;
     type;
     category;
+    subcategory;
     condition;
     manufacturer;
     state;
     price;
     file;
-    constructor(id, title, description, type, category, condition, manufacturer, state, price, file) {
+    constructor(id, title, description, type, category, subcategory, condition, manufacturer, state, price, file) {
         this.id = id;
         this.title = title;
         this.description = description
         this.type = type
         this.category = category
+        this.subcategory=subcategory;
         this.condition = condition;
         this.manufacturer = manufacturer;
         this.state = state;
