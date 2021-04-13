@@ -2,9 +2,12 @@ export default class Dictionary {
     constructor() {
        
     }
-    getCategoryDictionary = () => {
-        return axios.get("https://localhost:44374/category")
-            .then((response) => response.data).then(this.dictify)
+    getCategoryDictionary=()=>{
+        return axios.get("https://localhost:44374/category").then((response) => response.data).then(this.dictify)
+    }
+    getSubCategoryDictionary = (category) => {
+        return axios.get("https://localhost:44374/category/"+category)
+            .then((response) => response.data)
     }
     getTypeDictionary = () => {
         return axios.get("https://localhost:44374/type")

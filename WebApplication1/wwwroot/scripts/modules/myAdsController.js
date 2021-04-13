@@ -22,7 +22,6 @@ export default class MyadsController {
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam
-        console.log(this.link);
         this.callCurrentLink()
     }
 
@@ -31,7 +30,7 @@ export default class MyadsController {
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
-        for (let object of data.ads) {
+        for (let object of data.result) {
 
             axios.get(`https://localhost:44374/customer/${object.customer}`)
                 .then((response) => response.data)

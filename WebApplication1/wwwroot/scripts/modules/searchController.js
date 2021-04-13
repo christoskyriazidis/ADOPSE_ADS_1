@@ -8,7 +8,7 @@ export default class SearchController {
     filters = ""
     search = ""
     link = ""
-    pageSize = 10;
+    pageSize = 5;
     currentPageNumber = 1;
     lastPageNumber;
     dictMaps;
@@ -126,7 +126,7 @@ export default class SearchController {
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
-        for (let object of data.ads) {
+        for (let object of data.result) {
             
             axios.get(`https://localhost:44374/customer/${object.customer}`)
                 .then((response) => response.data)

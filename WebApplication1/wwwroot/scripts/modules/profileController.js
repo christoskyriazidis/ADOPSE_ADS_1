@@ -1,8 +1,9 @@
 import Dictionary from "/scripts/modules/dictionary.js"
 export default class ProfileController {
+    dict;
     constructor() {
-        let dict = new Dictionary();
-        dict.init().then(maps => {
+        this.dict = new Dictionary();
+        this.dict.init().then(maps => {
             maps.cat.forEach(this.fillCategories)
             maps.man.forEach(this.fillManufacturer)
             maps.typ.forEach(this.fillType)
@@ -12,8 +13,22 @@ export default class ProfileController {
             }
             this.dictMaps = maps
         }).then(() => {
-
+            const cats=document.querySelector("#categoryGroup")
+            cats.addEventListener("change", () => {
+                this.getSubCategory(cats.options[cats.selectedIndex].value)
+            })
         })
+
+    }
+    getSubCategory = (id) => {
+        this.dict.getSubCategoryDictionary(id)
+            .then(data => {
+                const subcategories = document.querySelector("#subCategoryGroup")
+                subcategories.innerHTML=""
+                for (let object of data) {
+                    subcategories.innerHTML += `<option value="${object.id}" >${object.title}</option>`
+                }
+            })
 
     }
     fillState = (value, id) => {
@@ -22,11 +37,12 @@ export default class ProfileController {
     }
     fillCategories = (value, id) => {
         const categories = document.querySelector("#categoryGroup")
-        categories.innerHTML += `<option value="${id}" >${value}</option>`
+
+        categories.innerHTML += `<option value="${id}">${value}</option>`
     }
     fillType = (value, id) => {
         const types = document.querySelector("#typeGroup")
-        types.innerHTML += `<option value="${id}" >${value}</option>`
+        types.innerHTML += `<option value="${id}">${value}</option>`
     }
 
     fillManufacturer = (value, id) => {
@@ -48,6 +64,7 @@ export default class ProfileController {
         formData.append("Description", document.querySelector(".description").value);
         formData.append("Type", document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value);
         formData.append("Category", document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value);
+        formData.append("SubCategory", document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value);
         formData.append("Condition", document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value);
         formData.append("Manufacturer", document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value);
         formData.append("Price", document.querySelector(".price").value);
@@ -70,6 +87,7 @@ export default class ProfileController {
             document.querySelector(".description").value,
             document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value,
             document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value,
+            document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value,
             document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value,
             document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value,
             document.querySelector("#stateGroup").options[document.querySelector("#stateGroup").selectedIndex].value,
@@ -89,7 +107,7 @@ export default class ProfileController {
     changeImage = () => {
         var formData = new FormData();
         formData.append("Img", document.querySelector(".image").files[0]);
-        formData.append("adId",  urlParams.get("id"));
+        formData.append("adId", urlParams.get("id"));
 
         axios.put("https://localhost:44374/ad/image", formData, {
             headers: {
