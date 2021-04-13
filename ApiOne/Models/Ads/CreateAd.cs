@@ -21,26 +21,26 @@ namespace ApiOne.Models.Ads
         [Required(ErrorMessage = "Description is required (min 15 charactes)")]
         public string Description { get; set; }
 
-        [Range(1, 10)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         [Required(ErrorMessage = "Type is required")]
         public int Type { get; set; }
 
-        [Range(1, 50)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         [Required(ErrorMessage = "Category is required")]
         public int Category { get; set; }
 
-        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int SubCategoryId { get; set; }
 
-        [Range(1, 3)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         [Required(ErrorMessage = "Condition is required")]
         public int Condition { get; set; }
 
-        [Range(1, 100)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         [Required(ErrorMessage = "Manufacturer is required")]
         public int Manufacturer { get; set; }
 
-        [Range(1, 10000)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         [Required(ErrorMessage = "Price is required")]
         public int Price { get; set; }
         public int State { get; set; }
