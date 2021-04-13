@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WpfClientt.views
 {
     /// <summary>
-    /// Interaction logic for Profile.xaml
+    /// Interaction logic for ProfileSettings.xaml
     /// </summary>
-    public partial class Profile : UserControl
+    public partial class ProfileSettings : UserControl
     {
-        public Profile()
+        public ProfileSettings()
         {
             InitializeComponent();
         }

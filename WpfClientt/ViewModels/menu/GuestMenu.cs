@@ -11,6 +11,7 @@ namespace WpfClientt.viewModels.menu {
         public ICommand RegisterView { get; private set; }
         public ICommand LoginView { get; private set; }
         public ICommand CreateView { get; private set; }
+        public ICommand ProfileView { get; private set; }
 
         public GuestMenu() {
             AdsView = new DelegateCommand(obj => {
@@ -24,6 +25,9 @@ namespace WpfClientt.viewModels.menu {
             });
             CreateView = new DelegateCommand(obj => { 
                 Mediator.Notify("CreateView"); 
+            });
+            ProfileView = new DelegateCommand(obj => {
+                Mediator.Notify("ProfileView");
             });
         }
 

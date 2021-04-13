@@ -12,11 +12,13 @@
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
-            <ColumnDefinition Width="0.47*" />
+            <ColumnDefinition Width="0.13*" />
+            <ColumnDefinition Width="0.34*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding AdsView}" />
         <Button Grid.Column="1" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding LoginView}" />
         <Button Grid.Column="2" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding RegisterView}" />
         <Button Grid.Column="3" Content="Create Ad" Style="{StaticResource medium_blue_button}" Command="{Binding CreateView}" />
+        <Button Grid.Column="4" Content="My Profile" Style="{StaticResource medium_blue_button}" Command="{Binding ProfileView}" />
     </Grid>
 </UserControl>
