@@ -29,6 +29,9 @@ namespace ApiOne.Models.Ads
         [Required(ErrorMessage = "Category is required")]
         public int Category { get; set; }
 
+        [Required]
+        public int SubCategoryId { get; set; }
+
         [Range(1, 3)]
         [Required(ErrorMessage = "Condition is required")]
         public int Condition { get; set; }

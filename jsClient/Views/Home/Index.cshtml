@@ -44,11 +44,11 @@
         formData.append("Img", imagefile.files[0]);
         formData.append("adId", 48);
 
-        axios.put("https://localhost:44374/ad/image", formData, {
+        axios.put("https://localhost:44374/profile/image", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        })
+        }).then(res => console.log(res)).catch(err=>console.log(err))
     }
      
 

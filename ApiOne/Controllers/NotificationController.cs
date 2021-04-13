@@ -26,14 +26,14 @@ namespace ApiOne.Controllers
 
         [HttpPost]
         [Route("/category/subscribe/{CatId}")]
-        public IActionResult SubscribeToCategory([FromRoute] int CatId)
+        public IActionResult SubscribeToSubCategory([FromRoute] int CatId)
         {
             int custId = 3;
             if (CatId < 0)
             {
                 return BadRequest(new { error = "something went wrong" });
             }
-            var subResult = _adRepository.SubscribeToCategory(CatId, custId);
+            var subResult = _adRepository.SubscribeToSubCategory(CatId, custId);
             if (subResult)
             {
                 return Json(new { status = $"success" });
@@ -43,14 +43,14 @@ namespace ApiOne.Controllers
 
         [HttpDelete]
         [Route("/category/subscribe")]
-        public IActionResult RemoveFromSubscribedCategories([FromBody] DeleteFromCategorySub CatIds)
+        public IActionResult RemoveFromSubscribedSubCategories([FromBody] DeleteFromCategorySub CatIds)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { error = "wrong request." });
             }
             int custId = 3;
-            var deleteResult = _adRepository.RemoveFromSubscribedCategories(custId,CatIds.CatIds);
+            var deleteResult = _adRepository.RemoveFromSubscribedSubCategories(custId,CatIds.CatIds);
             if (deleteResult)
             {
                 return Json(new { status = $"removed sub from categories!",CatIds=CatIds.CatIds });
@@ -60,10 +60,10 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/category/subscribe")]
-        public IActionResult GetSubscribedCategories()
+        public IActionResult GetSubscribedSubCategories()
         {
             int custId = 3;
-            var categories = _adRepository.GetSuscribedCategories(custId);
+            var categories = _adRepository.GetSuscribedSubCategories(custId);
             if (categories != null)
             {
                 return Json(new { categories });
@@ -73,7 +73,7 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/category/notification")]
-        public IActionResult GetCategoryNotifications()
+        public IActionResult GetSubCategoryNotifications()
         {
             int custId = 3;
             var categoryNotifications = _adRepository.GetCategoryNotifications(custId);
@@ -98,7 +98,7 @@ namespace ApiOne.Controllers
             {
                 return Json(new { status = $"success" });
             }
-            return BadRequest();
+            return BadRequest(new { error = "wrong adId" });
         }
         
         [HttpDelete]

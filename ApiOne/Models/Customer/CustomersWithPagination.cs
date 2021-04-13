@@ -16,7 +16,7 @@ namespace ApiOne.Models.Customer
         public string NextPageUrl { get; set; }
         public string PreviousPageUrl { get; set; }
         public string LastPageUrl { get; set; }
-        public List<CustomerDetails> Customers { get; set; }
+        public List<CustomerDetails> Result { get; set; }
 
         public CustomersWithPagination()
         {

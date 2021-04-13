@@ -16,9 +16,9 @@ namespace ApiOne.Models.Ads
         public string NextPageUrl { get; set; }
         public string PreviousPageUrl { get; set; }
         public string LastPageUrl { get; set; }
-        public List<Ad> Ads { get; set; }
+        public List<Ad> Result { get; set; }
 
-        public AdsWithPagination(int pageSize, int currentPage, int totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<Ad> ads)
+        public AdsWithPagination(int pageSize, int currentPage, int totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<Ad> result)
         {
             PageSize = pageSize;
             CurrentPage = currentPage;
@@ -27,7 +27,7 @@ namespace ApiOne.Models.Ads
             NextPageUrl = nextPageUrl;
             PreviousPageUrl = previousPageUrl;
             LastPageUrl = lastPageUrl;
-            Ads = ads;
+            Result = result;
         }
 
         public AdsWithPagination()

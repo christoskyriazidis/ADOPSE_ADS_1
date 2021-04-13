@@ -92,7 +92,7 @@ namespace ApiOne.Repositories
                 AdsWithPagination adPagination = new AdsWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
                 {
-                    adPagination.Ads = results.Read<Ad>().ToList();
+                    adPagination.Result = results.Read<Ad>().ToList();
                     adPagination.TotalAds = results.Read<int>().FirstOrDefault();
                 };
                 int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
@@ -138,8 +138,8 @@ namespace ApiOne.Repositories
                 ad.CreateDate = DateTime.Now.ToString();
                 ad.LastUpdate = DateTime.Now.ToString();
 
-                string sql = "  exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img";
-                var result = conn.Query<int>(sql, new { Img=ad.NewImg,ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price }).FirstOrDefault();
+                string sql = "  exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img,@SubCategoryId";
+                var result = conn.Query<int>(sql, new { Img=ad.NewImg,ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price,ad.SubCategoryId }).FirstOrDefault();
                 return result;  
             }
             catch (SqlException sqlEx)
@@ -156,7 +156,7 @@ namespace ApiOne.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.LastUpdate = DateTime.Now.ToString();
                 string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Type=@Type,Category=@Category,Condition=@Condition," +
-                                "Manufacturer=@Manufacturer,Price=@Price where id=@Id";
+                                "Manufacturer=@Manufacturer,Price=@Price,SubCategoryId=@SubCategoryId where id=@Id";
                 var result = conn.Execute(sql, new
                 {
                     ad.Title,
@@ -168,7 +168,8 @@ namespace ApiOne.Repositories
                     ad.Condition,
                     ad.Manufacturer,
                     ad.Id,
-                    ad.Price
+                    ad.Price,
+                    ad.SubCategoryId
                 });
                 return ad;
             }
@@ -195,12 +196,12 @@ namespace ApiOne.Repositories
             }
         }
         
-        public bool SubscribeToCategory(int categoryId, int customerId)
+        public bool SubscribeToSubCategory(int categoryId, int customerId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = " insert into [SubscribedCategories] (customerId,categoryId) values (@CustomerId,@CategoryId)";
+                string sql = " insert into [SubscribedSubCategories] (customerId,categoryId) values (@CustomerId,@CategoryId)";
                 var result = conn.Execute(sql, new { CustomerId = customerId, CategoryId = categoryId });
                 return true;
             }
@@ -227,15 +228,15 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId)
+        public IEnumerable<SubCategoryNotification> GetCategoryNotifications(int CustmerId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT c.AdId,cust.username,a.Img,a.title,c.Clicked,c.categoryId from [CategoryNotification] c " +
+                string sql = "SELECT c.AdId,cust.username,a.Img,a.title,c.Clicked,c.subcategoryId from [SubCategoryNotification] c " +
                     "join [Ad] a on (c.AdId =a.id) " +
                     "join [Customer] cust on (cust.id=c.CustomerId) where CustomerId=@Id order by c.id desc";
-                var categoryNotifications = conn.Query<CategoryNotification>(sql, new { Id = CustmerId }).ToList();
+                var categoryNotifications = conn.Query<SubCategoryNotification>(sql, new { Id = CustmerId }).ToList();
                 return categoryNotifications;
             }
             catch (SqlException sqlEx)
@@ -262,12 +263,12 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<int> GetSuscribedCategories(int CustmerId)
+        public IEnumerable<int> GetSuscribedSubCategories(int CustmerId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT categoryId from [SubscribedCategories] where CustomerId=@Id";
+                string sql = "SELECT categoryId from [SubscribedSubCategories] where CustomerId=@Id";
                 var wishListNotifications = conn.Query<int>(sql, new { Id = CustmerId }).ToList();
                 return wishListNotifications;
             }
@@ -361,13 +362,13 @@ namespace ApiOne.Repositories
             };
         }
 
-        public IEnumerable<AdFilter> GetCategories()
+        public IEnumerable<CategoryWithImg> GetCategories()
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "SELECT * from [Category]";
-                var categories = conn.Query<AdFilter>(sql).ToList();
+                var categories = conn.Query<CategoryWithImg>(sql).ToList();
                 return categories;
             }
             catch (SqlException sqlEx)
@@ -393,12 +394,12 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool RemoveFromSubscribedCategories(int CustomerId, int[] CatIds)
+        public bool RemoveFromSubscribedSubCategories(int CustomerId, int[] CatIds)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "DELETE FROM SubscribedCategories WHERE categoryId in @CatIds and customerId=@CustomerId";
+                string sql = "DELETE FROM SubscribedSubCategories WHERE categoryId in @CatIds and customerId=@CustomerId";
                 var result = conn.Execute(sql, new { CustomerId, CatIds });
                 return true;
             }
@@ -407,6 +408,22 @@ namespace ApiOne.Repositories
                 Debug.WriteLine(sqlEx);
                 return false;
             }
+        }
+
+        public IEnumerable<Subcategory> GetSubCategories(int SubId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "  SELECT * from [subcategory] WHERE Categoryid=@SubId";
+                var subCategories = conn.Query<Subcategory>(sql, new {SubId}).ToList();
+                return subCategories;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
     }
 }

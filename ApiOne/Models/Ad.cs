@@ -11,7 +11,7 @@ namespace ApiOne.Models
     public class Ad
     {
         [Required(ErrorMessage = "Id is required")]
-        [Range(1, 10000)]
+        [Range(1, 5000000)]
         public int Id { get; set; }
 
         //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
@@ -42,6 +42,9 @@ namespace ApiOne.Models
         [Required(ErrorMessage = "Manufacturer is required")]
         public int Manufacturer { get; set; }
 
+        [Required]
+        public int SubCategoryId { get; set; }
+
         [Range(1, 10000)]
         [Required(ErrorMessage = "Price is not null")]
         public int Price { get; set; }
@@ -56,7 +59,7 @@ namespace ApiOne.Models
         {
         }
 
-        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
+        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int subCategoryId, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
         {
             Id = id;
             Title = title;
@@ -66,6 +69,7 @@ namespace ApiOne.Models
             Category = category;
             Condition = condition;
             Manufacturer = manufacturer;
+            SubCategoryId = subCategoryId;
             Price = price;
             LastUpdate = lastUpdate;
             Reports = reports;

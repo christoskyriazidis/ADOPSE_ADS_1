@@ -13,7 +13,10 @@ namespace ApiOne.Models.Queries
         public string Type { get; set; }
 
         [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
-        public string Category { get; set; }
+        public string Category { get; set; } 
+        
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        public string SubCategory { get; set; }
 
         [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
         public string Manufacturer { get; set; }
@@ -30,6 +33,8 @@ namespace ApiOne.Models.Queries
         [RegularExpression(@"^[0-9a-zA-Z|]+$", ErrorMessage = "You can use only a-z| pattern")]
         public string Title { get; set; }
 
+        public int MaxPrice { get; set; } = 10000;
+        public int MinPrice { get; set; } = 0;
 
     }
 }
