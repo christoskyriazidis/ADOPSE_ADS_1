@@ -13,6 +13,7 @@ namespace ApiOne.Models.Ads
         public Pagination Params { get; set; }
         public IEnumerable<int> Type { get; set; }
         public IEnumerable<int> Category { get; set; }
+        public IEnumerable<int> SubCategory { get; set; }
         public IEnumerable<int> Manufacturer { get; set; }
         public IEnumerable<int> State { get; set; }
         public IEnumerable<int> Condition { get; set; }

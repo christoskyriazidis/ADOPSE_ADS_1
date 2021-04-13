@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Models
 {
-    public class CategoryNotification
+    public class SubCategoryNotification
     {
         public int AdId { get; set; }
         public string Username { get; set; }
