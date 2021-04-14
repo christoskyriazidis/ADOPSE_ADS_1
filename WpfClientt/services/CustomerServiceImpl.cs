@@ -63,8 +63,17 @@ namespace WpfClientt.services {
             return new GenericScroller<Customer>(client, 10, mainUrl);
         }
 
-        public Task Update(Customer customer) {
-            throw new NotImplementedException();
+        public async Task Update(Customer customer) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{mainUrl}/{customer.Id}");
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("name", customer.FirstName);
+            parameters.Add("lastName", customer.LastName);
+            parameters.Add("address", customer.Address);
+            FormUrlEncodedContent form = new FormUrlEncodedContent(parameters);
+            request.Content = form;
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
         }
 
         public async Task UpdateProfile(Customer profile) {
