@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfClientt.model;
 
 namespace WpfClientt.services {
     class CustomerServiceImpl : ICustomerService {
+
         private HttpClient client;
         private string mainUrl = ApiInfo.CustomerMainUrl();
 
@@ -15,29 +19,80 @@ namespace WpfClientt.services {
             this.client = client;
         }
 
-
-        public Task Create(Customer t) {
-            throw new NotImplementedException();
+        public async Task Create(Customer customer) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("username",customer.Username);
+            parameters.Add("address", customer.Address);
+            parameters.Add("name", customer.FirstName);
+            parameters.Add("lastName", customer.LastName);
+            request.Content = new FormUrlEncodedContent(parameters);
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
         }
 
-        public Task Delete(Customer t) {
-            throw new NotImplementedException();
+        public async Task Delete(Customer customer) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"{mainUrl}/{customer.Id}");
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
         }
 
         public Task<bool> Login(string username, string password) {
             throw new NotImplementedException();
         }
 
-        public Task<Customer> ReadById(long id) {
-            throw new NotImplementedException();
+        public async Task<Customer> Profile() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,ApiInfo.ProfileMainUrl());
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+                return await JsonSerializer.DeserializeAsync<Customer>(await response.Content.ReadAsStreamAsync());
+            }
+        }
+
+        public async Task<Customer> ReadById(long id) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{mainUrl}/{id}");
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+                return await JsonSerializer.DeserializeAsync<Customer>(await response.Content.ReadAsStreamAsync());
+            }
         }
 
         public IScroller<Customer> Scroller() {
             return new GenericScroller<Customer>(client, 10, mainUrl);
         }
 
-        public Task Update(Customer t) {
+        public Task Update(Customer customer) {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateProfile(Customer profile) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, ApiInfo.ProfileMainUrl());
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("name", profile.FirstName);
+            parameters.Add("lastName", profile.LastName);
+            parameters.Add("address", profile.Address);
+
+            request.Content = new FormUrlEncodedContent(parameters);
+
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
+
+        }
+
+        public async Task UpdateProfileImage(Stream image,string fileName) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put,$"{ApiInfo.ProfileMainUrl()}/image");
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            StreamContent imageContent = new StreamContent(image);
+            
+            content.Add(imageContent, "fileToUpload",fileName);
+            request.Content = content;
+
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
         }
     }
 }

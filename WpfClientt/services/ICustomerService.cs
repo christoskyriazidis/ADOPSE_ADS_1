@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using WpfClientt.model;
 
 namespace WpfClientt.services {
     public interface ICustomerService : IService<Customer>{
 
         Task<bool> Login(string username, string password);
+
+        Task<Customer> Profile();
+
+        Task UpdateProfileImage(Stream image, string fileName);
+
+        Task UpdateProfile(Customer profile);
 
     }
 }

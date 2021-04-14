@@ -11,5 +11,6 @@ namespace WpfClientt.services {
 
         IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder);
 
+        IScroller<Ad> ProfileAds();
     }
 }

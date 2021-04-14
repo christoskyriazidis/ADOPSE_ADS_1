@@ -37,6 +37,10 @@ namespace WpfClientt.services {
             return new GenericScroller<Ad>(client, 10, url);
         }
 
+        public IScroller<Ad> ProfileAds() {
+            throw new NotImplementedException();
+        }
+
         public async Task<Ad> ReadById(long id) {
             Stream stream = await client.GetStreamAsync($"{mainUrl}/{id}");
             Ad ad = await JsonSerializer.DeserializeAsync<Ad>(stream);

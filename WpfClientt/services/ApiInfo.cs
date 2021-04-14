@@ -15,6 +15,10 @@ namespace WpfClientt.services {
             return "https://localhost:44374/customer";
         }
 
+        public static string ProfileMainUrl() {
+            return "https://localhost:44374/profile";
+        }
+
         public static string CategoriesMainUrl() {
             return "https://localhost:44374/category";
         }
