@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 namespace WpfClientt.model {
     public sealed class Ad {
 
+        private string smallImageUri;
+
         [JsonPropertyName("id")]
         public long Id { get; set; }
 
@@ -34,7 +36,17 @@ namespace WpfClientt.model {
         public string Description { get; set; }
 
         [JsonPropertyName("img")]
-        public string Image { get; set; }
+        public string SmallImageUri { 
+            get {
+                return smallImageUri;
+            }
+            set {
+                smallImageUri = value;
+                FullImageUri = smallImageUri.Replace("small", "full");
+            }
+        }
+
+        public string FullImageUri { get; private set; }
 
         [JsonPropertyName("views")]
         public int Views { get; set; } = 0;
@@ -62,7 +74,7 @@ namespace WpfClientt.model {
             this.CategoryId = categoryId;
             this.Title = title;
             this.Description = description;
-            this.Image = imageUrl;
+            this.SmallImageUri = imageUrl;
             this.Views = views;
             this.Reports = reports;
         }
@@ -85,7 +97,7 @@ namespace WpfClientt.model {
 
         public override string ToString() {
             return $"Id={Id},StateId={StateId},TypeId={TypeId},ManufacturerId={ManufacturerId},ConditionId={ConditionId}," +
-                $"CategoryId={CategoryId},Title={Title},Description={Description},Img={Image},Reports={Reports},Views={Views}";
+                $"CategoryId={CategoryId},Title={Title},Description={Description},Img={SmallImageUri},Reports={Reports},Views={Views}";
         }
     }
 }
