@@ -29,6 +29,9 @@ namespace WpfClientt.services {
             request.Content = new FormUrlEncodedContent(parameters);
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
+                if(customer.ProfileImageUri != null) {
+                    await UpdateProfileImage(customer.ProfileImageUri.LocalPath);
+                }
             }
         }
 
@@ -65,12 +68,15 @@ namespace WpfClientt.services {
 
         public async Task Update(Customer customer) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{mainUrl}/{customer.Id}");
+
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("name", customer.FirstName);
             parameters.Add("lastName", customer.LastName);
             parameters.Add("address", customer.Address);
+
             FormUrlEncodedContent form = new FormUrlEncodedContent(parameters);
             request.Content = form;
+
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
             }

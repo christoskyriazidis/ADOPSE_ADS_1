@@ -12,5 +12,7 @@ namespace WpfClientt.services {
         IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder);
 
         IScroller<Ad> ProfileAds();
+
+        Task UpdateAdImage(string path,long id);
     }
 }

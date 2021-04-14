@@ -19,15 +19,38 @@ namespace WpfClientt.services {
             this.client = client;
         }
 
-        public Task Create(Ad ad) {
-            throw new NotImplementedException();
+        public async Task Create(Ad ad) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
+
+            IDictionary<string, string> parameteres = new Dictionary<string, string>() {
+                {"state", ad.StateId.ToString() },
+                {"type", ad.TypeId.ToString() },
+                {"manufacturer", ad.ManufacturerId.ToString() },
+                {"condition", ad.ConditionId.ToString() },
+                {"category", ad.CategoryId.ToString() },
+                {"title", ad.Title },
+                {"description", ad.Description },
+                {"customer", ad.CustomerId.ToString() },
+                {"price", ad.Price.ToString() }
+            };
+
+            FormUrlEncodedContent form = new FormUrlEncodedContent(parameteres);
+            request.Content = form;
+
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+                //TODO:set the id here
+                if(ad.ImageUri != null) {
+                    await UpdateAdImage(ad.ImageUri.LocalPath, ad.Id);
+                }
+            }
+
         }
 
         public async Task Delete(Ad ad) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"{mainUrl}/{ad.Id}");
-            HttpResponseMessage response =  await client.SendAsync(request);
-            if (!response.IsSuccessStatusCode) {
-                throw new ApplicationException("Unsuccessful delete request");
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
             }
         }
 
@@ -42,18 +65,65 @@ namespace WpfClientt.services {
         }
 
         public async Task<Ad> ReadById(long id) {
-            Stream stream = await client.GetStreamAsync($"{mainUrl}/{id}");
-            Ad ad = await JsonSerializer.DeserializeAsync<Ad>(stream);
-
-            return ad;
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{mainUrl}/{id}");
+            using ( HttpResponseMessage response = await client.SendAsync(request) ) {
+                response.EnsureSuccessStatusCode();
+                Stream stream = await response.Content.ReadAsStreamAsync();
+                return await JsonSerializer.DeserializeAsync<Ad>(stream);
+            }
         }
 
         public IScroller<Ad> Scroller() {
             return new GenericScroller<Ad>(client, 10, mainUrl);
         }
 
-        public Task Update(Ad ad) {
-            throw new NotImplementedException();
+        public async Task Update(Ad ad) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
+
+            IDictionary<string, string> parameteres = new Dictionary<string, string>() {
+                {"id", ad.Id.ToString() },
+                {"state", ad.StateId.ToString() },
+                {"type", ad.TypeId.ToString() },
+                {"manufacturer", ad.ManufacturerId.ToString() },
+                {"condition", ad.ConditionId.ToString() },
+                {"category", ad.CategoryId.ToString() },
+                {"title", ad.Title },
+                {"description", ad.Description },
+                {"price", ad.Price.ToString() }
+            };
+
+            request.Content = new FormUrlEncodedContent(parameteres);
+
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+                //TODO:check if image changed.If not,don't send the request.
+                await UpdateAdImage(ad.ImageUri.LocalPath, ad.Id);
+            }
+
+        }
+
+        public async Task UpdateAdImage(string path,long id) {
+            if (!File.Exists(path)) {
+                throw new FileNotFoundException("File not found at specified path : " + path);
+            }
+
+            MultipartFormDataContent form = new MultipartFormDataContent();
+
+            FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>() {
+                { "id",id.ToString()}
+            });
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{mainUrl}/image");
+
+            using (ByteArrayContent image = new ByteArrayContent(File.ReadAllBytes(path))) {
+                form.Add(content);
+                form.Add(image);
+                request.Content = form;
+                using(HttpResponseMessage response = await client.SendAsync(request)) {
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+
+            
         }
     }
 }
