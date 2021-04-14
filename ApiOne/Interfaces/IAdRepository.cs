@@ -12,7 +12,7 @@ namespace ApiOne.Interfaces
     public interface IAdRepository
     {
         AdsWithPagination GetAds(Pagination adParameters);
-        AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params);
+        //AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params);
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
         public bool UpdateAdImg(int adId);

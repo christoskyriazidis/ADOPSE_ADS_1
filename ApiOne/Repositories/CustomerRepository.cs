@@ -21,8 +21,8 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT id,username,profileImg,rating FROM [Customer]";
-                var customers = conn.Query<CustomerDetails>(sql).FirstOrDefault();
+                string sql = "SELECT * from [Customer] WHERE id=@Id";
+                var customers = conn.Query<CustomerDetails>(sql,new { id}).FirstOrDefault();
                 return customers;
             }
             catch (SqlException sqlEx)
@@ -102,7 +102,7 @@ namespace ApiOne.Repositories
             {
                 string profileImg = $"https://localhost:44374/images/Profile/{customerId}.png";
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "UPDATE [Customer] SET profileImg=@profileImg where id =@Id";
+                string sql = "UPDATE [Customer] SET profileImg=@profileImg where id=@Id";
                 var rows = conn.Execute(sql, new { profileImg ,Id=customerId});
                 //true false analogos ta rows pou alaksan
                 return (rows == 1);

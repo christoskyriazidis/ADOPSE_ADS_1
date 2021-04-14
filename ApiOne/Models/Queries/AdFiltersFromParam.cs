@@ -12,29 +12,28 @@ namespace ApiOne.Models.Queries
         [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
         public string Type { get; set; }
 
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)")]
         public string Category { get; set; } 
         
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)")]
         public string SubCategory { get; set; }
 
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)")]
         public string Manufacturer { get; set; }
 
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)")]
         public string State { get; set; }
 
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)", ErrorMessage = "You can use only 1_2_3 pattern")]
+        [RegularExpression(@"(^([0-9]_)+[0-9]{1}$)|(^[0-9]$)")]
         public string Condition { get; set; }
 
-        [RegularExpression(@"^[a-zA-Z|]+$", ErrorMessage = "You can use only a-z| pattern")]
-        public string Description { get; set; }
-
-        [RegularExpression(@"^[0-9a-zA-Z|]+$", ErrorMessage = "You can use only a-z| pattern")]
         public string Title { get; set; }
 
-        public int MaxPrice { get; set; } = 10000;
-        public int MinPrice { get; set; } = 0;
+        [RegularExpression(@"^[0-9]+$")]
+        public int MaxPrice { get; set; } = 100000;
+
+        [RegularExpression(@"^[0-9]+$")]
+        public int MinPrice { get; set; } = 1;
 
     }
 }

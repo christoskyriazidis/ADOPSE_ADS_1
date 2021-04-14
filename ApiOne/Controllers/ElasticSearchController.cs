@@ -6,6 +6,7 @@ using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ApiOne.Controllers
@@ -13,7 +14,7 @@ namespace ApiOne.Controllers
     public class ElasticSearchController : Controller
     {
         [HttpGet]
-        [Route("/ad/search")]
+        [Route("/ad")]
         public IActionResult SearchWithFilters([FromQuery] AdFiltersFromParam paramTypeFilter, Pagination pagination)
         {
             //if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category) && string.IsNullOrEmpty(paramTypeFilter.Title) && string.IsNullOrEmpty(paramTypeFilter.Description))
@@ -49,6 +50,7 @@ namespace ApiOne.Controllers
                             .LessThanOrEquals(paramTypeFilter.MaxPrice)
                     )
                 &&
+                (
                     q.Terms(t => t
                         .Field(f => f.Type)
                         .Terms(adFiltersFromParamClient.Type)
@@ -63,7 +65,9 @@ namespace ApiOne.Controllers
                         .Field(f => f.Condition)
                         .Terms(adFiltersFromParamClient.Condition)
                         )
+                    )
                  &&
+                 (
                     q.Regexp(r => r
                         .Field(f => f.Title)
                         .Value(paramTypeFilter.Title)
@@ -71,8 +75,9 @@ namespace ApiOne.Controllers
                 ||
                     q.Regexp(r => r
                         .Field(f => f.Description)
-                        .Value(paramTypeFilter.Description)
+                        .Value(paramTypeFilter.Title)
                         )
+                    )
                 )
             );
 
@@ -84,6 +89,7 @@ namespace ApiOne.Controllers
                             .LessThanOrEquals(paramTypeFilter.MaxPrice)
                     )
                 &&
+                (
                     q.Terms(t => t
                         .Field(f => f.Type)
                         .Terms(adFiltersFromParamClient.Type)
@@ -98,7 +104,9 @@ namespace ApiOne.Controllers
                         .Field(f => f.Condition)
                         .Terms(adFiltersFromParamClient.Condition)
                         )
+                    )
                  &&
+                 (
                     q.Regexp(r => r
                         .Field(f => f.Title)
                         .Value(paramTypeFilter.Title)
@@ -106,19 +114,48 @@ namespace ApiOne.Controllers
                 ||
                     q.Regexp(r => r
                         .Field(f => f.Description)
-                        .Value(paramTypeFilter.Description)
+                        .Value(paramTypeFilter.Title)
                         )
+                    )
                 )    
             );
 
             var queryDocsCount = elasticResponseCount.Count;
 
-            var response = new {
-                size= queryDocsCount,
-                firstPage=1,
-                lastPage= (queryDocsCount % pagination.PageSize==0)? queryDocsCount/pagination.PageSize: queryDocsCount/pagination.PageSize+1,
-                ads=elasticResponse.Documents};
-            return Ok(response);
+            var urlFilters = "";
+            //loop through se ka8e property gia na gemise to front object
+            foreach (var prop in paramTypeFilter.GetType().GetProperties())
+            {
+                var value = prop.GetValue(paramTypeFilter, null);
+                if (value != null && prop.Name != "Title" && prop.Name != "MaxPrice" && prop.Name != "MinPrice")
+                {
+                    //pattern  type=1_2_3&category=1_2_3
+                    urlFilters += $"{prop.Name}={value}&";
+                    var stringFilter = value.ToString().Length > 2 ? value.ToString().Split("_") : value.ToString().Split("_");
+                    var intArrayFilter = stringFilter.Select(Int32.Parse).ToList();
+                }
+                else if(value!=null)
+                {
+                    var encoded = WebUtility.UrlEncode(value.ToString());
+                    urlFilters += $"{prop.Name}={encoded}&";
+                }
+            }
+
+
+            AdsWithPagination adsWithPagination = new AdsWithPagination();
+            adsWithPagination.PageSize = pagination.PageSize;
+            adsWithPagination.CurrentPage = pagination.PageNumber;
+            adsWithPagination.TotalAds = queryDocsCount;
+            long lastPageNumber = (queryDocsCount % pagination.PageSize == 0) ? queryDocsCount / pagination.PageSize : queryDocsCount / pagination.PageSize + 1;
+            adsWithPagination.TotalPages = lastPageNumber;
+            adsWithPagination.LastPageUrl = $"https://localhost:44374/ad?{urlFilters}PageNumber={lastPageNumber}&PageSize={pagination.PageSize}";
+            long nextPageNumber = (pagination.PageNumber == lastPageNumber) ? lastPageNumber : pagination.PageNumber + 1;
+            long previousPageNumber = (pagination.PageNumber < 2) ? 1 : pagination.PageNumber - 1;
+            adsWithPagination.PreviousPageUrl= $"https://localhost:44374/ad?{urlFilters}PageNumber={previousPageNumber}&PageSize={pagination.PageSize}";
+            adsWithPagination.NextPageUrl= $"https://localhost:44374/ad?{urlFilters}PageNumber={nextPageNumber}&PageSize={pagination.PageSize}";
+            adsWithPagination.Result = elasticResponse.Documents;
+
+            return Ok(adsWithPagination);
         }
     }
 }

@@ -11,14 +11,14 @@ namespace ApiOne.Models.Ads
     {
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
-        public int TotalAds { get; set; }
-        public int TotalPages { get; set; }
+        public long TotalAds { get; set; }
+        public long TotalPages { get; set; }
         public string NextPageUrl { get; set; }
         public string PreviousPageUrl { get; set; }
         public string LastPageUrl { get; set; }
-        public List<Ad> Result { get; set; }
+        public IEnumerable<CompleteAd> Result { get; set; }
 
-        public AdsWithPagination(int pageSize, int currentPage, int totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<Ad> result)
+        public AdsWithPagination(int pageSize, int currentPage, long totalAds, int totalPages, string nextPageUrl, string previousPageUrl, string lastPageUrl, List<CompleteAd> result)
         {
             PageSize = pageSize;
             CurrentPage = currentPage;

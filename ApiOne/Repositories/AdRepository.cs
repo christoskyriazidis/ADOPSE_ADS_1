@@ -83,35 +83,35 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdsWithPagination GetAds(Pagination adParameters)
-        {
-            try
-            { 
-                using var conn = ConnectionManager.GetSqlConnection();
-                string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
-                AdsWithPagination adPagination = new AdsWithPagination();
-                using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
-                {
-                    adPagination.Result = results.Read<Ad>().ToList();
-                    adPagination.TotalAds = results.Read<int>().FirstOrDefault();
-                };
-                int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
-                adPagination.PageSize = adParameters.PageSize;
-                adPagination.CurrentPage = adParameters.PageNumber;
-                int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1; 
-                adPagination.NextPageUrl= $"https://localhost:44374/ad?PageNumber={nextPageNumber}&PageSize={adParameters.PageSize}";
-                int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
-                adPagination.PreviousPageUrl = $"https://localhost:44374/ad?PageNumber={previousPageNumber}&PageSize={adParameters.PageSize}";
-                adPagination.LastPageUrl= $"https://localhost:44374/ad?PageNumber={lastPageNumber}&PageSize={adParameters.PageSize}"; ;
-                adPagination.TotalPages = lastPageNumber;
-                return adPagination;
-            }
-            catch (SqlException sqlEx)
-            {
-                Debug.WriteLine(sqlEx);
-                return null;
-            }
-        }
+        //public AdsWithPagination GetAds(Pagination adParameters)
+        //{
+        //    try
+        //    { 
+        //        using var conn = ConnectionManager.GetSqlConnection();
+        //        string sql = "EXEC getAdByPage @PageNumber,@PageSize;SELECT count(*)as AdCount FROM [Ad] ";
+        //        AdsWithPagination adPagination = new AdsWithPagination();
+        //        using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, adParameters.PageSize }))
+        //        {
+        //            adPagination.Result = results.Read<Ad>().ToList();
+        //            adPagination.TotalAds = results.Read<int>().FirstOrDefault();
+        //        };
+        //        int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize==0)? adPagination.TotalAds / adParameters.PageSize: adPagination.TotalAds / adParameters.PageSize+1;
+        //        adPagination.PageSize = adParameters.PageSize;
+        //        adPagination.CurrentPage = adParameters.PageNumber;
+        //        int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1; 
+        //        adPagination.NextPageUrl= $"https://localhost:44374/ad?PageNumber={nextPageNumber}&PageSize={adParameters.PageSize}";
+        //        int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
+        //        adPagination.PreviousPageUrl = $"https://localhost:44374/ad?PageNumber={previousPageNumber}&PageSize={adParameters.PageSize}";
+        //        adPagination.LastPageUrl= $"https://localhost:44374/ad?PageNumber={lastPageNumber}&PageSize={adParameters.PageSize}"; ;
+        //        adPagination.TotalPages = lastPageNumber;
+        //        return adPagination;
+        //    }
+        //    catch (SqlException sqlEx)
+        //    {
+        //        Debug.WriteLine(sqlEx);
+        //        return null;
+        //    }
+        //}
 
         // na dw ta gamimena kleidia, mallon cascade h kati tetoio
         public bool DeleteAd(int id)
@@ -424,6 +424,11 @@ namespace ApiOne.Repositories
                 Debug.WriteLine(sqlEx);
                 return null;
             };
+        }
+
+        public AdsWithPagination GetAds(Pagination adParameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }

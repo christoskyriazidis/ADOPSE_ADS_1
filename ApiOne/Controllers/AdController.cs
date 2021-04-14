@@ -41,23 +41,23 @@ namespace ApiOne.Controllers
         //no authorize gia na vlepoun oi episkeptes
         //valid query String (value < 1) ? 1 : value; pageSize = (value > maxPageSize||value<5) ? maxPageSize : value;
         //[Authorize]
-        [HttpGet]
-        [Route("/ad")]
-        [Produces("application/json")]
-        public IActionResult GetAds([FromQuery] Pagination adParameters)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { error = "Ads Out of range" });
-            }
-            var ads = _adRepository.GetAds(adParameters);
-            if (ads.Result == null||ads.Result.Count==0||ads.TotalAds<1)
-            {
-                return BadRequest(new { error = "Ads Out of range" });
-            }
-            //Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
-            return Json(ads);
-        }
+        //[HttpGet]
+        //[Route("/ad")]
+        //[Produces("application/json")]
+        //public IActionResult GetAds([FromQuery] Pagination adParameters)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(new { error = "Ads Out of range" });
+        //    }
+        //    var ads = _adRepository.GetAds(adParameters);
+        //    if (ads.Result == null||ads.Result.Count==0||ads.TotalAds<1)
+        //    {
+        //        return BadRequest(new { error = "Ads Out of range" });
+        //    }
+        //    //Response.Headers.Add("Ad-Pagination", JsonConvert.SerializeObject(pagination));
+        //    return Json(ads);
+        //}
 
         //no authorize gia na vlepoun oi episkeptes
         [HttpGet]
@@ -111,7 +111,7 @@ namespace ApiOne.Controllers
 
             string[] titles = { "eimai ena ad","megalo ad","oti nane ad","den kserw","kserw den ad","kalimera", "kalinixta"};
             string[] descriptions = { "eimai ena description", "description description ad", "oti nane description", "den kserw", "kserw den description", "kalimera", "kalinixta"};
-            for(int i = 0; i < 100000; i++)
+            for(int i = 0; i < 200000; i++)
             {
 
             ad.Category = rnd.Next(1,4);
@@ -163,42 +163,42 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("/filter")]
-        public IActionResult Testt([FromQuery] AdFiltersFromParam paramTypeFilter,[FromQuery] Pagination adParameters)
-        {
-            if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
-            {
-                return BadRequest(new { error = "you should use at least one filter"});
-            }
-            if (!ModelState.IsValid)
-            {
-                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(allErrors);
-            }
-            AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack();
-            string filterBox ="";
-            foreach (var prop in paramTypeFilter.GetType().GetProperties())
-            {
-                var value = prop.GetValue(paramTypeFilter, null);
-                if (value != null)
-                {
-                    String[] filterArray = value.ToString().Split("_").ToArray();
-                    string sqlIn = String.Join(",", filterArray);
-                    string last =$"{prop.Name} IN ({sqlIn})";
-                    adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, value.ToString());
-                    filterBox += $"{last} or ";
-                }
-            }
-            //vgazoume to teleuaio or... :)
-            adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 3);
-            var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack,adParameters);
-            if (filteredAds.Ads.Count < 1)
-            {
-                return Json(new { result="There are still no ads with current filters",filters=paramTypeFilter });
-            }
-            return Json(filteredAds);
-        }
+        //[HttpGet]
+        //[Route("/filter")]
+        //public IActionResult Testt([FromQuery] AdFiltersFromParam paramTypeFilter,[FromQuery] Pagination adParameters)
+        //{
+        //    if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
+        //    {
+        //        return BadRequest(new { error = "you should use at least one filter"});
+        //    }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+        //        return BadRequest(allErrors);
+        //    }
+        //    AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack();
+        //    string filterBox ="";
+        //    foreach (var prop in paramTypeFilter.GetType().GetProperties())
+        //    {
+        //        var value = prop.GetValue(paramTypeFilter, null);
+        //        if (value != null)
+        //        {
+        //            String[] filterArray = value.ToString().Split("_").ToArray();
+        //            string sqlIn = String.Join(",", filterArray);
+        //            string last =$"{prop.Name} IN ({sqlIn})";
+        //            adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, value.ToString());
+        //            filterBox += $"{last} or ";
+        //        }
+        //    }
+        //    //vgazoume to teleuaio or... :)
+        //    adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 3);
+        //    var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack,adParameters);
+        //    if (filteredAds.Ads.Count < 1)
+        //    {
+        //        return Json(new { result="There are still no ads with current filters",filters=paramTypeFilter });
+        //    }
+        //    return Json(filteredAds);
+        //}
 
         
 
