@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 namespace WpfClientt.model {
     public sealed class Ad {
 
-        private string smallImageUri;
-
         [JsonPropertyName("id")]
         public long Id { get; set; }
 
@@ -35,18 +33,9 @@ namespace WpfClientt.model {
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
+        [JsonConverter(typeof(JsonStringToUriConverter))]
         [JsonPropertyName("img")]
-        public string SmallImageUri { 
-            get {
-                return smallImageUri;
-            }
-            set {
-                smallImageUri = value;
-                FullImageUri = smallImageUri.Replace("small", "full");
-            }
-        }
-
-        public string FullImageUri { get; private set; }
+        public Uri ImageUri { get; set; }
 
         [JsonPropertyName("views")]
         public int Views { get; set; } = 0;
@@ -65,7 +54,7 @@ namespace WpfClientt.model {
         }
 
         public Ad(long id, long stateId, long typeId, long manufacturerId, long conditionId, 
-            long categoryId, string title, string description, string imageUrl, int views, int reports) {
+            long categoryId, string title, string description, Uri imageUri, int views, int reports) {
             this.Id = id;
             this.StateId = stateId;
             this.TypeId = typeId;
@@ -74,7 +63,7 @@ namespace WpfClientt.model {
             this.CategoryId = categoryId;
             this.Title = title;
             this.Description = description;
-            this.SmallImageUri = imageUrl;
+            this.ImageUri = imageUri;
             this.Views = views;
             this.Reports = reports;
         }
@@ -97,7 +86,7 @@ namespace WpfClientt.model {
 
         public override string ToString() {
             return $"Id={Id},StateId={StateId},TypeId={TypeId},ManufacturerId={ManufacturerId},ConditionId={ConditionId}," +
-                $"CategoryId={CategoryId},Title={Title},Description={Description},Img={SmallImageUri},Reports={Reports},Views={Views}";
+                $"CategoryId={CategoryId},Title={Title},Description={Description},Img={ImageUri},Reports={Reports},Views={Views}";
         }
     }
 }

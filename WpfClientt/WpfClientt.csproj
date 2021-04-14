@@ -144,6 +144,7 @@
     </ApplicationDefinition>
     <Compile Include="model\Ad.cs" />
     <Compile Include="model\Customer.cs" />
+    <Compile Include="model\JsonStringToUriConverter.cs" />
     <Compile Include="model\Mapping.cs" />
     <Compile Include="services\AdServiceImpl.cs" />
     <Compile Include="services\filtering\AdsFilterBuilder.cs" />
