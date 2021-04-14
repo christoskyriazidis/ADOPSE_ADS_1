@@ -18,9 +18,8 @@ class NavbarComponent extends HTMLElement {
         switch (this.logged) {
             case "true": {
                 listItems = `
-                    <li><button style="" onclick="signOut()" >signOut</button></li>
-                    <li><a class="hide" href="#">My account</a></li>
-                    <li><a href="#" onclick="attachWishlist(event)" class="wishlist">wishlist</a></li>
+                    <li><a  href="#" class="my-account" onclick="attachMyAccountDropdown(event)">My Account</a></li>
+                    <li><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
                     <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
                     <li><a href="#" class="hide">Chats</a></li>
                 `
@@ -46,7 +45,7 @@ class NavbarComponent extends HTMLElement {
         <nav>
         <div class="primary-nav">
             <div class="brandLogo">
-                <h1>awesome brand logo</h1>
+            <a href="/home/index.html"></a>
             </div>
             <div class="navListContainer">
                 <ul class="loggedIn hidden">
@@ -61,15 +60,25 @@ class NavbarComponent extends HTMLElement {
                     <div class="vl"> </div>
                     <li><a href="/home/search/index.html">Ads</a></li>
                     <div class="vl"> </div>
-                    <li><a href="">Categories</a></li>
+                    <li><a href="/home/categories/index.html">Categories</a></li>
                     <div class="vl"> </div>
-                    <li><a href="">About</a></li>
+                    <li><a href="/home/sellers/index.html">Sellers</a></li>
+                    <div class="vl"> </div>
+                    <li><a href="/home/about/index.html">About</a></li>
                     <div class="vl"> </div>
                 </ul>
             </div>
         </div>
     </nav>
-
+    <div class="my-account-dropdown fresh">
+        <ul>
+            <li><a href="/home/profile/index.html?id=me">My profile</a></li>
+            <li><a href="/home/profile/myAds/index.html">My ads</a></li>
+            <li><a href="/home/profile/addAd/index.html">Create an ad</a></li>
+            <li><a href="#">Account settings</a></li>
+            <li><a href="#" onclick="signOut()">Logout</a></li>
+        </ul>
+        </div>
         `
     }
 
@@ -80,7 +89,7 @@ const attachWishlist = (event) => {
     if (!document.querySelector("wishlist-component")) {
         let wishlist = document.createElement("wishlist-component")
         document.querySelector("navbar-component").appendChild(wishlist);
-        
+
         document.body.addEventListener("click", (event) => {
             if (!((
                 event.pageY > wishlistComponent.offsetTop &&
@@ -104,11 +113,40 @@ const attachWishlist = (event) => {
 
 
 }
+const attachMyAccountDropdown = (event) => {
+
+
+    if (document.querySelector(".my-account-dropdown").classList.contains("fresh")) {
+        document.querySelector(".my-account-dropdown").classList.remove("fresh")
+        document.querySelector(".my-account-dropdown")
+        document.body.addEventListener("click", (event) => {
+            if (!((
+                event.pageY > myAccountDropdown.offsetTop &&
+                event.pageY < myAccountDropdown.offsetTop + myAccountDropdown.offsetHeight &&
+                event.pageX < myAccountDropdown.offsetLeft + myAccountDropdown.offsetWidth &&
+                event.pageX > myAccountDropdown.offsetLeft)
+                || event.target.classList.contains("my-account"))) {
+                   document.querySelector(".my-account-dropdown").style.display = 'none'
+            }
+        })
+
+    } else {
+        document.querySelector(".my-account-dropdown").style.display = "block";
+    }
+    let x = document.querySelector(".my-account").getBoundingClientRect().left;
+    let y = document.querySelector(".my-account").getBoundingClientRect().bottom;
+    const myAccountDropdown = document.querySelector(".my-account-dropdown");
+    myAccountDropdown.style.display = "block";
+    myAccountDropdown.style.left = x + 'px';
+    myAccountDropdown.style.top = y + 'px';
+
+
+}
 const attachNotifications = (event) => {
-  
+
 
     if (!document.querySelector("notification-component")) {
-       
+
         let notification = document.createElement("notification-component")
         document.querySelector("navbar-component").appendChild(notification);
         document.body.addEventListener("click", (event) => {
@@ -118,7 +156,7 @@ const attachNotifications = (event) => {
                 event.pageX < notificationComponent.offsetLeft + notificationComponent.offsetWidth &&
                 event.pageX > notificationComponent.offsetLeft)
                 || event.target.classList.contains("notification"))) {
-                    notification.style.display = 'none'
+                notification.style.display = 'none'
             }
         })
 
@@ -135,4 +173,5 @@ const attachNotifications = (event) => {
 
 
 }
+const myAccountDropdown = ``
 customElements.define("navbar-component", NavbarComponent)

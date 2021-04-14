@@ -51,7 +51,7 @@ namespace ApiOne.Controllers
                 return BadRequest(new { error = "Ads Out of range" });
             }
             var ads = _adRepository.GetAds(adParameters);
-            if (ads.Ads == null||ads.Ads.Count==0||ads.TotalAds<1)
+            if (ads.Result == null||ads.Result.Count==0||ads.TotalAds<1)
             {
                 return BadRequest(new { error = "Ads Out of range" });
             }
@@ -93,13 +93,39 @@ namespace ApiOne.Controllers
             int result = _adRepository.InsertAd(ad);
             switch (result)
             {
-                case -2: return Json(new { error = "something went wrong with ad creation! " });
+                case -2: return BadRequest(new { error = "something went wrong with ad creation! " });
                 case -1: return Json(new { success = "ad Added successfully created.! with default img!" });
                 case > 0:
                     SingleFileUpload(ad.Img, result);
                     return Json(new { success = "ad Added successfully created.! with users img!" });
                 default: return Json(new { error = "something went wrong with ad creation! " });
             }
+        }
+
+        [HttpGet]
+        [Route("/ox")]
+        public IActionResult testt()
+        {
+            CreateAd ad = new CreateAd();
+            Random rnd = new Random();
+
+            string[] titles = { "eimai ena ad","megalo ad","oti nane ad","den kserw","kserw den ad","kalimera", "kalinixta"};
+            string[] descriptions = { "eimai ena description", "description description ad", "oti nane description", "den kserw", "kserw den description", "kalimera", "kalinixta"};
+            for(int i = 0; i < 100000; i++)
+            {
+
+            ad.Category = rnd.Next(1,4);
+            ad.SubCategoryId = rnd.Next(9, 20);
+            ad.Condition = rnd.Next(1,2);
+            ad.Manufacturer = rnd.Next(1,10);
+            ad.Price = rnd.Next(1, 1000);
+            ad.Title = titles[rnd.Next(0,6)];
+            ad.Type = rnd.Next(1, 3);
+            ad.Description = descriptions[rnd.Next(0, 6)];
+            ad.Customer = rnd.Next(3, 15);
+            int result = _adRepository.InsertAd(ad);
+            }
+            return Ok();
         }
 
         [HttpPut]
@@ -241,11 +267,40 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "kati pige la8os me ta manufacturers" });
         }
 
+        [HttpGet]
+        [Route("/category/{id}")]
+        [Produces("application/json")]
+        public IActionResult GetSubCategories(int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest(new { error = "wrong subId" });
+            }
+            var subCategories = _adRepository.GetSubCategories(id);
+            if (subCategories != null)
+            {
+                return Json(subCategories);
+            }
+            return BadRequest(new { error= "something went wrong with SubCategories" });
+        }
+
         //[Authorize]
         [HttpPut]
         [Route("/ad/image")]
         public IActionResult UpdateImage(IFormFile img,int adId)
         {
+            if (img == null)
+            {
+                return BadRequest(new { error = "Image cannot be null(den exeis dialeksei)" });
+            }
+            else if (img.ContentType != "image/png" && img.ContentType != "image/jpeg" && img.ContentType != "image/jpg")
+            {
+                return BadRequest(new { error = "Wrong file type (png/jpeg/jpg)" });
+            }
+            else if (img.Length > 3145728)
+            {
+                return BadRequest(new { error = "File is too big (max 3mb)" });
+            }
             SingleFileUpload(img, adId);
             if (_adRepository.UpdateAdImg(adId))
             {
@@ -254,16 +309,8 @@ namespace ApiOne.Controllers
             return BadRequest(new {error="something went wrong with img update" });
         }
 
-        public IActionResult SingleFileUpload(IFormFile file,int adId)
-        {
-            if (file.Length > 3145728)
-            {
-                return BadRequest(new { error = "File is too big (max 3mb)" });
-            }
-            if (file.ContentType != "image/png" && file.ContentType != "image/jpeg" && file.ContentType != "image/jpg")
-            {
-                return BadRequest(new { error = "Wrong file type" });
-            }
+        public void SingleFileUpload(IFormFile file,int adId)
+        { 
             var dir = _env.ContentRootPath;
             var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small",$"{adId}.png");
             using var image = Image.Load(file.OpenReadStream());
@@ -273,9 +320,7 @@ namespace ApiOne.Controllers
             using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
             {
                 file.CopyTo(fileStream);
-                
             }
-            return Ok();
         }
 
 
@@ -290,76 +335,6 @@ namespace ApiOne.Controllers
             }
             return Ok();
         }
-
-        [Route("/yes")]
-        public IActionResult SearchWithFilters([FromQuery] AdFiltersFromParam paramTypeFilter, Pagination pagination)
-        {
-            //if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category) && string.IsNullOrEmpty(paramTypeFilter.Title) && string.IsNullOrEmpty(paramTypeFilter.Description))
-            //{
-            //    return BadRequest(new { error = "you should use at least one filter" });
-            //}
-            if (!ModelState.IsValid)
-            {
-                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(allErrors);
-            }
-            AdFiltersFromParamClient adFiltersFromParamClient = new AdFiltersFromParamClient(pagination);
-            foreach (var prop in paramTypeFilter.GetType().GetProperties())
-            {
-                var value = prop.GetValue(paramTypeFilter, null);
-                if (value != null && prop.Name != "Title" && prop.Name != "Description")
-                {
-                    var filterArray = value.ToString().Split("_");
-                    var filterIntArray = filterArray.Select(Int32.Parse).ToList();
-                    adFiltersFromParamClient.GetType().GetProperty(prop.Name).SetValue(adFiltersFromParamClient, filterIntArray);
-                }
-            }
-
-            var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-                .DefaultIndex("ads");
-
-            var client = new ElasticClient(settings);
-
-            var searchRequest = new SearchRequest<CompleteAd>
-            {
-                Query = new MatchAllQuery(),
-            };
-
-            var searchResponse11 = client.Search<CompleteAd>(s => s
-           .Size(100)
-               .Query(q => q
-                .Regexp(r => r
-                        .Field(f => f.Title)
-                        .Value($"{paramTypeFilter.Title}")
-                    )
-                ||
-                    q.Regexp(r => r
-                        .Field(f => f.Description)
-                        .Value($"{paramTypeFilter.Description}")
-                        )
-                &&
-
-                    q.Terms(t => t
-                        .Field(f => f.Manufacturer)
-                        .Terms<int>(adFiltersFromParamClient.Manufacturer)
-                    )
-                &&
-                    q.Range(r => r.
-                        Field(f => f.Price)
-                        .GreaterThanOrEquals(0)
-                        .LessThanOrEquals(1000)
-                        )
-                &&
-                q.Terms(t => t
-                        .Field(f => f.Type)
-                        .Terms<int>(adFiltersFromParamClient.Type)
-                    )
-                )
-          );
-
-            return Ok(searchResponse11);
-        }
-
 
     }
 }

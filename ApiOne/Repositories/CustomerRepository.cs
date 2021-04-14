@@ -41,7 +41,7 @@ namespace ApiOne.Repositories
                 CustomersWithPagination customersWithPagination = new CustomersWithPagination();
                 using (var results = conn.QueryMultiple(sql, new { pagination.PageNumber, pagination.PageSize }))
                 {
-                    customersWithPagination.Customers = results.Read<CustomerDetails>().ToList();
+                    customersWithPagination.Result = results.Read<CustomerDetails>().ToList();
                     customersWithPagination.TotalCustomers = results.Read<int>().FirstOrDefault();
                 };
                 customersWithPagination.CurrentPage = pagination.PageNumber;
@@ -75,6 +75,42 @@ namespace ApiOne.Repositories
             {
                 Debug.WriteLine(sqlEx);
                 return null;
+            }
+        }
+
+        public bool UpdateProfile(CustomerDetails customerDetails)
+        {
+            try
+            {
+                //id
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "  UPDATE [Customer] SET Name=@Name,LastName=@LastName,Address=@Address where id =@Id";
+                var rows = conn.Execute(sql,customerDetails);
+                //true false analogos ta rows pou alaksan
+                return (rows == 1);
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
+        public bool UpdateProfileImage(int customerId)
+        {
+            try
+            {
+                string profileImg = $"https://localhost:44374/images/Profile/{customerId}.png";
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "UPDATE [Customer] SET profileImg=@profileImg where id =@Id";
+                var rows = conn.Execute(sql, new { profileImg ,Id=customerId});
+                //true false analogos ta rows pou alaksan
+                return (rows == 1);
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
             }
         }
     }

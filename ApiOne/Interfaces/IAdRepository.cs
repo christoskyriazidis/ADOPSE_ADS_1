@@ -23,14 +23,15 @@ namespace ApiOne.Interfaces
         bool RemoveFromWishList(int customerId, int[] AdIds);
         bool AddToWishList(int adId, int customerId);
 
-        bool SubscribeToCategory(int categoryId, int customerId);
-        bool RemoveFromSubscribedCategories(int CustomerId, int[] CatIds);
+        bool SubscribeToSubCategory(int categoryId, int customerId);
+        bool RemoveFromSubscribedSubCategories(int CustomerId, int[] CatIds);
 
-        IEnumerable<int> GetSuscribedCategories(int CustmerId);
-        IEnumerable<CategoryNotification> GetCategoryNotifications(int CustmerId);
+        IEnumerable<int> GetSuscribedSubCategories(int CustmerId);
+        IEnumerable<Subcategory> GetSubCategories(int SubId);
+        IEnumerable<SubCategoryNotification> GetCategoryNotifications(int CustmerId);
         IEnumerable<WishList> GetWishList(int CustmerId);
         IEnumerable<WishListNotification> GetWishListNotifications(int CustmerId);
-        IEnumerable<AdFilter> GetCategories();
+        IEnumerable<CategoryWithImg> GetCategories();
         IEnumerable<AdFilter> GetConditions();
         IEnumerable<AdFilter> GetManufacturers();
         IEnumerable<AdFilter> GetStates();

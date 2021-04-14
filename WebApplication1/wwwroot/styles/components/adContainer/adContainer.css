@@ -16,6 +16,12 @@ body {
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .adContainer .itemData {
@@ -93,6 +99,21 @@ body {
 
 .adContainer .itemData a .itemInfo span {
   margin-top: 10px;
+}
+
+.adContainer button {
+  width: 40%;
+  margin-bottom: 10px;
+  background-color: transparent;
+  border: 2px solid #7bb6f1ad;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.adContainer button a {
+  padding: 5px;
+  text-decoration: none;
+  color: black;
 }
 
 .adContainer .sellerData {

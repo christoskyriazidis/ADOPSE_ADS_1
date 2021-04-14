@@ -1,5 +1,6 @@
 ﻿using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -39,35 +40,84 @@ namespace ApiOne.Controllers
             {
                 return BadRequest(new { error = "Ads Out of range" });
             }
-            var customers = _customerRepo.GetCustomers(pagination);
-            if (customers==null)
+            var result = _customerRepo.GetCustomers(pagination);
+            if (result == null)
             {
                 return BadRequest(new { error = "customer Out of range" });
             }
-            return Json(customers);
+            return Json(result);
         }
         
         [HttpGet]
         [Route("/customer/{id}")]
         public IActionResult GetCustomer(int id)
         {
-            var customer = _customerRepo.GetCustomer(id);
-            if (customer==null)
+            var result = _customerRepo.GetCustomer(id);
+            if (result == null)
             {
                 return BadRequest(new { error = "wrong customer id" });
             }
-            return Json(customer);
+            return Json(result);
         }
 
-
-
-
+        //[Authorize]
         [HttpGet]
         [Route("/profile")]
         public IActionResult GetProfile()
         {
             int cid = 3;
             return Json(_customerRepo.GetMyProfileInfo(cid));
+        }
+
+        [HttpPut]
+        [Consumes("application/json")]
+        [Route("/profile")]
+        public IActionResult UpdateProfile([FromBody] CustomerDetails customerDetails)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //id
+            if (_customerRepo.UpdateProfile(customerDetails)) return Json(new {message="Profile Updated Succesfully" });
+            else return BadRequest(new { message = "Something went wrong (profile update)" });
+        }
+
+        [HttpPut]
+        [Route("/profile/image")]
+        public IActionResult UpdateProfileImage([FromForm] IFormFile img)
+        {
+            if(img == null)
+            {
+                return BadRequest(new { error = "Image cannot be null(den exeis dialeksei)" });
+            }
+            else if (img.ContentType != "image/png" && img.ContentType != "image/jpeg" && img.ContentType != "image/jpg")
+            {
+                return BadRequest(new { error = "Wrong file type (png/jpeg/jpg)" });
+            }
+            else if (img.Length > 3145728)
+            {
+                return BadRequest(new { error = "File is too big (max 3mb)" });
+            }
+            var claims = User.Claims.ToList(); 
+            var id = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            int uid = 3;
+            if (_customerRepo.UpdateProfileImage(3))
+            {
+                SingleFileUpload(img, uid);
+                return Json(new { message = "profile image changed!!!" });
+            }
+            return BadRequest(new { error = "image change failed." });
+
+        }
+
+        public void SingleFileUpload(IFormFile file, int userID)
+        {
+            var dir = _env.ContentRootPath;
+            var smallSizeAdPath = Path.Combine(dir, "Images", "profile", $"{userID}.png");
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(300, 300));
+            image.Save(smallSizeAdPath);
         }
 
         [HttpGet]
@@ -81,34 +131,11 @@ namespace ApiOne.Controllers
             var id = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var username = claims.FirstOrDefault(c => c.Type == "username")?.Value;
             var usernamee = claims.FirstOrDefault(c => c.Type == "usernameeee")?.Value;
-
             return Json(new { secret = "very secret" });
         }
 
 
-        public IActionResult SingleFileUpload(IFormFile file)
-        {
-            int adId = 5873458;
-            if (file.Length > 3145728)
-            {
-                return BadRequest(new { error = "File is too big (max 3mb)" });
-            }
-            if (file.ContentType != "image/png" && file.ContentType != "image/jpeg" && file.ContentType != "image/jpg")
-            {
-                return BadRequest(new { error = "Wrong file type" });
-            }
-            var dir = _env.ContentRootPath;
-            var smallSizeAdPath = Path.Combine(dir, "Images", "serverA", "small", $"{adId}.png");
-            using var image = Image.Load(file.OpenReadStream());
-            image.Mutate(x => x.Resize(200, 200));
-            image.Save(smallSizeAdPath);
-            var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{adId}.png");
-            using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
-            {
-                file.CopyTo(fileStream);
-            }
-            return Ok();
-        }
+        
 
     }
 }

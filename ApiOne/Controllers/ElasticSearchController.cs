@@ -1,6 +1,7 @@
 ﻿using ApiOne.Models.Ads;
 using ApiOne.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -11,84 +12,113 @@ namespace ApiOne.Controllers
 {
     public class ElasticSearchController : Controller
     {
-       
-        //[Route("/search")]
-        //public IActionResult ReturnSearchResult([FromQuery] string name) {
-        //    var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-        //        .DefaultIndex("people");
-
-        //    var client = new ElasticClient(settings);
-        //    var searchResponse = client.Search<Person>(s => s
-        //   .From(0)
-        //   .Size(10)
-        //   .Query(q => q
-        //        .Match(m => m
-        //           .Field(f => f.FirstName)
-        //           .Query(name)
-        //        )
-        //       )
-        //    );
-
-        //    var searchId = client.Search<Person>(s => s
-        //    .Query(q => q.Range(m => m.Field(f => f.Id).GreaterThan(5)
-        //    ))
-        //    );
-
-        //    var stringSearch = client.Search<Person>(s => s
-        //    .Query(q => q
-        //    .QueryString(qs => qs
-        //    .Query("mar")))
-        //    );
-
-
-
-        //    var people = searchResponse.Documents;
-        //    var secondS = searchId.Documents;
-        //    var stringSearchres = stringSearch.Documents;
-        //    var quequeque = myQuery.Documents;
-        //    return Ok(quequeque);
-        //}
-
-        [Route("/search")]
-        public IActionResult ReturnSearchResult([FromQuery] string title, [FromQuery] Pagination pager) {
-            var settings = new ConnectionSettings(new Uri("http://localhost:9200/"))
-                .DefaultIndex("ads");
-            string[] array = { "1"  };
+        [HttpGet]
+        [Route("/ad/search")]
+        public IActionResult SearchWithFilters([FromQuery] AdFiltersFromParam paramTypeFilter, Pagination pagination)
+        {
+            //if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category) && string.IsNullOrEmpty(paramTypeFilter.Title) && string.IsNullOrEmpty(paramTypeFilter.Description))
+            //{
+            //    return BadRequest(new { error = "you should use at least one filter" });
+            //}
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            AdFiltersFromParamClient adFiltersFromParamClient = new AdFiltersFromParamClient(pagination);
+            foreach (var prop in paramTypeFilter.GetType().GetProperties())
+            {
+                var value = prop.GetValue(paramTypeFilter, null);
+                if (value != null && prop.Name != "Title" && prop.Name != "Description" && prop.Name != "MaxPrice" && prop.Name != "MinPrice")
+                {
+                    var filterArray = value.ToString().Split("_");
+                    var filterIntArray = filterArray.Select(Int32.Parse).ToList();
+                    adFiltersFromParamClient.GetType().GetProperty(prop.Name).SetValue(adFiltersFromParamClient, filterIntArray);
+                }
+            }
+            var settings = new ConnectionSettings(new Uri("http://localhost:9200/")).DefaultIndex("ads");
             var client = new ElasticClient(settings);
-            var myQuery = client.Search<CompleteAd>(s => s
-                .From((pager.PageNumber - 1) * pager.PageSize)
-                .Size(pager.PageSize)
-                
-                );
 
-            //    .Query(q => q
-            //    .Bool(b => b
-            //        .Must(mu => mu
-            //            .Match(m => m
-            //                .Field(f => f.State)
-            //                .Query(q=>q.)
-            //            )
-            //            )
-            //         .Must(mu => mu
-            //            .Match(m => m
-            //                .Field(f => f.State)
-            //                .Query("1")
-            //            )
-            //        )
-            //)));
+            var elasticResponse = client.Search<CompleteAd>(s => s
+            .From((pagination.PageNumber - 1) * pagination.PageSize)
+            .Size(pagination.PageSize)
+                .Query(q =>
+                    q.Range(r => r
+                        .Field(f => f.Price)
+                            .GreaterThanOrEquals(paramTypeFilter.MinPrice)
+                            .LessThanOrEquals(paramTypeFilter.MaxPrice)
+                    )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.Type)
+                        .Terms(adFiltersFromParamClient.Type)
+                        )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.Manufacturer)
+                        .Terms(adFiltersFromParamClient.Manufacturer)
+                        )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.Condition)
+                        .Terms(adFiltersFromParamClient.Condition)
+                        )
+                 &&
+                    q.Regexp(r => r
+                        .Field(f => f.Title)
+                        .Value(paramTypeFilter.Title)
+                        )
+                ||
+                    q.Regexp(r => r
+                        .Field(f => f.Description)
+                        .Value(paramTypeFilter.Description)
+                        )
+                )
+            );
 
-            //.Query(q2 => q2
-            //    .Wildcard(qs => qs
-            //        .Field(f => f.Title)
-            //        .Value("*" + title + "*")
-            //    )
-            //)
+            var elasticResponseCount = client.Count<CompleteAd>(s => s
+            .Query(q =>
+                    q.Range(r=>r
+                        .Field(f=>f.Price)
+                            .GreaterThanOrEquals(paramTypeFilter.MinPrice)
+                            .LessThanOrEquals(paramTypeFilter.MaxPrice)
+                    )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.Type)
+                        .Terms(adFiltersFromParamClient.Type)
+                        )
+                &&
+                    q.Terms(t => t
+                        .Field(f =>f.Manufacturer)
+                        .Terms(adFiltersFromParamClient.Manufacturer)
+                        )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.Condition)
+                        .Terms(adFiltersFromParamClient.Condition)
+                        )
+                 &&
+                    q.Regexp(r => r
+                        .Field(f => f.Title)
+                        .Value(paramTypeFilter.Title)
+                        )
+                ||
+                    q.Regexp(r => r
+                        .Field(f => f.Description)
+                        .Value(paramTypeFilter.Description)
+                        )
+                )    
+            );
 
-            //)
+            var queryDocsCount = elasticResponseCount.Count;
 
-
-            //.Query(b => b.Terms(t => t.Field(f => f.Category).Terms(array)))
-            return Ok(myQuery.Documents);
+            var response = new {
+                size= queryDocsCount,
+                firstPage=1,
+                lastPage= (queryDocsCount % pagination.PageSize==0)? queryDocsCount/pagination.PageSize: queryDocsCount/pagination.PageSize+1,
+                ads=elasticResponse.Documents};
+            return Ok(response);
         }
     }
 }

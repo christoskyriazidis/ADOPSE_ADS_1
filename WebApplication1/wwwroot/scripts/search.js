@@ -3,7 +3,7 @@ let searchController = new SearchController();
 window.searchController = searchController;
 const searchbtn = document.querySelector(".submitSearch")
 searchbtn.addEventListener("click", searchController.setFilters)
-searchController.setLink(1)
+
 console.log(searchController)
 
 // let dict = new Dictionary();

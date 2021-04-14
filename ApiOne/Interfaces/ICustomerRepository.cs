@@ -13,8 +13,9 @@ namespace ApiOne.Interfaces
     {
         CustomersWithPagination GetCustomers(Pagination adParameters);
         CustomerDetails GetCustomer(int id);
-
         CustomerDetails GetMyProfileInfo(int id);
 
+        bool UpdateProfile(CustomerDetails customerDetails);
+        bool UpdateProfileImage(int customerId);
     }
 }

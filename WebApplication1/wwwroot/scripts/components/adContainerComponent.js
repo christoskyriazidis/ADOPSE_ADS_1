@@ -14,42 +14,60 @@ class AdContainerComponent extends HTMLElement {
     get itemImage() {
         return this.getAttribute("item-image");
     }
-    get id(){
+    get id() {
         return this.getAttribute("id")
     }
-    get customerId(){
-        return this.getAttribute("customerId")
+    get customerId() {
+        return this.getAttribute("customer-id")
+    }
+    get customerName() {
+        return this.getAttribute("customer-name")
+    }
+    get customerRating() {
+        return this.getAttribute("customer-rating")
+    }
+    get customerImage() {
+        return this.getAttribute("customer-image")
+    }
+    get case() {
+        return this.getAttribute("case")
     }
     constructor() {
         super();
         this.render();
     }
+    //style='background-image:url(${this.customerImage})
     render = () => {
-        console.log(this.itemImage);
         this.innerHTML = `
             <div class="adContainer">
                 <div class="itemData">
-                    <a href="http://localhost:5501/home/ad/index.html?id=${this.id}">
+                    <a href="https://localhost:44366/home/ad/index.html?id=${this.id}">
                         <span class="image" style='background-image:url(${this.itemImage})'></span>
                         <div class="itemInfo">
                             <span class="title">${this.title}</span>
                             <span class="condition">${this.condition}</span>
                             <span class="price">${this.price}$</span>
+                           
                         </div>
 
                     </a>
+                 
                 </div>
                 <hr>
-                <div class="sellerData">
-                    <a href="http://localhost:5501/home/customer/index.html?id=${this.customerId}">
-                        <span class="sellerAvatar" name="avatar" ></span>
-                        <label for="avatar">Takhs${this.username}</label>
+                ${this.case == "myads" ?
+                `<button class="editButton"><a href="https://localhost:44366/home/profile/editAd/index.html?id=${this.id}">edit me !</a></button>
+                <button class="deleteButton" onclick="myadsController.deleteAd(${this.id})">delete me!</button>`
+                : `<div class="sellerData">
+                <a href = "https://localhost:44366/home/customer/index.html?id=${this.customerId}">
+                    <span class="sellerAvatar"  name="avatar" ></span>
+                        <label label for= "avatar" > ${this.customerName}</label >
                         <span class="filler"  ></span>
-                        <span class="sellerReview" style='background-image:url(https://image.freepik.com/free-vector/five-stars-quality-icon-isolated-transparent-background-stars-rating-review_97458-424.jpg)'></span>   
-                    </a>
-                </div>
-            </div>
-        `
+                        <span class="sellerReview" >${this.customerRating}</span>   
+                </a>
+                </div>`}
+                
+            </div >
+            `
     }
 }
 ;

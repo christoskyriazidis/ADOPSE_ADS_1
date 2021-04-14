@@ -1,0 +1,12 @@
+body{
+    display:flex;
+    justify-content:center;
+    .contentContainer{
+        width:100%;
+        display:flex;
+        flex-wrap:wrap;
+        ad-component{
+            margin:10px;
+        }
+    }
+}

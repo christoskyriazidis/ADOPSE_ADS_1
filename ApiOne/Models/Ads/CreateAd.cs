@@ -14,31 +14,35 @@ namespace ApiOne.Models.Ads
         public IFormFile Img { set; get; }
 
         [StringLength(200, MinimumLength = 15)]
-        [Required(ErrorMessage = "Title is required")]
+        [Required]
         public string Title { get; set; }
 
         [StringLength(250, MinimumLength = 20)]
-        [Required(ErrorMessage = "Description is required (min 15 charactes)")]
+        [Required]
         public string Description { get; set; }
 
-        [Range(1, 10)]
-        [Required(ErrorMessage = "Type is required")]
+        [Range(1, int.MaxValue)]
+        [Required]
         public int Type { get; set; }
 
-        [Range(1, 50)]
-        [Required(ErrorMessage = "Category is required")]
+        [Range(1, int.MaxValue)]
+        [Required]
         public int Category { get; set; }
 
-        [Range(1, 3)]
-        [Required(ErrorMessage = "Condition is required")]
+        [Range(1, int.MaxValue)]
+        [Required]
+        public int SubCategoryId { get; set; }
+
+        [Range(1, int.MaxValue)]
+        [Required]
         public int Condition { get; set; }
 
-        [Range(1, 100)]
-        [Required(ErrorMessage = "Manufacturer is required")]
+        [Range(1, int.MaxValue)]
+        [Required]
         public int Manufacturer { get; set; }
 
-        [Range(1, 10000)]
-        [Required(ErrorMessage = "Price is required")]
+        [Range(1, 1000000)]
+        [Required]
         public int Price { get; set; }
         public int State { get; set; }
         public string LastUpdate { get; set; }

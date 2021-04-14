@@ -10,40 +10,44 @@ namespace ApiOne.Models
 {
     public class Ad
     {
-        [Required(ErrorMessage = "Id is required")]
-        [Range(1, 10000)]
+        [Required]
+        [Range(1, int.MaxValue)]
         public int Id { get; set; }
 
-        //[StringLength(15, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
-        [Required(ErrorMessage = "Title is required")]
+        [StringLength(30, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
+        [Required]
         public string Title { get; set; }
 
-        [StringLength(100, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
-        [Required(ErrorMessage = "Description is required (min 15 charactes)")]
+        [StringLength(1000, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
+        [Required]
         public string Description { get; set; }
 
         [Range(1, 4)]
-        [Required(ErrorMessage = "State is required (min 15 charactes)")]
+        [Required]
         public int State { get; set; }
 
         [Range(1, 4)]
-        [Required(ErrorMessage = "Type is required")]
+        [Required]
         public int Type { get; set; }
 
         [Range(1, 5)]
-        [Required(ErrorMessage = "Category is required")]
+        [Required]
         public int Category { get; set; }
 
         [Range(1, 3)]
-        [Required(ErrorMessage = "Condition is required")]
+        [Required]
         public int Condition { get; set; }
 
         [Range(1, 100)]
-        [Required(ErrorMessage = "Manufacturer is required")]
+        [Required]
         public int Manufacturer { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int SubCategoryId { get; set; }
+
         [Range(1, 10000)]
-        [Required(ErrorMessage = "Price is not null")]
+        [Required]
         public int Price { get; set; }
 
         public string LastUpdate { get; set; }
@@ -56,7 +60,7 @@ namespace ApiOne.Models
         {
         }
 
-        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
+        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int subCategoryId, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
         {
             Id = id;
             Title = title;
@@ -66,6 +70,7 @@ namespace ApiOne.Models
             Category = category;
             Condition = condition;
             Manufacturer = manufacturer;
+            SubCategoryId = subCategoryId;
             Price = price;
             LastUpdate = lastUpdate;
             Reports = reports;

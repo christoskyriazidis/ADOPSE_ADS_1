@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,CAAA;EACA,OAAO,EAAC,IAAI;EACZ,eAAe,EAAC,MAAM;CASzB;;AAXD,AAGI,IAHA,CAGA,iBAAiB,CAAA;EACb,KAAK,EAAC,IAAI;EACV,OAAO,EAAC,IAAI;EACZ,SAAS,EAAC,IAAI;CAIjB;;AAVL,AAOQ,IAPJ,CAGA,iBAAiB,CAIb,YAAY,CAAA;EACR,MAAM,EAAC,IAAI;CACd",
+    "sources": [
+        "myAds.scss"
+    ],
+    "names": [],
+    "file": "myAds.css"
+}
