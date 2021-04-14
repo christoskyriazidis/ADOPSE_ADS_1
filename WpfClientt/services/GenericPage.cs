@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     class GenericPage<T> : IPage<T> {
 
-        [JsonPropertyName("ads")]
+        [JsonPropertyName("result")]
         public IList<T> Entities { get; set; } = new List<T>();
 
         [JsonPropertyName("currentPage")]
