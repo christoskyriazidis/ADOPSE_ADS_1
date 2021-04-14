@@ -14,6 +14,12 @@ namespace WpfClientt.viewModels {
         private IMenu currentMenuView;
         private FactoryServices factory;
         private IList<IViewModel> viewModels = new List<IViewModel>();
+        private Stack<IViewModel> history = new Stack<IViewModel>();
+        public bool IsBackButtonVisible { 
+            get {
+                return history.Count > 1;
+            }
+        }
 
         public IViewModel CurrentPageViewModel {
             get {
@@ -46,6 +52,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
             Mediator.Subscribe("CreateView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
+            Mediator.Subscribe("BackView", previousViewModel);
         }
 
         private void ChangeViewModel(IViewModel viewModel) {
@@ -57,12 +64,12 @@ namespace WpfClientt.viewModels {
 
         private async void ChangeToAdsView(object obj) {
             ChangeToDisplayView("Loading Page");
-            ChangeViewModel(await AdsViewModel.GetInstance(factory)); ;
+            addToHistory(await AdsViewModel.GetInstance(factory));
         }
 
         private async void ChangeToRegisterView(object obj) {
             ChangeToDisplayView("Loading Page");
-            ChangeViewModel(await RegisterViewModel.GetInstance(factory));
+            addToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
         private async void ChangeToLoginView(object obj) { 
@@ -70,22 +77,38 @@ namespace WpfClientt.viewModels {
         }
 
         private async void ChangeToCreateAdView(object obj) {
-            ChangeViewModel(await CreateAdViewModel.GetInstance(factory));
+            addToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
         private void ChangeToDisplayView(string text) {
-            ChangeViewModel(DisplayTextViewModel.GetInstance(text));
+            CurrentPageViewModel = DisplayTextViewModel.GetInstance(text);
         }
 
         private async void ChangeToAdDetailsView(object param) {
             ChangeToDisplayView("Loading Page");
             long id = (long)param;
-            CurrentPageViewModel = await AdDetailsViewModel.GetInstance(factory, id);
+            addToHistory(await AdDetailsViewModel.GetInstance(factory, id));
         }
 
         private async void ChangeToProfileView(object param) {
             ChangeToDisplayView("Loading Page");
             ChangeViewModel(await ProfileViewModel.getInstance(factory));
+        }
+
+        private IViewModel currentViewModel() {
+            return history.Peek();
+        }
+
+        private void previousViewModel(object param) {
+            history.Pop();
+            ChangeViewModel(currentViewModel());
+            OnPropertyChanged("IsBackButtonVisible");
+        }
+
+        private void addToHistory(IViewModel viewModel) {
+            history.Push(viewModel);
+            ChangeViewModel(currentViewModel());
+            OnPropertyChanged("IsBackButtonVisible");
         }
     }
 }
