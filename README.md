@@ -22,6 +22,7 @@
 | /ad     | POST   | lala        | 200 (OK), 400 (Bad Request) , 401 (Unauthorized) , 405 (Not Allowed) |
 | /ad     | PUT    | lala        | 200 (OK), 400 (Bad Request) , 401 (Unauthorized) , 405 (Not Allowed) |
 | /ad{id} | DELETE | lala        | 200 (OK), 400 (Bad Request) , 401 (Unauthorized) , 405 (Not Allowed) |
+| /profile/ad | GET | Returns the adds of the currently logged in customer        | 200 (OK), 400 (Bad Request) , 401 (Unauthorized) , 405 (Not Allowed) |
 
 <BR>
 <BR>
@@ -34,6 +35,7 @@
 | /customer     | POST   | Adds the provided customer        | 200 (OK), 400 (Bad Request) , 401 (Not Allowed) , 405 (Not Allowed)  |
 | /customer     | PUT    | Updates the provided customer        | 200 (OK), 400 (Bad Request) , 401 (Not Allowed) , 405 (Not Allowed)  |
 | /customer/{id} | DELETE | Deletes the customer that has the provided id         | 200 (OK), 400 (Bad Request) , 401 (Not Allowed) , 405 (Not Allowed)  |
+| /profile | GET | Returns the customer that is currently logged in | 200 (OK), 400 (Bad Request) , 401 (Not Allowed) , 405 (Not Allowed)  |
 
 <BR>
 <BR>
