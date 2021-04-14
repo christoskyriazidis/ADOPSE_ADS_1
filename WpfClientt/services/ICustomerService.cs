@@ -14,7 +14,7 @@ namespace WpfClientt.services {
 
         Task<Customer> Profile();
 
-        Task UpdateProfileImage(Stream image, string fileName);
+        Task UpdateProfileImage(string fileName);
 
         Task UpdateProfile(Customer profile);
 

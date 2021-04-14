@@ -82,17 +82,21 @@ namespace WpfClientt.services {
 
         }
 
-        public async Task UpdateProfileImage(Stream image,string fileName) {
+        public async Task UpdateProfileImage(string path) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put,$"{ApiInfo.ProfileMainUrl()}/image");
-            MultipartFormDataContent content = new MultipartFormDataContent();
-            StreamContent imageContent = new StreamContent(image);
-            
-            content.Add(imageContent, "fileToUpload",fileName);
-            request.Content = content;
+            MultipartFormDataContent form = new MultipartFormDataContent();
 
-            using(HttpResponseMessage response = await client.SendAsync(request)) {
-                response.EnsureSuccessStatusCode();
+            if (!File.Exists(path)) {
+                throw new FileNotFoundException("File not found at specified path : " + path);
             }
+
+            using(ByteArrayContent fileContent = new ByteArrayContent(File.ReadAllBytes(path))) {
+                form.Add(fileContent, "image", Path.GetFileName(path));
+                using (HttpResponseMessage response = await client.SendAsync(request)) {
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+
         }
     }
 }
