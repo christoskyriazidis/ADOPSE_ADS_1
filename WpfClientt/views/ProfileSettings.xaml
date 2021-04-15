@@ -29,8 +29,8 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.2*"/>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="0.35*"/>
+                <ColumnDefinition Width="0.45*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
@@ -38,9 +38,45 @@
                 <RowDefinition Height="0.4*"/>
             </Grid.RowDefinitions>
             
-            <Label Content="User Settings" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-            <Line X1="500" Stroke="LightGray" StrokeThickness="1" VerticalAlignment="Bottom" Margin="75,0,0,0" Grid.Column="0" Grid.ColumnSpan="3"/>
+            <Label Content="Account Settings" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            <Line X1="500" Stroke="LightGray" Grid.Row="1" StrokeThickness="1" VerticalAlignment="Top" Margin="55,2,0,0" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Label Content="Change e-mail: " Margin="24,0,0,0" />
+                <TextBox x:Name="email" MinWidth="150" MaxWidth="250"/>
+            </StackPanel>
             
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Label Content="Change First Name: " />
+                <TextBox x:Name="firstname" MinWidth="150" MaxWidth="250"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Label Content="Change Surname: " Margin="11,0,0,0" />
+                <TextBox x:Name="surname"  MinWidth="150" MaxWidth="250"/>
+            </StackPanel>
+
+            <Label Content="User Settings" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            <Line X1="500" Grid.Row="2" Stroke="LightGray" StrokeThickness="1" VerticalAlignment="Top" Margin="55,2,0,0" Grid.Column="0" Grid.ColumnSpan="3"/>
+
+            <Button Content="Change Image Profile" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="60,10,0,0"/>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="1,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Label Content="Address: " Margin="17,0,0,0" />
+                <TextBox x:Name="address" MinWidth="196"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="17,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Label Content="Number: " />
+                <TextBox x:Name="number" MinWidth="50"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Label Content="Postal Code: " Margin="4,0,0,0" />
+                <TextBox x:Name="postal"  MinWidth="60"/>
+            </StackPanel>
+
+            <Button x:Name="btn_save" Content="Save" Grid.Column="1" Grid.Row="2" Margin="0,16,12,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
             
         </Grid>
     </Grid>
