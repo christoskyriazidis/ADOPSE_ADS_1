@@ -41,17 +41,17 @@
             <Label Content="Account Settings" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
             <Line X1="500" Stroke="LightGray" Grid.Row="1" StrokeThickness="1" VerticalAlignment="Top" Margin="55,2,0,0" Grid.Column="0" Grid.ColumnSpan="3"/>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Label Content="Change e-mail: " Margin="24,0,0,0" />
                 <TextBox x:Name="email" MinWidth="150" MaxWidth="250"/>
             </StackPanel>
             
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Label Content="Change First Name: " />
                 <TextBox x:Name="firstname" MinWidth="150" MaxWidth="250"/>
             </StackPanel>
             
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Label Content="Change Surname: " Margin="11,0,0,0" />
                 <TextBox x:Name="surname"  MinWidth="150" MaxWidth="250"/>
             </StackPanel>
@@ -61,17 +61,17 @@
 
             <Button Content="Change Image Profile" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="60,10,0,0"/>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="1,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="4,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Label Content="Address: " Margin="17,0,0,0" />
                 <TextBox x:Name="address" MinWidth="196"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="17,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="20,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                 <Label Content="Number: " />
                 <TextBox x:Name="number" MinWidth="50"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,8,5,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Label Content="Postal Code: " Margin="4,0,0,0" />
                 <TextBox x:Name="postal"  MinWidth="60"/>
             </StackPanel>
