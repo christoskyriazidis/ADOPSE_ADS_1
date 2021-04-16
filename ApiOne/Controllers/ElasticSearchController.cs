@@ -17,10 +17,6 @@ namespace ApiOne.Controllers
         [Route("/ad")]
         public IActionResult SearchWithFilters([FromQuery] AdFiltersFromParam paramTypeFilter, Pagination pagination)
         {
-            //if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category) && string.IsNullOrEmpty(paramTypeFilter.Title) && string.IsNullOrEmpty(paramTypeFilter.Description))
-            //{
-            //    return BadRequest(new { error = "you should use at least one filter" });
-            //}
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
@@ -41,8 +37,10 @@ namespace ApiOne.Controllers
             var client = new ElasticClient(settings);
 
             var elasticResponse = client.Search<CompleteAd>(s => s
+            //pagination
             .From((pagination.PageNumber - 1) * pagination.PageSize)
             .Size(pagination.PageSize)
+            //elasticSearch query
                 .Query(q =>
                     q.Range(r => r
                         .Field(f => f.Price)

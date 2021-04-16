@@ -1,4 +1,5 @@
-﻿using ApiOne.Interfaces;
+﻿using ApiOne.Helpers;
+using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,8 +135,36 @@ namespace ApiOne.Controllers
             return Json(new { secret = "very secret" });
         }
 
+        //[Authorize]
+        [HttpPost]
+        [Route("/customer/mail")]
+        public async Task<IActionResult> SendMailToCustomer()
+        {
+            var sender = _customerRepo.GetCustomer(3);
+            var receiver = _customerRepo.GetCustomer(4);
 
-        
+            var dir = _env.ContentRootPath;
+            var emailTemplatePath = Path.Combine(dir, "EmailTemplates", "CustomerEmailTemplate.html");
+            string template = System.IO.File.ReadAllText(emailTemplatePath);
+            string template1 = template.Replace("#message#", "eisai enas madfmasfashuf dsfuhdsuhfds fhusdfhds");
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("mailservice.adopse@gmail.com"),
+                Subject = $"Customer:{sender.Username} sent you a message for your product...!!!",
+                Body = template1,
+                IsBodyHtml = true,
+                To = {receiver.Email}
+            };
+            //using static class EmailService to send mail async!
+            var emailStatus = await EmailService.SendMail(mailMessage);
+            if (emailStatus)
+            {
+                return Ok();
+            }
+            return BadRequest(new { error = "problem with email service" });
+        }
+
 
     }
 }

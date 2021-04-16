@@ -22,42 +22,67 @@ namespace WpfClientt.services {
         }
 
         public async Task Create(Ad ad) {
-            MultipartFormDataContent form = new MultipartFormDataContent("boundaryValue123");
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
 
-            IDictionary<string, string> parameteres = new Dictionary<string, string>() {
-                {"State", ad.StateId.ToString() },
-                {"Type", ad.TypeId.ToString() },
-                {"Manufacturer", ad.ManufacturerId.ToString() },
-                {"Condition", ad.ConditionId.ToString() },
-                {"Category", ad.CategoryId.ToString() },
-                {"Title", ad.Title },
-                {"Description", ad.Description },
-                {"Customer", ad.CustomerId.ToString() },
-                {"Price", ad.Price.ToString() }
-            };
+            var values = new Dictionary<string, string>
+                {
+                    {"State", ad.StateId.ToString() },
+                    {"Type", ad.TypeId.ToString() },
+                    {"Manufacturer", ad.ManufacturerId.ToString() },
+                    {"Condition", ad.ConditionId.ToString() },
+                    {"Category", ad.CategoryId.ToString() },
+                    {"Title", ad.Title },
+                    {"Description", ad.Description },
+                    {"Customer", ad.CustomerId.ToString() },
+                    {"Price", ad.Price.ToString() },
+                    {"SubCategoryId", "10" }
+                };
 
-            form.Add(new FormUrlEncodedContent(parameteres));
+            var content = new FormUrlEncodedContent(values);
+            var response = await client.PostAsync("https://localhost:44374/ad", content);
 
-            ByteArrayContent image = null;
-            if (ad.ImageUri != null && File.Exists(ad.ImageUri.LocalPath)) {
-                image = new ByteArrayContent(File.ReadAllBytes(ad.ImageUri.LocalPath));
-                image.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                form.Add(image);
-            }
+            var responseString = await response.Content.ReadAsStringAsync();
 
-            request.Content = form;
-            Debug.WriteLine(await request.Content.ReadAsStringAsync());
-            using (HttpResponseMessage response = await client.SendAsync(request)) {
-                Debug.WriteLine(await response.Content.ReadAsStringAsync());
-                Debug.WriteLine(response.Headers);
-                Debug.WriteLine(response.StatusCode);
-                response.EnsureSuccessStatusCode();
-            }
+            Debug.WriteLine(responseString);
 
-            if(image != null) {
-                image.Dispose();
-            }
+            //MultipartFormDataContent form = new MultipartFormDataContent("boundaryValue123");
+            //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
+
+            //IDictionary<string, string> parameteres = new Dictionary<string, string>() {
+            //    {"State", ad.StateId.ToString() },
+            //    {"Type", ad.TypeId.ToString() },
+            //    {"Manufacturer", ad.ManufacturerId.ToString() },
+            //    {"Condition", ad.ConditionId.ToString() },
+            //    {"Category", ad.CategoryId.ToString() },
+            //    {"Title", ad.Title },
+            //    {"Description", ad.Description },
+            //    {"Customer", ad.CustomerId.ToString() },
+            //    {"Price", ad.Price.ToString() }
+            //};
+
+            //form.Add(new FormUrlEncodedContent(parameteres));
+
+            //ByteArrayContent image = null;
+            //if (ad.ImageUri != null && File.Exists(ad.ImageUri.LocalPath))
+            //{
+            //    image = new ByteArrayContent(File.ReadAllBytes(ad.ImageUri.LocalPath));
+            //    image.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+            //    form.Add(image);
+            //}
+
+            //request.Content = form;
+            //Debug.WriteLine(await request.Content.ReadAsStringAsync());
+            //using (HttpResponseMessage response = await client.SendAsync(request))
+            //{
+            //    Debug.WriteLine(await response.Content.ReadAsStringAsync());
+            //    Debug.WriteLine(response.Headers);
+            //    Debug.WriteLine(response.StatusCode);
+            //    response.EnsureSuccessStatusCode();
+            //}
+
+            //if (image != null)
+            //{
+            //    image.Dispose();
+            //}
 
         }
 
