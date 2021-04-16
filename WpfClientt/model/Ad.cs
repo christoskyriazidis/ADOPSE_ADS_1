@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
-    public class Ad {
+    public sealed class Ad {
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
