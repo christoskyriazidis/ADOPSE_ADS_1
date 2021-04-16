@@ -9,6 +9,7 @@ using WpfClientt.services.filtering;
 using System.IO;
 using System.Text.Json;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
@@ -21,19 +22,19 @@ namespace WpfClientt.services {
         }
 
         public async Task Create(Ad ad) {
-            MultipartFormDataContent form = new MultipartFormDataContent();
+            MultipartFormDataContent form = new MultipartFormDataContent("boundaryValue123");
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
 
             IDictionary<string, string> parameteres = new Dictionary<string, string>() {
-                {"state", ad.StateId.ToString() },
-                {"type", ad.TypeId.ToString() },
-                {"manufacturer", ad.ManufacturerId.ToString() },
-                {"condition", ad.ConditionId.ToString() },
-                {"category", ad.CategoryId.ToString() },
-                {"title", ad.Title },
-                {"description", ad.Description },
-                {"customer", ad.CustomerId.ToString() },
-                {"price", ad.Price.ToString() }
+                {"State", ad.StateId.ToString() },
+                {"Type", ad.TypeId.ToString() },
+                {"Manufacturer", ad.ManufacturerId.ToString() },
+                {"Condition", ad.ConditionId.ToString() },
+                {"Category", ad.CategoryId.ToString() },
+                {"Title", ad.Title },
+                {"Description", ad.Description },
+                {"Customer", ad.CustomerId.ToString() },
+                {"Price", ad.Price.ToString() }
             };
 
             form.Add(new FormUrlEncodedContent(parameteres));
@@ -41,10 +42,12 @@ namespace WpfClientt.services {
             ByteArrayContent image = null;
             if (ad.ImageUri != null && File.Exists(ad.ImageUri.LocalPath)) {
                 image = new ByteArrayContent(File.ReadAllBytes(ad.ImageUri.LocalPath));
+                image.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
                 form.Add(image);
             }
 
             request.Content = form;
+            Debug.WriteLine(await request.Content.ReadAsStringAsync());
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 Debug.WriteLine(await response.Content.ReadAsStringAsync());
                 Debug.WriteLine(response.Headers);
