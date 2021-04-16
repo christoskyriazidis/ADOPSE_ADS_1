@@ -143,6 +143,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="model\Ad.cs" />
+    <Compile Include="model\AdConvertable.cs" />
     <Compile Include="model\Customer.cs" />
     <Compile Include="model\JsonStringToUriConverter.cs" />
     <Compile Include="model\Mapping.cs" />
@@ -163,6 +164,8 @@
     <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
+    <Compile Include="viewModels\converters\PriceConverter.cs" />
+    <Compile Include="viewModels\converters\StringToLongAdConverter.cs" />
     <Compile Include="viewModels\CreateAdViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
     <Compile Include="viewModels\filters\Checkbox.cs" />

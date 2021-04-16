@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WpfClientt.services.filtering;
 using System.IO;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
@@ -20,6 +21,7 @@ namespace WpfClientt.services {
         }
 
         public async Task Create(Ad ad) {
+            MultipartFormDataContent form = new MultipartFormDataContent();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
 
             IDictionary<string, string> parameteres = new Dictionary<string, string>() {
@@ -34,15 +36,24 @@ namespace WpfClientt.services {
                 {"price", ad.Price.ToString() }
             };
 
-            FormUrlEncodedContent form = new FormUrlEncodedContent(parameteres);
-            request.Content = form;
+            form.Add(new FormUrlEncodedContent(parameteres));
 
-            using(HttpResponseMessage response = await client.SendAsync(request)) {
+            ByteArrayContent image = null;
+            if (ad.ImageUri != null && File.Exists(ad.ImageUri.LocalPath)) {
+                image = new ByteArrayContent(File.ReadAllBytes(ad.ImageUri.LocalPath));
+                form.Add(image);
+            }
+
+            request.Content = form;
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                Debug.WriteLine(await response.Content.ReadAsStringAsync());
+                Debug.WriteLine(response.Headers);
+                Debug.WriteLine(response.StatusCode);
                 response.EnsureSuccessStatusCode();
-                //TODO:set the id here
-                if(ad.ImageUri != null) {
-                    await UpdateAdImage(ad.ImageUri.LocalPath, ad.Id);
-                }
+            }
+
+            if(image != null) {
+                image.Dispose();
             }
 
         }

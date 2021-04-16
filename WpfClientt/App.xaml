@@ -8,6 +8,7 @@
              xmlns:views="clr-namespace:WpfClientt.views"
              xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
              xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus"
+             xmlns:converters="clr-namespace:WpfClientt.viewModels.converters"
              xmlns:filters="clr-namespace:WpfClientt.viewModels.filters">
     <Application.Resources>
         
@@ -132,6 +133,10 @@
         <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
             <viewsFilter:RangeFilterMemberView />
         </DataTemplate>
+
+        <!-- Converters -->
+        <converters:StringToLongAdConverter x:Key="AdFieldConverter" />
+        <converters:PriceConverter x:Key="PriceConverter" />
 
     </Application.Resources>
 </Application>

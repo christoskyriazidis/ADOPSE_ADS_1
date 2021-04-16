@@ -77,6 +77,7 @@ namespace WpfClientt.viewModels {
         }
 
         private async void ChangeToCreateAdView(object obj) {
+            ChangeToDisplayView("Loading Page");
             addToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 

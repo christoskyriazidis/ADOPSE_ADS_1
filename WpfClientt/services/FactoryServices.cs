@@ -16,7 +16,7 @@ namespace WpfClientt.services {
             HttpClient client = new HttpClient();
             adService = new AdServiceImpl(client);
             customerService = new CustomerServiceImpl(client);
-            this.mapper = new ApiMapper(client);
+            mapper = new ApiMapper(client);
         }
 
         public IAdService AdServiceInstance() {

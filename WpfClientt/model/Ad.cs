@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
-    public sealed class Ad {
+    public class Ad {
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
@@ -47,14 +47,14 @@ namespace WpfClientt.model {
         public long CustomerId { get; set; }
 
         [JsonPropertyName("price")]
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         public Ad() { 
         
         }
 
         public Ad(long id, long stateId, long typeId, long manufacturerId, long conditionId, 
-            long categoryId, string title, string description, Uri imageUri, int views, int reports) {
+            long categoryId, string title, string description, Uri imageUri,int price, int views, int reports) {
             this.Id = id;
             this.StateId = stateId;
             this.TypeId = typeId;
@@ -66,6 +66,7 @@ namespace WpfClientt.model {
             this.ImageUri = imageUri;
             this.Views = views;
             this.Reports = reports;
+            this.Price = price;
         }
 
         public void Report() {

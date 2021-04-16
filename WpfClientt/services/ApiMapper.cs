@@ -27,7 +27,10 @@ namespace WpfClientt.services {
         private async Task LoadInto(string url, ConcurrentDictionary<long,string> dictionary) {
             Stream stream = await client.GetStreamAsync(url);
             List<Mapping> mappings = await JsonSerializer.DeserializeAsync<List<Mapping>>(stream);
-            mappings.ForEach(mapping => dictionary.TryAdd(mapping.id,mapping.title));
+            mappings.ForEach(mapping => {
+                dictionary.TryAdd(mapping.id, mapping.title);
+                }
+            );
         }
 
         public async Task<IDictionary<long, string>> Categories() {
@@ -65,8 +68,5 @@ namespace WpfClientt.services {
             return states;
         }
 
-        private string TruGetOrElseDefault(long id, IDictionary<long, string> dictionary) {
-            return dictionary.TryGetValue(id, out string value) ? value : defaultValue;
-        }
     }
 }
