@@ -14,11 +14,11 @@ namespace ApiOne.Models
         [Range(1, int.MaxValue)]
         public int Id { get; set; }
 
-        [StringLength(30, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 5)]
+        [StringLength(72, MinimumLength = 10)]
         [Required]
         public string Title { get; set; }
 
-        [StringLength(1000, ErrorMessage = "{0} length must be between {15} and {100}.", MinimumLength = 15)]
+        [StringLength(1024, MinimumLength = 20)]
         [Required]
         public string Description { get; set; }
 

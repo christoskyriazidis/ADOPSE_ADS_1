@@ -101,14 +101,13 @@ namespace ApiOne.Controllers
             }
             var claims = User.Claims.ToList(); 
             var id = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            int uid = 3;
-            if (_customerRepo.UpdateProfileImage(3))
+            int uid = 4;
+            if (_customerRepo.UpdateProfileImage(uid))
             {
                 SingleFileUpload(img, uid);
                 return Json(new { message = "profile image changed!!!" });
             }
             return BadRequest(new { error = "image change failed." });
-
         }
 
         public void SingleFileUpload(IFormFile file, int userID)

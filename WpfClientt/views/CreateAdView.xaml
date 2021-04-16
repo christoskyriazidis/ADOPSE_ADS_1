@@ -55,24 +55,24 @@
             <TextBox Grid.Row="2" Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Visible" Text="{Binding Ad.Description,Mode=OneWayToSource}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
 
             <TextBlock Text="Category:" Grid.Row="4" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding Ad.CategoryId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}">
-            </ComboBox>
+            <ComboBox Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding Ad.CategoryId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+
 
             <TextBlock Text="State:" Grid.Row="6" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding States}" SelectedItem="{Binding Ad.StateId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}">
-            </ComboBox>
-            
+            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding States}" SelectedItem="{Binding Ad.StateId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+
+
             <TextBlock Text="Manufacturer:" Grid.Row="8" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="8" Grid.Column="2" ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding Ad.ManufacturerId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}">
-            </ComboBox>
-            
+            <ComboBox Grid.Row="8" Grid.Column="2" ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding Ad.ManufacturerId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+
+
             <TextBlock Text="Condition:" Grid.Row="10" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="10" Grid.Column="2" ItemsSource="{Binding Conditions}" SelectedItem="{Binding Ad.ConditionId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}">
-            </ComboBox>
+            <ComboBox Grid.Row="10" Grid.Column="2" ItemsSource="{Binding Conditions}" SelectedItem="{Binding Ad.ConditionId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+
 
             <TextBlock Text="Type:" Grid.Row="12" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="12" Grid.Column="2" ItemsSource="{Binding Types}" SelectedItem="{Binding Ad.TypeId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}">
-            </ComboBox>
+            <ComboBox Grid.Row="12" Grid.Column="2" ItemsSource="{Binding Types}" SelectedItem="{Binding Ad.TypeId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+            
 
             <TextBlock Text="Price:" Grid.Row="14" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
             <TextBox Grid.Row="14" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Ad.Price,Converter={StaticResource PriceConverter}}"  />

@@ -13,11 +13,11 @@ namespace ApiOne.Models.Ads
         public string NewImg { set; get; }
         public IFormFile Img { set; get; }
 
-        [StringLength(200, MinimumLength = 15)]
+        [StringLength(72, MinimumLength = 10)]
         [Required]
         public string Title { get; set; }
 
-        [StringLength(250, MinimumLength = 20)]
+        [StringLength(1024, MinimumLength = 20)]
         [Required]
         public string Description { get; set; }
 
@@ -41,7 +41,7 @@ namespace ApiOne.Models.Ads
         [Required]
         public int Manufacturer { get; set; }
 
-        [Range(1, 1000000)]
+        [Range(1, 100000)]
         [Required]
         public int Price { get; set; }
         public int State { get; set; }
