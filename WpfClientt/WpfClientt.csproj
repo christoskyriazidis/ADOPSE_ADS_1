@@ -184,6 +184,12 @@
     <Compile Include="viewModels\ProfileViewModel.cs" />
     <Compile Include="viewModels\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
+    <Compile Include="viewModels\validationRules\CategoryNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\DescriptionNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\StateNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\StringNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\TitleNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\TypeNotEmptyRule.cs" />
     <Compile Include="views\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>
     </Compile>
