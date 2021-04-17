@@ -55,7 +55,6 @@ namespace WpfClientt.services {
             if(image != null) {
                 image.Dispose();
             }
-
         }
 
         public async Task Delete(Ad ad) {

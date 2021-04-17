@@ -48,6 +48,7 @@ namespace WpfClientt.model {
 
         [JsonPropertyName("price")]
         public int Price { get; set; }
+        public int SubCategoryId { get; set; }
 
         public Ad() { 
         
