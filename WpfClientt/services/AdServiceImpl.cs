@@ -22,32 +22,29 @@ namespace WpfClientt.services {
         }
 
         public async Task Create(Ad ad) {
-            MultipartFormDataContent form = new MultipartFormDataContent("boundaryValue123");
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            form.Add(new StringContent(ad.StateId.ToString()), "State");
+            form.Add(new StringContent(ad.TypeId.ToString()), "Type");
+            form.Add(new StringContent(ad.ManufacturerId.ToString()), "Manufacturer");
+            form.Add(new StringContent(ad.ConditionId.ToString()), "Condition");
+            form.Add(new StringContent(ad.CategoryId.ToString()), "Category");
+            form.Add(new StringContent("2"), "SubCategory");
+            form.Add(new StringContent(ad.Title), "Title");
+            form.Add(new StringContent(ad.Description), "Description");
+            form.Add(new StringContent(ad.Price.ToString()), "Price");
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
-
-            IDictionary<string, string> parameteres = new Dictionary<string, string>() {
-                {"State", ad.StateId.ToString() },
-                {"Type", ad.TypeId.ToString() },
-                {"Manufacturer", ad.ManufacturerId.ToString() },
-                {"Condition", ad.ConditionId.ToString() },
-                {"Category", ad.CategoryId.ToString() },
-                {"Title", ad.Title },
-                {"Description", ad.Description },
-                {"Customer", ad.CustomerId.ToString() },
-                {"Price", ad.Price.ToString() }
-            };
-
-            form.Add(new FormUrlEncodedContent(parameteres));
 
             ByteArrayContent image = null;
             if (ad.ImageUri != null && File.Exists(ad.ImageUri.LocalPath)) {
                 image = new ByteArrayContent(File.ReadAllBytes(ad.ImageUri.LocalPath));
                 image.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                form.Add(image);
+                form.Add(image,"Img",new FileInfo(ad.ImageUri.LocalPath).Name);
             }
 
             request.Content = form;
             Debug.WriteLine(await request.Content.ReadAsStringAsync());
+            Debug.WriteLine("\n");
+            Debug.WriteLine(request.Headers);
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 Debug.WriteLine(await response.Content.ReadAsStringAsync());
                 Debug.WriteLine(response.Headers);
