@@ -10,25 +10,46 @@ using System.IO;
 using System.Text.Json;
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
+        private static AdServiceImpl adServiceImpl;
 
         private HttpClient client;
         private string mainUrl = ApiInfo.AdMainUrl();
+        private JsonSerializerOptions options;
 
-        public AdServiceImpl(HttpClient client) {
+        private AdServiceImpl(HttpClient client,JsonSerializerOptions options) {
             this.client = client;
+            this.options = options;
+        }
+
+        public async static Task<AdServiceImpl> getInstance(HttpClient httpClient,IAdDetailsService adDetailsService) { 
+            
+            if(adServiceImpl == null) {
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.Converters.Add(await CategoryConverter.getInstance(adDetailsService));
+                options.Converters.Add(await ConditionConverter.getInstance(adDetailsService));
+                options.Converters.Add(await ManufacturerConverter.getInstance(adDetailsService));
+                options.Converters.Add(await StateConverter.getInstance(adDetailsService));
+                options.Converters.Add(await SubcategoryConverter.getInstance(adDetailsService));
+                options.Converters.Add(await TypeConverter.getInstance(adDetailsService));
+                adServiceImpl = new AdServiceImpl(httpClient, options);
+            }
+
+            return adServiceImpl;
+
         }
 
         public async Task Create(Ad ad) {
             MultipartFormDataContent form = new MultipartFormDataContent();
-            form.Add(new StringContent(ad.StateId.ToString()), "State");
-            form.Add(new StringContent(ad.TypeId.ToString()), "Type");
-            form.Add(new StringContent(ad.ManufacturerId.ToString()), "Manufacturer");
-            form.Add(new StringContent(ad.ConditionId.ToString()), "Condition");
-            form.Add(new StringContent(ad.CategoryId.ToString()), "Category");
-            form.Add(new StringContent("2"), "SubCategory");
+            form.Add(new StringContent(ad.AdState.Id.ToString()), "State");
+            form.Add(new StringContent(ad.AdType.Id.ToString()), "Type");
+            form.Add(new StringContent(ad.AdManufacturer.Id.ToString()), "Manufacturer");
+            form.Add(new StringContent(ad.AdCondition.Id.ToString()), "Condition");
+            form.Add(new StringContent(ad.AdCategory.Id.ToString()), "Category");
+            form.Add(new StringContent(ad.AdSubcategory.Id.ToString()), "Subcategory");
             form.Add(new StringContent(ad.Title), "Title");
             form.Add(new StringContent(ad.Description), "Description");
             form.Add(new StringContent(ad.Price.ToString()), "Price");
@@ -79,12 +100,16 @@ namespace WpfClientt.services {
             using ( HttpResponseMessage response = await client.SendAsync(request) ) {
                 response.EnsureSuccessStatusCode();
                 Stream stream = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<Ad>(stream);
+                return await JsonSerializer.DeserializeAsync<Ad>(stream,options);
             }
         }
 
         public IScroller<Ad> Scroller() {
-            return new GenericScroller<Ad>(client, 10, mainUrl);
+            return new GenericScroller<Ad>(client, 10, mainUrl,options);
+        }
+
+        public async Task<ISet<long>> SubcategoriesOfCategory(long category) {
+            throw new Exception();
         }
 
         public async Task Update(Ad ad) {
@@ -92,11 +117,11 @@ namespace WpfClientt.services {
 
             IDictionary<string, string> parameteres = new Dictionary<string, string>() {
                 {"id", ad.Id.ToString() },
-                {"state", ad.StateId.ToString() },
-                {"type", ad.TypeId.ToString() },
-                {"manufacturer", ad.ManufacturerId.ToString() },
-                {"condition", ad.ConditionId.ToString() },
-                {"category", ad.CategoryId.ToString() },
+                {"state", ad.AdState.Id.ToString() },
+                {"type", ad.AdType.Id.ToString() },
+                {"manufacturer", ad.AdManufacturer.Id.ToString() },
+                {"condition", ad.AdCondition.Id.ToString() },
+                {"category", ad.AdCategory.Id.ToString() },
                 {"title", ad.Title },
                 {"description", ad.Description },
                 {"price", ad.Price.ToString() }

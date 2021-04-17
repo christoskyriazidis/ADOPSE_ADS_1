@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.model {
     public sealed class Ad {
@@ -13,19 +14,22 @@ namespace WpfClientt.model {
         public long Id { get; set; }
 
         [JsonPropertyName("state")]
-        public long StateId { get; set; }
+        public State AdState{ get; set; }
 
         [JsonPropertyName("type")]
-        public long TypeId { get; set; }
+        public AdType AdType{ get; set; }
 
         [JsonPropertyName("manufacturer")]
-        public long ManufacturerId { get; set; }
+        public Manufacturer AdManufacturer { get; set; }
 
         [JsonPropertyName("condition")]
-        public long ConditionId { get; set; }
+        public Condition AdCondition { get; set; }
 
         [JsonPropertyName("category")]
-        public long CategoryId { get; set; }
+        public Category AdCategory { get; set; }
+
+        [JsonPropertyName("subcategory")]
+        public Subcategory AdSubcategory { get; set; }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }
@@ -44,51 +48,15 @@ namespace WpfClientt.model {
         public int Reports { get; set; } = 0;
 
         [JsonPropertyName("customer")]
-        public long CustomerId { get; set; }
+        public Customer AdCustomer{ get; set; }
 
         [JsonPropertyName("price")]
         public int Price { get; set; }
-        public int SubCategoryId { get; set; }
 
         public Ad() { 
         
         }
 
-        public Ad(long id, long stateId, long typeId, long manufacturerId, long conditionId, 
-            long categoryId, string title, string description, Uri imageUri,int price, int views, int reports) {
-            this.Id = id;
-            this.StateId = stateId;
-            this.TypeId = typeId;
-            this.ManufacturerId = manufacturerId;
-            this.ConditionId = conditionId;
-            this.CategoryId = categoryId;
-            this.Title = title;
-            this.Description = description;
-            this.ImageUri = imageUri;
-            this.Views = views;
-            this.Reports = reports;
-            this.Price = price;
-        }
-
-        public void Report() {
-            Reports++;
-        }
-
-        public int GetReports() {
-            return Reports;
-        }
-
-        public void Viewed() {
-            Views++;
-        }
-
-        public int GetViews() {
-            return Views;
-        }
-
-        public override string ToString() {
-            return $"Id={Id},StateId={StateId},TypeId={TypeId},ManufacturerId={ManufacturerId},ConditionId={ConditionId}," +
-                $"CategoryId={CategoryId},Title={Title},Description={Description},Img={ImageUri},Reports={Reports},Views={Views}";
-        }
+       
     }
 }

@@ -6,9 +6,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace WpfClientt.model {
+namespace WpfClientt.model.jsonConverters {
     class JsonStringToUriConverter : JsonConverter<Uri> {
-        public override Uri Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+        public override Uri Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
             return new Uri(reader.GetString());
         }
 

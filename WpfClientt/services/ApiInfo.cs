@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfClientt.model;
 
 namespace WpfClientt.services {
     static class ApiInfo {
@@ -22,6 +23,9 @@ namespace WpfClientt.services {
         public static string CategoriesMainUrl() {
             return "https://localhost:44374/category";
         }
+        public static string SubcategoriesMainUrl(Category category) {
+            return $"https://localhost:44374/category/{category.Id}";
+        }
 
         public static string ConditionsMainUrl() {
             return "https://localhost:44374/condition";
@@ -35,7 +39,7 @@ namespace WpfClientt.services {
             return "https://localhost:44374/type";
         }
 
-        public static string ManufacturerMainUrl() {
+        public static string ManufacturersMainUrl() {
             return "https://localhost:44374/manufacturer";
         }
 

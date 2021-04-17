@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.model {
     public sealed class Customer {

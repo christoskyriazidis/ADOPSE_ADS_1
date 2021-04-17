@@ -15,14 +15,37 @@ namespace WpfClientt.viewModels {
         private static CreateAdViewModel viewModel;
 
         private IAdService adService;
+        private IAdDetailsService adDetailsService;
         private string currenlytChosenImageFileName = "Choose Image...";
+        private long selectedCategory;
+        private ISet<Category> actualCategories;
         public ObservableCollection<string> Categories { get; private set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> Subcategories { get; private set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Types { get; private set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Conditions { get; private set; } = new ObservableCollection<string>();
         public ObservableCollection<string> Manufacturers { get; private set; } = new ObservableCollection<string>();
         public ObservableCollection<string> States { get; private set; } = new ObservableCollection<string>();
         public ICommand ImageChooseCommand { get; private set; }
         public ICommand CreateAdCommand { get; private set; }
+        public Uri ImageUri { get; private set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public long CategoryId {
+            get {
+                return selectedCategory;
+            }
+            set {
+                selectedCategory = value;
+                SetSubcategoriesOf(value);
+            } 
+        }
+        public long SubcategoryId { get; set; }
+        public long StateId { get; set; }
+        public long ManufacturerId { get; set; }
+        public long ConditionId { get; set; }
+        public long TypeId { get; set; }
+        public int Price { get; set; }
+
         public string CurrentlyChosenFileName {
             get {
                 return currenlytChosenImageFileName;
@@ -33,47 +56,48 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        public Ad Ad { get; private set; } = new Ad();
 
-        private CreateAdViewModel(IAdService adService,IDictionary<long,string> categories, 
-            IDictionary<long, string> types, IDictionary<long, string> conditions,
-            IDictionary<long, string> manufacturers, IDictionary<long, string> states) {
+        private CreateAdViewModel(IAdService adService,IAdDetailsService adDetailsService,ISet<Category> categories,
+            ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers, ISet<State> states) {
 
             ImageChooseCommand = new DelegateCommand(ChooseImage);
             CreateAdCommand = new DelegateCommand(CreateAd);
 
-            foreach(KeyValuePair<long,string> category in categories) {
-                this.Categories.Add($"{category.Key}-{category.Value}");
+            foreach(Category category in categories) {
+                this.Categories.Add($"{category.Id}-{category.Title}");
             }
 
-            foreach (KeyValuePair<long, string> type in types) {
-                this.Types.Add($"{type.Key}-{type.Value}");
+            foreach (AdType type in types) {
+                this.Types.Add($"{type.Id}-{type.Title}");
             }
 
-            foreach (KeyValuePair<long, string> condition in conditions) {
-                this.Conditions.Add($"{condition.Key}-{condition.Value}");
+            foreach (Condition condition in conditions) {
+                this.Conditions.Add($"{condition.Id}-{condition.Title}");
             }
 
-            foreach (KeyValuePair<long, string> manufacturer in manufacturers) {
-                this.Manufacturers.Add($"{manufacturer.Key}-{manufacturer.Value}");
+            foreach (Manufacturer manufacturer in manufacturers) {
+                this.Manufacturers.Add($"{manufacturer.Id}-{manufacturer.Title}");
             }
 
-            foreach (KeyValuePair<long, string> state in states) {
-                this.States.Add($"{state.Key}-{state.Value}");
+            foreach (State state in states) {
+                this.States.Add($"{state.Id}-{state.Title}");
             }
 
             this.adService = adService;
+            this.adDetailsService = adDetailsService;
+            this.actualCategories = categories;
         }
 
         public static async Task<CreateAdViewModel> GetInstance(FactoryServices factory) {
-            IMapper mapper = factory.Mapper();
-            IDictionary<long, string> categories = await mapper.Categories();
-            IDictionary<long, string> types = await mapper.Types();
-            IDictionary<long, string> conditions = await mapper.Conditions();
-            IDictionary<long, string> manufacturers = await mapper.Manufacturers();
-            IDictionary<long, string> states = await mapper.States();
+            IAdDetailsService adDetailsService = factory.AdDetailsServiceInstance();
+            ISet<Category> categories = await adDetailsService.Categories();
+            ISet<AdType> types = await adDetailsService.Types();
+            ISet<Condition> conditions = await adDetailsService.Conditions();
+            ISet<Manufacturer> manufacturers = await adDetailsService.Manufacturers();
+            ISet<State> states = await adDetailsService.States();
             if (viewModel == null) {
-                viewModel = new CreateAdViewModel(factory.AdServiceInstance(),categories,types,conditions,manufacturers,states);
+                viewModel = new CreateAdViewModel(await factory.AdServiceInstance(),factory.AdDetailsServiceInstance()
+                    ,categories,types,conditions,manufacturers,states);
             }
 
             return viewModel;
@@ -83,13 +107,21 @@ namespace WpfClientt.viewModels {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Image files (*.jpg,*.jpeg,*.png) | *.jpg; *.jpeg;*.png";
             if (fileDialog.ShowDialog() == true) {
-                Ad.ImageUri = new Uri($"file:///{fileDialog.FileName}");
-                CurrentlyChosenFileName = Ad.ImageUri.LocalPath;
+                ImageUri = new Uri($"file:///{fileDialog.FileName}");
+                CurrentlyChosenFileName = ImageUri.LocalPath;
             }
         }
 
         private void CreateAd(object param) {
-            adService.Create(Ad);
+        }
+
+        private async void SetSubcategoriesOf(long categoryId) {
+            this.SubcategoryId = -1;
+            Subcategories.Clear();
+            Category category = actualCategories.Where(categ => categ.Id.Equals(categoryId)).First();
+            foreach (Subcategory subcategory in await adDetailsService.SubcategoriesOf(category)) {
+                Subcategories.Add($"{subcategory.Id}-{subcategory.Title}");
+            }
         }
     }
 }

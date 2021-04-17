@@ -34,10 +34,10 @@ namespace WpfClientt.viewModels {
         }
         public FilterViewModel FilterViewModel { get; set; }
 
-        private AdsViewModel(IScroller<Ad> scroller,FactoryServices factory,FilterViewModel filterViewModel) {
+        private AdsViewModel(IScroller<Ad> scroller,IAdService adService,FilterViewModel filterViewModel) {
             this.scroller = scroller;
             AddCurrentPageAds(scroller);
-            adService = factory.AdServiceInstance();
+            adService = adService;
             FilterViewModel = filterViewModel;
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
@@ -48,10 +48,11 @@ namespace WpfClientt.viewModels {
 
         public async static Task<AdsViewModel> GetInstance(FactoryServices factory) {
             if (viewModel == null) {
-                IScroller<Ad> scroller = factory.AdServiceInstance().Scroller();
+                IAdService adService = await factory.AdServiceInstance();
+                IScroller<Ad> scroller = adService.Scroller();
                 await scroller.Init();
                 FilterViewModel filterViewModel = await FilterViewModel.GetInstance(factory);
-                viewModel = new AdsViewModel(scroller, factory,filterViewModel);
+                viewModel = new AdsViewModel(scroller, adService, filterViewModel);
             }
             return viewModel;
         }

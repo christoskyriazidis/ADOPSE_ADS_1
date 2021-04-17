@@ -17,28 +17,23 @@ namespace WpfClientt.viewModels.filters {
 
         public ObservableCollection<FilterMember> FilterMemebers { get; private set; } = new ObservableCollection<FilterMember>();
 
-        private FilterViewModel(FactoryServices factory,IDictionary<long,string> categories,
-            IDictionary<long, string> conditions, IDictionary<long, string> manufacturers, IDictionary<long, string> states,
-            IDictionary<long, string> types) {
-            IMapper mapper = factory.Mapper();
-            FilterMemebers.Add(new SingleChoiceFilterMember(categories, "Categories", filterBuilder.AddCategoryFilter,"CategoryGroup"));
-            FilterMemebers.Add(new MultipleChoicesFilterMember(conditions, "Conditions", filterBuilder.AddConditionFilter));
-            FilterMemebers.Add(new MultipleChoicesFilterMember(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
-            FilterMemebers.Add(new MultipleChoicesFilterMember(states, "States", filterBuilder.AddStateFilter));
-            FilterMemebers.Add(new MultipleChoicesFilterMember(types, "Types", filterBuilder.AddTypeFilter));
+        private FilterViewModel( ISet<Condition> conditions, ISet<Manufacturer> manufacturers, ISet<State> states,ISet<AdType> types) {
+            FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(conditions, "Conditions", filterBuilder.AddConditionFilter));
+            FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
+            FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(states, "States", filterBuilder.AddStateFilter));
+            FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(types, "Types", filterBuilder.AddTypeFilter));
             FilterMemebers.Add(new MinMaxPriceFilterMember("Price Range", (min, max) => {
             }));
         }
 
         public async static Task<FilterViewModel> GetInstance(FactoryServices factory) {
             if (instance == null) {
-                IMapper mapper = factory.Mapper();
-                var categories = await mapper.Categories();
-                var conditions = await mapper.Conditions();
-                var manufacturers = await mapper.Manufacturers();
-                var states = await mapper.States();
-                var types = await mapper.Types();
-                instance = new FilterViewModel(factory, categories, conditions, manufacturers, states, types);
+                IAdDetailsService service = factory.AdDetailsServiceInstance();
+                var conditions = await service.Conditions();
+                var manufacturers = await service.Manufacturers();
+                var states = await service.States();
+                var types = await service.Types();
+                instance = new FilterViewModel(conditions, manufacturers, states, types);
             }
             return instance; 
         }

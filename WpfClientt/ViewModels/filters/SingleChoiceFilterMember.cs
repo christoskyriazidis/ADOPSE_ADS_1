@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfClientt.model;
 
 namespace WpfClientt.viewModels.filters {
     public class SingleChoiceFilterMember : FilterMember {
@@ -12,9 +13,9 @@ namespace WpfClientt.viewModels.filters {
         public ObservableCollection<RadioButtonViewModel> Choices { get; private set; } = new ObservableCollection<RadioButtonViewModel>();
         private Action<long> finishAction;
 
-        public SingleChoiceFilterMember(IDictionary<long, string> filters, string title, Action<long> finishAction,string groupName) {
+        public SingleChoiceFilterMember(ISet<AdDetailComponent> filters, string title, Action<long> finishAction,string groupName) {
             this.Title = title;
-            filters.Select(pair => new RadioButtonViewModel(pair.Value, pair.Key,groupName))
+            filters.Select(component => new RadioButtonViewModel(component.Title, component.Id,groupName))
                 .ToList().ForEach(choice => Choices.Add(choice));
             this.finishAction = finishAction;
         }

@@ -30,7 +30,8 @@ namespace WpfClientt.viewModels {
             if (instance == null) {
                 instance = new AdDetailsViewModel();
             }
-            Ad ad = await factory.AdServiceInstance().ReadById(id);
+            IAdService adService = await factory.AdServiceInstance();
+            Ad ad = await adService.ReadById(id);
             instance.DisplayedAd = ad;
             return instance;
         }

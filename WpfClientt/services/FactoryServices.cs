@@ -8,27 +8,26 @@ using System.Threading.Tasks;
 namespace WpfClientt.services {
     public class FactoryServices {
 
-        private IAdService adService;
         private ICustomerService customerService;
-        private IMapper mapper;
+        private IAdDetailsService adDetailsService;
+        private HttpClient client;
 
         public FactoryServices() {
-            HttpClient client = new HttpClient();
-            adService = new AdServiceImpl(client);
+            client = new HttpClient();
             customerService = new CustomerServiceImpl(client);
-            mapper = new ApiMapper(client);
+            adDetailsService = new AdDetailsServiceImpl(client);
         }
 
-        public IAdService AdServiceInstance() {
-            return adService;
+        public async Task<IAdService> AdServiceInstance() {
+            return await AdServiceImpl.getInstance(client,AdDetailsServiceInstance());
         }
 
         public ICustomerService CustomerServiceInstance() {
             return customerService;
         }
 
-        public IMapper Mapper() {
-            return mapper;
+        public IAdDetailsService AdDetailsServiceInstance() {
+            return adDetailsService;
         }
 
     }

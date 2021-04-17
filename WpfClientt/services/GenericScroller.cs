@@ -15,10 +15,12 @@ namespace WpfClientt.services {
         private int size;
         private GenericPage<T> currentPage;
         private string url;
+        private JsonSerializerOptions options;
 
-        public GenericScroller(HttpClient client, int size, string url) {
+        public GenericScroller(HttpClient client, int size, string url,JsonSerializerOptions options = null) {
             this.client = client;
             this.size = size;
+            this.options = options;
             if (url.Contains("?")) {
                 this.url = $"{url}&PageNumber=1&PageSize={size}";
             } else {
@@ -61,7 +63,7 @@ namespace WpfClientt.services {
         private async Task SetCurrentPage() {
             Stream stream = await this.client.GetStreamAsync(this.url);
 
-            currentPage = await JsonSerializer.DeserializeAsync<GenericPage<T>>(stream);
+            currentPage = await JsonSerializer.DeserializeAsync<GenericPage<T>>(stream,options);
         }
     }
 }

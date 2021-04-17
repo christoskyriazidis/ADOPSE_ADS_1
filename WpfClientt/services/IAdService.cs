@@ -14,5 +14,7 @@ namespace WpfClientt.services {
         IScroller<Ad> ProfileAds();
 
         Task UpdateAdImage(string path,long id);
+
+        Task<ISet<long>> SubcategoriesOfCategory(long category);
     }
 }
