@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/styles/ad-overview/ad-overview.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
-
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 
 </head>
 
@@ -62,6 +62,17 @@
     </main>
     <script>
         let urlParams = new URLSearchParams(window.location.search);
+        document.querySelector(".addToWishlist").addEventListener("click",()=>{
+            axios.post(`https://localhost:44374/wishlist/${urlParams.get("id")}`)
+            .then(()=>{
+                alert("Ad added to wishlist succesfuly!")
+            })
+            .catch(()=>{
+                alert("Something seems to be wrong :\\ maybe you already are subscribed here")
+            })
+        })
+        //delete thingy
+        //axios.delete(`https://localhost:44374/wishlist`,{data:{adids:[199055]}})
         axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
             .then((response) => response.data)
             .then(data=>{
@@ -77,6 +88,7 @@
     </script>
     <script src="/scripts/components/navbarComponent.js"></script>
     <script src="/scripts/components/wishlistComponent.js"></script>
+    <script src="/scripts/components/notificationComponent.js"></script>
     <script src="/scripts/components/paginationComponent.js"></script>
     <script src="/scripts/sign-in.js"></script>
     <footer></footer>

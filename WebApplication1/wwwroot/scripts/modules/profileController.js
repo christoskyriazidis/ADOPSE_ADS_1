@@ -2,7 +2,10 @@ import Dictionary from "/scripts/modules/dictionary.js"
 export default class ProfileController {
     dict;
     eventSet = false;
+    urlParams;
     constructor() {
+        this.urlParams = new URLSearchParams(window.location.search);
+
         this.dict = new Dictionary();
         this.dict.init().then(maps => {
             maps.cat.forEach(this.fillCategories)
@@ -16,8 +19,17 @@ export default class ProfileController {
         }).then(() => {
             const cats = document.querySelector("#categoryGroup")
             cats.selectedIndex = -1;
+            if (this.urlParams.get("id")) {
+                axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`).then(response=>response.data)
+                .then(data=>{
+                    for(option of cats){
+                        
+                    }
+                })
+            }
             cats.addEventListener("change", () => {
                 this.getSubCategory(cats.options[cats.selectedIndex].value)
+
             })
         })
 
@@ -95,15 +107,13 @@ export default class ProfileController {
             document.querySelector("#stateGroup").options[document.querySelector("#stateGroup").selectedIndex].value,
             document.querySelector(".price").value
         )
+        console.log(ad);
         axios.put(`https://localhost:44374/ad`, ad)
             .then(response => {
                 console.log(response)
             }).catch(error => {
                 console.log(error.response.data)
             });
-
-
-
     }
     changeImage = () => {
         var formData = new FormData();

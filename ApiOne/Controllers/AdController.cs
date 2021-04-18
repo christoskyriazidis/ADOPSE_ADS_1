@@ -332,7 +332,7 @@ namespace ApiOne.Controllers
             var users = ChatHub.ConnectedUsers;
             foreach (string i in users)
             {
-                await _myHub.Clients.Client(i).SendAsync("wishListNotification");
+                //await _myHub.Clients.Client(i).SendAsync("wishListNotification");
             }
             return Ok();
         }

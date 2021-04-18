@@ -31,12 +31,11 @@ function handleApiData(data) {
     for (object of data) {
         const item = `
         <li>
-            <a href="#">
+            <a href="https://localhost:44366/home/ad/index.html?id=${object.adId}">
                 <span class="itemImage" style='background-image:url(${object.img})' alt=""></span>
                 <div class="itemDescription">
                     <span class="title">${object.title}</span>
                     <span class="info">${object.username}</span>
-                    <span class="price">23$</span>
                 </div>
             </a>
         </li>

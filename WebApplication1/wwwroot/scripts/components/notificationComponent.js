@@ -4,10 +4,12 @@
 class NotificationComponent extends HTMLElement {
     constructor() {
         super();
-        console.log('hi')
-        console.log("haha");
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44374/NotificationHub").build();
+        connection.on("ReceiveWishListNotification", () => {
+            console.log("ajajajaja")
+        })        
         axios.get("https://localhost:44374/wishlist/notification")
-            .then((response)=>response.data)
+            .then((response) => response.data)
             .then(handleApiDataNotifications)
             .then(this.render)
             .catch(x => console.log(x))
@@ -15,34 +17,36 @@ class NotificationComponent extends HTMLElement {
 
     }
     connectedCallback() {
-        
+
     }
-    render=(html)=>{
-        
+    render = (html) => {
+
         this.innerHTML = html
     }
 }
+function listen() {
 
+}
 //style="background-image:url('${object.productphoto}')
 function handleApiDataNotifications(data) {
     let allItems = "";
     for (object of data) {
         const item = `
         <li>
-            <a href="#">
+            <a href="https://localhost:44366/home/ad/index.html?id=${object.adId}">
                 <span class="itemImage qwe" style='background-image:url(${object.img})' alt=""></span>
                 <div class="itemDescription">
                     <span class="title">${object.title}</span>
                     <span class="info">${object.username}</span>
                     <span class="price">${object.price}$</span>
-                    <span class="date">Before ${Math.round((Date.now()-(new Date(object.lastUpdate)).getTime())/1000/60)} minutes </span>
+                    <span class="date">Before ${Math.round((Date.now() - (new Date(object.lastUpdate)).getTime()) / 1000 / 60)} minutes </span>
                 </div>
             </a>
         </li>
         `
         allItems += item;
     }
-   
+
     const html = `
     <div class="notificationContainer">
         <div class="notificationContent">
@@ -52,7 +56,7 @@ function handleApiDataNotifications(data) {
         </div>
         <br>
         <div class="notificationMore">
-            <a href="/home/profile/notifications/index.html">Expand this list</a>
+            <a href="#">Expand this list</a>
         </div>
     </div>
     <style>@import "/styles/components/notification/notification.css"</style>
