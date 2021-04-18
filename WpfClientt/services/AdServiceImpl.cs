@@ -108,10 +108,6 @@ namespace WpfClientt.services {
             return new GenericScroller<Ad>(client, 10, mainUrl,options);
         }
 
-        public async Task<ISet<long>> SubcategoriesOfCategory(long category) {
-            throw new Exception();
-        }
-
         public async Task Update(Ad ad) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
 

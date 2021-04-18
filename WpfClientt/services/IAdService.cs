@@ -15,6 +15,5 @@ namespace WpfClientt.services {
 
         Task UpdateAdImage(string path,long id);
 
-        Task<ISet<long>> SubcategoriesOfCategory(long category);
     }
 }

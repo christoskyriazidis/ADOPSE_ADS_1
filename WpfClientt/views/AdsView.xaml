@@ -12,11 +12,6 @@
                 <RowDefinition Height="0.96*" />
                 <RowDefinition Height="0.04*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.85*"/>
-                <ColumnDefinition Width="0.15*"/>
-            </Grid.ColumnDefinitions>
-            
             <!--Ads-->
             <ItemsControl ItemsSource="{Binding Ads}" Grid.Row="0" Grid.Column="0">
                 <ItemsControl.ItemsPanel>
@@ -73,22 +68,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
-            <!--FILTER-->
-            <Border Grid.Row="0" Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="{StaticResource blue-light}" Padding="10">
-                <ContentControl Content="{Binding FilterViewModel}" />
-            </Border>
-            
-            <Grid Grid.Row="1" Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.4*" />
-                    <ColumnDefinition Width="0.2*" />
-                    <ColumnDefinition Width="0.4*" />
-                </Grid.ColumnDefinitions>
-                <Button Content="Search" Grid.Column="0" Style="{StaticResource medium_blue_button}" Margin="5,0,0,0" Command="{Binding SearchCommand}" IsEnabled="{Binding Enabled}" />
-                <Button Content="Reset" Grid.Column="2" Style="{StaticResource medium_red_button}" Margin="0,0,5,0" Command="{Binding ResetCommand}" IsEnabled="{Binding Enabled}" />
-            </Grid>
-            
+      
             <!--Pagination-->
             <Grid Grid.Row="1" Margin="0,5,0,0" Grid.Column="0">
                 <Grid.ColumnDefinitions >

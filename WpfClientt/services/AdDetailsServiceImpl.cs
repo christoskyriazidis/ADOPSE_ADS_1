@@ -12,15 +12,24 @@ namespace WpfClientt.services {
     class AdDetailsServiceImpl : IAdDetailsService {
 
         private HttpClient httpClient;
+        private ISet<Category> categories;
+        private ISet<Condition> conditions;
+        private ISet<Manufacturer> manufacturers;
+        private ISet<State> states;
+        private ISet<AdType> types;
+        private ISet<Subcategory> subcategories;
 
         public AdDetailsServiceImpl(HttpClient httpClient) {
             this.httpClient = httpClient;
         }
 
         public async Task<ISet<Category>> Categories() {
+            if(categories != null) {
+                return categories;
+            }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.CategoriesMainUrl());
             
-            ISet<Category> categories = new HashSet<Category>();
+            categories = new HashSet<Category>();
 
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
@@ -35,8 +44,11 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<Condition>> Conditions() {
+            if(conditions != null) {
+                return conditions;
+            }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ConditionsMainUrl());
-            ISet<Condition> conditions = new HashSet<Condition>();
+            conditions = new HashSet<Condition>();
 
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
@@ -51,8 +63,11 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<Manufacturer>> Manufacturers() {
+            if(manufacturers != null) {
+                return manufacturers;
+            }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ManufacturersMainUrl());
-            ISet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
+            manufacturers = new HashSet<Manufacturer>();
 
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
@@ -67,8 +82,11 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<State>> States() {
+            if(states != null) {
+                return states;
+            }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.StatesMainUrl());
-            ISet<State> states = new HashSet<State>();
+            states = new HashSet<State>();
 
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
@@ -83,8 +101,11 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<Subcategory>> Subcategories() {
+            if(subcategories != null) {
+                return subcategories;
+            }
             ISet<Category> categories = await Categories();
-            ISet<Subcategory> subcategories = new HashSet<Subcategory>();
+            subcategories = new HashSet<Subcategory>();
 
             foreach(Category category in categories) {
                 foreach(Subcategory subcategory in await SubcategoriesOf(category)) {
@@ -111,8 +132,11 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<AdType>> Types() {
+            if(types != null) {
+                return types;
+            }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.TypeMainUrl());
-            ISet<AdType> types = new HashSet<AdType>();
+            types = new HashSet<AdType>();
 
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
