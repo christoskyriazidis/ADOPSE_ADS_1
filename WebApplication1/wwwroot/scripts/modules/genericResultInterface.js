@@ -11,7 +11,7 @@ export default class GenericResultInterface {
     filters = ""
     search = ""
     link = ""
-    pageSize = 5;
+    pageSize = 50;
     currentPageNumber = 1;
     lastPageNumber;
     allFilters = null;
@@ -55,7 +55,6 @@ export default class GenericResultInterface {
                 //this.populateSearchArea(data)
             }).catch(console.log)
     }
-
     populateSearchArea = (data) => {
 
         this.lastPageNumber = data['totalPages']
