@@ -7,39 +7,82 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
-    <script src="/scripts/components/navbarComponent.js" defer></script>
-    
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/categories/categories.css">
+
+    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
-    
-    <script src="/scripts/components/wishlistComponent.js" defer></script>
-    <script src="/scripts/components/paginationComponent.js" defer></script>
+    <script src="/scripts/home.js" type="module"></script>
+
     <title>Easy Market</title>
 </head>
+<style>
+    .mainContentArea {
+        display: flex;
+        justify-content: center;
+        
+    }
+
+    .contentContainer {
+        display: flex;
+        width: 70%;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    ad-component {
+        margin: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top:100px;
+    }
+    .search{
+        width:100%;
+        display:flex;
+        justify-content: center;
+        margin-top:140px;
+    }
+    input {
+        width: 30%;
+        height: 35px;
+    }
+</style>
 
 <body>
     <navbar-component></navbar-component>
-    awdawd
-    <!-- <div>
-        <h3>Upload</h3>
-        <input type="file" onchange="UploadFile(event)"  />
-    </div> -->
+    <main>
+        <div class="search">
+            <input type="search" name="" id="searchBox">
+            <button class="searchBtn">Search</button>
+        </div>
 
- 
-<script>
-    
-    function UploadFile(e) { 
-        console.log(e);
-        var file = e.target.files[0];
-        console.log(file);
-        var formData = new FormData();
-        formData.append("file", file)
-        axios.post("https://localhost:44374/customer/profileImage", formData)
-    } 
-</script>
+        <h2>Categories</h2>
+        <div class="categoriesContainer">
+
+            <ul class="categories">
+
+            </ul>
+        </div>
+        <h2>Featured ads</h2>
+        <div class="mainContentArea">
+
+            <div class="contentContainer">
+
+            </div>
+        </div>
+    </main>
+
 
 </body>
 <!-- -->
+<script src="/scripts/components/adContainerComponent.js"></script>
+<script src="/scripts/components/navbarComponent.js"></script>
+<script src="/scripts/components/wishlistComponent.js"></script>
+<script src="/scripts/components/notificationComponent.js"></script>
+
 
 </html>

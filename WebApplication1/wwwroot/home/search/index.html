@@ -9,20 +9,20 @@
     <link rel="stylesheet" href="/styles/search/search.css">
     <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
 
-   
 
-    <script src="/scripts/search.js" type="module" ></script>
+
+    <script src="/scripts/search.js" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
-    <script src="/scripts/filters.js"></script>
 
-    
+
+
 </head>
 
 <body>
-    <navbar-component ></navbar-component>
-  
+    <navbar-component></navbar-component>
+
     <main>
         <div class="optionsContainer">
 
@@ -53,25 +53,29 @@
             <button class="submitSearch">submit search</button>
         </div>
         <div class="mainContentArea">
+            <div class="searchArea">
+                <input type="search" name="" id="searchBox"><button class="searchButton">Search</button>
+            </div>
             <div class="paginationArea">
-                <pagination-component ></pagination-component>
+
+                <pagination-component></pagination-component>
             </div>
             <div class="contentContainer"></div>
             <div class="paginationArea">
-                <pagination-component ></pagination-component>
+                <pagination-component></pagination-component>
             </div>
         </div>
     </main>
-   
+
 </body>
 <script>
 
-   
-
-    
 
 
-    
+
+
+
+
 
     //callPage("https://localhost:44374/ad?PageNumber=1&PageSize=10")
 
@@ -82,11 +86,11 @@
 
 </script>
 
-<script src="/scripts/components/navbarComponent.js" ></script>
-<script src="/scripts/components/wishlistComponent.js" ></script>
-<script src="/scripts/components/notificationComponent.js" ></script>
-<script src="/scripts/components/paginationComponent.js" ></script>
-<script src="/scripts/components/adContainerComponent.js" ></script>
+<script src="/scripts/components/navbarComponent.js"></script>
+<script src="/scripts/components/wishlistComponent.js"></script>
+<script src="/scripts/components/notificationComponent.js"></script>
+<script src="/scripts/components/paginationComponent.js"></script>
+<script src="/scripts/components/adContainerComponent.js"></script>
 
 
 </html>

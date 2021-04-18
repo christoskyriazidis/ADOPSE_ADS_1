@@ -1,7 +1,10 @@
 class NavbarComponent extends HTMLElement {
-    static get observedAttributes() { return ['logged'] }
+    static get observedAttributes() { return ['logged', 'filters'] }
     get logged() {
         return this.getAttribute("logged");
+    }
+    get filters() {
+        return this.getAttribute("filters");
     }
     constructor() {
         super();
@@ -12,6 +15,13 @@ class NavbarComponent extends HTMLElement {
     }
     attributeChangedCallback(name, oldValue, newValue) {
         this.render();
+        if (name = "filters") {
+            if (this.filters != null) {
+                document.querySelector(".ads").href.replace(oldValue, "");
+                document.querySelector(".ads").href += this.filters;
+            }
+
+        }
     }
     render = () => {
         let listItems;
@@ -58,7 +68,7 @@ class NavbarComponent extends HTMLElement {
             <div class="secondNavListContainer">
                 <ul>
                     <div class="vl"> </div>
-                    <li><a href="/home/search/index.html">Ads</a></li>
+                    <li><a class="ads" href="/home/search/index.html">Ads</a></li>
                     <div class="vl"> </div>
                     <li><a href="/home/categories/index.html">Categories</a></li>
                     <div class="vl"> </div>
@@ -126,7 +136,7 @@ const attachMyAccountDropdown = (event) => {
                 event.pageX < myAccountDropdown.offsetLeft + myAccountDropdown.offsetWidth &&
                 event.pageX > myAccountDropdown.offsetLeft)
                 || event.target.classList.contains("my-account"))) {
-                   document.querySelector(".my-account-dropdown").style.display = 'none'
+                document.querySelector(".my-account-dropdown").style.display = 'none'
             }
         })
 

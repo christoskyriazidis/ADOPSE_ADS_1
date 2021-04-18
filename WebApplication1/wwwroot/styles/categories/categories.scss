@@ -1,0 +1,32 @@
+h1{
+    text-align:center;
+}
+.categoriesContainer {
+
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    
+    .categories {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding:0px;
+        li {
+            height: 200px;
+            width: 200px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            margin:20px;
+            border-radius:20px;
+            box-shadow:5px 5px 5px grey;
+            span {
+                width: 100%;
+                background-color: white;
+                display: flex;
+                border-radius:20px 20px 0px 0px;
+                justify-content: center;
+            }
+        }
+    }
+}

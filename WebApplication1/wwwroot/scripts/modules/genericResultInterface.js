@@ -1,5 +1,7 @@
 import Dictionary from "/scripts/modules/dictionary.js"
-export default class SearchController {
+export default class GenericResultInterface {
+    dictionary;
+    contextHandler;
     link = ""
     resourceServer = "https://localhost:44374/"
     endpoint = "ad/"
@@ -12,65 +14,33 @@ export default class SearchController {
     pageSize = 5;
     currentPageNumber = 1;
     lastPageNumber;
-    dictMaps;
     allFilters = null;
     urlParams;
-    constructor(intent = null) {
+    constructor(intent) {
         this.urlParams = new URLSearchParams(window.location.search);
-        const search = this.urlParams.get('title');
-        const category = this.urlParams.get('category');
-
-        console.log(category);
-        if (category) {
-            this.category = category;
-
+        switch (intent) {
+            case 'search':
+                this.handleSearch();
+                break;
+            case 'home':
+                this.handleMain();
+                break;
+            case 'seller':
+                this.handleSellers();
+                break;
+            case 'myads':
+                break;
+            case 'notifications':
+                break;
+            case 'wishlist':
         }
-        if (search) {
-            this.search = "&title=" + search;
-            this.setSearchQuery();
-            document.querySelector("#searchBox").value = this.urlParams.get("title")
-        }
-
     }
-    initSearch = () => {
-        const subcategory = this.urlParams.get('subcategory');
-        console.log(this.category)
-        if (!this.category) {
-            window.location.href = "/home/categories/index.html"
-        } else {
-            if (!subcategory) {
-                window.location.href = "/home/categories/index.html?category=" + this.category
-            } else {
-                this.subcategory = subcategory
-                console.log(this.subcategory);
-                document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
-
-            }
-        }
-
+    async getDictionary(cb) {
         let dict = new Dictionary();
         dict.init(this.category).then(maps => {
-            maps.sub.forEach(this.fillCategories)
-            maps.sta.forEach(this.fillState)
-            maps.man.forEach(this.fillManufacturer)
-            maps.typ.forEach(this.fillType)
-            maps.con.forEach(this.fillCondition)
-            console.log(maps);
-            this.dictMaps = maps
-        }).then(() => {
-            document.querySelector("#cat" + this.subcategory).checked = true;
-            this.setFilters();
-        }).then(() => {
-
-        })
-    }
-
-    initMain = () => {
-        let dict = new Dictionary();
-        dict.init().then(maps => {
-            this.dictMaps = maps
-        }).then(() => {
-            this.setLink(1);
+            this.dictionary = maps
+            console.log(this.dictionary);
+            cb(this.dictionary)
         })
     }
     setLink = (num) => {
@@ -78,9 +48,44 @@ export default class SearchController {
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search
-        this.callCurrentLink()
+        axios.get(this.link)
+            .then((response) => response.data)
+            .then((data) => {
+                this.contextHandler(data)
+                //this.populateSearchArea(data)
+            }).catch(console.log)
     }
 
+    populateSearchArea = (data) => {
+
+        this.lastPageNumber = data['totalPages']
+        document.querySelector(".contentContainer").innerHTML = '';
+        let allAds = ""
+        for (let object of data.result) {
+
+            axios.get(`https://localhost:44374/customer/${object.customer}`)
+                .then((response) => response.data)
+                .then((customer) =>
+                    `<ad-component title="${object.title}"
+                customer-image="${customer.profileImg}"
+                customer-id="${object.customer}"
+                customer-name="${customer.username}"
+                customer-rating="${customer.rating}"
+                condition="${this.dictionary.con.get(object.condition)}"
+                price="${object.price}"
+                item-image="${object.img}"
+                id="${object.id}"></ad-component>`
+                )
+                .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
+                .catch(console.log)
+        }
+        const pagers = document.querySelectorAll('pagination-component')
+        for (let pager of pagers) {
+            console.log(this.currentPageNumber);
+            pager.setAttribute("current-page", this.currentPageNumber)
+            pager.setAttribute("last-page", data['totalPages'])
+        }
+    }
     setFilters = () => {
         this.filters = "";
         var regex1 = /[0-9]{1,2}/;
@@ -134,7 +139,6 @@ export default class SearchController {
         console.log(this.allFilters)
 
         this.setSearchQuery()
-
         this.setLink(1);
 
     }
@@ -147,13 +151,83 @@ export default class SearchController {
         }
         document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
     }
-    callCurrentLink = () => axios.get(this.link).then((response) => response.data).then((data) => {
-        console.log(this.link, data.totalPages)
-        this.currentPageNumber;
-        this.populateContentArea(data)
+    handleSearch = () => {
+        this.endpoint = "ad/"
+        const search = this.urlParams.get('title');
+        const category = this.urlParams.get('category');
+        if (category) {
+            this.category = category;
+        }
+        if (search) {
+            this.search = "&title=" + search;
+            this.setSearchQuery();
+            document.querySelector("#searchBox").value = this.urlParams.get("title")
+        }
+        this.contextHandler = this.populateSearchArea;
+        const subcategory = this.urlParams.get('subcategory');
+        console.log(this.category)
+        if (!this.category) {
+            window.location.href = "/home/categories/index.html"
+        } else {
+            if (!subcategory) {
+                window.location.href = "/home/categories/index.html?category=" + this.category
+            } else {
+                this.subcategory = subcategory
+                console.log(this.subcategory);
+                document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
 
+            }
+        }
+        console.log(category);
+        this.getDictionary((maps) => {
+            console.log(maps);
+            maps.sub.forEach(this.fillCategories)
+            maps.sta.forEach(this.fillState)
+            maps.man.forEach(this.fillManufacturer)
+            maps.typ.forEach(this.fillType)
+            maps.con.forEach(this.fillCondition)
+            document.querySelector("#cat" + this.subcategory).checked = true;
+            this.setFilters()
+        })
+    }
+    handleMain = () => {
+        this.contextHandler = this.populateSearchArea;
+        let dict = new Dictionary();
+        this.getDictionary((maps) => {
+            this.dictionary = maps;
+            this.setLink(1);
+        })
+    }
+    handleSellers = () => {
+        let customerList = ""
+        axios.get("https://localhost:44374/customer")
+            .then(response => response.data)
+            .then((data) => {
+                for (let object of data.result) {
+                    console.log(object);
+                    customerList += `
+                    <customer-component 
+                        id="${object.id}" 
+                        image="${object.profileImg}"
+                        fname="${object.name}"
+                        lname="${object.lastName}"
+                        username="${object.username}"
+                        rating="${object.rating}"
+                        address="${object.address}"
+                    ></customer-component>
+                `
 
-    }).catch(console.log)
+                }
+                const pagers = document.querySelectorAll('pagination-component')
+                for (let pager of pagers) {
+                    console.log(this.currentPageNumber);
+                    pager.setAttribute("current-page", this.currentPageNumber)
+                    pager.setAttribute("last-page", data['totalPages'])
+                }
+                document.querySelector(".customerContent").innerHTML = customerList
+            })
+
+    }
     callNext() {
         if (this.lastPageNumber > this.currentPageNumber) {
             this.setLink(++this.currentPageNumber);
@@ -171,46 +245,6 @@ export default class SearchController {
     callFirst() {
         this.setLink(1);
     }
-    set link(something) { this.link = something; console.log(something) }
-    populateContentArea = (data) => {
-
-        this.lastPageNumber = data['totalPages']
-        document.querySelector(".contentContainer").innerHTML = '';
-        let allAds = ""
-        for (let object of data.result) {
-            console.log(object);
-            axios.get(`https://localhost:44374/customer/${object.customer}`)
-                .then((response) => response.data)
-                .then((customer) =>
-                    `<ad-component title="${object.title}"
-                    customer-image="${customer.profileImg}"
-                    customer-name="${customer.username}"
-                    customer-rating="${customer.rating}"
-                    customer-id="${object.customer}"
-                    condition="${this.dictMaps.con.get(object.condition)}"
-                    price="${object.price}"
-                    item-image="${object.img}"
-                    id="${object.id}"></ad-component>`
-                )
-                .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
-                .catch(console.log)
-        }
-
-        const pagers = document.querySelectorAll('pagination-component')
-
-
-
-        for (let pager of pagers) {
-            console.log(this.currentPageNumber);
-            pager.setAttribute("current-page", this.currentPageNumber)
-            pager.setAttribute("last-page", data['totalPages'])
-        }
-
-
-
-
-    }
-
     fillCategories = (object) => {
         const categories = document.querySelector(".categoryGroup")
         console.log(this.subcategory, object.id);
@@ -228,7 +262,6 @@ export default class SearchController {
         types.innerHTML += `<input type="checkbox" name="type" id="typ${id}">
                         <label for="typ${id}">${value}</label><br>`
     }
-
     fillManufacturer = (value, id) => {
         const manufacturers = document.querySelector(".manufacturerGroup")
         manufacturers.innerHTML += `<input type="checkbox" name="manufacturer" id="man${id}">
@@ -245,5 +278,10 @@ export default class SearchController {
         const states = document.querySelector(".stateGroup")
         states.innerHTML += `<input type="checkbox" name="state" id="sta${id}">
                          <label for="sta${id}">${value}</label><br>`
+    }
+}
+class PaginatorController {
+    constructor() {
+
     }
 }

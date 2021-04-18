@@ -6,27 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/categories/categories.css">
+
+    <link rel="stylesheet" href="/styles/sellers/sellers.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
-    <script src="/scripts/categories.js" type="module"></script>
+    <script src="/scripts/sellers.js" type="module"></script>
     <title>Document</title>
 </head>
 
 <body>
     <navbar-component></navbar-component>
-    <h1 class="title">Select a category</h1>
-    <div class="categoriesContainer">
+    <main>
+                
+        <pagination-component></pagination-component>
+        <div class="customerContent">
 
-        <ul class="categories">
-
-        </ul>
-    </div>
-
+        </div>
+    </main>
 </body>
 <script src="/scripts/components/navbarComponent.js"></script>
 <script src="/scripts/components/wishlistComponent.js"></script>
 <script src="/scripts/components/notificationComponent.js"></script>
+<script src="/scripts/components/paginationComponent.js"></script>
+<script src="/scripts/components/customerContainerComponent.js"></script>
 
 </html>

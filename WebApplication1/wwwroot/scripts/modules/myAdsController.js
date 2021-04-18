@@ -24,7 +24,7 @@ export default class MyadsController {
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam
         this.callCurrentLink()
     }
-
+    
     populateContentArea = (data) => {
 
         this.lastPageNumber = data['totalPages']
@@ -49,27 +49,17 @@ export default class MyadsController {
                 .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
                 .catch(console.log)
         }
-
         const pagers = document.querySelectorAll('pagination-component')
-
-
-
         for (let pager of pagers) {
             console.log(this.currentPageNumber);
             pager.setAttribute("current-page", this.currentPageNumber)
             pager.setAttribute("last-page", data['totalPages'])
         }
-
-
-
-
     }
     callCurrentLink = () => axios.get(this.link).then((response) => response.data).then((data) => {
         console.log(this.link, data.totalPages)
         this.currentPageNumber;
         this.populateContentArea(data)
-
-
     }).catch(console.log)
     callNext() {
         if (this.lastPageNumber > this.currentPageNumber) {

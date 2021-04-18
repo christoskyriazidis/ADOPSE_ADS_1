@@ -5,11 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/styles/components/navbar/navbar.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/sellers/sellers.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/sign-in.js" defer></script>
+
 </head>
 
 <body>
-    
+    <navbar-component></navbar-component>
+    <script>
+        let customerList=""
+        axios.get("https://localhost:44374/customer")
+            .then(response => response.data)
+            .then(data => {
+                for (object of data.result) {
+
+                    customerList += `
+                    <customer-component 
+                        id="${object.id}" 
+                        image="${object.profileImg}"
+                        fname="${object.name}"
+                        lname="${object.lastName}"
+                        username="${object.username}"
+                        rating="${object.rating}"
+                        address="${object.address}"
+                    ></customer-component>
+                `
+                }
+                document.querySelector(".customerContent").innerHTML=customerList
+            })
+    </script>
+    <main>
+        <div class="customerContent">
+            <customer-component id="30" image="http://www.mixanitouxronou.gr/wp-content/uploads/2014/01/burnbeer.jpg"
+                fname="meme" lname="wtf" username="kavlias" rating="3" address="staikopoulou 4"></customer-component>
+        </div>
+    </main>
 </body>
+<script src="/scripts/components/navbarComponent.js"></script>
+<script src="/scripts/components/wishlistComponent.js"></script>
+<script src="/scripts/components/notificationComponent.js"></script>
+<script src="/scripts/components/customerContainerComponent.js"></script>
 
 </html>

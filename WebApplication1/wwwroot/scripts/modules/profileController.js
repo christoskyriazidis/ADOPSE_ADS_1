@@ -1,6 +1,7 @@
 import Dictionary from "/scripts/modules/dictionary.js"
 export default class ProfileController {
     dict;
+    eventSet = false;
     constructor() {
         this.dict = new Dictionary();
         this.dict.init().then(maps => {
@@ -13,7 +14,8 @@ export default class ProfileController {
             }
             this.dictMaps = maps
         }).then(() => {
-            const cats=document.querySelector("#categoryGroup")
+            const cats = document.querySelector("#categoryGroup")
+            cats.selectedIndex = -1;
             cats.addEventListener("change", () => {
                 this.getSubCategory(cats.options[cats.selectedIndex].value)
             })
@@ -24,7 +26,7 @@ export default class ProfileController {
         this.dict.getSubCategoryDictionary(id)
             .then(data => {
                 const subcategories = document.querySelector("#subCategoryGroup")
-                subcategories.innerHTML=""
+                subcategories.innerHTML = ""
                 for (let object of data) {
                     subcategories.innerHTML += `<option value="${object.id}" >${object.title}</option>`
                 }
@@ -68,7 +70,7 @@ export default class ProfileController {
         formData.append("Condition", document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value);
         formData.append("Manufacturer", document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value);
         formData.append("Price", document.querySelector(".price").value);
-        console.log(formData.forEach(console.log));
+        console.log(formData);
         axios.post("https://localhost:44374/ad", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -91,18 +93,17 @@ export default class ProfileController {
             document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value,
             document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value,
             document.querySelector("#stateGroup").options[document.querySelector("#stateGroup").selectedIndex].value,
-            document.querySelector(".price").value)
+            document.querySelector(".price").value
+        )
+        axios.put(`https://localhost:44374/ad`, ad)
+            .then(response => {
+                console.log(response)
+            }).catch(error => {
+                console.log(error.response.data)
+            });
 
 
 
-        document.querySelector(".editAd").addEventListener("click", () => {
-            axios.put(`https://localhost:44374/ad`, ad)
-                .then(response => {
-                    console.log(response)
-                }).catch(error => {
-                    console.log(error.response.data)
-                });
-        })
     }
     changeImage = () => {
         var formData = new FormData();
@@ -129,19 +130,19 @@ class Ad {
     description;
     type;
     category;
-    subcategory;
+    subcategoryid;
     condition;
     manufacturer;
     state;
     price;
     file;
-    constructor(id, title, description, type, category, subcategory, condition, manufacturer, state, price, file) {
+    constructor(id, title, description, type, category, subcategoryid, condition, manufacturer, state, price, file) {
         this.id = id;
         this.title = title;
         this.description = description
         this.type = type
         this.category = category
-        this.subcategory=subcategory;
+        this.subcategoryid = subcategoryid;
         this.condition = condition;
         this.manufacturer = manufacturer;
         this.state = state;

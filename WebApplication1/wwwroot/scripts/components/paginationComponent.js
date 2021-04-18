@@ -7,10 +7,7 @@ class PaginationComponent extends HTMLElement {
         this.render();
     }
     attributeChangedCallback(name, oldValue, newValue) {
-
         this.render();
-
-
     }
     get currentPage() {
         return this.getAttribute("current-page")
@@ -18,22 +15,13 @@ class PaginationComponent extends HTMLElement {
     get lastPage() {
         return this.getAttribute("last-page")
     }
-
-
     get filter() {
         return this.getAttribute("filter")
     }
-
-
-
-
     render() {
-
         let currentPage = Number.parseInt(this.currentPage);
         let lastPage = Number.parseInt(this.lastPage);
         let nextPageUrl = this.nextPageUrl;
-
-
 
 
         //    ` <li class="dots"><span>...</span></li>

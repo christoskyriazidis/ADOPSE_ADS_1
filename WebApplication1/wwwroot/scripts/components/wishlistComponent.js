@@ -53,7 +53,7 @@ function handleApiData(data) {
         </div>
         <br>
         <div class="wishlistMore">
-            <a href="#">Expand this list</a>
+            <a href="/home/profile/notifications/index.html">Expand this list</a>
         </div>
     </div>
     <style>@import "/styles/components/wishlist/wishlist.css"</style>
