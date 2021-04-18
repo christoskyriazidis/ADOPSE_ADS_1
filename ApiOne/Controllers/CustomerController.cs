@@ -70,6 +70,15 @@ namespace ApiOne.Controllers
             int cid = 3;
             return Json(_customerRepo.GetMyProfileInfo(cid));
         }
+        
+        [HttpGet]
+        [Route("/gamw")]
+        public IActionResult GetProfilee()
+        {
+            var a = DateTime.Now.ToString();
+            int cid = 3;
+            return Json(_customerRepo.GetMyProfileInfo(cid));
+        }
 
         [HttpPut]
         [Consumes("application/json")]

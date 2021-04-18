@@ -129,9 +129,9 @@ namespace ApiOne
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chathub");
-                endpoints.MapHub<ChatHub>("/helperHub");
-                endpoints.MapHub<ChatHub>("/AdminHub");
+                //endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<NotificationHub>("/NotificationHub");
+                //endpoints.MapHub<ChatHub>("/AdminHub");
             });
         }
     }
