@@ -17,7 +17,7 @@ namespace WpfClientt.viewModels.converters {
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            if(value != null && typeof(long).IsAssignableFrom(targetType)) {
+            if(value != null && typeof(int?).IsAssignableFrom(targetType)) {
                 string str = (string)value;
                 return long.Parse(str.Substring(0, str.IndexOf("-")));
             }
