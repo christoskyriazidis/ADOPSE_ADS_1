@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace WpfClientt.viewModels.menu {
     public class GuestMenu : IMenu {
-        public ICommand AdsView { get; private set; }
+        public ICommand CategoriesView { get; private set; }
         public ICommand RegisterView { get; private set; }
         public ICommand LoginView { get; private set; }
         public ICommand CreateView { get; private set; }
@@ -15,8 +15,8 @@ namespace WpfClientt.viewModels.menu {
         public ICommand BackView { get; private set; }
 
         public GuestMenu() {
-            AdsView = new DelegateCommand(obj => {
-                Mediator.Notify("AdsView");
+            CategoriesView = new DelegateCommand(obj => {
+                Mediator.Notify("CategoriesView");
             });
             RegisterView = new DelegateCommand(obj => {
                 Mediator.Notify("RegisterView");  

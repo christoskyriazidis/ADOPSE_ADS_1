@@ -89,6 +89,14 @@
         <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
             <views:RegisterView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
+            <views:CategoriesView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:SubcategoriesViewModel}">
+            <views:SubcategoriesView />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewmodels:AdsViewModel}">
             <views:AdsView />
@@ -129,14 +137,22 @@
         <DataTemplate DataType="{x:Type filters:SingleChoiceFilterMember}">
             <viewsFilter:SingleChoiceFilterMemberView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
             <viewsFilter:RangeFilterMemberView />
         </DataTemplate>
 
         <!-- Converters -->
-        <converters:StringToLongAdConverter x:Key="AdFieldConverter" />
-        <converters:PriceConverter x:Key="PriceConverter" />
+        <converters:AdDetailsComponentConverter x:Key="AdFieldConverter" />
+        <converters:StringToIntConverter x:Key="IntConverter" />
+        
+        <!-- Validation Template -->
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
 
     </Application.Resources>
 </Application>

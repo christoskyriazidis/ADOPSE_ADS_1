@@ -43,6 +43,18 @@ namespace WpfClientt.services {
             return categories;
         }
 
+        public async Task<ISet<Category>> CategoriesWithSubcategories() {
+            ISet<Category> categories = await Categories();
+
+            foreach(Category category in categories) {
+                foreach(Subcategory subcategory in await SubcategoriesOf(category)) {
+                    category.Subcategories.Add(subcategory);
+                }
+            }
+
+            return categories;
+        }
+
         public async Task<ISet<Condition>> Conditions() {
             if(conditions != null) {
                 return conditions;

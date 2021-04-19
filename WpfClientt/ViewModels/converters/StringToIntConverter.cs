@@ -7,21 +7,24 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace WpfClientt.viewModels.converters {
-    public class PriceConverter : IValueConverter {
+    /// <summary>
+    /// Converts string to int.
+    /// </summary>
+    public class StringToIntConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             return value == null ? 0 : value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            int price = 0;
+            int? result = null;
             if(value != null && value.ToString().Length > 0) {
                 try {
-                    price = int.Parse((string)value);
-                }catch(FormatException ignored) {//If coudln't format,price stays 0.
+                    result = int.Parse((string)value);
+                }catch(FormatException ignored) {
                 }
             }
 
-            return price >= 0 ? price : 0;
+            return result != null ? result : null;
         }
     }
 }

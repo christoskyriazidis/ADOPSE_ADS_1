@@ -8,10 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.30*"/>
-            <RowDefinition Height="0.01*"/>
+            <RowDefinition Height="0.15*"/>
+            <RowDefinition Height="0.20*"/>
             <RowDefinition Height="0.39*"/>
-            <RowDefinition Height="0.30*"/>
+            <RowDefinition Height="0.15*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*" />
@@ -21,10 +21,20 @@
         <Border Grid.Row="0" Grid.Column="1"  BorderThickness="0,0,0,2" BorderBrush="#ccc">
             <TextBlock Text="Create Ad" FontSize="38" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource blue-light}"/>
         </Border>
+        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Errors}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="14" FontWeight="Bold" Style="{StaticResource centerAlignment}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Grid Grid.Row="2" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.08*"/>
-                <RowDefinition Height="0.01*"/>
                 <RowDefinition Height="0.08*"/>
                 <RowDefinition Height="0.01*"/>
                 <RowDefinition Height="0.08*"/>
@@ -50,40 +60,32 @@
                 <ColumnDefinition Width="0.01*" />
                 <ColumnDefinition Width="0.7*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title:"  Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Title,Mode=OneWayToSource}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"   />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title:"  Style="{StaticResource centerAlignment}" />
+            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Title,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
 
-            <TextBlock Text="Description:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="2" Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Visible" Text="{Binding Description,Mode=OneWayToSource}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
+            <TextBlock Text="Description:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <TextBox Grid.Row="2" Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Visible" Text="{Binding Description,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30" Validation.ErrorTemplate="{StaticResource validationTemplate}"  />
 
-            <TextBlock Text="Category:" Grid.Row="4" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding CategoryId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
-            
-            <TextBlock Text="Subcategory:" Grid.Row="6" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Subcategories}" SelectedItem="{Binding SubcategoryId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+            <TextBlock Text="Category:" Grid.Row="4" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <ComboBox Grid.Row="4" Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding AdCategory,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}" />
 
+            <TextBlock Text="Subcategory:" Grid.Row="6" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <ComboBox Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Subcategories}" SelectedItem="{Binding AdSubcategory,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}" />
 
-            <TextBlock Text="State:" Grid.Row="8" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="8" Grid.Column="2" ItemsSource="{Binding States}" SelectedItem="{Binding StateId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+            <TextBlock Text="Manufacturer:" Grid.Row="8" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <ComboBox Grid.Row="8" Grid.Column="2" ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding AdManufacturer,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}" />
 
+            <TextBlock Text="Condition:" Grid.Row="10" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <ComboBox Grid.Row="10" Grid.Column="2" ItemsSource="{Binding Conditions}" SelectedItem="{Binding AdCondition,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}" />
 
-            <TextBlock Text="Manufacturer:" Grid.Row="10" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="10" Grid.Column="2" ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding ManufacturerId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
+            <TextBlock Text="Type:" Grid.Row="12" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <ComboBox Grid.Row="12" Grid.Column="2" ItemsSource="{Binding Types}" SelectedItem="{Binding AdType,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}" />
 
+            <TextBlock Text="Price:" Grid.Row="14" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <TextBox Grid.Row="14" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Price,Mode=OneWayToSource,Converter={StaticResource IntConverter},ValidatesOnNotifyDataErrors=True}" Validation.ErrorTemplate="{StaticResource validationTemplate}"  />
 
-            <TextBlock Text="Condition:" Grid.Row="12" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="12" Grid.Column="2" ItemsSource="{Binding Conditions}" SelectedItem="{Binding ConditionId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
-
-
-            <TextBlock Text="Type:" Grid.Row="14" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <ComboBox Grid.Row="14" Grid.Column="2" ItemsSource="{Binding Types}" SelectedItem="{Binding TypeId,Mode=OneWayToSource,Converter={StaticResource AdFieldConverter}}" />
-            
-
-            <TextBlock Text="Price:" Grid.Row="16" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="16" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Price,Converter={StaticResource PriceConverter}}"  />
-
-            <TextBlock Text="Image:" Grid.Row="18" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <Button  Grid.Row="18" Grid.Column="2" Content="{Binding CurrentlyChosenFileName}" Command="{Binding ImageChooseCommand}" />
+            <TextBlock Text="Image(Optional):" Grid.Row="16" Grid.Column="0" Style="{StaticResource centerAlignment}" />
+            <Button  Grid.Row="16" Grid.Column="2" Content="{Binding CurrentlyChosenFileName}" Command="{Binding ImageChooseCommand}" />
 
             <Button Grid.Column="2" Grid.Row="20" Height="30" Content="Create Ad" Style="{StaticResource medium_blue_button}" Command="{Binding CreateAdCommand}" />
         </Grid>

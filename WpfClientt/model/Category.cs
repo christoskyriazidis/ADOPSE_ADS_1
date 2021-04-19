@@ -10,7 +10,7 @@ namespace WpfClientt.model {
     public class Category {
 
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }
@@ -18,5 +18,8 @@ namespace WpfClientt.model {
         [JsonConverter(typeof(JsonStringToUriConverter))]
         [JsonPropertyName("imageUrl")]
         public Uri ImageUri { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Subcategory> Subcategories { get; } = new HashSet<Subcategory>();
     }
 }

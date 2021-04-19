@@ -22,5 +22,7 @@ namespace WpfClientt.services {
 
         Task<ISet<Subcategory>> SubcategoriesOf(Category category);
 
+        Task<ISet<Category>> CategoriesWithSubcategories();
+
     }
 }

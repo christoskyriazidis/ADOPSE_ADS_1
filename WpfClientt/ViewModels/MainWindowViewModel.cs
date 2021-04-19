@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfClientt.model;
 using WpfClientt.services;
 using WpfClientt.viewModels.menu;
 
@@ -47,6 +48,8 @@ namespace WpfClientt.viewModels {
             ChangeToDisplayView("Welcome To Easy Market!");
 
             Mediator.Subscribe("AdsView", ChangeToAdsView);
+            Mediator.Subscribe("CategoriesView", ChangeToCategoriesView);
+            Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
@@ -62,6 +65,11 @@ namespace WpfClientt.viewModels {
             CurrentPageViewModel = viewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
+        private async void ChangeToSubcategoriesView(object category) {
+            ChangeToDisplayView("Loading Page");
+            addToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
+        }
+
         private async void ChangeToAdsView(object obj) {
             ChangeToDisplayView("Loading Page");
             addToHistory(await AdsViewModel.GetInstance(factory));
@@ -74,6 +82,11 @@ namespace WpfClientt.viewModels {
 
         private async void ChangeToLoginView(object obj) { 
         
+        }
+
+        private async void ChangeToCategoriesView(object obj) {
+            ChangeToDisplayView("Loading Page");
+            addToHistory(await CategoriesViewModel.GetInstance(factory));
         }
 
         private async void ChangeToCreateAdView(object obj) {
