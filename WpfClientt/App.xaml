@@ -89,6 +89,14 @@
         <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
             <views:RegisterView />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
+            <views:CategoriesView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:SubcategoriesViewModel}">
+            <views:SubcategoriesView />
+        </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewmodels:AdsViewModel}">
             <views:AdsView />
@@ -129,7 +137,7 @@
         <DataTemplate DataType="{x:Type filters:SingleChoiceFilterMember}">
             <viewsFilter:SingleChoiceFilterMemberView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
             <viewsFilter:RangeFilterMemberView />
         </DataTemplate>

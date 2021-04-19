@@ -158,6 +158,7 @@
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
     <Compile Include="model\State.cs" />
+    <Compile Include="viewModels\SubcategoriesViewModel.cs" />
     <Compile Include="model\Subcategory.cs" />
     <Compile Include="model\AdType.cs" />
     <Compile Include="services\AdDetailsServiceImpl.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
+    <Compile Include="viewModels\CategoriesViewModel.cs" />
     <Compile Include="viewModels\converters\StringToIntConverter.cs" />
     <Compile Include="viewModels\converters\AdDetailsComponentConverter.cs" />
     <Compile Include="viewModels\CreateAdViewModel.cs" />
@@ -203,6 +205,9 @@
     </Compile>
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\CategoriesView.xaml.cs">
+      <DependentUpon>CategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\CreateAdView.xaml.cs">
       <DependentUpon>CreateAdView.xaml</DependentUpon>
@@ -237,6 +242,9 @@
     <Compile Include="views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\SubcategoriesView.xaml.cs">
+      <DependentUpon>SubcategoriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
@@ -250,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\AdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\CategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -294,6 +306,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\RegisterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SubcategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

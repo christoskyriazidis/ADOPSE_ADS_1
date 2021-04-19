@@ -18,5 +18,8 @@ namespace WpfClientt.model {
         [JsonConverter(typeof(JsonStringToUriConverter))]
         [JsonPropertyName("imageUrl")]
         public Uri ImageUri { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Subcategory> Subcategories { get; } = new HashSet<Subcategory>();
     }
 }

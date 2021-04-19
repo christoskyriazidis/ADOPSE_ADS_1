@@ -17,7 +17,7 @@
             <ColumnDefinition Width="0.31*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="&lt;" IsEnabled="{Binding DataContext.IsBackButtonVisible,RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource medium_blue_button}" Command="{Binding BackView}" />
-        <Button Grid.Column="1" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding AdsView}" />
+        <Button Grid.Column="1" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding CategoriesView}" />
         <Button Grid.Column="2" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding LoginView}" />
         <Button Grid.Column="3" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding RegisterView}" />
         <Button Grid.Column="4" Content="Create Ad" Style="{StaticResource medium_blue_button}" Command="{Binding CreateView}" />
