@@ -9,6 +9,7 @@
              xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
              xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus"
              xmlns:converters="clr-namespace:WpfClientt.viewModels.converters"
+             xmlns:rules="clr-namespace:WpfClientt.viewModels.validationRules"
              xmlns:filters="clr-namespace:WpfClientt.viewModels.filters">
     <Application.Resources>
         
@@ -135,8 +136,13 @@
         </DataTemplate>
 
         <!-- Converters -->
-        <converters:StringToLongAdConverter x:Key="AdFieldConverter" />
-        <converters:PriceConverter x:Key="PriceConverter" />
+        <converters:AdDetailsComponentConverter x:Key="AdFieldConverter" />
+        <converters:StringToIntConverter x:Key="IntConverter" />
+        
+        <!-- Validation Rules -->
+        <rules:FirstNameValidationRule x:Key="FirstNameValidationRule" />
+        <rules:LastNameValidationRule x:Key="LastNameValidationRule" />
+        
 
     </Application.Resources>
 </Application>

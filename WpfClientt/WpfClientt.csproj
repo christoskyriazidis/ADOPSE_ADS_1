@@ -175,8 +175,8 @@
     <Compile Include="viewModels\AdDetailsViewModel.cs" />
     <Compile Include="viewModels\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
-    <Compile Include="viewModels\converters\PriceConverter.cs" />
-    <Compile Include="viewModels\converters\StringToLongAdConverter.cs" />
+    <Compile Include="viewModels\converters\StringToIntConverter.cs" />
+    <Compile Include="viewModels\converters\AdDetailsComponentConverter.cs" />
     <Compile Include="viewModels\CreateAdViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
     <Compile Include="viewModels\filters\Checkbox.cs" />
@@ -197,10 +197,16 @@
     <Compile Include="viewModels\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
     <Compile Include="viewModels\validationRules\CategoryNotEmptyRule.cs" />
-    <Compile Include="viewModels\validationRules\DescriptionNotEmptyRule.cs" />
-    <Compile Include="viewModels\validationRules\StateNotEmptyRule.cs" />
-    <Compile Include="viewModels\validationRules\StringNotEmptyRule.cs" />
-    <Compile Include="viewModels\validationRules\TitleNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\DescriptionValidationRule.cs" />
+    <Compile Include="viewModels\validationRules\generic\FieldNotNullRule.cs" />
+    <Compile Include="viewModels\validationRules\generic\IntFieldRangeRule.cs" />
+    <Compile Include="viewModels\validationRules\generic\RegularExpressionRule.cs" />
+    <Compile Include="viewModels\validationRules\generic\StringFieldLengthRule.cs" />
+    <Compile Include="viewModels\validationRules\generic\StringFieldNotEmptyRule.cs" />
+    <Compile Include="viewModels\validationRules\FirstNameValidationRule.cs" />
+    <Compile Include="viewModels\validationRules\LastNameValidationRule.cs" />
+    <Compile Include="viewModels\validationRules\PriceValidationRule.cs" />
+    <Compile Include="viewModels\validationRules\TitleValidationRule.cs" />
     <Compile Include="viewModels\validationRules\TypeNotEmptyRule.cs" />
     <Compile Include="views\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using WpfClientt.viewModels.validationRules.generic;
 
 namespace WpfClientt.viewModels.validationRules {
-    public class CategoryNotEmptyRule : StringFieldNotEmptyRule {
+    public class DescriptionValidationRule : StringFieldLengthRule {
 
-        public CategoryNotEmptyRule() : base("category") {
+        public DescriptionValidationRule() : base("Description",20,1024) {
 
         }
 

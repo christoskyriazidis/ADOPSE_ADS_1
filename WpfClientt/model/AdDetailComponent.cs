@@ -9,7 +9,7 @@ namespace WpfClientt.model {
     public interface AdDetailComponent {
 
         [JsonPropertyName("id")]
-        long Id { get; set; }
+        int Id { get; set; }
 
         [JsonPropertyName("title")]
         string Title { get; set; }

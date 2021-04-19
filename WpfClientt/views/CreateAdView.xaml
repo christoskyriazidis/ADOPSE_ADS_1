@@ -80,7 +80,7 @@
             
 
             <TextBlock Text="Price:" Grid.Row="16" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="16" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Price,Converter={StaticResource PriceConverter}}"  />
+            <TextBox Grid.Row="16" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Price,Converter={StaticResource IntConverter}}"  />
 
             <TextBlock Text="Image:" Grid.Row="18" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
             <Button  Grid.Row="18" Grid.Column="2" Content="{Binding CurrentlyChosenFileName}" Command="{Binding ImageChooseCommand}" />

@@ -10,13 +10,27 @@ namespace WpfClientt.viewModels {
     public class RegisterViewModel : BaseViewModel,IViewModel {
 
         private static RegisterViewModel instance;
-        private RegisterViewModel() {
 
+        private ICustomerService customerService;
+
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
+        public string SecondPassword { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+
+        private RegisterViewModel(ICustomerService customerService) {
+            this.customerService = customerService;
         }
 
         public async static Task<RegisterViewModel> GetInstance(FactoryServices factory) {
             if (instance == null) {
-                instance = new RegisterViewModel();
+                instance = new RegisterViewModel(factory.CustomerServiceInstance());
             }
             return instance;
         }

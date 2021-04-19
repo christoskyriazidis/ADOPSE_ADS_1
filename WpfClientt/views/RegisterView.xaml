@@ -10,7 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.35*"/>
-            <RowDefinition Height="0.30*"/>
+            <RowDefinition Height="0.40*"/>
             <RowDefinition Height="0.35*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,10 +23,12 @@
         </Border>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.25*"/>
-                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.16*"/>
+                <RowDefinition Height="0.16*"/>
+                <RowDefinition Height="0.16*"/>
+                <RowDefinition Height="0.16*"/>
+                <RowDefinition Height="0.16*"/>
+                <RowDefinition Height="0.16*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.29*" />
@@ -34,15 +36,21 @@
                 <ColumnDefinition Width="0.7*" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="0" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"   />
+            <TextBox Grid.Row="0" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Username,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
+            
+            <TextBlock Text="First Name:" Grid.Row="1" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
+            <TextBox Grid.Row="1" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding FirstName,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
+            
+            <TextBlock Text="Last Name:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
+            <TextBox Grid.Row="2" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding LastName,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
 
-            <TextBlock Text="Password:" Grid.Row="1" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="1" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
+            <TextBlock Text="Password:" Grid.Row="3" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
+            <PasswordBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
 
-            <TextBlock Text="Retype Password:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="2" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+            <TextBlock Text="Retype Password:" Grid.Row="4" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
+            <PasswordBox Grid.Row="4" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
 
-            <Button Grid.Column="2" Grid.Row="3" Height="30" Content="Register" Style="{StaticResource medium_blue_button}" />
+            <Button Grid.Column="2" Grid.Row="5" Height="30" Content="Register" Style="{StaticResource medium_blue_button}" />
         </Grid>
     </Grid>
 </UserControl>

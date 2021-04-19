@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfClientt.viewModels.validationRules.generic;
 
 namespace WpfClientt.viewModels.validationRules {
-    public class TitleNotEmptyRule : StringNotEmptyRule {
+    public class TitleValidationRule : StringFieldLengthRule {
 
-        public TitleNotEmptyRule() : base("title") { 
+        public TitleValidationRule() : base("Title",10,72) { 
         
         }
 

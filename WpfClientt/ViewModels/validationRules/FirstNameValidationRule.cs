@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 using WpfClientt.viewModels.validationRules.generic;
 
 namespace WpfClientt.viewModels.validationRules {
-    public class CategoryNotEmptyRule : StringFieldNotEmptyRule {
-
-        public CategoryNotEmptyRule() : base("category") {
-
+    public class FirstNameValidationRule : StringFieldLengthRule {
+        public FirstNameValidationRule() : base("First Name", 4, 25) {
         }
-
     }
 }

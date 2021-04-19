@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace WpfClientt.viewModels.validationRules {
     public class TypeNotEmptyRule {
+
     }
 }
