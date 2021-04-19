@@ -150,7 +150,11 @@ namespace ApiOne.Controllers
         [Route("/customer/mail")]
         public async Task<IActionResult> SendMailToCustomer([FromBody] CustomerMailMessage customerMail)
         {
-
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
             var sender = _customerRepo.GetCustomer(3);
             var receiver = _customerRepo.GetCustomer(customerMail.SellerId);
 
