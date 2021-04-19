@@ -9,7 +9,6 @@
              xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
              xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus"
              xmlns:converters="clr-namespace:WpfClientt.viewModels.converters"
-             xmlns:rules="clr-namespace:WpfClientt.viewModels.validationRules"
              xmlns:filters="clr-namespace:WpfClientt.viewModels.filters">
     <Application.Resources>
         
@@ -139,10 +138,13 @@
         <converters:AdDetailsComponentConverter x:Key="AdFieldConverter" />
         <converters:StringToIntConverter x:Key="IntConverter" />
         
-        <!-- Validation Rules -->
-        <rules:FirstNameValidationRule x:Key="FirstNameValidationRule" />
-        <rules:LastNameValidationRule x:Key="LastNameValidationRule" />
-        
+        <!-- Validation Template -->
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
 
     </Application.Resources>
 </Application>

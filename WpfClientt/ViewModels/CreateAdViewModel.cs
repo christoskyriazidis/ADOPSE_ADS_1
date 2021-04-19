@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,40 +14,87 @@ using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
-    public class CreateAdViewModel : BaseViewModel, IViewModel {
+    public class CreateAdViewModel : BaseViewModel, IViewModel{
         private static CreateAdViewModel viewModel;
 
         private IAdService adService;
         private IAdDetailsService adDetailsService;
         private string currenlytChosenImageFileName = "Choose Image...";
-        private long selectedCategory;
-        private ISet<Category> actualCategories;
-        public ObservableCollection<string> Categories { get; private set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Subcategories { get; private set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Types { get; private set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Conditions { get; private set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> Manufacturers { get; private set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> States { get; private set; } = new ObservableCollection<string>();
+        private Ad ad = new Ad();
+
+        public ObservableCollection<string> Categories { get;} = new ObservableCollection<string>();
+        public ObservableCollection<string> Subcategories { get;} = new ObservableCollection<string>();
+        public ObservableCollection<string> Types { get;} = new ObservableCollection<string>();
+        public ObservableCollection<string> Conditions { get;} = new ObservableCollection<string>();
+        public ObservableCollection<string> Manufacturers { get;} = new ObservableCollection<string>();
+        public ObservableCollection<ValidationResult> Errors { get; } = new ObservableCollection<ValidationResult>();
         public ICommand ImageChooseCommand { get; private set; }
         public ICommand CreateAdCommand { get; private set; }
         public Uri ImageUri { get; private set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public long CategoryId {
-            get {
-                return selectedCategory;
-            }
+
+        public string Title {
             set {
-                selectedCategory = value;
-                SetSubcategoriesOf(value);
+                ad.Title = value;
+                Validate();
             } 
         }
-        public long SubcategoryId { get; set; }
-        public long StateId { get; set; }
-        public long ManufacturerId { get; set; }
-        public long ConditionId { get; set; }
-        public long TypeId { get; set; }
-        public int Price { get; set; }
+        public string Description {
+            set {
+                ad.Description = value;
+                Validate();
+            } 
+        }
+        public int? AdCategory {
+            set {
+                AdSubcategory = null;
+                ad.AdSubcategory = null;
+                if (value != null) {
+                    ad.AdCategory = adDetailsService.Categories().Result.Where(category => category.Id.Equals(value)).First();
+                    SetSubcategoriesOf(value);
+                }
+                Validate();
+            } 
+        }
+        public int? AdSubcategory {
+            set {
+                if(value != null) {
+                    ad.AdSubcategory = adDetailsService.Subcategories().Result.Where(subcategory => subcategory.Id.Equals(value)).First();
+                }
+                Validate();
+            } 
+        }
+        public int? AdManufacturer {
+            set {
+                if(value != null) {
+                    ad.AdManufacturer = adDetailsService.Manufacturers().Result.Where(manufacturer => manufacturer.Id.Equals(value)).First();
+                }
+                Validate();
+            } 
+        }
+        public int? AdCondition {
+            set {
+                if(value != null) {
+                    ad.AdCondition = adDetailsService.Conditions().Result.Where(condition => condition.Id.Equals(value)).First();
+                }
+                Validate();
+            }
+        }
+        public int? AdType {
+            set { 
+                if(value != null) {
+                    ad.AdType = adDetailsService.Types().Result.Where(adType => adType.Id.Equals(value)).First();
+                }
+                Validate();
+            } 
+        }
+        public int? Price {
+            set {
+                if(value != null) {
+                    ad.Price = (int)value;
+                }
+                Validate();
+            } 
+        }
 
         public string CurrentlyChosenFileName {
             get {
@@ -56,9 +106,8 @@ namespace WpfClientt.viewModels {
             }
         }
 
-
         private CreateAdViewModel(IAdService adService,IAdDetailsService adDetailsService,ISet<Category> categories,
-            ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers, ISet<State> states) {
+            ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers) {
 
             ImageChooseCommand = new DelegateCommand(ChooseImage);
             CreateAdCommand = new DelegateCommand(CreateAd);
@@ -79,13 +128,8 @@ namespace WpfClientt.viewModels {
                 this.Manufacturers.Add($"{manufacturer.Id}-{manufacturer.Title}");
             }
 
-            foreach (State state in states) {
-                this.States.Add($"{state.Id}-{state.Title}");
-            }
-
             this.adService = adService;
             this.adDetailsService = adDetailsService;
-            this.actualCategories = categories;
         }
 
         public static async Task<CreateAdViewModel> GetInstance(FactoryServices factory) {
@@ -97,7 +141,7 @@ namespace WpfClientt.viewModels {
             ISet<State> states = await adDetailsService.States();
             if (viewModel == null) {
                 viewModel = new CreateAdViewModel(await factory.AdServiceInstance(),factory.AdDetailsServiceInstance()
-                    ,categories,types,conditions,manufacturers,states);
+                    ,categories,types,conditions,manufacturers);
             }
 
             return viewModel;
@@ -115,13 +159,21 @@ namespace WpfClientt.viewModels {
         private void CreateAd(object param) {
         }
 
-        private async void SetSubcategoriesOf(long categoryId) {
-            this.SubcategoryId = -1;
+        private void Validate() {
+            Errors.Clear();
+            ValidationContext validationContext = new ValidationContext(ad);
+            Validator.TryValidateObject(ad, validationContext,Errors,true);
+        }
+
+
+        private async void SetSubcategoriesOf(int? categoryId) {
+            this.AdSubcategory = null;
             Subcategories.Clear();
-            Category category = actualCategories.Where(categ => categ.Id.Equals(categoryId)).First();
+            Category category = (await adDetailsService.Categories()).Where(categ => categ.Id.Equals(categoryId)).First();
             foreach (Subcategory subcategory in await adDetailsService.SubcategoriesOf(category)) {
                 Subcategories.Add($"{subcategory.Id}-{subcategory.Title}");
             }
         }
+
     }
 }

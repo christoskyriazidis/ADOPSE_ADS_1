@@ -45,7 +45,6 @@
                                         </Image.Source>
                                     </Image>
                                     <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource green-light}" Canvas.ZIndex="1" CornerRadius="8">
-
                                         <TextBlock  Foreground="#fff" TextAlignment="Center" Grid.Column="0">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}$">

@@ -39,10 +39,10 @@
             <TextBox Grid.Row="0" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Username,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
             
             <TextBlock Text="First Name:" Grid.Row="1" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="1" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding FirstName,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
-            
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding FirstName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+
             <TextBlock Text="Last Name:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="2" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding LastName,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
+            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding LastName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
 
             <TextBlock Text="Password:" Grid.Row="3" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
             <PasswordBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
