@@ -252,7 +252,7 @@ namespace ApiOne.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "SELECT w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked,w.customerId,a.Price " +
-                    "FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId";
+                    "FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId order by w.id desc";
                 var wishListNotifications = conn.Query<WishListNotification>(sql, new { CId = custmerId }).ToList();
                 return wishListNotifications;
             }
