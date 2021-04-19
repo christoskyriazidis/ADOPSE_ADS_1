@@ -2,6 +2,7 @@
 using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
 using ApiOne.Models.Customer;
+using ApiOne.Models.Mail;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -147,23 +148,27 @@ namespace ApiOne.Controllers
         //[Authorize]
         [HttpPost]
         [Route("/customer/mail")]
-        public async Task<IActionResult> SendMailToCustomer()
+        public async Task<IActionResult> SendMailToCustomer([FromBody] CustomerMailMessage customerMail)
         {
+
             var sender = _customerRepo.GetCustomer(3);
-            var receiver = _customerRepo.GetCustomer(4);
+            var receiver = _customerRepo.GetCustomer(customerMail.SellerId);
 
             var dir = _env.ContentRootPath;
             var emailTemplatePath = Path.Combine(dir, "EmailTemplates", "CustomerEmailTemplate.html");
             string template = System.IO.File.ReadAllText(emailTemplatePath);
-            string template1 = template.Replace("#message#", "eisai enas madfmasfashuf dsfuhdsuhfds fhusdfhds");
+            string template1 = template.Replace("#message#", customerMail.Message);
+            string template2 = template1.Replace("#user#", sender.Username);
+            string template3 = template2.Replace("#email#", sender.Email);
+            string template4 = template3.Replace("#adId#", customerMail.AdId.ToString());
 
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("mailservice.adopse@gmail.com"),
                 Subject = $"Customer:{sender.Username} sent you a message for your product...!!!",
-                Body = template1,
+                Body = template4,
                 IsBodyHtml = true,
-                To = {receiver.Email}
+                To = {sender.Email}
             };
             //using static class EmailService to send mail async!
             var emailStatus = await EmailService.SendMail(mailMessage);
