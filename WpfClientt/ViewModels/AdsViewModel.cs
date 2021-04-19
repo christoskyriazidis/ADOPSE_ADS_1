@@ -13,7 +13,6 @@ using WpfClientt.viewModels.filters;
 
 namespace WpfClientt.viewModels {
     public class AdsViewModel : BaseViewModel, IViewModel {
-        private static AdsViewModel viewModel;
         private bool enabled = false;
 
         public ObservableCollection<Ad> Ads { get; } = new ObservableCollection<Ad>();
@@ -46,15 +45,22 @@ namespace WpfClientt.viewModels {
             ResetCommand = new DelegateCommand(OnReset);
         }
 
-        public async static Task<AdsViewModel> GetInstance(FactoryServices factory) {
-            if (viewModel == null) {
-                IAdService adService = await factory.AdServiceInstance();
-                IScroller<Ad> scroller = adService.Scroller();
-                await scroller.Init();
-                FilterViewModel filterViewModel = await FilterViewModel.GetInstance(factory);
-                viewModel = new AdsViewModel(scroller, adService, filterViewModel);
-            }
-            return viewModel;
+        public async static Task<AdsViewModel> GetInstanceWithAllAds(FactoryServices factory) {
+            IAdService adService = await factory.AdServiceInstance();
+            IScroller<Ad> scroller = adService.Scroller();
+            await scroller.Init();
+            FilterViewModel filterViewModel = await FilterViewModel.GetInstance(factory);
+              
+            return new AdsViewModel(scroller, adService, filterViewModel);
+        }
+
+        public static async Task<AdsViewModel> GetInstanceWithSubcategoryAds(FactoryServices factory,Subcategory subcategory) {
+            IAdService adService = await factory.AdServiceInstance();
+            IScroller<Ad> subcategoryAds = adService.SubcategoryAds(subcategory);
+            await subcategoryAds.Init();
+            FilterViewModel filterViewModel = await FilterViewModel.GetInstance(factory);
+
+            return new AdsViewModel(subcategoryAds, adService, filterViewModel);
         }
 
         private async void OnMoveNext(object param) {
@@ -70,7 +76,7 @@ namespace WpfClientt.viewModels {
         }
 
         private void OnReadMore(object param) {
-            Mediator.Notify("AdDetailsView", param ?? throw new ArgumentNullException("The id should not be null"));
+            Mediator.Notify("AdDetailsView", param);
         }
 
         private async void OnSearch(object param) {

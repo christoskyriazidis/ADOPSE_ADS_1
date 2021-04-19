@@ -20,8 +20,8 @@
         <Border Grid.Row="0" Grid.ColumnSpan="3"  BorderThickness="0,0,0,2" BorderBrush="#ccc">
             <TextBlock Text="Categories" FontSize="38" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource blue-light}"/>
         </Border>
-        <ScrollViewer Grid.Row="1" Grid.Column="1">
-            <ItemsControl  ItemsSource="{Binding Categories,Mode=OneWay}" >
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl  ItemsSource="{Binding Categories,Mode=OneWay}" HorizontalAlignment="Center" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True"/>

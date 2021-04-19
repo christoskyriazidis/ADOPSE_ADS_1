@@ -59,7 +59,7 @@ namespace WpfClientt.model {
         [Range(1, 100000,ErrorMessage = "The price must be between [1,100000]")]
         [Required(ErrorMessage = "The price is not specified")]
         [JsonPropertyName("price")]
-        public int Price { get; set; }
+        public int? Price { get; set; }
 
         public Ad() { 
         

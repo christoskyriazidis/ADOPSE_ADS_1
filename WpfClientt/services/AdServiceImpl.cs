@@ -14,6 +14,7 @@ using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.services {
     class AdServiceImpl : IAdService {
+
         private static AdServiceImpl adServiceImpl;
 
         private HttpClient client;
@@ -106,6 +107,10 @@ namespace WpfClientt.services {
 
         public IScroller<Ad> Scroller() {
             return new GenericScroller<Ad>(client, 10, mainUrl,options);
+        }
+
+        public IScroller<Ad> SubcategoryAds(Subcategory subcategory) {
+            throw new NotImplementedException();
         }
 
         public async Task Update(Ad ad) {
