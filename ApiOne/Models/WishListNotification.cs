@@ -16,7 +16,6 @@ namespace ApiOne.Models
         public bool Clicked { get; set; }
         public int CustomerId { get; set; }
         public int Price { get; set; }
-
-
+        public int NId { get; set; }
     }
 }

@@ -15,8 +15,9 @@ namespace ApiOne.Interfaces
         //AdParametresQueryFilterFront GetAdsByFilters(AdParametresQueryFilterBack adParametresFilter, Pagination Params);
         Ad GetAd(int id);
         Ad UpdateAd(Ad ad);
-        public bool UpdateAdImg(int adId);
+        bool UpdateAdImg(int adId);
 
+        bool NotificationSeen(int notId);
         int InsertAd(CreateAd ad);
         bool DeleteAd(int id);
 
