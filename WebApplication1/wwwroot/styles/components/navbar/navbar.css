@@ -1,4 +1,10 @@
 @import url("/styles/components/other/inputs.css");
+body {
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden;
+}
+
 nav .primary-nav {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -5,6 +5,7 @@ export default class SearchController {
     endpoint = "ad/"
     pageNumberString = "?PageNumber="
     pageSizeString = "&PageSize="
+    category;
     filters = ""
     search = ""
     link = ""
@@ -13,10 +14,43 @@ export default class SearchController {
     lastPageNumber;
     dictMaps;
     allFilters = null;
-    constructor() {
+    urlParams;
+    constructor(intent = null) {
+        this.urlParams = new URLSearchParams(window.location.search);
+        const search = this.urlParams.get('title');
+        const category = this.urlParams.get('category');
+
+        console.log(category);
+        if (category) {
+            this.category = category;
+
+        }
+        if (search) {
+            this.search = "&title=" + search;
+            this.setSearchQuery();
+            document.querySelector("#searchBox").value = this.urlParams.get("title")
+        }
+
+    }
+    initSearch = () => {
+        const subcategory = this.urlParams.get('subcategory');
+        console.log(this.category)
+        if (!this.category) {
+            window.location.href = "/home/categories/index.html"
+        } else {
+            if (!subcategory) {
+                window.location.href = "/home/categories/index.html?category=" + this.category
+            } else {
+                this.subcategory = subcategory
+                console.log(this.subcategory);
+                document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
+
+            }
+        }
+
         let dict = new Dictionary();
-        dict.init().then(maps => {
-            maps.cat.forEach(this.fillCategories)
+        dict.init(this.category).then(maps => {
+            maps.sub.forEach(this.fillCategories)
             maps.sta.forEach(this.fillState)
             maps.man.forEach(this.fillManufacturer)
             maps.typ.forEach(this.fillType)
@@ -24,28 +58,36 @@ export default class SearchController {
             console.log(maps);
             this.dictMaps = maps
         }).then(() => {
-            this.setLink(1);
-        })
+            document.querySelector("#cat" + this.subcategory).checked = true;
+            this.setFilters();
+        }).then(() => {
 
+        })
     }
 
+    initMain = () => {
+        let dict = new Dictionary();
+        dict.init().then(maps => {
+            this.dictMaps = maps
+        }).then(() => {
+            this.setLink(1);
+        })
+    }
     setLink = (num) => {
         this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search
-
         this.callCurrentLink()
     }
 
     setFilters = () => {
         this.filters = "";
         var regex1 = /[0-9]{1,2}/;
-
         this.allFilters = {
-            category: {
+            subcategory: {
                 group: document.getElementsByName("category"),
-                strings: "category=",
+                strings: "subcategory=",
             },
             manufacturer: {
                 group: document.getElementsByName("manufacturer"),
@@ -85,16 +127,26 @@ export default class SearchController {
             this.endpoint = "ad/"
 
         } else {
-            this.endpoint = "filter/"
+            this.endpoint = "ad/"
             this.filters = "&" + this.filters.substring(0, this.filters.length - 1)
         }
         this.currentPageNumber = 1;
         console.log(this.allFilters)
 
+        this.setSearchQuery()
+
         this.setLink(1);
 
     }
+    setSearchQuery = () => {
+        if (document.querySelector("#searchBox").value) {
+            this.search = "&title=" + (document.querySelector("#searchBox").value.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '+').replace(/[+]+$/, ""));
 
+        } else if (this.urlParams.get("title") != "null") {
+            //this.search = "&title="+this.urlParams.get("title");
+        }
+        document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
+    }
     callCurrentLink = () => axios.get(this.link).then((response) => response.data).then((data) => {
         console.log(this.link, data.totalPages)
         this.currentPageNumber;
@@ -104,7 +156,6 @@ export default class SearchController {
     }).catch(console.log)
     callNext() {
         if (this.lastPageNumber > this.currentPageNumber) {
-
             this.setLink(++this.currentPageNumber);
         }
     }
@@ -122,12 +173,12 @@ export default class SearchController {
     }
     set link(something) { this.link = something; console.log(something) }
     populateContentArea = (data) => {
-        
+
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.result) {
-            
+            console.log(object);
             axios.get(`https://localhost:44374/customer/${object.customer}`)
                 .then((response) => response.data)
                 .then((customer) =>
@@ -160,10 +211,17 @@ export default class SearchController {
 
     }
 
-    fillCategories = (value, id) => {
+    fillCategories = (object) => {
         const categories = document.querySelector(".categoryGroup")
-        categories.innerHTML += `<input type="radio" name="category"   id="cat${id}">
-                             <label for="cat${id}">${value}</label><br>`
+        console.log(this.subcategory, object.id);
+        if (this.subcategory == object.id) {
+            categories.innerHTML += `<input type="radio" name="category" checked="true" id="cat${object.id}">
+                             <label for="cat${object.id}">${object.title}</label><br>`
+        } else {
+            categories.innerHTML += `<input type="radio" name="category"  id="cat${object.id}">
+            <label for="cat${object.id}">${object.title}</label><br>`
+        }
+
     }
     fillType = (value, id) => {
         const types = document.querySelector(".typeGroup")

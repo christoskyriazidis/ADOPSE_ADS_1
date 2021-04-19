@@ -1,0 +1,49 @@
+body {
+    background-color: rgb(231, 231, 231);
+}
+main {
+    display: flex;
+    justify-content: center;
+    
+    .customerContent {
+        display: flex;
+        justify-content: center;
+        width:60%;
+        flex-wrap:wrap;
+        
+        customer-component {
+            margin:40px;
+            
+            display: flex;
+            justify-content: center;
+            .sellerComponent {
+                border-radius: 20px;
+                width: 800px;;
+                height: 120px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                background-color: white;
+                .photo {
+                    margin: 20px;
+                    height: 100px;
+                    width: 100px;
+                    max-height: 100px;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                }
+                .details {
+                    margin: 10px;
+                    margin-left: 40px;
+                    margin-right: 40px;
+                    flex-grow: 1;
+                }
+                .moreInfo {
+                    display: flex;
+                    justify-content: center;
+                    margin-right: 30px;
+                }
+            }
+        }
+    }
+}

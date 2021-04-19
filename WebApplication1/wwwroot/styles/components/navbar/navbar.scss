@@ -6,6 +6,11 @@ $secondary-font-color: #243649fa;
 $primary-font-color: #ebebeb;
 $shadow-color: #20202073;
 $attention-color: #1f271b9b;
+body{
+    padding:0px;
+    margin:0px;
+    overflow-x: hidden;
+}
 nav {
     .primary-nav {
         display: flex;

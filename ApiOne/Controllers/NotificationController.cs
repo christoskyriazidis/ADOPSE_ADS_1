@@ -17,11 +17,11 @@ namespace ApiOne.Controllers
 
 
         private readonly IAdRepository _adRepository = new AdRepository();
-        private readonly IHubContext<ChatHub> _myHub;
+        private readonly IHubContext<NotificationHub> _notificationHub;
 
-        public NotificationController(IHubContext<ChatHub> hubContext)
+        public NotificationController(IHubContext<NotificationHub> hubContext)
         {
-            _myHub = hubContext;
+            _notificationHub = hubContext;
         }
 
         [HttpPost]

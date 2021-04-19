@@ -30,12 +30,12 @@ namespace ApiOne.Controllers
     {
         private readonly IAdRepository _adRepository = new AdRepository();
         private readonly IWebHostEnvironment _env;
-        private readonly IHubContext<ChatHub> _myHub;
+        private readonly IHubContext<NotificationHub> _NotificationHub;
 
-        public AdController(IHubContext<ChatHub> hubContext, IWebHostEnvironment webHostEnvironment)
+        public AdController(IHubContext<NotificationHub> hubContext, IWebHostEnvironment webHostEnvironment)
         {
             _env = webHostEnvironment;
-            _myHub = hubContext;
+            _NotificationHub = hubContext;
         }
 
         //no authorize gia na vlepoun oi episkeptes
@@ -132,7 +132,7 @@ namespace ApiOne.Controllers
         [Route("/ad")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        public IActionResult UpdateAd([FromBody] Ad ad)
+        public  async Task<IActionResult> UpdateAd([FromBody] Ad ad)
         {
             if (!ModelState.IsValid)
             {
@@ -142,6 +142,7 @@ namespace ApiOne.Controllers
             var updateResult = _adRepository.UpdateAd(ad);
             if (updateResult != null)
             {
+                await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
                 return Json(updateResult);
             }
             return BadRequest();
@@ -331,7 +332,7 @@ namespace ApiOne.Controllers
             var users = ChatHub.ConnectedUsers;
             foreach (string i in users)
             {
-                await _myHub.Clients.Client(i).SendAsync("wishListNotification");
+                //await _myHub.Clients.Client(i).SendAsync("wishListNotification");
             }
             return Ok();
         }

@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css">
+
+    <link rel="stylesheet" href="/styles/sellers/sellers.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
+    <script src="/scripts/sellers.js" type="module"></script>
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <title>Document</title>
 </head>
 
 <body>
     <navbar-component></navbar-component>
+    <main>
+                
+        <pagination-component></pagination-component>
+        <div class="customerContent">
+
+        </div>
+    </main>
 </body>
 <script src="/scripts/components/navbarComponent.js"></script>
 <script src="/scripts/components/wishlistComponent.js"></script>
 <script src="/scripts/components/notificationComponent.js"></script>
+<script src="/scripts/components/paginationComponent.js"></script>
+<script src="/scripts/components/customerContainerComponent.js"></script>
+
 </html>

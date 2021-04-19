@@ -34,9 +34,9 @@ export default class Dictionary {
 
     }
     
-    async init() {
-        const [cat,typ,man,sta,con] = await Promise.all([this.getCategoryDictionary(),this.getTypeDictionary(),this.getManufacturerDictionary(),this.getStateDictionary(),this.getConditionDictionary()]);
-        return {cat,typ,man,sta,con};
+    async init(category) {
+        const [sub,cat,typ,man,sta,con] = await Promise.all([this.getSubCategoryDictionary(category),this.getCategoryDictionary(),this.getTypeDictionary(),this.getManufacturerDictionary(),this.getStateDictionary(),this.getConditionDictionary()]);
+        return {sub,cat,typ,man,sta,con};
     }
       
 }
