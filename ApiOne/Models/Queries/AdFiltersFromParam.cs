@@ -35,5 +35,6 @@ namespace ApiOne.Models.Queries
         [RegularExpression(@"^[0-9]+$")]
         public int MinPrice { get; set; } = 1;
 
+        public string SortBy { get; set; } = "id";
     }
 }

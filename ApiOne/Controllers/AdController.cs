@@ -324,16 +324,11 @@ namespace ApiOne.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("/test")]
         public async Task<IActionResult> ttess()
         {
-            var users = ChatHub.ConnectedUsers;
-            foreach (string i in users)
-            {
-                //await _myHub.Clients.Client(i).SendAsync("wishListNotification");
-            }
+            await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");    
             return Ok();
         }
 
