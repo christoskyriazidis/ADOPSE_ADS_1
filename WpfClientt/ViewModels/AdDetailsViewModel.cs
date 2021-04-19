@@ -26,12 +26,10 @@ namespace WpfClientt.viewModels {
             DisplayedAd = ad;
         }
 
-        public async static Task<AdDetailsViewModel> GetInstance(FactoryServices factory, long id) {
+        public async static Task<AdDetailsViewModel> GetInstance(Ad ad) {
             if (instance == null) {
                 instance = new AdDetailsViewModel();
             }
-            IAdService adService = await factory.AdServiceInstance();
-            Ad ad = await adService.ReadById(id);
             instance.DisplayedAd = ad;
             return instance;
         }

@@ -10,7 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.35*"/>
-            <RowDefinition Height="0.40*"/>
+            <RowDefinition Height="0.30*"/>
             <RowDefinition Height="0.35*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -21,36 +21,38 @@
         <Border Grid.Row="0" Grid.Column="1"  BorderThickness="0,0,0,2" BorderBrush="#ccc">
             <TextBlock Text="Registration Form" FontSize="38" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource blue-light}"/>
         </Border>
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.16*"/>
-                <RowDefinition Height="0.16*"/>
-                <RowDefinition Height="0.16*"/>
-                <RowDefinition Height="0.16*"/>
-                <RowDefinition Height="0.16*"/>
-                <RowDefinition Height="0.16*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.29*" />
-                <ColumnDefinition Width="0.01*" />
-                <ColumnDefinition Width="0.7*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Username:" Grid.Row="0" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="0" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Text="{Binding Username,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"   />
-            
-            <TextBlock Text="First Name:" Grid.Row="1" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding FirstName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+        <ScrollViewer  Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.16*"/>
+                    <RowDefinition Height="0.16*"/>
+                    <RowDefinition Height="0.16*"/>
+                    <RowDefinition Height="0.16*"/>
+                    <RowDefinition Height="0.16*"/>
+                    <RowDefinition Height="0.16*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.29*" />
+                    <ColumnDefinition Width="0.01*" />
+                    <ColumnDefinition Width="0.7*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="10"  Text="Username:" Style="{StaticResource centerRightAlignment}" />
+                <TextBox Grid.Row="0" Grid.Column="2" Margin="10"  Text="{Binding Username,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"   />
 
-            <TextBlock Text="Last Name:" Grid.Row="2" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding LastName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" Text="First Name:" Style="{StaticResource centerRightAlignment}" />
+                <TextBox Grid.Row="1" Grid.Column="2" Margin="10" Text="{Binding FirstName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" VerticalAlignment="Center" />
 
-            <TextBlock Text="Password:" Grid.Row="3" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="3" Grid.Column="2" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" Height="30"  />
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" Text="Last Name:" Style="{StaticResource centerRightAlignment}" />
+                <TextBox Grid.Row="2" Grid.Column="2" Margin="10" Text="{Binding LastName ,UpdateSourceTrigger=PropertyChanged ,Mode=OneWayToSource}" VerticalAlignment="Center" />
 
-            <TextBlock Text="Retype Password:" Grid.Row="4" Grid.Column="0" Style="{StaticResource centerRightAlignment}" />
-            <PasswordBox Grid.Row="4" Grid.Column="2" Height="30" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="10" Text="Password:" Style="{StaticResource centerRightAlignment}" />
+                <PasswordBox Grid.Row="3" Grid.Column="2" Margin="10" VerticalAlignment="Center" />
 
-            <Button Grid.Column="2" Grid.Row="5" Height="30" Content="Register" Style="{StaticResource medium_blue_button}" />
-        </Grid>
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Text="Retype Password:" Style="{StaticResource centerRightAlignment}" />
+                <PasswordBox Grid.Row="4" Grid.Column="2" Margin="10" VerticalAlignment="Center" />
+
+                <Button Grid.Column="2" Grid.Row="5" Margin="10" Content="Register" Style="{StaticResource medium_blue_button}" VerticalAlignment="Center" />
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

@@ -48,50 +48,48 @@ namespace WpfClientt.viewModels {
             set {
                 AdSubcategory = null;
                 ad.AdSubcategory = null;
-                if (value != null) {
+                if(value != null) {
                     ad.AdCategory = adDetailsService.Categories().Result.Where(category => category.Id.Equals(value)).First();
                     SetSubcategoriesOf(value);
+                    Validate();
                 }
-                Validate();
             } 
         }
         public int? AdSubcategory {
             set {
-                if(value != null) {
+                if (value != null) {
                     ad.AdSubcategory = adDetailsService.Subcategories().Result.Where(subcategory => subcategory.Id.Equals(value)).First();
+                    Validate();
                 }
-                Validate();
             } 
         }
         public int? AdManufacturer {
             set {
-                if(value != null) {
+                if (value != null) {
                     ad.AdManufacturer = adDetailsService.Manufacturers().Result.Where(manufacturer => manufacturer.Id.Equals(value)).First();
+                    Validate();
                 }
-                Validate();
             } 
         }
         public int? AdCondition {
             set {
-                if(value != null) {
+                if (value != null) {
                     ad.AdCondition = adDetailsService.Conditions().Result.Where(condition => condition.Id.Equals(value)).First();
+                    Validate();
                 }
-                Validate();
             }
         }
         public int? AdType {
-            set { 
-                if(value != null) {
+            set {
+                if (value != null) {
                     ad.AdType = adDetailsService.Types().Result.Where(adType => adType.Id.Equals(value)).First();
+                    Validate();
                 }
-                Validate();
             } 
         }
         public int? Price {
             set {
-                if(value != null) {
-                    ad.Price = (int)value;
-                }
+                ad.Price = value;
                 Validate();
             } 
         }

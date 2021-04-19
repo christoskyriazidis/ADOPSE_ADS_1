@@ -32,6 +32,7 @@
         <SolidColorBrush x:Key="green-dark" Color="#007E33"/>
         
         <!-- STYLES -->
+
         <Style x:Key="medium_green_button" TargetType="Button">
             <Style.Setters>
                 <Setter Property="Background" Value="{StaticResource green-medium}" />

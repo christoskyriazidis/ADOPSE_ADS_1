@@ -14,7 +14,6 @@ namespace WpfClientt.viewModels {
         private IViewModel currentPageView;
         private IMenu currentMenuView;
         private FactoryServices factory;
-        private IList<IViewModel> viewModels = new List<IViewModel>();
         private Stack<IViewModel> history = new Stack<IViewModel>();
         public bool IsBackButtonVisible { 
             get {
@@ -48,6 +47,7 @@ namespace WpfClientt.viewModels {
             ChangeToDisplayView("Welcome To Easy Market!");
 
             Mediator.Subscribe("AdsView", ChangeToAdsView);
+            Mediator.Subscribe("AdsSubcategoryView", ChangeToAdsSubcategoryView);
             Mediator.Subscribe("CategoriesView", ChangeToCategoriesView);
             Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
@@ -55,29 +55,31 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
             Mediator.Subscribe("CreateView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
-            Mediator.Subscribe("BackView", previousViewModel);
+            Mediator.Subscribe("BackView", PreviousViewModel);
+        }
+
+        private async void ChangeToAdsSubcategoryView(object subcategory) {
+            ChangeToDisplayView("Loading Page");
+            AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
         }
 
         private void ChangeViewModel(IViewModel viewModel) {
-            if (!viewModels.Contains(viewModel)) {
-                viewModels.Add(viewModel);
-            }
-            CurrentPageViewModel = viewModels.FirstOrDefault(vm => vm == viewModel);
+            CurrentPageViewModel = viewModel;
         }
 
         private async void ChangeToSubcategoriesView(object category) {
             ChangeToDisplayView("Loading Page");
-            addToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
+            AddToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
         }
 
         private async void ChangeToAdsView(object obj) {
             ChangeToDisplayView("Loading Page");
-            addToHistory(await AdsViewModel.GetInstance(factory));
+            AddToHistory(await AdsViewModel.GetInstanceWithAllAds(factory));
         }
 
         private async void ChangeToRegisterView(object obj) {
             ChangeToDisplayView("Loading Page");
-            addToHistory(await RegisterViewModel.GetInstance(factory));
+            AddToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
         private async void ChangeToLoginView(object obj) { 
@@ -86,12 +88,12 @@ namespace WpfClientt.viewModels {
 
         private async void ChangeToCategoriesView(object obj) {
             ChangeToDisplayView("Loading Page");
-            addToHistory(await CategoriesViewModel.GetInstance(factory));
+            AddToHistory(await CategoriesViewModel.GetInstance(factory));
         }
 
         private async void ChangeToCreateAdView(object obj) {
             ChangeToDisplayView("Loading Page");
-            addToHistory(await CreateAdViewModel.GetInstance(factory));
+            AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
         private void ChangeToDisplayView(string text) {
@@ -100,8 +102,7 @@ namespace WpfClientt.viewModels {
 
         private async void ChangeToAdDetailsView(object param) {
             ChangeToDisplayView("Loading Page");
-            long id = (long)param;
-            addToHistory(await AdDetailsViewModel.GetInstance(factory, id));
+            AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param));
         }
 
         private async void ChangeToProfileView(object param) {
@@ -113,15 +114,17 @@ namespace WpfClientt.viewModels {
             return history.Peek();
         }
 
-        private void previousViewModel(object param) {
+        private void PreviousViewModel(object param) {
             history.Pop();
             ChangeViewModel(currentViewModel());
             OnPropertyChanged("IsBackButtonVisible");
         }
 
-        private void addToHistory(IViewModel viewModel) {
-            history.Push(viewModel);
-            ChangeViewModel(currentViewModel());
+        private void AddToHistory(IViewModel viewModel) {
+            if (!history.Contains(viewModel)) {
+                history.Push(viewModel);
+            }
+            ChangeViewModel(viewModel);
             OnPropertyChanged("IsBackButtonVisible");
         }
     }
