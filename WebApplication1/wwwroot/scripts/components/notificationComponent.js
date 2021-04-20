@@ -5,16 +5,23 @@ class NotificationComponent extends HTMLElement {
     constructor() {
         super();
         var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44374/NotificationHub").build();
+        connection.start().then(function () {
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
         connection.on("ReceiveWishListNotification", () => {
-            console.log("ajajajaja")
-        })        
+            this.callApi();
+        })
+        this.callApi();
+
+    }
+    callApi = () => {
         axios.get("https://localhost:44374/wishlist/notification")
             .then((response) => response.data)
             .then(handleApiDataNotifications)
             .then(this.render)
             .catch(x => console.log(x))
             .finally()
-
     }
     connectedCallback() {
 
@@ -25,15 +32,31 @@ class NotificationComponent extends HTMLElement {
     }
 }
 function listen() {
-
+    axios.get("https://localhost:44374/wishlist/notification")
+        .then((response) => response.data)
+        .then(handleApiDataNotifications)
+        .then(this.render)
+        .catch(x => console.log(x))
+        .finally()
+}
+setSeen = (notificationId,adId) => {
+    axios.put("https://localhost:44374/wishlist/notification/seen/"+notificationId)
+        .then((response) => response.data)
+        .then(() => {
+            window.location.href = "https://localhost:44366/home/ad/index.html?id=" + adId
+        }
+        )
+        .then(this.render)
+        .catch(x => console.log(x))
+        .finally()
 }
 //style="background-image:url('${object.productphoto}')
 function handleApiDataNotifications(data) {
     let allItems = "";
     for (object of data) {
         const item = `
-        <li>
-            <a href="https://localhost:44366/home/ad/index.html?id=${object.adId}">
+        <li onclick="setSeen(${object.nId},${object.adId})" class="${object.clicked ? "" : "new"}" >
+            <a href="#">
                 <span class="itemImage qwe" style='background-image:url(${object.img})' alt=""></span>
                 <div class="itemDescription">
                     <span class="title">${object.title}</span>

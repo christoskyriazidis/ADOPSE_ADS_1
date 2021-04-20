@@ -29,6 +29,7 @@ class CustomerContainerComponent extends HTMLElement {
     render = () => {
         this.innerHTML = `
         <div class="sellerComponent">
+        <a href="https://localhost:44366/home/profile/index.html?id=${this.id}">
         <div class="photo"
             style="background-image: url(${this.customerImage});">
         </div>
@@ -38,6 +39,7 @@ class CustomerContainerComponent extends HTMLElement {
             <p>${this.address}</p>
         </div>
         <div class="moreInfo">${this.rating}</div>
+        </a>
     </div>
             `
     }

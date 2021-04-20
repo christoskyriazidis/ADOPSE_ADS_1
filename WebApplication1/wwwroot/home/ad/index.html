@@ -19,7 +19,7 @@
         <div class="contentContainer">
 
             <div class="title">
-               
+
             </div>
             <div class="image">
                 <div class="imageContainer"></div>
@@ -37,6 +37,19 @@
 
                     </svg> add to wishlist!
                 </div>
+                <div class="showModal addToWishlist">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 391.837 391.837"
+                        style="enable-background:new 0 0 391.837 391.837;" xml:space="preserve">
+
+                        <path style="fill:#D7443E;" d="M285.257,35.528c58.743,0.286,106.294,47.836,106.58,106.58
+                   c0,107.624-195.918,214.204-195.918,214.204S0,248.165,0,142.108c0-58.862,47.717-106.58,106.58-106.58l0,0
+                   c36.032-0.281,69.718,17.842,89.339,48.065C215.674,53.517,249.273,35.441,285.257,35.528z" />
+
+
+                    </svg> Im interested!
+                </div>
+
                 <div class="socialMediaButtons">
                     <div class="addToFacebook"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
@@ -59,33 +72,122 @@
             </div>
 
         </div>
+        <!-- The Modal -->
+        <div id="myModal" style="display:none;" class="modal">
+
+
+        </div>
     </main>
     <script>
         let urlParams = new URLSearchParams(window.location.search);
-        document.querySelector(".addToWishlist").addEventListener("click",()=>{
+
+        // document.querySelector(".sendEmail").addEventListener("click", () => {
+        //     confirm("Do you want to send email ?")
+        // })
+        document.querySelector(".addToWishlist").addEventListener("click", () => {
             axios.post(`https://localhost:44374/wishlist/${urlParams.get("id")}`)
-            .then(()=>{
-                alert("Ad added to wishlist succesfuly!")
-            })
-            .catch(()=>{
-                alert("Something seems to be wrong :\\ maybe you already are subscribed here")
-            })
+                .then(() => {
+                    alert("Ad added to wishlist succesfuly!")
+                })
+                .catch(() => {
+                    alert("Something seems to be wrong :\\ maybe you already are subscribed here")
+                })
         })
+        let customer;
         //delete thingy
         //axios.delete(`https://localhost:44374/wishlist`,{data:{adids:[199055]}})
         axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
             .then((response) => response.data)
-            .then(data=>{
-                document.querySelector(".description").innerHTML+=data.description
-                document.querySelector(".title").innerHTML=`<h1>${data.title}</h1>`
-                document.querySelector(".imageContainer").style.backgroundImage=`url(${data.img.replace("small","full")})`;
+            .then(data => {
+                customer = data.customer;
+                document.querySelector(".description").innerHTML += data.description
+                document.querySelector(".title").innerHTML = `<h1>${data.title}</h1>`
+                document.querySelector(".imageContainer").style.backgroundImage = `url(${data.img.replace("small", "full")})`;
                 // document.querySelector(".description").innerHTML=data.description
                 // document.querySelector(".description").innerHTML=data.description
             })
             .catch(x => console.log(x))
             .finally()
 
+
+        changeDisplayForEmail = () => {
+            console.log("ahahahha");
+            document.querySelector(".modalContent").innerHTML = `
+                <p>Write a message here</p>
+                <textarea ></textarea>
+                <button onclick="sendEmail()">Send email</button>`;
+        }
+        sendEmail = () => {
+            let textarea = document.querySelector("textarea");
+            
+            if (textarea.textLength <= 10) {
+                alert("You need to be more specific, at least 10 characters required")
+                return
+            }
+            if (textarea.textLength >= 500) {
+                alert("Hold it there, only 500 characters allowed, please erase some")
+                return
+            }
+            modal.style.display = "none";
+            const body = {
+                sellerId: customer,
+                adId: urlParams.get("id"),
+                message: textarea.value
+            }
+            axios.post("https://localhost:44374/customer/mail", body)
+                .then(() => {
+                    alert("Your email has been succesfuly send")
+                })
+                .catch(console.log)
+        }
+        // Get the modal
+        var modal = document.querySelector("#myModal");
+
+        // Get the button that opens the modal
+        var btn = document.querySelector(".showModal");
+
+        // Get the <span> element that closes the modal
+
+        // When the user clicks the button, open the modal 
+        btn.addEventListener("click", () => {
+            modal.style.display = "flex";
+            modal.innerHTML = `<div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modalContent">
+                    <div class="chatOption">
+                        <p>Click here to start live chat conversation!</p>
+                    </div>
+                    <div class="vl"> </div>
+                    <div class="emailOption" onclick="changeDisplayForEmail()">
+                        <p>Click here to contact seller via email!</p>
+                    </div>
+                </div>
+            </div>`
+            var span = document.getElementsByClassName("close")[0];
+
+            let chatOption = document.querySelector(".chatOption")
+            chatOption.addEventListener("click", () => {
+                document.querySelector(".modalContent").innerHTML = "";
+            })
+            let emailOption = document.querySelector(".emailOption")
+            emailOption.addEventListener("click", changeDisplayForEmail)
+            // When the user clicks on <span> (x), close the modal
+            span.addEventListener("click", () => {
+                modal.style.display = "none";
+            })
+        })
+
+
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
     </script>
+
     <script src="/scripts/components/navbarComponent.js"></script>
     <script src="/scripts/components/wishlistComponent.js"></script>
     <script src="/scripts/components/notificationComponent.js"></script>

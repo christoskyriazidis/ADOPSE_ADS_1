@@ -39,9 +39,6 @@ notification-component .notificationContainer .notificationItems li {
   padding-bottom: 15px;
   padding-top: 15px;
   list-style: none;
-}
-
-notification-component .notificationContainer .notificationItems li:nth-child(odd) {
   background-color: rgba(230, 230, 230, 0.424);
 }
 
@@ -90,6 +87,14 @@ notification-component .notificationContainer .notificationItems li a .itemDescr
 
 notification-component .notificationContainer .notificationItems li a .itemDescription .date {
   font-size: small;
+}
+
+notification-component .notificationContainer .notificationItems .new {
+  background-color: white;
+}
+
+notification-component .notificationContainer .notificationItems .new * {
+  color: #0e5fca;
 }
 
 notification-component .notificationContainer .notificationMore {

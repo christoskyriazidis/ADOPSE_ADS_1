@@ -436,7 +436,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = $"UPDATE [WishListNotification] SET seen=1 where id=@Id";
+                string sql = $"UPDATE [WishListNotification] SET clicked=1 where id=@Id";
                 var result = conn.Execute(sql, new { Id = notId });
                 return true;
             }
