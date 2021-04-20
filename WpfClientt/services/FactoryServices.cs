@@ -19,7 +19,7 @@ namespace WpfClientt.services {
         }
 
         public async Task<IAdService> AdServiceInstance() {
-            return await AdServiceImpl.getInstance(client,AdDetailsServiceInstance());
+            return await AdServiceImpl.GetInstance(client,AdDetailsServiceInstance());
         }
 
         public ICustomerService CustomerServiceInstance() {
