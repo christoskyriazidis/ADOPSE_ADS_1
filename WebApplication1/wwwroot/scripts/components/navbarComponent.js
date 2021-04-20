@@ -89,6 +89,7 @@ class NavbarComponent extends HTMLElement {
             <li><a href="#" onclick="signOut()">Logout</a></li>
         </ul>
         </div>
+        <notification-component class="fresh" style="display:none;"></notification-component>
         `
     }
 
@@ -153,12 +154,9 @@ const attachMyAccountDropdown = (event) => {
 
 }
 const attachNotifications = (event) => {
-
-
-    if (!document.querySelector("notification-component")) {
-
-        let notification = document.createElement("notification-component")
-        document.querySelector("navbar-component").appendChild(notification);
+    if (document.querySelector("notification-component").classList.contains("fresh")) {
+        document.querySelector("notification-component").classList.remove("fresh")
+        let notification=document.querySelector("notification-component")
         document.body.addEventListener("click", (event) => {
             if (!((
                 event.pageY > notificationComponent.offsetTop &&

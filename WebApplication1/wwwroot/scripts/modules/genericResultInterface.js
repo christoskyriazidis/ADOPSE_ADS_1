@@ -11,7 +11,10 @@ export default class GenericResultInterface {
     filters = ""
     search = ""
     link = ""
-    pageSize = 50;
+    pageSize = 30;
+    sortby = "&sortby="
+    sortField = "id"
+    sortOrder = "H"
     currentPageNumber = 1;
     lastPageNumber;
     allFilters = null;
@@ -47,7 +50,7 @@ export default class GenericResultInterface {
         this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
-        this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search
+        this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search + this.sortby + this.sortField + this.sortOrder
         axios.get(this.link)
             .then((response) => response.data)
             .then((data) => {
@@ -61,22 +64,33 @@ export default class GenericResultInterface {
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.result) {
-
-            axios.get(`https://localhost:44374/customer/${object.customer}`)
-                .then((response) => response.data)
-                .then((customer) =>
-                    `<ad-component title="${object.title}"
-                customer-image="${customer.profileImg}"
-                customer-id="${object.customer}"
-                customer-name="${customer.username}"
-                customer-rating="${customer.rating}"
-                condition="${this.dictionary.con.get(object.condition)}"
-                price="${object.price}"
-                item-image="${object.img}"
-                id="${object.id}"></ad-component>`
-                )
-                .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
-                .catch(console.log)
+            document.querySelector(".contentContainer").innerHTML +=
+            `<ad-component title="${object.title}"
+            customer-image="${object.profileImg}"
+            customer-id="${object.customer}"
+            customer-name="${object.username}"
+            customer-rating="${object.rating}"
+            customer-reviews="${object.reviews}"
+            condition="${this.dictionary.con.get(object.condition)}"
+            price="${object.price}"
+            item-image="${object.img}"
+            id="${object.id}"></ad-component>`
+            // axios.get(`https://localhost:44374/customer/${object.customer}`)
+            //     .then((response) => response.data)
+            //     .then((customer) =>
+            //         `<ad-component title="${object.title}"
+            //     customer-image="${object.profileImg}"
+            //     customer-id="${object.customer}"
+            //     customer-name="${object.username}"
+            //     customer-rating="${object.rating}"
+            //     customer-reviews="${object.reviews}"
+            //     condition="${this.dictionary.con.get(object.condition)}"
+            //     price="${object.price}"
+            //     item-image="${object.img}"
+            //     id="${object.id}"></ad-component>`
+            //     )
+            //     .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
+            //     .catch(console.log)
         }
         const pagers = document.querySelectorAll('pagination-component')
         for (let pager of pagers) {

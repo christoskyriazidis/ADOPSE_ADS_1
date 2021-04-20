@@ -22,8 +22,10 @@ export default class ProfileController {
             if (this.urlParams.get("id")) {
                 axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`).then(response=>response.data)
                 .then(data=>{
-                    for(option of cats){
-                        
+                    for(let option of cats){
+                        if(data.cats=option.value){
+                            console.log(data.cats);
+                        }
                     }
                 })
             }
@@ -97,7 +99,7 @@ export default class ProfileController {
     editAd = () => {
         const ad = new Ad(
             urlParams.get("id"),
-            document.querySelector(".title").value,
+            document.querySelector(".titleInput").value,
             document.querySelector(".description").value,
             document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value,
             document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value,
@@ -105,7 +107,7 @@ export default class ProfileController {
             document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value,
             document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value,
             document.querySelector("#stateGroup").options[document.querySelector("#stateGroup").selectedIndex].value,
-            document.querySelector(".price").value
+            document.querySelector(".priceInput").value
         )
         console.log(ad);
         axios.put(`https://localhost:44374/ad`, ad)
