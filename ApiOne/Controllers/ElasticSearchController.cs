@@ -26,7 +26,7 @@ namespace ApiOne.Controllers
             foreach (var prop in paramTypeFilter.GetType().GetProperties())
             {
                 var value = prop.GetValue(paramTypeFilter, null);
-                if (value != null && prop.Name != "Title" && prop.Name != "SortBy" && prop.Name != "Description" && prop.Name != "MaxPrice" && prop.Name != "MinPrice")
+                if (value != null && prop.Name != "Title" && prop.Name != "SortBy" && prop.Name != "Description" && prop.Name != "MaxPrice" && prop.Name != "MinPrice" && prop.Name != "SubCategoryId")
                 {
                     var filterArray = value.ToString().Split("_");
                     var filterIntArray = filterArray.Select(Int32.Parse).ToList();
@@ -42,6 +42,12 @@ namespace ApiOne.Controllers
             .Size(pagination.PageSize)
             //elasticSearch query
                 .Query(q =>
+                    q.Match(m=>m
+                        .Field(f=>f.subcategoryid)
+                            .Query(paramTypeFilter.SubCategoryId.ToString()
+                            )
+                    )
+                 &&
                     q.Range(r => r
                         .Field(f => f.Price)
                             .GreaterThanOrEquals(paramTypeFilter.MinPrice)
@@ -109,8 +115,14 @@ namespace ApiOne.Controllers
 
             var elasticResponseCount = client.Count<CompleteAd>(s => s
             .Query(q =>
-                    q.Range(r=>r
-                        .Field(f=>f.Price)
+                    q.Match(m => m
+                        .Field(f => f.subcategoryid)
+                            .Query(paramTypeFilter.SubCategoryId.ToString()
+                            )
+                    )
+                 &&
+                    q.Range(r => r
+                        .Field(f => f.Price)
                             .GreaterThanOrEquals(paramTypeFilter.MinPrice)
                             .LessThanOrEquals(paramTypeFilter.MaxPrice)
                     )
@@ -122,7 +134,7 @@ namespace ApiOne.Controllers
                         )
                 &&
                     q.Terms(t => t
-                        .Field(f =>f.Manufacturer)
+                        .Field(f => f.Manufacturer)
                         .Terms(adFiltersFromParamClient.Manufacturer)
                         )
                 &&
@@ -142,9 +154,7 @@ namespace ApiOne.Controllers
                         .Field(f => f.Description)
                         .Value(paramTypeFilter.Title)
                         )
-                    )
-                )   
-            );
+                    )));
 
             var queryDocsCount = elasticResponseCount.Count;
 
@@ -153,7 +163,7 @@ namespace ApiOne.Controllers
             foreach (var prop in paramTypeFilter.GetType().GetProperties())
             {
                 var value = prop.GetValue(paramTypeFilter, null);
-                if (value != null && prop.Name != "Title" && prop.Name != "MaxPrice" && prop.Name != "MinPrice" && prop.Name != "SortBy")
+                if (value != null && prop.Name != "Title" && prop.Name != "MaxPrice" && prop.Name != "MinPrice" && prop.Name != "SortBy" && prop.Name != "SubCategoryId")
                 {
                     //pattern  type=1_2_3&category=1_2_3
                     urlFilters += $"{prop.Name}={value}&";
