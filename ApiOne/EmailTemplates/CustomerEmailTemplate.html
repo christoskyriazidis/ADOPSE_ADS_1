@@ -1,19 +1,33 @@
 <html>
   <head>
     <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
       .colored {
-        color: hotpink;
+        color: black;
+        text-align: center;
+        margin-top:15px;
+      }
+      .warning{
+        color: red;
         text-align: center;
       }
       #body {
-        font-size: 20px;
+        font-size: 20px; 
       }
+        
     </style>
   </head>
   <body>
     <div id='body'>
-      <h1 class="colored">Welcome to EasyMarket,</h1>
-      <h2 class="colored">#message#</h2>
+      <h3 class="colored">Welcome to EasyMarket</h3>
+      <h3 class="colored"><b style="color: blue;">#user#</b> wants to Contact for this <a href="https://localhost:44366/home/ad/index.html?id=#adId#">Ad</a> </h3>
+      <h4 class="colored">Message: <span style="color: blue;"> #message# </span></h4>
+      <h5 class="colored">Please Mail #user# at <a href="mailto:#email#"> #email# </a> or login to OurApp and use live chat service!</h5> 
+      <h6 class="warning">Do not Reply TO THIS EMAIL!</h6>
+      
     </div>
   </body>
 </html>

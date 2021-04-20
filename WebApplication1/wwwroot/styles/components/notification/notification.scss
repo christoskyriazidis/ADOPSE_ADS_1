@@ -13,7 +13,6 @@ notification-component {
     padding-bottom: 20px;
     box-shadow: 5px 5px 25px grey;
     .notificationContainer {
-        
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -37,10 +36,7 @@ notification-component {
                 padding-bottom: 15px;
                 padding-top: 15px;
                 list-style: none;
-                &:nth-child(odd) {
-                    background-color: rgba(230, 230, 230, 0.424);
-                }
-
+                background-color: rgba(230, 230, 230, 0.424);
                 a {
                     display: flex;
                     flex-direction: row;
@@ -66,11 +62,17 @@ notification-component {
                             font-size: small;
                             font-weight: bold;
                         }
-                        .date{
-                            font-size:small;
+                        .date {
+                            font-size: small;
                         }
                     }
                 }
+            }
+            .new {
+               background-color:white;
+            }
+            .new *{
+                color:rgb(14, 95, 202);
             }
         }
         .notificationMore {

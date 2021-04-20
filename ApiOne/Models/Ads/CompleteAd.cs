@@ -23,7 +23,13 @@ namespace ApiOne.Models.Ads
         public int State { get; set; }
         public string Img { get; set; }
 
-        public int SubCategoryId { get; set; }
+        public string username { get; set; }
+        public string profileimg { get; set; }
+        public int rating { get; set; }
+        public int reviews { get; set; }
+
+
+        public int subcategoryid { get; set; }
 
 
         public CompleteAd()
@@ -31,7 +37,7 @@ namespace ApiOne.Models.Ads
                 
         }
 
-        public CompleteAd(int id, int views, int type, int category, int condition, int customer, int manufacturer, int reports, int price, string title, string lastupdate, string createdate, string description, int state, string img, int subCategoryId)
+        public CompleteAd(int id, int views, int type, int category, int condition, int customer, int manufacturer, int reports, int price, string title, string lastupdate, string createdate, string description, int state, string img, string username, string profileimg, int rating, int reviews, int subcategoryid)
         {
             Id = id;
             Views = views;
@@ -48,7 +54,11 @@ namespace ApiOne.Models.Ads
             Description = description;
             State = state;
             Img = img;
-            SubCategoryId = subCategoryId;
+            this.username = username;
+            this.profileimg = profileimg;
+            this.rating = rating;
+            this.reviews = reviews;
+            this.subcategoryid = subcategoryid;
         }
     }
 }

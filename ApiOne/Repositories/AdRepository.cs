@@ -251,7 +251,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked,w.customerId,a.Price " +
+                string sql = "SELECT w.id as nId,w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked,w.customerId,a.Price " +
                     "FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId order by w.id desc";
                 var wishListNotifications = conn.Query<WishListNotification>(sql, new { CId = custmerId }).ToList();
                 return wishListNotifications;
@@ -429,6 +429,22 @@ namespace ApiOne.Repositories
         public AdsWithPagination GetAds(Pagination adParameters)
         {
             throw new NotImplementedException();
+        }
+
+        public bool NotificationSeen(int notId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = $"UPDATE [WishListNotification] SET clicked=1 where id=@Id";
+                var result = conn.Execute(sql, new { Id = notId });
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
         }
     }
 }

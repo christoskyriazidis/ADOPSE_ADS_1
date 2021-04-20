@@ -13,10 +13,10 @@ namespace ApiOne.Models.Queries
         public string Type { get; set; }
 
         [RegularExpression(@"(^([0-9]_)+[0-9]{1,2}$)|(^[0-9]{1,2}$)")]
-        public string Category { get; set; } 
-        
-        [RegularExpression(@"(^([0-9]_)+[0-9]{1,2}$)|(^[0-9]{1,2}$)")]
-        public string SubCategory { get; set; }
+        public string Category { get; set; }
+
+        [Range(1, int.MaxValue)]
+        public int SubCategoryId { get; set; }
 
         [RegularExpression(@"(^([0-9]_)+[0-9]{1,2}$)|(^[0-9]{1,2}$)")]
         public string Manufacturer { get; set; }
@@ -30,7 +30,7 @@ namespace ApiOne.Models.Queries
         public string Title { get; set; }
 
         [RegularExpression(@"^[0-9]+$")]
-        public int MaxPrice { get; set; } = 100000;
+        public int MaxPrice { get; set; } = 1000000;
 
         [RegularExpression(@"^[0-9]+$")]
         public int MinPrice { get; set; } = 1;

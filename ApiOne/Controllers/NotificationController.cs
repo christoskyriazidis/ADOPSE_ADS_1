@@ -144,5 +144,17 @@ namespace ApiOne.Controllers
             }
             return BadRequest(new { error = "kati pige la8os me to wishlist(id mallon)" });
         }
+
+        [HttpPut]
+        [Route("/wishlist/notification/seen/{nId}")]
+        [Produces("application/json")]
+        public IActionResult NotificationSeen(int nId)
+        {
+            if (_adRepository.NotificationSeen(nId))
+            {
+                return Json(new { success=$"notificaiton:{nId} clicked!"});
+            }
+            return BadRequest(new { error = "kati pige la8os me to notification click (wishlist)" });
+        }
     }
 }
