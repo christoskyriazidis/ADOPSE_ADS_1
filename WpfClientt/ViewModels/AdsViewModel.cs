@@ -37,7 +37,7 @@ namespace WpfClientt.viewModels {
         private AdsViewModel(IScroller<Ad> scroller,IAdService adService,FilterViewModel filterViewModel) {
             this.scroller = scroller;
             AddCurrentPageAds(scroller);
-            adService = adService;
+            this.adService = adService;
             FilterViewModel = filterViewModel;
             NextPageCommand = new DelegateCommand(OnMoveNext);
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
