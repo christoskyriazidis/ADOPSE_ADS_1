@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ApiOne.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ using System.Web;
 
 namespace ApiOne.Hubs
 {
-    [Authorize]
+    //[Authorize]
     public class ChatHub : Hub
     {
-        public static HashSet<string> ConnectedUsers = new HashSet<string>();
 
+        public readonly static ChatConnectionHelper<string> _connections = new ChatConnectionHelper<string>();
 
         [Authorize(Policy  = "Admin")]
         public async Task SendMessage(string message)
@@ -27,33 +28,43 @@ namespace ApiOne.Hubs
             //var claims = User.Claims.ToList();
             message = HttpUtility.HtmlEncode(message);
             await Clients.All.SendAsync("ReceiveMessage", username, message);
-            
         }
 
         public  async Task IamTyping()
         {
             string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
-
             //await Clients.All.SendAsync("Typing", username);
             await Clients.AllExcept(Context.ConnectionId).SendAsync("Typing", username);
         }
 
         public override async Task OnConnectedAsync()
         {
-            //ConnectedUsers.Add(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
-            ConnectedUsers.Add(Context.ConnectionId);
-            await Clients.All.SendAsync("OnlineUsers", ConnectedUsers);
+            string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
+            _connections.Add(username, Context.ConnectionId);
+            
+            await Clients.All.SendAsync("OnlineUsers", _connections.ToString(username));
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            //ConnectedUsers.Remove(Context.User.FindFirst(claim => claim.Type == "username")?.Value);
-            ConnectedUsers.Remove(Context.ConnectionId);
-            await Clients.All.SendAsync("OnlineUsers", ConnectedUsers);
+            string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
+            _connections.Remove(username, Context.ConnectionId);
+            await Clients.All.SendAsync("OnlineUsers");
             await base.OnDisconnectedAsync(ex);
         }
 
+        public async Task SendPrivateMessage(string message)
+        {
+            var identity = (ClaimsIdentity)Context.User.Identity;
+            string userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
+            string test = Context.User.Identity.Name;
+            //html 
+            //var claims = User.Claims.ToList();
+            message = HttpUtility.HtmlEncode(message);
+            await Clients.All.SendAsync("ReceiveMessage", username, message);
+        }
 
     }
 }

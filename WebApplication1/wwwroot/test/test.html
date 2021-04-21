@@ -1,32 +1,82 @@
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/sellers/sellers.css">
-
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/sellers/sellers.css" />
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/scripts/sign-in.js" defer></script>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <navbar-component></navbar-component>
-   Lorem ipsum dolor sit amet consectetur, adipisicing elit. Velit alias impedit reprehenderit harum veritatis perspiciatis repellendus explicabo nostrum nemo, autem natus sed consequuntur quas hic aliquid blanditiis eveniet. Harum facilis doloribus repellat voluptatum quis assumenda sed voluptatem. Doloremque nam blanditiis, impedit, neque assumenda officia molestiae iusto iure veritatis dolorem hic repellendus autem quae recusandae, a temporibus commodi. Ratione cupiditate porro natus pariatur quo temporibus iusto quibusdam quis reprehenderit maiores odit culpa molestias nulla doloremque sunt, beatae sint repellendus dignissimos. Nobis beatae quisquam ad voluptatem earum accusantium voluptatum distinctio error, incidunt, laboriosam nulla dolorem sapiente modi repudiandae! Minus tenetur officiis assumenda maxime, enim nisi quisquam inventore, explicabo, illum porro voluptatum nesciunt aliquam impedit iusto autem sunt. Unde error ducimus officia earum animi. Vitae esse sit iste consequuntur. Nihil mollitia minus nemo perspiciatis, quos minima doloribus accusantium placeat, nostrum eligendi laboriosam deserunt voluptatibus. Perspiciatis maxime ex ipsam, minima voluptatum, asperiores porro sed autem eos explicabo esse perferendis veritatis quibusdam soluta voluptatibus nihil officia ipsa. Porro nihil nemo nobis eius, autem sit, consequatur voluptatem animi non cupiditate quos quidem ipsum ex pariatur et magnam alias ad numquam! Tempore, fugiat molestias laborum doloribus a labore officia aliquam. Libero voluptatem iusto excepturi neque ex nam maxime deleniti cumque porro consectetur dignissimos, quis, in voluptatum praesentium eveniet saepe aliquam et at ipsa corporis iste voluptates corrupti. Itaque ipsam quidem similique a non animi sed reprehenderit doloremque molestias fuga aliquam iste aut ratione accusamus aperiam, cum quasi dolor? Nihil, alias autem incidunt aliquid id quo nemo dolores reiciendis reprehenderit facere! Nobis impedit, aperiam repudiandae nulla quas, ut quidem magnam alias facere reiciendis tempore vel. Alias nemo deserunt eos dicta quae? Quaerat suscipit repudiandae dicta tempore quo quam sed similique eveniet necessitatibus, alias ut dolorem repellendus doloribus ducimus quod voluptas laboriosam facilis corporis nam illo fugiat minus aliquam. Quaerat ut aspernatur dolorum totam, officia possimus dolores explicabo? Vero animi aspernatur possimus beatae fuga reiciendis, ab, in alias dicta ratione pariatur. Officia est, voluptate aspernatur nobis iusto quas in ad corrupti sapiente dolorem laudantium eligendi perferendis nam quo quam ipsam impedit consequatur quaerat a cum. Eius cupiditate blanditiis nesciunt doloribus quam fugiat impedit voluptatum qui optio architecto fuga asperiores quibusdam, est tempora sed, quod autem, repellendus voluptatibus? Aliquam corporis minus blanditiis est temporibus beatae sit corrupti hic excepturi velit maxime veniam cupiditate earum fugiat ut possimus, id similique. Quidem aliquid perferendis impedit assumenda veritatis, a ea cum eveniet, sed, quasi nisi tempora quas sequi sint delectus suscipit rerum? Blanditiis odio ab voluptas? Perspiciatis ullam nesciunt libero eligendi maxime harum perferendis sequi ducimus aliquid aperiam asperiores natus, laborum quo laboriosam amet illum in earum numquam culpa commodi. Maxime esse magnam provident, mollitia minus deserunt. Fugit unde maxime, laboriosam nemo quisquam nostrum nam ratione minus dolores voluptates, qui cupiditate asperiores adipisci odit dignissimos autem repellendus. Cum assumenda veniam magni odio nihil beatae similique eligendi. Praesentium repellendus deserunt reiciendis dolorum aliquam enim, magni sunt placeat velit veritatis dicta modi facilis, assumenda distinctio optio recusandae. Ratione dolor dolorum obcaecati debitis. Maiores, harum! Alias.
     <main>
-        <div class="customerContent">
-            <customer-component id="30" image="http://www.mixanitouxronou.gr/wp-content/uploads/2014/01/burnbeer.jpg"
-                fname="meme" lname="wtf" username="kavlias" rating="3" address="staikopoulou 4"></customer-component>
-        </div>
+      <div class="customerContent">
+        <customer-component
+          id="30"
+          image="http://www.mixanitouxronou.gr/wp-content/uploads/2014/01/burnbeer.jpg"
+          fname="meme"
+          lname="wtf"
+          username="kavlias"
+          rating="3"
+          address="staikopoulou 4"
+        ></customer-component>
+      </div>
     </main>
-</body>
-<script src="/scripts/components/navbarComponent.js"></script>
-<script src="/scripts/components/wishlistComponent.js"></script>
-<script src="/scripts/components/notificationComponent.js"></script>
-<script src="/scripts/components/customerContainerComponent.js"></script>
+    <div>
+      <input type="text" id="message" />
+      <ul id="chat">
+        
+      </ul>
+      <button id="btn">send Message</button>
+    </div>
+  </body>
+  <script src="/scripts/components/navbarComponent.js"></script>
+  <script src="/scripts/components/wishlistComponent.js"></script>
+  <script src="/scripts/components/notificationComponent.js"></script>
+  <script src="/scripts/components/customerContainerComponent.js"></script>
+  <script src="/scripts/sign-in.js"></script>
 
+  <script>
+      axios.get("https://localhost:44374/message?pagenumber=1&chatid=1")
+      .then(res => {
+          console.log(res)
+          for(i of res.data){
+            document.getElementById("chat").innerHTML+=`<li>${i.message}</li>`;
+          }
+      })
+      .catch(err => {
+          console.error(err); 
+      })
+    let btn = document.querySelector("#btn");
+    let message = document.querySelector("#message");
+
+    var connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:44374/chathub", {
+        accessTokenFactory: () => me.access_token,
+      })
+      .build();
+
+    connection
+      .start()
+      .then(function () {})
+      .catch(function (err) {
+        return console.error(err.toString());
+      });
+
+    connection.on("ReceiveMessage", (message) => {
+      document.getElementById("chat").innerHTML+=`<li>${message}</li>`;
+    });
+
+    btn.addEventListener("click", () => {
+      var message = document.getElementById("messageInput").value;
+      connection.invoke("SendPrivateMessage", message).catch(function (err) {
+        return alert(err.toString());
+      });
+      console.log("lala");
+    });
+  </script>
 </html>

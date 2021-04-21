@@ -157,7 +157,6 @@ namespace ApiOne.Controllers
                     )));
 
             var queryDocsCount = elasticResponseCount.Count;
-
             var urlFilters = "";
             //loop through se ka8e property gia na gemise to front object
             foreach (var prop in paramTypeFilter.GetType().GetProperties())

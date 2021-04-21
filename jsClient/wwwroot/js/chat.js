@@ -3,9 +3,10 @@
 
 //const onlineUsers = document.querySelector('#online-users');
 
-//var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44374/NotificationHub", {
-//    accessTokenFactory: () => me.access_token
-//}).build();
+var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44374/NotificationHub", {
+    accessTokenFactory: () => me.access_token
+}).build();
+
 //var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44374/notificationHub").build();
 
 ////Disable send button until connection is established
