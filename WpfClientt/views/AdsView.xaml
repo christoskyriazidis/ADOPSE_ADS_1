@@ -12,6 +12,10 @@
                 <RowDefinition Height="0.96*" />
                 <RowDefinition Height="0.04*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.85*" />
+                <ColumnDefinition Width="0.15*" />
+            </Grid.ColumnDefinitions>
             <!--Ads-->
             <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding Ads}" HorizontalAlignment="Center">
@@ -70,16 +74,43 @@
                 </ItemsControl>
             </ScrollViewer>
             
+            <!-- FILTER -->
+            <Border Grid.Row="0" Grid.Column="1" BorderThickness="2,0,0,0" BorderBrush="{StaticResource blue-light}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <ContentControl Content="{Binding FilterViewModel}" />
+                </ScrollViewer>
+            </Border>
+            
             <!--Pagination-->
             <Grid Grid.Row="1" Margin="0,5,0,0" Grid.Column="0">
                 <Grid.ColumnDefinitions >
-                    <ColumnDefinition Width="0.1*" />
-                    <ColumnDefinition Width="0.8*" />
-                    <ColumnDefinition Width="0.1*" />
+                    <ColumnDefinition Width="0.2*" />
+                    <ColumnDefinition Width="0.6*" />
+                    <ColumnDefinition Width="0.2*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Previous Page" Style="{StaticResource medium_blue_button}" Grid.Column="0" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding Enabled}" />
-                <Button Content="Next Page" Style="{StaticResource medium_blue_button}" Grid.Column="2" Command="{Binding NextPageCommand}" IsEnabled="{Binding Enabled}" />
-            </Grid>
+                <Border Grid.Column="0" Padding="5">
+                    <Button Content="Previous Page" Style="{StaticResource medium_blue_button}" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding Enabled}" />
+                </Border>
+                <Border  Grid.Column="2" Padding="5">
+                    <Button Content="Next Page" Style="{StaticResource medium_blue_button}" Command="{Binding NextPageCommand}" IsEnabled="{Binding Enabled}" />
+                </Border>
+             </Grid>
+            <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,0,0,0" BorderBrush="{StaticResource blue-light}">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.45*" />
+                        <ColumnDefinition Width="0.05*" />
+                        <ColumnDefinition Width="0.45*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Padding="5" Grid.Column="0">
+                        <Button Content="Refresh Ads" Foreground="White" Background="{StaticResource red-medium}" />
+                    </Border>
+                    <Border Padding="5" Grid.Column="2">
+                        <Button Content="Filter Ads" Foreground="White" Background="{StaticResource green-medium}" />
+                    </Border>
+                </Grid>
+            </Border>
+            
         </Grid>
     </ScrollViewer>
 </UserControl>

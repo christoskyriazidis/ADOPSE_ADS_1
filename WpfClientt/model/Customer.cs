@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -12,15 +13,20 @@ namespace WpfClientt.model {
         [JsonPropertyName("id")]
         public long Id { get; set; }
 
+        [StringLength(25, MinimumLength = 4)]
+        [Required]
         [JsonPropertyName("name")]
         public string FirstName { get; set; }
 
+        [StringLength(25, MinimumLength = 4)]
+        [Required]
         [JsonPropertyName("lastName")]
         public string LastName { get; set; }
 
         [JsonPropertyName("username")]
         public string Username { get; set; }
 
+        [Required]
         [JsonPropertyName("address")]
         public string Address{ get; set; }
 
@@ -35,12 +41,6 @@ namespace WpfClientt.model {
         
         }
 
-        public Customer(long id, string username, string address,int rating = 0) {
-            Id = id;
-            Username = username;
-            Address = address;
-            Rating = rating;
-        }
 
         public override string ToString() {
             return $"Id = {Id},Username={Username},Address={Address},Rating={Rating}";

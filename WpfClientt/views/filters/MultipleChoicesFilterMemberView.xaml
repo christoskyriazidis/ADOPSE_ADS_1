@@ -17,7 +17,7 @@
         <ItemsControl ItemsSource="{Binding Choices}" Grid.Row="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel IsItemsHost="True" />
+                    <UniformGrid IsItemsHost="True" Columns="2" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>

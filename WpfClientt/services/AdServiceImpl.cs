@@ -26,7 +26,7 @@ namespace WpfClientt.services {
             this.options = options;
         }
 
-        public async static Task<AdServiceImpl> getInstance(HttpClient httpClient,IAdDetailsService adDetailsService) { 
+        public async static Task<AdServiceImpl> GetInstance(HttpClient httpClient,IAdDetailsService adDetailsService) { 
             
             if(adServiceImpl == null) {
                 JsonSerializerOptions options = new JsonSerializerOptions();
@@ -87,7 +87,7 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
-            string url = adsFilterBuilder.build();
+            string url = adsFilterBuilder.Build();
             adsFilterBuilder.ClearFilters();
             return new GenericScroller<Ad>(client, 10, url);
         }
@@ -106,11 +106,11 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> Scroller() {
-            return new GenericScroller<Ad>(client, 10, mainUrl,options);
+            throw new NotImplementedException("Don't call this method.");
         }
 
         public IScroller<Ad> SubcategoryAds(Subcategory subcategory) {
-            throw new NotImplementedException();
+            return new GenericScroller<Ad>(client,10, $"{mainUrl}/SubcategoryId={subcategory.Id}", options);
         }
 
         public async Task Update(Ad ad) {

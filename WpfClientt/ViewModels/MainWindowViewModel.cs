@@ -46,7 +46,6 @@ namespace WpfClientt.viewModels {
             CurrentMenuView = new GuestMenu();
             ChangeToDisplayView("Welcome To Easy Market!");
 
-            Mediator.Subscribe("AdsView", ChangeToAdsView);
             Mediator.Subscribe("AdsSubcategoryView", ChangeToAdsSubcategoryView);
             Mediator.Subscribe("CategoriesView", ChangeToCategoriesView);
             Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
@@ -70,11 +69,6 @@ namespace WpfClientt.viewModels {
         private async void ChangeToSubcategoriesView(object category) {
             ChangeToDisplayView("Loading Page");
             AddToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
-        }
-
-        private async void ChangeToAdsView(object obj) {
-            ChangeToDisplayView("Loading Page");
-            AddToHistory(await AdsViewModel.GetInstanceWithAllAds(factory));
         }
 
         private async void ChangeToRegisterView(object obj) {

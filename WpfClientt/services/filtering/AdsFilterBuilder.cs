@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfClientt.model;
 
 namespace WpfClientt.services.filtering {
     public sealed class AdsFilterBuilder {
 
-        private string mainUrl = ApiInfo.FilterMainUrl();
+        private string mainUrl = $"{ApiInfo.AdMainUrl()}?";
 
         private ISet<long> conditions = new HashSet<long>();
         private ISet<long> states = new HashSet<long>();
         private ISet<long> types = new HashSet<long>();
         private ISet<long> manufacturers = new HashSet<long>();
+
+        public AdsFilterBuilder(Subcategory subcategory) {
+            mainUrl = $"{mainUrl}SubcategoryId={subcategory.Id}";
+        }
 
         public void AddConditionFilter(long conditionCode) {
             conditions.Add(conditionCode);
@@ -30,12 +35,12 @@ namespace WpfClientt.services.filtering {
             manufacturers.Add(manufacturerCode);
         }
 
-        public string build() {
+        public string Build() {
             StringBuilder filterUrl = new StringBuilder(mainUrl);
-            string conditionsFilter = PrefixIfNotEmpty("condition=",string.Join("_", conditions.Select(LongToString).ToArray()));
-            string statesFilter = PrefixIfNotEmpty("state=",string.Join("_", states.Select(LongToString).ToArray()));
-            string typesFilter = PrefixIfNotEmpty("type=",string.Join("_", types.Select(LongToString).ToArray()));
-            string manufacturersFilter = PrefixIfNotEmpty("manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
+            string conditionsFilter = PrefixIfNotEmpty("Condition=",string.Join("_", conditions.Select(LongToString).ToArray()));
+            string statesFilter = PrefixIfNotEmpty("State=",string.Join("_", states.Select(LongToString).ToArray()));
+            string typesFilter = PrefixIfNotEmpty("Type=",string.Join("_", types.Select(LongToString).ToArray()));
+            string manufacturersFilter = PrefixIfNotEmpty("Manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
 
             return filterUrl.ToString() + string.Join("&",
                 new string[] {conditionsFilter, statesFilter, typesFilter, manufacturersFilter }.Where(str => str.Length > 0)
