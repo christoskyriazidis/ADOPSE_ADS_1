@@ -40,17 +40,15 @@ namespace WpfClientt.services {
             }
 
             return adServiceImpl;
-
         }
 
         public async Task Create(Ad ad) {
             MultipartFormDataContent form = new MultipartFormDataContent();
-            form.Add(new StringContent(ad.AdState.Id.ToString()), "State");
             form.Add(new StringContent(ad.AdType.Id.ToString()), "Type");
             form.Add(new StringContent(ad.AdManufacturer.Id.ToString()), "Manufacturer");
             form.Add(new StringContent(ad.AdCondition.Id.ToString()), "Condition");
             form.Add(new StringContent(ad.AdCategory.Id.ToString()), "Category");
-            form.Add(new StringContent(ad.AdSubcategory.Id.ToString()), "Subcategory");
+            form.Add(new StringContent(ad.AdSubcategory.Id.ToString()), "SubcategoryId");
             form.Add(new StringContent(ad.Title), "Title");
             form.Add(new StringContent(ad.Description), "Description");
             form.Add(new StringContent(ad.Price.ToString()), "Price");

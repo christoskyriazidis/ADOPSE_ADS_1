@@ -15,11 +15,10 @@ using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
     public class CreateAdViewModel : BaseViewModel, IViewModel{
-        private static CreateAdViewModel viewModel;
+        private static CreateAdViewModel instance;
 
         private IAdService adService;
         private IAdDetailsService adDetailsService;
-        private string currenlytChosenImageFileName = "Choose Image...";
         private Ad ad = new Ad();
 
         public ObservableCollection<string> Categories { get;} = new ObservableCollection<string>();
@@ -28,18 +27,25 @@ namespace WpfClientt.viewModels {
         public ObservableCollection<string> Conditions { get;} = new ObservableCollection<string>();
         public ObservableCollection<string> Manufacturers { get;} = new ObservableCollection<string>();
         public ObservableCollection<ValidationResult> Errors { get; } = new ObservableCollection<ValidationResult>();
+        public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public ICommand ImageChooseCommand { get; private set; }
         public ICommand CreateAdCommand { get; private set; }
-        public Uri ImageUri { get; private set; }
+        public ICommand ClearImageCommand { get; private set; }
 
         public string Title {
+            get {
+                return ad.Title;
+            }
             set {
+                OnPropertyChanged("Title");
                 ad.Title = value;
                 Validate();
             } 
         }
         public string Description {
+            get { return ad.Description; }
             set {
+                OnPropertyChanged("Description");
                 ad.Description = value;
                 Validate();
             } 
@@ -50,7 +56,7 @@ namespace WpfClientt.viewModels {
                 ad.AdSubcategory = null;
                 if(value != null) {
                     ad.AdCategory = adDetailsService.Categories().Result.Where(category => category.Id.Equals(value)).First();
-                    SetSubcategoriesOf(value);
+                    SetSubcategoriesOf(ad.AdCategory);
                     Validate();
                 }
             } 
@@ -96,11 +102,7 @@ namespace WpfClientt.viewModels {
 
         public string CurrentlyChosenFileName {
             get {
-                return currenlytChosenImageFileName;
-            }
-            private set {
-                currenlytChosenImageFileName = value;
-                OnPropertyChanged("CurrentlyChosenFileName");
+                return ad.ImageUri == null ? "Choose Image..." : ad.ImageUri.LocalPath;
             }
         }
 
@@ -109,6 +111,7 @@ namespace WpfClientt.viewModels {
 
             ImageChooseCommand = new DelegateCommand(ChooseImage);
             CreateAdCommand = new DelegateCommand(CreateAd);
+            ClearImageCommand = new DelegateCommand(ClearImage);
 
             foreach(Category category in categories) {
                 this.Categories.Add($"{category.Id}-{category.Title}");
@@ -132,29 +135,39 @@ namespace WpfClientt.viewModels {
 
         public static async Task<CreateAdViewModel> GetInstance(FactoryServices factory) {
             IAdDetailsService adDetailsService = factory.AdDetailsServiceInstance();
-            ISet<Category> categories = await adDetailsService.Categories();
+            ISet<Category> categories = await adDetailsService.CategoriesWithSubcategories();
             ISet<AdType> types = await adDetailsService.Types();
             ISet<Condition> conditions = await adDetailsService.Conditions();
             ISet<Manufacturer> manufacturers = await adDetailsService.Manufacturers();
-            ISet<State> states = await adDetailsService.States();
-            if (viewModel == null) {
-                viewModel = new CreateAdViewModel(await factory.AdServiceInstance(),factory.AdDetailsServiceInstance()
+            if (instance == null) {
+                instance = new CreateAdViewModel(await factory.AdServiceInstance(),factory.AdDetailsServiceInstance()
                     ,categories,types,conditions,manufacturers);
             }
 
-            return viewModel;
+            return instance;
         }
 
         private void ChooseImage(object param) {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Image files (*.jpg,*.jpeg,*.png) | *.jpg; *.jpeg;*.png";
             if (fileDialog.ShowDialog() == true) {
-                ImageUri = new Uri($"file:///{fileDialog.FileName}");
-                CurrentlyChosenFileName = ImageUri.LocalPath;
+                ad.ImageUri = new Uri($"file:///{fileDialog.FileName}");
+                OnPropertyChanged("CurrentlyChosenFileName");
             }
         }
 
-        private void CreateAd(object param) {
+        private async void CreateAd(object param) {
+            if (Errors.Count == 0) {
+                Messages.Add("Trying to add the give ad.");
+                await adService.Create(ad);
+                Messages.Clear();
+                Messages.Add("The ad has been successfully added.");
+                Title = string.Empty;
+                Description = string.Empty;
+                ad = new Ad();
+            } else {
+                Messages.Add("The form can't be submitted because of the errors.");
+            }
         }
 
         private void Validate() {
@@ -164,14 +177,17 @@ namespace WpfClientt.viewModels {
         }
 
 
-        private async void SetSubcategoriesOf(int? categoryId) {
+        private void SetSubcategoriesOf(Category category) {
             this.AdSubcategory = null;
             Subcategories.Clear();
-            Category category = (await adDetailsService.Categories()).Where(categ => categ.Id.Equals(categoryId)).First();
-            foreach (Subcategory subcategory in await adDetailsService.SubcategoriesOf(category)) {
+            foreach (Subcategory subcategory in category.Subcategories) {
                 Subcategories.Add($"{subcategory.Id}-{subcategory.Title}");
             }
         }
 
+        private void ClearImage(object param) {
+            ad.ImageUri = null;
+            OnPropertyChanged("CurrentlyChosenFileName");
+        }
     }
 }
