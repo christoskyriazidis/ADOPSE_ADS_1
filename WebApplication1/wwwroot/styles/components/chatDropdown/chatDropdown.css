@@ -88,4 +88,20 @@ chatDropdown-component .chatContainer .chatItems li a .itemDescription .title {
 chatDropdown-component .chatContainer .chatItems li a .itemDescription .date {
   font-size: small;
 }
+
+.chatsContainer {
+  position: fixed;
+  bottom: 0px;
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
 /*# sourceMappingURL=chatDropdown.css.map */

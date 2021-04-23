@@ -10,7 +10,7 @@ class ChatDropdown extends HTMLElement {
     constructor() {
         super();
 
-        let items="";
+        let items = "";
         axios.get("https://localhost:44374/profile/chat")
             .then(res => res.data)
             .then(data => {
@@ -53,6 +53,7 @@ class ChatDropdown extends HTMLElement {
             </div>
            
         </div>
+        
         <style>@import "/styles/components/chatDropdown/chatDropdown.css"</style>
         <style>@import "/styles/components/chat/chat.css"</style>
         `
