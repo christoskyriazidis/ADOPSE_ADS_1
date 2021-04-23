@@ -32,10 +32,27 @@ namespace ApiOne.Controllers
                     var filterIntArray = filterArray.Select(Int32.Parse).ToList();
                     adFiltersFromParamClient.GetType().GetProperty(prop.Name).SetValue(adFiltersFromParamClient, filterIntArray);
                 }
+                //else if(value != null && (prop.Name == "Title" || prop.Name == "Description"))
+                //{
+                //    string test = value.ToString();
+                //    string test2 = test.Replace(" ", "|");
+                //    test2 = $"({test2})";
+                //    adFiltersFromParamClient.GetType().GetProperty(prop.Name).SetValue(adFiltersFromParamClient, test2);
+                //}
             }
             var settings = new ConnectionSettings(new Uri("http://localhost:9200/")).DefaultIndex("ads");
             var client = new ElasticClient(settings);
 
+            var searchQuery = new SearchRequest
+            {
+                Highlight = new Highlight
+                {
+                        Fields = new FluentDictionary<Field, IHighlightField>().Add(Nest.Infer.Field<CompleteAd>(d => d.Title),
+                        new HighlightField { PreTags = new[] { "<tag>" }, PostTags = new[] { "<tag>" } })
+                }
+            };
+
+            
             var elasticResponse = client.Search<CompleteAd>(s => s
             //pagination
             .From((pagination.PageNumber - 1) * pagination.PageSize)
@@ -71,17 +88,25 @@ namespace ApiOne.Controllers
                         )
                     )
                  &&
-                 (
-                    q.Regexp(r => r
-                        .Field(f => f.Title)
-                        .Value(paramTypeFilter.Title)
-                        )
-                ||
-                    q.Regexp(r => r
-                        .Field(f => f.Description)
-                        .Value(paramTypeFilter.Title)
-                        )
-                    )
+                 
+                 //(
+                    //q.Regexp(r => r
+                    //    .Field(f => f.Title)
+                    //    .Value(adFiltersFromParamClient.Title)
+                    //    )
+                    q.Match(m=>m
+                        .Query(paramTypeFilter.Title)
+                            .Operator(Nest.Operator.And)
+                            .Field(f=>f.Title)
+                            .Fuzziness(Fuzziness.EditDistance(2)
+                                        )
+                                      )
+                //||
+                //    q.Regexp(r => r
+                //        .Field(f => f.Description)
+                //        .Value(adFiltersFromParamClient.Description)
+                //        )
+                    //)
                 ).Sort(ss => ss
         .Field(f =>
         {
@@ -144,17 +169,27 @@ namespace ApiOne.Controllers
                         )
                     )
                  &&
-                 (
-                    q.Regexp(r => r
-                        .Field(f => f.Title)
-                        .Value(paramTypeFilter.Title)
-                        )
-                ||
-                    q.Regexp(r => r
-                        .Field(f => f.Description)
-                        .Value(paramTypeFilter.Title)
-                        )
-                    )));
+
+                    //(
+                    //q.Regexp(r => r
+                    //    .Field(f => f.Title)
+                    //    .Value(adFiltersFromParamClient.Title)
+                    //    )
+                    q.Match(m => m
+                        .Query(paramTypeFilter.Title)
+                            .Operator(Nest.Operator.And)
+                            .Field(f => f.Title)
+                            .Fuzziness(Fuzziness.EditDistance(2)
+                                        )
+                                      )
+                //||
+                //    q.Regexp(r => r
+                //        .Field(f => f.Description)
+                //        .Value(adFiltersFromParamClient.Description)
+                //        )
+                //)
+                )
+                    );
 
             var queryDocsCount = elasticResponseCount.Count;
             var urlFilters = "";
