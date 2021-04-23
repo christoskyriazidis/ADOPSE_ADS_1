@@ -188,7 +188,7 @@ export default class GenericResultInterface {
             } else {
                 this.subcategory = subcategory
                 console.log(this.subcategory);
-                document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
+                document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategoryId=" + this.subcategory + this.search)
 
             }
         }
