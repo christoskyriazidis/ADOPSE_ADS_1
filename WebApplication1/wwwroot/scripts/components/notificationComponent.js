@@ -62,7 +62,7 @@ function handleApiDataNotifications(data) {
                     <span class="title">${object.title}</span>
                     <span class="info">${object.username}</span>
                     <span class="price">${object.price}$</span>
-                    <span class="date">Before ${Math.round((Date.now() - (new Date(object.lastUpdate)).getTime()) / 1000 / 60)} minutes </span>
+                    <span class="date">Before  ${Math.round(((new Date(Date.now())) - (new Date(Date(object.lastUpdate)))) / 1000 / 60)} minutes </span>
                 </div>
             </a>
         </li>
@@ -84,7 +84,7 @@ function handleApiDataNotifications(data) {
     </div>
     <style>@import "/styles/components/notification/notification.css"</style>
     `
-    console.log(html);
+    
     return html;
 }
 customElements.define("notification-component", NotificationComponent)

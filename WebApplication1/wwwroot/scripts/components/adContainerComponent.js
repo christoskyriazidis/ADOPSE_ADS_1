@@ -57,9 +57,10 @@ class AdContainerComponent extends HTMLElement {
                 ${this.case == "myads" ?
                 `<button class="editButton"><a href="https://localhost:44366/home/profile/editAd/index.html?id=${this.id}">edit me !</a></button>
                 <button class="deleteButton" onclick="myadsController.deleteAd(${this.id})">delete me!</button>`
-                : `<div class="sellerData">
-                <a href = "https://localhost:44366/home/customer/index.html?id=${this.customerId}">
-                    <span class="sellerAvatar"  name="avatar" ></span>
+                :
+                `<div class="sellerData">
+                <a href = "https://localhost:44366/home/profile/index.html?id=${this.customerId}">
+                    <span class="sellerAvatar" style="background-image:url('${this.customerImage}')"  name="avatar" ></span>
                         <label label for= "avatar" > ${this.customerName}</label >
                         <span class="filler"  ></span>
                         <span class="sellerReview" >${this.customerRating}</span>   

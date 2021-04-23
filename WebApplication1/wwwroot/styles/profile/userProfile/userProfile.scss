@@ -1,0 +1,66 @@
+$primary-color: #1b6dc1;
+$secondary-color: #3385d9;
+$alternative-color: #7bb6f1ad;
+$secondary-font-color: #243649fa;
+$primary-font-color: #ebebeb;
+$shadow-color: #2020209b;
+$attention-color: #1f271b9b;
+//https://codepen.io/aaroniker/pen/ZEYoxEY
+* {
+    font-family: "Roboto", sans-serif;
+    outline: none;
+}
+body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    background-color: rgb(228, 228, 228);
+}
+main {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    margin-top: 20px;
+
+    .contentArea {
+        width: 90%;
+
+        .profileDetails {
+            border-radius: 20px;
+            background-color: white;
+            .profilePicture {
+                display: flex;
+                background-image: url("https://localhost:44374/images/Profile/avatar.png");
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                max-height: 100%;
+                width: 100%;
+                height: 300px;
+                border-radius: 20px;
+            }
+            .username {
+                text-align: center;
+                font-size: x-large;
+            }
+        }
+        .more {
+            display:flex;
+            justify-content: space-between;
+            margin-top:20px;
+            .reviews {
+                background-color: white;
+                height: 200px;
+                width: 35%;
+                border-radius:20px;
+            }
+            .latestActivity {
+                background-color:white;
+                width:64%;
+                height:200px;
+                border-radius:20px;
+
+            }
+        }
+    }
+}

@@ -13,8 +13,7 @@ export default class GenericResultInterface {
     link = ""
     pageSize = 30;
     sortby = "&sortby="
-    sortField = "id"
-    sortOrder = "H"
+    sortField = "idH"
     currentPageNumber = 1;
     lastPageNumber;
     allFilters = null;
@@ -47,10 +46,12 @@ export default class GenericResultInterface {
         })
     }
     setLink = (num) => {
+        
         this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
-        this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search + this.sortby + this.sortField + this.sortOrder
+        this.sortField=document.querySelector(".sorting").value
+        this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search + this.sortby + this.sortField
         axios.get(this.link)
             .then((response) => response.data)
             .then((data) => {
@@ -59,14 +60,14 @@ export default class GenericResultInterface {
             }).catch(console.log)
     }
     populateSearchArea = (data) => {
-
+        document.querySelector(".hits").innerHTML="Total results: "+data.totalAds
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.result) {
             document.querySelector(".contentContainer").innerHTML +=
             `<ad-component title="${object.title}"
-            customer-image="${object.profileImg}"
+            customer-image="${object.profileimg}"
             customer-id="${object.customer}"
             customer-name="${object.username}"
             customer-rating="${object.rating}"
@@ -105,7 +106,7 @@ export default class GenericResultInterface {
         this.allFilters = {
             subcategory: {
                 group: document.getElementsByName("category"),
-                strings: "subcategory=",
+                strings: "subcategoryId=",
             },
             manufacturer: {
                 group: document.getElementsByName("manufacturer"),
@@ -162,7 +163,7 @@ export default class GenericResultInterface {
         } else if (this.urlParams.get("title") != "null") {
             //this.search = "&title="+this.urlParams.get("title");
         }
-        document.querySelector("navbar-component").setAttribute("filters", "?category=" + this.category + "&subcategory=" + this.subcategory + this.search)
+      
     }
     handleSearch = () => {
         this.endpoint = "ad/"

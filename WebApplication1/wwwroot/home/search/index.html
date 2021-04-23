@@ -24,6 +24,7 @@
     <navbar-component></navbar-component>
 
     <main>
+       
         <div class="optionsContainer">
 
             <div class="title info">
@@ -52,13 +53,30 @@
             <div class="manufacturerGroup group"></div>
             <button class="submitSearch">submit search</button>
         </div>
+       
         <div class="mainContentArea">
+           
             <div class="searchArea">
                 <input type="search" name="" id="searchBox"><button class="searchButton">Search</button>
             </div>
-            <div class="paginationArea">
+            <h2 class="hits"></h2>
 
-                <pagination-component></pagination-component>
+            <div class="actions">
+                <div class="extras">
+                    <select class="sorting" id="">
+                        <option value="idH">Newest</option>
+                        <option value="idL">Oldest</option>
+                        <option value="priceH">Price 🡻</option>
+                        <option value="priceL">Price 🡹</option>
+                        <option value="idH">1</option>
+                        <option value="idH">1</option>
+                    </select>
+                </div>
+              
+                <div class="paginationArea">
+
+                    <pagination-component></pagination-component>
+                </div>
             </div>
             <div class="contentContainer"></div>
             <div class="paginationArea">

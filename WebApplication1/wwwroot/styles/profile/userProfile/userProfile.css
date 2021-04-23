@@ -1,0 +1,75 @@
+* {
+  font-family: "Roboto", sans-serif;
+  outline: none;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
+  background-color: #e4e4e4;
+}
+
+main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  margin-top: 20px;
+}
+
+main .contentArea {
+  width: 90%;
+}
+
+main .contentArea .profileDetails {
+  border-radius: 20px;
+  background-color: white;
+}
+
+main .contentArea .profileDetails .profilePicture {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-image: url("https://localhost:44374/images/Profile/avatar.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 100%;
+  width: 100%;
+  height: 300px;
+  border-radius: 20px;
+}
+
+main .contentArea .profileDetails .username {
+  text-align: center;
+  font-size: x-large;
+}
+
+main .contentArea .more {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 20px;
+}
+
+main .contentArea .more .reviews {
+  background-color: white;
+  height: 200px;
+  width: 35%;
+  border-radius: 20px;
+}
+
+main .contentArea .more .latestActivity {
+  background-color: white;
+  width: 64%;
+  height: 200px;
+  border-radius: 20px;
+}
+/*# sourceMappingURL=userProfile.css.map */

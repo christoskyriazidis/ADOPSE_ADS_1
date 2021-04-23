@@ -10,7 +10,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
-
 </head>
 
 <body>
@@ -75,7 +74,7 @@
         <!-- The Modal -->
         <div id="myModal" style="display:none;" class="modal">
 
-
+            <chat-component chat-id="3" customer-id="2"></chat-component>
         </div>
     </main>
     <script>
@@ -119,7 +118,7 @@
         }
         sendEmail = () => {
             let textarea = document.querySelector("textarea");
-            
+
             if (textarea.textLength <= 10) {
                 alert("You need to be more specific, at least 10 characters required")
                 return
@@ -187,12 +186,14 @@
         }
 
     </script>
-
+    <script src="/scripts/sign-in.js"></script>
     <script src="/scripts/components/navbarComponent.js"></script>
     <script src="/scripts/components/wishlistComponent.js"></script>
     <script src="/scripts/components/notificationComponent.js"></script>
     <script src="/scripts/components/paginationComponent.js"></script>
-    <script src="/scripts/sign-in.js"></script>
+    <script src="/scripts/components/chatDropdownComponent.js"></script>
+    <script src="/scripts/components/chatComponent.js"></script>
+
     <footer></footer>
 </body>
 

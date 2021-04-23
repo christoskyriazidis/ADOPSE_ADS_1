@@ -19,7 +19,9 @@ userManager.getUser().then(user => {
         //vazoume san default header to token, global fasi
         axios.defaults.headers.common["Authorization"] = "Bearer " + user.access_token;
         me = user;
+        document.querySelector("navbar-component").setAttribute("customer-id","as")
         document.querySelector("navbar-component").setAttribute("logged","true")
+        
         body.innerHTML += me.profile.username;
     }
 

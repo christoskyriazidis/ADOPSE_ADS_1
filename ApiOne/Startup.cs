@@ -95,7 +95,10 @@ namespace ApiOne
                   options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
                       _ => "The field is required.");
               });
-            services.AddSignalR();
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -68,6 +68,7 @@ class PaginationComponent extends HTMLElement {
                 }
 
                 break;
+
             default:
                 middle = `<li class="dots"><span>...</span></li>
                         <li class="previousPage"  onclick="searchController.callPrevious()"><span>${currentPage - 1}</span></li>
@@ -76,7 +77,7 @@ class PaginationComponent extends HTMLElement {
                 break;
         }
         if (lastPage == currentPage) {
-            if (lastPage > 4) {
+            if (lastPage > 3) {
 
                 middle = `<li class="dots"><span>...</span></li>
                 <li class="previousPage"  onclick="searchController.callPrevious()"><span >${currentPage - 1}</span></li>`;

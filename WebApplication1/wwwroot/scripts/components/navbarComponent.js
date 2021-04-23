@@ -31,7 +31,7 @@ class NavbarComponent extends HTMLElement {
                     <li><a  href="#" class="my-account" onclick="attachMyAccountDropdown(event)">My Account</a></li>
                     <li><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
                     <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
-                    <li><a href="#" class="hide">Chats</a></li>
+                    <li><a href="#" onclick="attachChatDropdown(event)" class="chat">Chats</a></li>
                 `
                 break;
                 //const btnSignOut = document.querySelector('#btn-signOut')
@@ -90,9 +90,9 @@ class NavbarComponent extends HTMLElement {
         </ul>
         </div>
         <notification-component class="fresh" style="display:none;"></notification-component>
+        <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
         `
     }
-
 }
 const attachWishlist = (event) => {
     console.log("haha");
@@ -156,7 +156,7 @@ const attachMyAccountDropdown = (event) => {
 const attachNotifications = (event) => {
     if (document.querySelector("notification-component").classList.contains("fresh")) {
         document.querySelector("notification-component").classList.remove("fresh")
-        let notification=document.querySelector("notification-component")
+        let notification = document.querySelector("notification-component")
         document.body.addEventListener("click", (event) => {
             if (!((
                 event.pageY > notificationComponent.offsetTop &&
@@ -180,6 +180,33 @@ const attachNotifications = (event) => {
     notificationComponent.style.top = y + 'px';
 
 
+}
+const attachChatDropdown = (event) => {
+    
+    if (document.querySelector("chatdropdown-component").classList.contains("fresh")) {
+        document.querySelector("chatdropdown-component").classList.remove("fresh")
+        console.log("lmao")
+        let chatDropdown = document.querySelector("chatdropdown-component")
+        document.body.addEventListener("click", (event) => {
+            if (!((
+                event.pageY > chatDropdownComponent.offsetTop &&
+                event.pageY < chatDropdownComponent.offsetTop + chatDropdownComponent.offsetHeight &&
+                event.pageX < chatDropdownComponent.offsetLeft + chatDropdownComponent.offsetWidth &&
+                event.pageX > chatDropdownComponent.offsetLeft)
+                || event.target.classList.contains("chat"))) {
+                    chatDropdownComponent.style.display = 'none'
+            }
+        })
+
+    } else {
+        document.querySelector("chatDropdown-component").style.display = "block";
+    }
+    let x = document.querySelector(".chat").getBoundingClientRect().right;
+    let y = document.querySelector(".chat").getBoundingClientRect().bottom;
+    const chatDropdownComponent = document.querySelector("chatdropdown-component");
+    chatDropdownComponent.style.display = "block";
+    chatDropdownComponent.style.left = (x-180) + 'px';
+    chatDropdownComponent.style.top = y + 'px';
 }
 const myAccountDropdown = ``
 customElements.define("navbar-component", NavbarComponent)

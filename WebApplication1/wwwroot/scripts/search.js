@@ -1,11 +1,18 @@
 import GenericResultInterface from "/scripts/modules/genericResultInterface.js"
 import Dictionary from "/scripts/modules/dictionary.js"
-window.dictionary=new Dictionary();
+window.dictionary = new Dictionary();
 let searchController = new GenericResultInterface('search');
 window.searchController = searchController;
 const searchbtn = document.querySelector(".submitSearch")
 searchbtn.addEventListener("click", searchController.setFilters)
-document.querySelector(".searchButton").addEventListener("click",searchController.setFilters)
+document.querySelector(".searchButton").addEventListener("click", searchController.setFilters)
+
+document.body.addEventListener("keyup", (event) => {
+    console.log("ahahahah");
+    if (event.which == 13) {
+        document.querySelector(".searchButton").click();
+    }
+});
 console.log(searchController)
 
 // let dict = new Dictionary();

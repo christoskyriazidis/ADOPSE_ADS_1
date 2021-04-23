@@ -1,0 +1,208 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.98em;
+}
+
+.chatCellB {
+    border-radius: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: rgb(228, 228, 228);
+    box-shadow: -5px 5px 5px grey;
+    opacity: 1;
+    transition-duration: 1s;
+}
+.chatCellTextB {
+    text-align: right;
+    padding: 5px;
+    overflow-wrap: break-word;
+    color: rgb(31, 31, 31);
+}
+
+.afterLoadB {
+    animation: 0.4s ease-out 0s 1 slideInFromRight;
+    opacity: 1;
+}
+
+.chatCell {
+    border-radius: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: rgb(213, 158, 245);
+    box-shadow: 5px 5px 5px grey;
+    border: 0.5px solid rgb(171, 128, 196);
+    margin-left: auto;
+    opacity: 1;
+    transition-duration: 1s;
+    max-width: max-content;
+}
+
+.chatCellText {
+    text-align: right;
+    padding: 5px;
+    overflow-wrap: break-word;
+    color: rgb(31, 31, 31);
+}
+
+.afterLoad {
+    animation: 0.4s ease-out 0s 1 slideInFromLeft;
+    opacity: 1;
+}
+
+.showBorder {
+    border: 1.2px rgb(172, 172, 172) solid;
+    box-shadow: 5px 5px 5px grey;
+}
+.hideBorder {
+    border: 0px rgb(172, 172, 172) solid;
+    box-shadow: 0px 0px 0px grey;
+}
+.mainChatBody {
+    position: absolute;
+    right: 50%;
+    width: 290px;
+    height: 351px;
+
+    .chatHeader {
+        background-color: rgb(219, 219, 219);
+        height: 14%;
+
+        .profileImg {
+            height: 100%;
+            width: 44px;
+            padding: 5px;
+            img {
+                width: 100%;
+                border-radius: 100%;
+                background-color: white;
+                position: inherit;
+            }
+        }
+        .minimizeBtn {
+            position: absolute;
+            right: 0px;
+            height: 5%;
+            top: 0px;
+        }
+    }
+
+    .contentDisplay {
+        height: 70%;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    .inputDiv {
+        height: 12%;
+
+        .inputForm {
+            width: 80%;
+            height: 100%;
+            transition: background-color 0.5s ease;
+            background-color: inherit;
+            border: 2px solid rgb(117, 117, 117);
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+        .inputForm:focus {
+            background-color: rgb(207, 207, 207);
+        }
+
+        .sendBtn {
+            float: right;
+            width: 15%;
+            height: 100%;
+        }
+        .sendBtn:hover {
+            border-radius: 100%;
+            animation: 0.2s ease-in 0s 1 fadeIn;
+            background-color: rgb(179, 179, 179);
+        }
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: rgb(179, 179, 179);
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes minimizeChatBox {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(333px);
+    }
+}
+
+@keyframes hideChatBox {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+@keyframes maximizeChatBox {
+    0% {
+        transform: translateY(333px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes showChatBox {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        display: contents;
+    }
+}
+
+.afterClickMinimize {
+    animation: 0.4s ease-out 0s 1 minimizeChatBox;
+    transform: translateY(333px);
+}
+
+.afterClickHide {
+    animation: 0.1s ease-out 0s 1 hideChatBox;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.afterClickMaximize {
+    animation: 0.4s ease-out 0s 1 maximizeChatBox;
+    transform: translateY(0);
+}
+.afterClickShow {
+    animation: 0.2s ease-out 0s 1 showChatBox;
+    opacity: 1;
+    pointer-events: all;
+}
