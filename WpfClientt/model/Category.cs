@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.model {
-    public class Category {
+    public class Category : AdDetailComponent {
 
         [JsonPropertyName("id")]
         public int Id { get; set; }

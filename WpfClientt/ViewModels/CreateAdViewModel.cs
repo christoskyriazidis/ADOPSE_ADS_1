@@ -37,16 +37,16 @@ namespace WpfClientt.viewModels {
                 return ad.Title;
             }
             set {
-                OnPropertyChanged("Title");
                 ad.Title = value;
+                OnPropertyChanged("Title");
                 Validate();
             } 
         }
         public string Description {
             get { return ad.Description; }
             set {
-                OnPropertyChanged("Description");
                 ad.Description = value;
+                OnPropertyChanged("Description");
                 Validate();
             } 
         }
@@ -57,45 +57,51 @@ namespace WpfClientt.viewModels {
                 if(value != null) {
                     ad.AdCategory = adDetailsService.Categories().Result.Where(category => category.Id.Equals(value)).First();
                     SetSubcategoriesOf(ad.AdCategory);
-                    Validate();
                 }
+                OnPropertyChanged("AdCategory");
+                Validate();
             } 
         }
         public int? AdSubcategory {
             set {
                 if (value != null) {
                     ad.AdSubcategory = adDetailsService.Subcategories().Result.Where(subcategory => subcategory.Id.Equals(value)).First();
-                    Validate();
                 }
+                OnPropertyChanged("AdSubcategory");
+                Validate();
             } 
         }
         public int? AdManufacturer {
             set {
                 if (value != null) {
                     ad.AdManufacturer = adDetailsService.Manufacturers().Result.Where(manufacturer => manufacturer.Id.Equals(value)).First();
-                    Validate();
                 }
+                OnPropertyChanged("AdManufacturer");
+                Validate();
             } 
         }
         public int? AdCondition {
             set {
                 if (value != null) {
                     ad.AdCondition = adDetailsService.Conditions().Result.Where(condition => condition.Id.Equals(value)).First();
-                    Validate();
                 }
+                OnPropertyChanged("AdCondition");
+                Validate();
             }
         }
         public int? AdType {
             set {
                 if (value != null) {
                     ad.AdType = adDetailsService.Types().Result.Where(adType => adType.Id.Equals(value)).First();
-                    Validate();
                 }
+                OnPropertyChanged("AdType");
+                Validate();
             } 
         }
         public int? Price {
             set {
                 ad.Price = value;
+                OnPropertyChanged("Price");
                 Validate();
             } 
         }
@@ -162,12 +168,26 @@ namespace WpfClientt.viewModels {
                 await adService.Create(ad);
                 Messages.Clear();
                 Messages.Add("The ad has been successfully added.");
-                Title = string.Empty;
-                Description = string.Empty;
-                ad = new Ad();
+                await ClearForm();
             } else {
+                Messages.Clear();
                 Messages.Add("The form can't be submitted because of the errors.");
             }
+        }
+
+        private async Task ClearForm() {
+            ad = new Ad();
+            Title = string.Empty;
+            Description = string.Empty;
+            AdCategory = null;
+            AdSubcategory = null;
+            AdCondition = null;
+            AdManufacturer = null;
+            AdType = null;
+            Price = null;
+            ClearImage(null);
+            await Task.Delay(1000);
+            Messages.Clear();
         }
 
         private void Validate() {
