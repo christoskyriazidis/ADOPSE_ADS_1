@@ -53,7 +53,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "INSERT INTO message (message,customer,chat) values (@Message,@CustomerId,@ChatId)";
+                string sql = "INSERT INTO message (message,customerId,chatId) values (@Message,@CustomerId,@ChatId)";
                 var result = conn.Query<int>(sql, ChatMessage).FirstOrDefault();
                 return true;
             }

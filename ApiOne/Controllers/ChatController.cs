@@ -53,6 +53,7 @@ namespace ApiOne.Controllers
             }
             chatMessage.CustomerId = 3;
             chatMessage.Message = HttpUtility.HtmlEncode(chatMessage.Message);
+            chatMessage.Message = chatMessage.Message.Replace(" ", "");
             if (_chatRepository.InsertMessage(chatMessage))
             {
                 var connections = ChatHub._connections;
