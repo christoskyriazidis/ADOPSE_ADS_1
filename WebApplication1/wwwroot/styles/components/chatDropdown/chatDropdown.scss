@@ -71,3 +71,11 @@ chatDropdown-component {
         }
     }
 }
+.chatsContainer{
+    position:fixed;
+    bottom:0px;
+    width:100vw;
+    display:flex;
+    justify-content:flex-end;
+    flex-direction: row;;
+}

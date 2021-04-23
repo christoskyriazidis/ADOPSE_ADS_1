@@ -38,7 +38,8 @@ axios.interceptors.response.use(
         var axiosConfig = error.response.config;
 
         //if error response is 401 try to refresh token
-        if (error.response.status === 401) {
+        //PREPEI NA TO DIOR9OSOUME ARGOTERA NA VGALOUME TO TRUE
+        if (true || error.response.status === 401) {
             console.log("axios error 401");
             signIn();
             // if already refreshing don't make another request

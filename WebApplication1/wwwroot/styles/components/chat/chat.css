@@ -1,0 +1,328 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.98em;
+}
+
+.chatCellB {
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: #e4e4e4;
+  -webkit-box-shadow: -5px 5px 5px grey;
+          box-shadow: -5px 5px 5px grey;
+  opacity: 1;
+  -webkit-transition-duration: 1s;
+          transition-duration: 1s;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.chatCellTextB {
+  text-align: left;
+  padding: 5px;
+  overflow-wrap: break-word;
+  color: #1f1f1f;
+}
+
+.afterLoadB {
+  -webkit-animation: 0.4s ease-out 0s 1 slideInFromRight;
+          animation: 0.4s ease-out 0s 1 slideInFromRight;
+  opacity: 1;
+}
+
+.chatCell {
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: #d59ef5;
+  -webkit-box-shadow: 5px 5px 5px grey;
+          box-shadow: 5px 5px 5px grey;
+  border: 0.5px solid #ab80c4;
+  margin-left: auto;
+  opacity: 1;
+  -webkit-transition-duration: 1s;
+          transition-duration: 1s;
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+}
+
+.chatCellText {
+  text-align: right;
+  padding: 5px;
+  overflow-wrap: break-word;
+  color: #1f1f1f;
+}
+
+.afterLoad {
+  -webkit-animation: 0.4s ease-out 0s 1 slideInFromLeft;
+          animation: 0.4s ease-out 0s 1 slideInFromLeft;
+  opacity: 1;
+}
+
+.showBorder {
+  border: 1.2px #acacac solid;
+  -webkit-box-shadow: 5px 5px 5px grey;
+          box-shadow: 5px 5px 5px grey;
+}
+
+.hideBorder {
+  border: 0px #acacac solid;
+  -webkit-box-shadow: 0px 0px 0px grey;
+          box-shadow: 0px 0px 0px grey;
+}
+
+chat-component {
+  margin: 5px;
+  padding: 0px;
+}
+
+chat-component .mainChatBody {
+  width: 290px;
+  height: 351px;
+  background-color: white;
+}
+
+chat-component .mainChatBody .chatHeader {
+  background-color: #dbdbdb;
+  height: 14%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+chat-component .mainChatBody .chatHeader .profileImg {
+  height: 100%;
+  width: 44px;
+  padding: 5px;
+}
+
+chat-component .mainChatBody .chatHeader .profileImg img {
+  width: 100%;
+  border-radius: 100%;
+  background-color: white;
+  position: inherit;
+}
+
+chat-component .mainChatBody .chatHeader .minimizeBtn {
+  right: 0px;
+  height: 20px;
+  top: 0px;
+}
+
+chat-component .mainChatBody .contentDisplay {
+  height: 70%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+chat-component .mainChatBody .inputDiv {
+  height: 12%;
+}
+
+chat-component .mainChatBody .inputDiv .inputForm {
+  width: 80%;
+  height: 100%;
+  -webkit-transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
+  background-color: inherit;
+  border: 2px solid #757575;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+
+chat-component .mainChatBody .inputDiv .inputForm:focus {
+  background-color: #cfcfcf;
+}
+
+chat-component .mainChatBody .inputDiv .sendBtn {
+  float: right;
+  width: 15%;
+  height: 100%;
+}
+
+chat-component .mainChatBody .inputDiv .sendBtn:hover {
+  border-radius: 100%;
+  -webkit-animation: 0.2s ease-in 0s 1 fadeIn;
+          animation: 0.2s ease-in 0s 1 fadeIn;
+  background-color: #b3b3b3;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #b3b3b3;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #b3b3b3;
+  }
+}
+
+@-webkit-keyframes slideInFromLeft {
+  0% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes slideInFromRight {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes minimizeChatBox {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(300px);
+            transform: translateY(300px);
+  }
+}
+
+@keyframes minimizeChatBox {
+  0% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(300px);
+            transform: translateY(300px);
+  }
+}
+
+@-webkit-keyframes hideChatBox {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes hideChatBox {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@-webkit-keyframes maximizeChatBox {
+  0% {
+    -webkit-transform: translateY(300px);
+            transform: translateY(300px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@keyframes maximizeChatBox {
+  0% {
+    -webkit-transform: translateY(300px);
+            transform: translateY(300px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes showChatBox {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    display: contents;
+  }
+}
+
+@keyframes showChatBox {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    display: contents;
+  }
+}
+
+.afterClickMinimize {
+  -webkit-animation: 0.4s ease-out 0s 1 minimizeChatBox;
+          animation: 0.4s ease-out 0s 1 minimizeChatBox;
+  -webkit-transform: translateY(300px);
+          transform: translateY(300px);
+}
+
+.afterClickHide {
+  -webkit-animation: 0.1s ease-out 0s 1 hideChatBox;
+          animation: 0.1s ease-out 0s 1 hideChatBox;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.afterClickMaximize {
+  -webkit-animation: 0.4s ease-out 0s 1 maximizeChatBox;
+          animation: 0.4s ease-out 0s 1 maximizeChatBox;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+
+.afterClickShow {
+  -webkit-animation: 0.2s ease-out 0s 1 showChatBox;
+          animation: 0.2s ease-out 0s 1 showChatBox;
+  opacity: 1;
+  pointer-events: all;
+}
+/*# sourceMappingURL=chat.css.map */

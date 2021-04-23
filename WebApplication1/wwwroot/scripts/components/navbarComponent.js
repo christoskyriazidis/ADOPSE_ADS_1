@@ -88,9 +88,15 @@ class NavbarComponent extends HTMLElement {
             <li><a href="#">Account settings</a></li>
             <li><a href="#" onclick="signOut()">Logout</a></li>
         </ul>
-        </div>
+    </div>
         <notification-component class="fresh" style="display:none;"></notification-component>
         <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
+        <div class="chatsContainer">
+        <chat-component chat-id="1" customer-id="1"></chat-component>
+        <chat-component chat-id="2" customer-id="1"></chat-component>
+        <chat-component chat-id="3" customer-id="1"></chat-component>
+        <chat-component chat-id="4" customer-id="1"></chat-component>
+        </div>
         `
     }
 }
@@ -182,7 +188,7 @@ const attachNotifications = (event) => {
 
 }
 const attachChatDropdown = (event) => {
-    
+
     if (document.querySelector("chatdropdown-component").classList.contains("fresh")) {
         document.querySelector("chatdropdown-component").classList.remove("fresh")
         console.log("lmao")
@@ -194,7 +200,7 @@ const attachChatDropdown = (event) => {
                 event.pageX < chatDropdownComponent.offsetLeft + chatDropdownComponent.offsetWidth &&
                 event.pageX > chatDropdownComponent.offsetLeft)
                 || event.target.classList.contains("chat"))) {
-                    chatDropdownComponent.style.display = 'none'
+                chatDropdownComponent.style.display = 'none'
             }
         })
 
@@ -205,7 +211,7 @@ const attachChatDropdown = (event) => {
     let y = document.querySelector(".chat").getBoundingClientRect().bottom;
     const chatDropdownComponent = document.querySelector("chatdropdown-component");
     chatDropdownComponent.style.display = "block";
-    chatDropdownComponent.style.left = (x-180) + 'px';
+    chatDropdownComponent.style.left = (x - 180) + 'px';
     chatDropdownComponent.style.top = y + 'px';
 }
 const myAccountDropdown = ``
