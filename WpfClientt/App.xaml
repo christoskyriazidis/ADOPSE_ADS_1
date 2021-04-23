@@ -144,7 +144,6 @@
         </DataTemplate>
 
         <!-- Converters -->
-        <converters:AdDetailsComponentConverter x:Key="AdFieldConverter" />
         <converters:StringToIntConverter x:Key="IntConverter" />
         
         <!-- Validation Template -->

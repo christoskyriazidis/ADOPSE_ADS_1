@@ -185,7 +185,6 @@
     <Compile Include="viewModels\BaseViewModel.cs" />
     <Compile Include="viewModels\CategoriesViewModel.cs" />
     <Compile Include="viewModels\converters\StringToIntConverter.cs" />
-    <Compile Include="viewModels\converters\AdDetailsComponentConverter.cs" />
     <Compile Include="viewModels\CreateAdViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
     <Compile Include="viewModels\filters\Checkbox.cs" />
