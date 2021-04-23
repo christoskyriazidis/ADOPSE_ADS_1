@@ -14,5 +14,6 @@ namespace WpfClientt.model {
         [JsonPropertyName("title")]
         string Title { get; set; }
 
+        
     }
 }

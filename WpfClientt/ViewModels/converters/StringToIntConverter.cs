@@ -16,7 +16,7 @@ namespace WpfClientt.viewModels.converters {
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            int? result = null;
+            int result = -1;
             if(value != null && value.ToString().Length > 0) {
                 try {
                     result = int.Parse((string)value);
@@ -24,7 +24,7 @@ namespace WpfClientt.viewModels.converters {
                 }
             }
 
-            return result != null ? result : null;
+            return result;
         }
     }
 }

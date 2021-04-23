@@ -21,5 +21,9 @@ namespace WpfClientt.model {
 
         [JsonIgnore]
         public ICollection<Subcategory> Subcategories { get; } = new HashSet<Subcategory>();
+
+        public override string ToString() {
+            return $"{Title}";
+        }
     }
 }

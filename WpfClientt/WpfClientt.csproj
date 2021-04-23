@@ -149,6 +149,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="model\Ad.cs" />
+    <Compile Include="model\AdDecorator.cs" />
     <Compile Include="model\AdDetailComponent.cs" />
     <Compile Include="model\Condition.cs" />
     <Compile Include="model\Customer.cs" />

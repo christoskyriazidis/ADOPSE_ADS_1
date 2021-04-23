@@ -21,5 +21,8 @@ namespace WpfClientt.model {
 
         [JsonPropertyName("categoryId")]
         public long CategoryId { get; set; }
+        public override string ToString() {
+            return $"{Title}";
+        }
     }
 }

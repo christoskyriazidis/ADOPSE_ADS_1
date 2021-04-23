@@ -18,125 +18,52 @@ namespace WpfClientt.viewModels {
         private static CreateAdViewModel instance;
 
         private IAdService adService;
-        private IAdDetailsService adDetailsService;
-        private Ad ad = new Ad();
 
-        public ObservableCollection<string> Categories { get;} = new ObservableCollection<string>();
-        public ObservableCollection<string> Subcategories { get;} = new ObservableCollection<string>();
-        public ObservableCollection<string> Types { get;} = new ObservableCollection<string>();
-        public ObservableCollection<string> Conditions { get;} = new ObservableCollection<string>();
-        public ObservableCollection<string> Manufacturers { get;} = new ObservableCollection<string>();
+        public Ad Ad { get; private set; }
+
+        public ObservableCollection<Category> Categories { get;} = new ObservableCollection<Category>();
+        public ObservableCollection<Subcategory> Subcategories { get;} = new ObservableCollection<Subcategory>();
+        public ObservableCollection<AdType> Types { get;} = new ObservableCollection<AdType>();
+        public ObservableCollection<Condition> Conditions { get;} = new ObservableCollection<Condition>();
+        public ObservableCollection<Manufacturer> Manufacturers { get;} = new ObservableCollection<Manufacturer>();
         public ObservableCollection<ValidationResult> Errors { get; } = new ObservableCollection<ValidationResult>();
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public ICommand ImageChooseCommand { get; private set; }
         public ICommand CreateAdCommand { get; private set; }
         public ICommand ClearImageCommand { get; private set; }
 
-        public string Title {
-            get {
-                return ad.Title;
-            }
-            set {
-                ad.Title = value;
-                OnPropertyChanged("Title");
-                Validate();
-            } 
-        }
-        public string Description {
-            get { return ad.Description; }
-            set {
-                ad.Description = value;
-                OnPropertyChanged("Description");
-                Validate();
-            } 
-        }
-        public int? AdCategory {
-            set {
-                AdSubcategory = null;
-                ad.AdSubcategory = null;
-                if(value != null) {
-                    ad.AdCategory = adDetailsService.Categories().Result.Where(category => category.Id.Equals(value)).First();
-                    SetSubcategoriesOf(ad.AdCategory);
-                }
-                OnPropertyChanged("AdCategory");
-                Validate();
-            } 
-        }
-        public int? AdSubcategory {
-            set {
-                if (value != null) {
-                    ad.AdSubcategory = adDetailsService.Subcategories().Result.Where(subcategory => subcategory.Id.Equals(value)).First();
-                }
-                OnPropertyChanged("AdSubcategory");
-                Validate();
-            } 
-        }
-        public int? AdManufacturer {
-            set {
-                if (value != null) {
-                    ad.AdManufacturer = adDetailsService.Manufacturers().Result.Where(manufacturer => manufacturer.Id.Equals(value)).First();
-                }
-                OnPropertyChanged("AdManufacturer");
-                Validate();
-            } 
-        }
-        public int? AdCondition {
-            set {
-                if (value != null) {
-                    ad.AdCondition = adDetailsService.Conditions().Result.Where(condition => condition.Id.Equals(value)).First();
-                }
-                OnPropertyChanged("AdCondition");
-                Validate();
-            }
-        }
-        public int? AdType {
-            set {
-                if (value != null) {
-                    ad.AdType = adDetailsService.Types().Result.Where(adType => adType.Id.Equals(value)).First();
-                }
-                OnPropertyChanged("AdType");
-                Validate();
-            } 
-        }
-        public int? Price {
-            set {
-                ad.Price = value;
-                OnPropertyChanged("Price");
-                Validate();
-            } 
-        }
-
         public string CurrentlyChosenFileName {
             get {
-                return ad.ImageUri == null ? "Choose Image..." : ad.ImageUri.LocalPath;
+                return Ad.ImageUri == null ? "Choose Image..." : Ad.ImageUri.LocalPath;
             }
         }
 
-        private CreateAdViewModel(IAdService adService,IAdDetailsService adDetailsService,ISet<Category> categories,
+        private CreateAdViewModel(IAdService adService,ISet<Category> categories,
             ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers) {
 
             ImageChooseCommand = new DelegateCommand(ChooseImage);
             CreateAdCommand = new DelegateCommand(CreateAd);
             ClearImageCommand = new DelegateCommand(ClearImage);
-
+            
             foreach(Category category in categories) {
-                this.Categories.Add($"{category.Id}-{category.Title}");
+                this.Categories.Add(category);
             }
 
             foreach (AdType type in types) {
-                this.Types.Add($"{type.Id}-{type.Title}");
+                this.Types.Add(type);
             }
 
             foreach (Condition condition in conditions) {
-                this.Conditions.Add($"{condition.Id}-{condition.Title}");
+                this.Conditions.Add(condition);
             }
 
             foreach (Manufacturer manufacturer in manufacturers) {
-                this.Manufacturers.Add($"{manufacturer.Id}-{manufacturer.Title}");
+                this.Manufacturers.Add(manufacturer);
             }
 
             this.adService = adService;
-            this.adDetailsService = adDetailsService;
+            Ad = new AdDecorator(Validate,SetSubcategoriesOf);
+            Validate(Ad);
         }
 
         public static async Task<CreateAdViewModel> GetInstance(FactoryServices factory) {
@@ -146,8 +73,7 @@ namespace WpfClientt.viewModels {
             ISet<Condition> conditions = await adDetailsService.Conditions();
             ISet<Manufacturer> manufacturers = await adDetailsService.Manufacturers();
             if (instance == null) {
-                instance = new CreateAdViewModel(await factory.AdServiceInstance(),factory.AdDetailsServiceInstance()
-                    ,categories,types,conditions,manufacturers);
+                instance = new CreateAdViewModel(await factory.AdServiceInstance(),categories,types,conditions,manufacturers);
             }
 
             return instance;
@@ -157,15 +83,16 @@ namespace WpfClientt.viewModels {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Image files (*.jpg,*.jpeg,*.png) | *.jpg; *.jpeg;*.png";
             if (fileDialog.ShowDialog() == true) {
-                ad.ImageUri = new Uri($"file:///{fileDialog.FileName}");
+                Ad.ImageUri = new Uri($"file:///{fileDialog.FileName}");
                 OnPropertyChanged("CurrentlyChosenFileName");
             }
         }
 
         private async void CreateAd(object param) {
+            Validate(Ad);
             if (Errors.Count == 0) {
                 Messages.Add("Trying to add the give ad.");
-                await adService.Create(ad);
+                await adService.Create(Ad);
                 Messages.Clear();
                 Messages.Add("The ad has been successfully added.");
                 await ClearForm();
@@ -176,37 +103,29 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task ClearForm() {
-            ad = new Ad();
-            Title = string.Empty;
-            Description = string.Empty;
-            AdCategory = null;
-            AdSubcategory = null;
-            AdCondition = null;
-            AdManufacturer = null;
-            AdType = null;
-            Price = null;
+            Ad = new AdDecorator(Validate,SetSubcategoriesOf);
+            OnPropertyChanged("Ad");
             ClearImage(null);
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             Messages.Clear();
         }
 
-        private void Validate() {
+        private void Validate(Ad ad) {
             Errors.Clear();
             ValidationContext validationContext = new ValidationContext(ad);
-            Validator.TryValidateObject(ad, validationContext,Errors,true);
+            Validator.TryValidateObject(Ad, validationContext,Errors,true);
         }
 
 
         private void SetSubcategoriesOf(Category category) {
-            this.AdSubcategory = null;
             Subcategories.Clear();
             foreach (Subcategory subcategory in category.Subcategories) {
-                Subcategories.Add($"{subcategory.Id}-{subcategory.Title}");
+                Subcategories.Add(subcategory);
             }
         }
 
         private void ClearImage(object param) {
-            ad.ImageUri = null;
+            Ad.ImageUri = null;
             OnPropertyChanged("CurrentlyChosenFileName");
         }
     }
