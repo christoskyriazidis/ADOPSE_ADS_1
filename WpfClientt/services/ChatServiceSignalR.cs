@@ -14,13 +14,24 @@ namespace WpfClientt.services {
         private ConcurrentBag<Action<Message>> listeners = new ConcurrentBag<Action<Message>>();
         private IHubProxy proxy;
 
-        public ChatServiceSignalR(HubConnection connection) {
-            this.proxy = connection.CreateHubProxy("ChatHub");
-            this.proxy.On("ReceiveMessage", (Message message) => {
-                foreach(Action<Message> listener in listeners.ToArray()) {
+        private ChatServiceSignalR() {
+            
+        }
+
+        private static async Task<ChatServiceSignalR> GetInstance() {
+            ChatServiceSignalR instance = new ChatServiceSignalR();
+            HubConnection connection = new HubConnection("https://localhost:44374/SignalR");
+            IHubProxy proxy = connection.CreateHubProxy("ChatHub");
+
+            proxy.On("ReceiveMessage", (Message message) => {
+                foreach (Action<Message> listener in instance.listeners.ToArray()) {
                     listener.Invoke(message);
                 }
             });
+
+            await connection.Start();
+
+            return instance;
         }
 
         public void AddMessageListener(Action<Message> listener) {
