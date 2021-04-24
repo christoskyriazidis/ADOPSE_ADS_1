@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using WpfClientt.model;
 using WpfClientt.services;
 using WpfClientt.services.filtering;
+using WpfClientt.viewModels.filters;
 
-namespace WpfClientt.viewModels.filters {
+namespace WpfClientt.viewModels {
     public class FilterViewModel {
         private static FilterViewModel instance;
         private AdsFilterBuilder filterBuilder ;
@@ -19,6 +20,7 @@ namespace WpfClientt.viewModels.filters {
 
         private FilterViewModel(ISet<Condition> conditions, ISet<Manufacturer> manufacturers, ISet<State> states,ISet<AdType> types,Subcategory subcategory) {
             filterBuilder = new AdsFilterBuilder(subcategory);
+            FilterMemebers.Add(new SearchFilterMember(filterBuilder.AddTitleSearchQuery,"Title"));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(conditions, "Conditions", filterBuilder.AddConditionFilter));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(states, "States", filterBuilder.AddStateFilter));
