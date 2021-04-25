@@ -9,9 +9,10 @@ using WpfClientt.model;
 namespace WpfClientt.services.filtering {
     public sealed class AdsFilterBuilder {
 
+        private Subcategory subcategory;
         private string mainUrl = $"{ApiInfo.AdMainUrl()}?";
-        private Regex NotCharacters = new Regex(@"/[^a-z0-9 ]/g");
-        private Regex SpaceCharacters = new Regex(@"\s+/g");
+        private Regex NotCharacters = new Regex(@"[^a-z0-9 ]");
+        private Regex SpaceCharacters = new Regex(@"\s+");
         private Regex LastPlusCharacter = new Regex(@"/[+]+$/");
         private ISet<long> conditions = new HashSet<long>();
         private ISet<long> states = new HashSet<long>();
@@ -20,7 +21,8 @@ namespace WpfClientt.services.filtering {
         private string titleQuery = string.Empty;
 
         public AdsFilterBuilder(Subcategory subcategory) {
-            mainUrl = $"{mainUrl}SubcategoryId={subcategory.Id}";
+            mainUrl = $"{mainUrl}";
+            this.subcategory = subcategory;
         }
 
         public void AddTitleSearchQuery(string titleQuery) {
@@ -50,10 +52,11 @@ namespace WpfClientt.services.filtering {
             string typesFilter = PrefixIfNotEmpty("Type=",string.Join("_", types.Select(LongToString).ToArray()));
             string manufacturersFilter = PrefixIfNotEmpty("Manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
             titleQuery = LastPlusCharacter.Replace(SpaceCharacters.Replace(NotCharacters.Replace(titleQuery.ToLower(), ""),"+"),"");
-            string titleFilter = PrefixIfNotEmpty("title", titleQuery);
+            string titleFilter = PrefixIfNotEmpty("title=", titleQuery);
+            string subcategoryFilter = $"SubcategoryId={subcategory.Id}";
 
             return filterUrl.ToString() + string.Join("&",
-                new string[] {conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }.Where(str => str.Length > 0)
+                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }.Where(str => str.Length > 0)
                 );
         }
 
