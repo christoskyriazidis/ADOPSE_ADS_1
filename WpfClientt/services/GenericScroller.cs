@@ -62,7 +62,6 @@ namespace WpfClientt.services {
 
         private async Task SetCurrentPage() {
             Stream stream = await this.client.GetStreamAsync(this.url);
-
             currentPage = await JsonSerializer.DeserializeAsync<GenericPage<T>>(stream,options);
         }
     }

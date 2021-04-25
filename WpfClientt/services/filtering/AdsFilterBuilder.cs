@@ -52,7 +52,7 @@ namespace WpfClientt.services.filtering {
             string typesFilter = PrefixIfNotEmpty("Type=",string.Join("_", types.Select(LongToString).ToArray()));
             string manufacturersFilter = PrefixIfNotEmpty("Manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
             titleQuery = LastPlusCharacter.Replace(SpaceCharacters.Replace(NotCharacters.Replace(titleQuery.ToLower(), ""),"+"),"");
-            string titleFilter = PrefixIfNotEmpty("title=", titleQuery);
+            string titleFilter = PrefixIfNotEmpty("Title=", titleQuery);
             string subcategoryFilter = $"SubcategoryId={subcategory.Id}";
 
             return filterUrl.ToString() + string.Join("&",

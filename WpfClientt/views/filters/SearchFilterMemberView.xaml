@@ -7,13 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions >
-            <ColumnDefinition Width="0.4*" />
-            <ColumnDefinition Width="0.6*" />
-        </Grid.ColumnDefinitions>
-        <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource blue-medium}" Grid.Column="0" Margin="0,0,0,5">
+        <Grid.RowDefinitions >
+            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="0.8*" />
+        </Grid.RowDefinitions>
+        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource blue-medium}" Grid.Row="0" Margin="0,0,0,5">
             <TextBlock Text="{Binding Title}" FontSize="24" TextAlignment="Center" VerticalAlignment="Center" />
         </Border>
-        <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding SearchQuery}" />
+        <TextBox Grid.Row="1" VerticalAlignment="Center" Text="{Binding SearchQuery}" />
     </Grid>
 </UserControl>

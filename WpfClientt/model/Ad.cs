@@ -54,7 +54,7 @@ namespace WpfClientt.model {
         public virtual int Reports { get; set; } = 0;
 
         [JsonPropertyName("customer")]
-        public virtual Customer AdCustomer { get; set; }
+        public virtual int CustomerId { get; set; }
 
         [Range(1, 100000,ErrorMessage = "The price must be between [1,100000]")]
         [Required(ErrorMessage = "The price is not specified")]
