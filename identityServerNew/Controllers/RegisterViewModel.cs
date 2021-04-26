@@ -10,10 +10,12 @@ namespace identityServerNew.Controllers
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(40, MinimumLength = 3)]
         public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(40, MinimumLength = 6)]
         public string Password { get; set; }
 
         [Required]

@@ -28,12 +28,12 @@ namespace ApiOne.Controllers
     {
         private readonly IWebHostEnvironment _env;
         private readonly ICustomerRepository _customerRepo = new CustomerRepository();
+        private readonly IAdRepository _adRepository = new AdRepository();
 
         public CustomerController(IWebHostEnvironment webHostEnvironment )
         {
             _env = webHostEnvironment;
         }
-
 
         [HttpGet]
         [Route("/customer")]
@@ -72,17 +72,17 @@ namespace ApiOne.Controllers
             return Json(_customerRepo.GetMyProfileInfo(cid));
         }
 
-        
-        
-
+        [Authorize]
         [HttpGet]
-        [Route("/gamw")]
-        public IActionResult GetProfilee()
+        [Route("/profile/myads")]
+        public IActionResult GetMyAds(Pagination adParameters)
         {
-            var a = DateTime.Now.ToString();
-            int cid = 3;
-            return Json(_customerRepo.GetMyProfileInfo(cid));
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId); 
+            return Json(_adRepository.GetAdsByCustomerId(adParameters, intId));
         }
+        
 
         [HttpPut]
         [Consumes("application/json")]

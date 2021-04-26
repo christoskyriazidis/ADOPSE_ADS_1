@@ -32,6 +32,22 @@ namespace ApiOne.Repositories
             }
         }
 
+        public int GetCustomerIdFromSub(string SubId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT TOP 1 id FROM Customer WHERE SubId=@SubId";
+                var customers = conn.Query<int>(sql, new { SubId }).FirstOrDefault();
+                return customers;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return -1;
+            }
+        }
+
         public CustomersWithPagination GetCustomers(Pagination pagination)
         {
             try
@@ -113,5 +129,6 @@ namespace ApiOne.Repositories
                 return false;
             }
         }
+
     }
 }

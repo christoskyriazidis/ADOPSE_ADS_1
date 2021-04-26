@@ -65,26 +65,33 @@ namespace identityServerNew.Controllers
         }
 
 
-        [Route("/cssMail")]
         [HttpGet]
-        public async Task<IActionResult> mailSending()
+        [Route("/sql")]
+        public IActionResult testingg()
         {
-            string texttt = System.IO.File.ReadAllText(@"C:\Users\TestFolder\index.html");
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("mailservice.adopse@gmail.com"),
-                Subject = "subject",
-                Body = texttt.Replace("#link#","eisaivlakaskaienazwo"),
-                IsBodyHtml = true,
-                To = { "christosgalaxiz@gmail.com" }
-            };
-            var emailStatus = await MyEmailService.SendMail(mailMessage);
-            if (emailStatus)
-            {
-                return Ok();
-            }
-            return Json(new { error="problem with email service"});
+
+            return Json(new { result= SqlServerHelpers.InsertIntoDb("takhs", "mail", "name", "lastname", "adress", "idd","phone?") }) ;
         }
+        //[Route("/cssMail")]
+        //[HttpGet]
+        //public async Task<IActionResult> mailSending()
+        //{
+        //    string texttt = System.IO.File.ReadAllText(@"C:\Users\TestFolder\index.html");
+        //    var mailMessage = new MailMessage
+        //    {
+        //        From = new MailAddress("mailservice.adopse@gmail.com"),
+        //        Subject = "subject",
+        //        Body = texttt.Replace("#link#","eisaivlakaskaienazwo"),
+        //        IsBodyHtml = true,
+        //        To = { "christosgalaxiz@gmail.com" }
+        //    };
+        //    var emailStatus = await MyEmailService.SendMail(mailMessage);
+        //    if (emailStatus)
+        //    {
+        //        return Ok();
+        //    }
+        //    return Json(new { error="problem with email service"});
+        //}
 
         //apo edw stelnoum email to verification token.
         public async Task<IActionResult> EmailConfirmation(string username,string email)
@@ -99,7 +106,7 @@ namespace identityServerNew.Controllers
                 Subject = "subject",
                 Body = $"<h1>Welcome to our App!!!</h1><h3>Press this link to verify Your email</h3><a href=\"{link}\">Verify Email</a>",
                 IsBodyHtml = true,
-                To = { "christosgalaxiz@gmail.com"}
+                To = { email}
             };
             var emailStatus = await MyEmailService.SendMail(mailMessage);
             if (emailStatus)
@@ -116,6 +123,7 @@ namespace identityServerNew.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return BadRequest();
             var result = await _userManager.ConfirmEmailAsync(user, token);
+
             if (result.Succeeded)
             {
                 return View("ConfirmPage", ViewBag.Message = "Verified completed!!!");
@@ -155,7 +163,8 @@ namespace identityServerNew.Controllers
 
         public async Task<IActionResult> SendPasswordResetToMail(string username,string email)
         {
-            var user = await _userManager.FindByNameAsync("admin");
+
+            var user = await _userManager.FindByNameAsync(username);
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = HttpUtility.UrlEncode(token);
             var link = $"https://localhost:44305/Auth/ResetPassword?userId={user.Id}&token={encodedToken}";
@@ -167,10 +176,10 @@ namespace identityServerNew.Controllers
                        $"<h3>Follow this link To change your password</h3>"+
                        $"<a href=\"{link}\">change password here!!!</a>",
                 IsBodyHtml = true,
-                To = { "christosgalaxiz@gmail.com","comninos22@gmail.com" }
+                To = { email }
             };
-
-            var emailStatus = await MyEmailService.SendMail(mailMessage);
+            //send mail
+            await MyEmailService.SendMail(mailMessage);
             return Ok();
         }
 
@@ -196,7 +205,6 @@ namespace identityServerNew.Controllers
                     ViewBag.Message = "Username Email not found.!";
                     return View(accountResetPassword);
                 }
-
             }
             ViewBag.Message = "Verification code Send to Your email!";
             await SendPasswordResetToMail(user.UserName, user.Email);
@@ -294,18 +302,35 @@ namespace identityServerNew.Controllers
             }
             //check for errors
             var info = await _signInManager.GetExternalLoginInfoAsync();
+            var stats = info.Principal.Claims.ToList();
             if (info == null)
             {
                 return RedirectToAction("Login");
             }
-            var user = new IdentityUser(vm.Username);
+            var externalClaims = info.Principal.Claims.ToList();
+            var emailClaim = externalClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            var user = new IdentityUser
+            {
+                UserName = vm.Username,
+                Email = emailClaim,
+            };
             var result = await _userManager.CreateAsync(user);
+
             if (!result.Succeeded)
             {
                 return View(vm);
             }
-            var claim = await _userManager.AddClaimAsync(user, new Claim("username", vm.Username));
-            if (!claim.Succeeded)
+           
+            var claims = new List<Claim>();
+            claims.Add(new Claim("username", vm.Username));
+            claims.Add(new Claim(ClaimTypes.Role, "Customer"));
+            var claimResult = await _userManager.AddClaimsAsync(user, claims);
+            var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var emailConfirm = await _userManager.ConfirmEmailAsync(user, emailToken);
+            //var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
+
+            if (!claimResult.Succeeded)
             {
                 return View(vm);
             }
@@ -315,6 +340,7 @@ namespace identityServerNew.Controllers
                 return View(vm);
             }
             //perasei ola auta tote redirect
+            TempData["register"] = $"Registration success {info.ProviderDisplayName}";
             return Redirect(vm.ReturnUrl);
         }
 
@@ -346,12 +372,12 @@ namespace identityServerNew.Controllers
                 }
             }
             //check if email is confirmed
-            //var emailConfirmation = await _userManager.IsEmailConfirmedAsync(user);
-            //if (!emailConfirmation)
-            //{
-            //    ViewBag.Message = "Email not verified";
-            //    return View(lvm);
-            //}
+            var emailConfirmation = await _userManager.IsEmailConfirmedAsync(user);
+            if (!emailConfirmation)
+            {
+                ViewBag.Message = "Email not verified";
+                return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
+            }
             var loginResult = await _signInManager.PasswordSignInAsync(user, lvm.Password, false, true);
             if (loginResult.IsLockedOut)
             {
@@ -386,7 +412,7 @@ namespace identityServerNew.Controllers
             var userExists = await _userManager.FindByNameAsync(rgv.Username);
             if (userExists != null)
             {
-                ViewBag.Message = "yparxei o user";
+                ViewBag.Message = "Username already exists";
                 return View(rgv);
             }
             var user = new IdentityUser
@@ -395,12 +421,14 @@ namespace identityServerNew.Controllers
                 Email = rgv.Email,
             };
             var result = await _userManager.CreateAsync(user, rgv.Password);
+            var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
 
-            if (result.Succeeded)
+            if (result.Succeeded && adResult)
+                //if (result.Succeeded)
             {
                 var claims = new List<Claim>();
                 claims.Add(new Claim("username", rgv.Username));
-                claims.Add(new Claim("Mobile", rgv.MobilePhone));
+                //claims.Add(new Claim("Mobile", rgv.MobilePhone));
                 claims.Add(new Claim("name", rgv.Name));
                 claims.Add(new Claim("lastName", rgv.LastName));
                 claims.Add(new Claim(ClaimTypes.Role, "Customer"));
@@ -408,7 +436,7 @@ namespace identityServerNew.Controllers
 
                 await _userManager.AddClaimsAsync(user, claims);
                 //stelnoume sto mail tou xrhsth to token...
-                await EmailConfirmation(rgv.Username, "what ever");
+                await EmailConfirmation(rgv.Username, rgv.Email);
                 //pane pisw apo ekei pou ir8es dhladh..
                 TempData["register"] = "Registration success Plz verify Your Email!!!";
                 return Redirect(rgv.ReturnUrl);
