@@ -2,21 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WpfClientt.model;
 
 namespace WpfClientt.services.filtering {
     public sealed class AdsFilterBuilder {
 
+        private Subcategory subcategory;
         private string mainUrl = $"{ApiInfo.AdMainUrl()}?";
-
+        private Regex NotCharacters = new Regex(@"[^a-z0-9 ]");
+        private Regex SpaceCharacters = new Regex(@"\s+");
+        private Regex LastPlusCharacter = new Regex(@"/[+]+$/");
         private ISet<long> conditions = new HashSet<long>();
         private ISet<long> states = new HashSet<long>();
         private ISet<long> types = new HashSet<long>();
         private ISet<long> manufacturers = new HashSet<long>();
+        private string titleQuery = string.Empty;
 
         public AdsFilterBuilder(Subcategory subcategory) {
-            mainUrl = $"{mainUrl}SubcategoryId={subcategory.Id}";
+            mainUrl = $"{mainUrl}";
+            this.subcategory = subcategory;
+        }
+
+        public void AddTitleSearchQuery(string titleQuery) {
+            this.titleQuery = titleQuery;
         }
 
         public void AddConditionFilter(long conditionCode) {
@@ -41,9 +51,12 @@ namespace WpfClientt.services.filtering {
             string statesFilter = PrefixIfNotEmpty("State=",string.Join("_", states.Select(LongToString).ToArray()));
             string typesFilter = PrefixIfNotEmpty("Type=",string.Join("_", types.Select(LongToString).ToArray()));
             string manufacturersFilter = PrefixIfNotEmpty("Manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
+            titleQuery = LastPlusCharacter.Replace(SpaceCharacters.Replace(NotCharacters.Replace(titleQuery.ToLower(), ""),"+"),"");
+            string titleFilter = PrefixIfNotEmpty("Title=", titleQuery);
+            string subcategoryFilter = $"SubcategoryId={subcategory.Id}";
 
             return filterUrl.ToString() + string.Join("&",
-                new string[] {conditionsFilter, statesFilter, typesFilter, manufacturersFilter }.Where(str => str.Length > 0)
+                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }.Where(str => str.Length > 0)
                 );
         }
 

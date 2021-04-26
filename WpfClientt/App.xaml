@@ -127,7 +127,7 @@
             <viewsMenu:LoginCustomerMenu />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:FilterViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:FilterViewModel}">
             <viewsFilter:FilterView />
         </DataTemplate>
 
@@ -141,6 +141,10 @@
 
         <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
             <viewsFilter:RangeFilterMemberView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type filters:SearchFilterMember}">
+            <viewsFilter:SearchFilterMemberView />
         </DataTemplate>
 
         <!-- Converters -->

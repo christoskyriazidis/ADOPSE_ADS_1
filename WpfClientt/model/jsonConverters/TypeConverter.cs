@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -19,7 +20,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override AdType Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
-            long typeId = long.Parse(reader.GetString());
+            int typeId = reader.GetInt32();
             return types.Where( type => type.Id.Equals(typeId)).First();
         }
 

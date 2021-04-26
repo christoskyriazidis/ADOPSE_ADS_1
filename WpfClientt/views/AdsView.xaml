@@ -95,6 +95,7 @@
                     <Button Content="Next Page" Style="{StaticResource medium_blue_button}" Command="{Binding NextPageCommand}" IsEnabled="{Binding Enabled}" />
                 </Border>
              </Grid>
+            
             <Border Grid.Row="1" Grid.Column="1" BorderThickness="2,0,0,0" BorderBrush="{StaticResource blue-light}">
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -103,10 +104,10 @@
                         <ColumnDefinition Width="0.45*" />
                     </Grid.ColumnDefinitions>
                     <Border Padding="5" Grid.Column="0">
-                        <Button Content="Refresh Ads" Foreground="White" Background="{StaticResource red-medium}" />
+                        <Button Content="Refresh Ads" Foreground="White" Background="{StaticResource red-medium}" Command="{Binding RefreshCommand}" />
                     </Border>
                     <Border Padding="5" Grid.Column="2">
-                        <Button Content="Filter Ads" Foreground="White" Background="{StaticResource green-medium}" />
+                        <Button Content="Filter Ads" Foreground="White" Background="{StaticResource green-medium}" Command="{Binding SearchCommand}" />
                     </Border>
                 </Grid>
             </Border>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -19,8 +20,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override Manufacturer Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
-            long manufacturerId = long.Parse(reader.GetString());
-
+            int manufacturerId = reader.GetInt32();
             return manufacturers.Where( manufacturer => manufacturer.Id.Equals(manufacturerId)).First();
         }
 

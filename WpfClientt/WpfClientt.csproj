@@ -151,6 +151,7 @@
     <Compile Include="model\Ad.cs" />
     <Compile Include="model\AdDecorator.cs" />
     <Compile Include="model\AdDetailComponent.cs" />
+    <Compile Include="model\chat\Message.cs" />
     <Compile Include="model\Condition.cs" />
     <Compile Include="model\Customer.cs" />
     <Compile Include="model\jsonConverters\CategoryConverter.cs" />
@@ -163,6 +164,9 @@
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
     <Compile Include="model\State.cs" />
+    <Compile Include="services\ChatServiceSignalR.cs" />
+    <Compile Include="services\IChatService.cs" />
+    <Compile Include="viewModels\filters\SearchFilterMember.cs" />
     <Compile Include="viewModels\SubcategoriesViewModel.cs" />
     <Compile Include="model\Subcategory.cs" />
     <Compile Include="model\AdType.cs" />
@@ -192,7 +196,7 @@
     <Compile Include="viewModels\filters\MinMaxFilterMember.cs" />
     <Compile Include="viewModels\filters\MinMaxPriceFilterMember.cs" />
     <Compile Include="viewModels\filters\MultipleChoicesFilterMember.cs" />
-    <Compile Include="viewModels\filters\FilterViewModel.cs" />
+    <Compile Include="viewModels\FilterViewModel.cs" />
     <Compile Include="viewModels\filters\RadioButtonViewModel.cs" />
     <Compile Include="viewModels\filters\SingleChoiceFilterMember.cs" />
     <Compile Include="viewModels\IViewModel.cs" />
@@ -227,6 +231,9 @@
     </Compile>
     <Compile Include="views\filters\RangeFilterMemberView.xaml.cs">
       <DependentUpon>RangeFilterMemberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\filters\SearchFilterMemberView.xaml.cs">
+      <DependentUpon>SearchFilterMemberView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\filters\SingleChoiceFilterMemberView.xaml.cs">
       <DependentUpon>SingleChoiceFilterMemberView.xaml</DependentUpon>
@@ -286,6 +293,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\filters\RangeFilterMemberView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\filters\SearchFilterMemberView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

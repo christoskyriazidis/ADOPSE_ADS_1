@@ -87,7 +87,7 @@ namespace WpfClientt.services {
         public IScroller<Ad> Fiter(AdsFilterBuilder adsFilterBuilder) {
             string url = adsFilterBuilder.Build();
             adsFilterBuilder.ClearFilters();
-            return new GenericScroller<Ad>(client, 10, url);
+            return new GenericScroller<Ad>(client, 10, url,options);
         }
 
         public IScroller<Ad> ProfileAds() {
@@ -108,7 +108,7 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> SubcategoryAds(Subcategory subcategory) {
-            return new GenericScroller<Ad>(client,10, $"{mainUrl}/SubcategoryId={subcategory.Id}", options);
+            return new GenericScroller<Ad>(client,10, $"{mainUrl}?SubcategoryId={subcategory.Id}", options);
         }
 
         public async Task Update(Ad ad) {

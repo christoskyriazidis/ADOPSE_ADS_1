@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -19,7 +20,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override Subcategory Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
-            long subcategoryId = long.Parse(reader.GetString());
+            int subcategoryId = reader.GetInt32();
             return subcategories.Where( subcategory => subcategory.Id.Equals(subcategoryId)).First();
         }
 

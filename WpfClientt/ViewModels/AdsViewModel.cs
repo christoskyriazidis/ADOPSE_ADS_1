@@ -24,7 +24,7 @@ namespace WpfClientt.viewModels {
         public ICommand PreviousPageCommand { get; private set; }
         public ICommand ReadMoreCommand { get; private set; }
         public ICommand SearchCommand { get; private set; }
-        public ICommand ResetCommand { get; private set; }
+        public ICommand RefreshCommand { get; private set; }
         public bool Enabled {
             get => enabled;
             private set {
@@ -43,7 +43,7 @@ namespace WpfClientt.viewModels {
             PreviousPageCommand = new DelegateCommand(OnMoveBack);
             ReadMoreCommand = new DelegateCommand(OnReadMore);
             SearchCommand = new DelegateCommand(OnSearch);
-            ResetCommand = new DelegateCommand(OnReset);
+            RefreshCommand = new DelegateCommand(OnReset);
         }
 
         public static async Task<AdsViewModel> GetInstanceWithSubcategoryAds(FactoryServices factory,Subcategory subcategory) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -18,8 +19,8 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override Category Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
-            long categoryId = long.Parse(reader.GetString());
-            return categories.Where(category => category.Id.Equals(category)).First();
+            int categoryId = reader.GetInt32();
+            return categories.Where(category => category.Id.Equals(categoryId)).First();
         }
 
         public override void Write(Utf8JsonWriter writer, Category value, JsonSerializerOptions options) {

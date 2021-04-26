@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -19,7 +20,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override Condition Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options) {
-            long conditionId = long.Parse(reader.GetString());
+            int conditionId = reader.GetInt32();
             return conditions.Where( condition => condition.Id.Equals(conditionId)).First();
         }
 
