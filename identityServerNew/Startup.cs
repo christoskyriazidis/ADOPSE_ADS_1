@@ -23,11 +23,13 @@ namespace identityServerNew
             _config = config;
         }
         public  static IConfiguration _config { get; private set; }
-
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = _config.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<AppDbContext>(config => {
-                config.UseInMemoryDatabase("Memory");
+                //config.UseInMemoryDatabase("Memory");
+                config.UseSqlServer(connectionString);
             });
 
             services.AddIdentity<IdentityUser, IdentityRole>(config => {
@@ -35,10 +37,9 @@ namespace identityServerNew
                 config.Password.RequireDigit =false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false ;
-                
-                //config.Lockout.MaxFailedAccessAttempts = 4;
-                //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-                //config.SignIn.RequireConfirmedEmail = true;
+                config.SignIn.RequireConfirmedEmail = true;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                config.Lockout.MaxFailedAccessAttempts = 4;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
@@ -48,13 +49,24 @@ namespace identityServerNew
                 config.LogoutPath = "/Auth/Logout";
                 config.AccessDeniedPath = "/Auth/UserAccessDenied";
             });
+            var assembly = typeof(Startup).Assembly.GetName().Name;
             //exei mesa authentication/authorization..
             services.AddIdentityServer()
                 //to paketo identity server 4 asp 
                 .AddAspNetIdentity<IdentityUser>()
-                .AddInMemoryApiResources(Configuration.GetApis())
-                .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-                .AddInMemoryClients(Configuration.GetClients())
+                .AddConfigurationStore(options =>
+                 {
+                     options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                         sql => sql.MigrationsAssembly(assembly));
+                 })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                        sql => sql.MigrationsAssembly(assembly));
+                })
+                //.AddInMemoryApiResources(Configuration.GetApis())
+                //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
+                //.AddInMemoryClients(Configuration.GetClients())
                 .AddDeveloperSigningCredential();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>

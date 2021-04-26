@@ -21,6 +21,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,7 @@ namespace ApiOne.Controllers
     public class AdController : Controller
     {
         private readonly IAdRepository _adRepository = new AdRepository();
+        private readonly ICustomerRepository _customerRepo = new CustomerRepository();
         private readonly IWebHostEnvironment _env;
         private readonly IHubContext<NotificationHub> _NotificationHub;
 
@@ -73,7 +75,17 @@ namespace ApiOne.Controllers
             return Json(ad);
         }
 
-        //[Authorize]
+        [Authorize(Policy = "Admin")]
+        [Route("/denkserw")]
+        public IActionResult denkserw()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var test = _customerRepo.GetCustomerIdFromSub(subId);
+            return Json(new { message = "douleuei" });
+        }
+
+        [Authorize]
         [Route("/ad")]
         [HttpPost]
         //[Produces("application/json")]
@@ -86,7 +98,10 @@ namespace ApiOne.Controllers
                 return BadRequest(allErrors);
             }
             //vazoume to id tou xrhsth sto object Ad 
-            ad.Customer = 3;
+            string subId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var claims = User.Claims.ToList();
+
+            ad.Customer = _customerRepo.GetCustomerIdFromSub("f4ebd4c3-b7f5-4df1-8750-5a437fdaa0fc");
             //koitaw an einai null to img 
             if (ad.Img == null) ad.NewImg = "No";
             else ad.NewImg = "NewImg";
@@ -109,21 +124,31 @@ namespace ApiOne.Controllers
             CreateAd ad = new CreateAd();
             Random rnd = new Random();
 
-            string[] titles = { "eimai ena ad","megalo ad","oti nane ad","den kserw","kserw den ad","kalimera", "kalinixta"};
-            string[] descriptions = { "eimai ena description", "description description ad", "oti nane description", "den kserw", "kserw den description", "kalimera", "kalinixta"};
-            for(int i = 0; i < 200000; i++)
+            string[] titles = { "IPHONE 5S - SILVER - UNLOCKED in Birmingham", "iPhone XR unlocked 64gb in Coleraine", "Immaculate Samsung S10 mobile", "Samsung galaxy fe brand new unused £370", "kserw den ad", "kalimera", "kalinixta" };
+            string[] descriptions = { "Wireless that goes the distance: Basement rec room? Backyard movie night? Bring ‘em on. The long-range wireless receiver gives you extended range and a stronger signal for smooth streaming even in rooms farther from your router ",
+"Brilliant picture quality: Experience your favorite shows with stunning detail and clarity—whether you’re streaming in HD, 4K, or HDR, you’ll enjoy picture quality that’s optimized for your TV with sharp resolutionand vivid color ",
+"Tons of power, tons of fun: Snappy and responsive, you’ll stream your favorites with ease—from movies and series on Apple TV, Disney+,Prime Video, Netflix, The Roku Channel, HBO, to cable alternatives like Sling and Hulu with Live TV, enjoy the most talked-about TV across thousands of channels ",
+"No more juggling remotes: Power up your TV, adjust the volume, mute, and control your streaming all with one remote—use your voice to quickly search across channels, turn captions on, and more in a touch ",
+"Setup is a cinch: Plug it in, connect to the internet, and start streaming—it’s that simple",
+ "Endless entertainment: Stream what you love, including free TV, live news, sports, and more. It’s easy to stream what you love and cut back on cable bills with access to 500,000+ movies and TV episodes across thousands of free and paid channels ",
+  "Private listening on mobile: Use the free Roku mobile app to pump up the volume on your shows without disturbing the house ",
+   "Up to 120MB/s transfer speeds let you move up to 1000 photos in a minute (5). Up to 120MB/s read speed, engineered with proprietary technology to reach speeds beyond UHS-I 104MB/s, require compatible devices capable of reaching such speed. Write speeds lower. Based on internal testing; performance may be lower depending on host device, interface, usage conditions and other factors. 1MB=1,000,000 bytes. (5)Based on internal testing on images with an average file size of 3.55MB (up to 3.7GB total) with USB 3.0 reader. Your results will vary based on host device, file attributes, and other factors. ",
+   "Load apps faster with A1-rated performance (1). (1) A1 performance is 1500 read IOPS, 500 write IOPS. Based on internal testing. Results may vary based on host device, app type and other factors. ",
+   "10-year manufacturer warranty (See official SanDisk website for more details regarding warranty in your region.) ",
+   "Wide Compatibility - Ender 3 Pro/Ender 3/Ender 3 V2/Ender 5/Monoprice Mini 3D Printer/Anet A8 3D Printer/Raspberry Pi/GPS/TV /SanDisk microSDHC/ Arduino / GPS / DVD / DVR / LED / LCD screen or Smartphone etc. ", "Professional service - provided 180 days no reason to return service.This must be the one which you are looking for. ",
+"High quality Original Micro USB 5Pin Male to Female extension cable;micro usb male to micro usb female is 90 degree right angled connector It's a standard USB Micro-B Cable.;Compatible for : CAR GPS MP3 MP4 PDA MOBILE PHONE PMP "};
+            for (int i = 0; i < 50000; i++)
             {
-
-            ad.Category = rnd.Next(1,4);
-            ad.SubCategoryId = rnd.Next(9, 20);
-            ad.Condition = rnd.Next(1,2);
-            ad.Manufacturer = rnd.Next(1,10);
-            ad.Price = rnd.Next(1, 1000);
-            ad.Title = titles[rnd.Next(0,6)];
-            ad.Type = rnd.Next(1, 3);
-            ad.Description = descriptions[rnd.Next(0, 6)];
-            ad.Customer = rnd.Next(3, 15);
-            int result = _adRepository.InsertAd(ad);
+                ad.Category = rnd.Next(1, 4);
+                ad.SubCategoryId = rnd.Next(9, 20);
+                ad.Condition = rnd.Next(1, 2);
+                ad.Manufacturer = rnd.Next(1, 10);
+                ad.Price = rnd.Next(1, 1000);
+                ad.Title = titles[rnd.Next(0, 6)];
+                ad.Type = rnd.Next(1, 3);
+                ad.Description = descriptions[rnd.Next(0, 12)];
+                ad.Customer = rnd.Next(2, 5);
+                int result = _adRepository.InsertAd(ad);
             }
             return Ok();
         }
@@ -163,45 +188,6 @@ namespace ApiOne.Controllers
             }
             return BadRequest();
         }
-
-        //[HttpGet]
-        //[Route("/filter")]
-        //public IActionResult Testt([FromQuery] AdFiltersFromParam paramTypeFilter,[FromQuery] Pagination adParameters)
-        //{
-        //    if (string.IsNullOrEmpty(paramTypeFilter.State) && string.IsNullOrEmpty(paramTypeFilter.Manufacturer) && string.IsNullOrEmpty(paramTypeFilter.Type) && string.IsNullOrEmpty(paramTypeFilter.Condition) && string.IsNullOrEmpty(paramTypeFilter.Category))
-        //    {
-        //        return BadRequest(new { error = "you should use at least one filter"});
-        //    }
-        //    if (!ModelState.IsValid)
-        //    {
-        //        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-        //        return BadRequest(allErrors);
-        //    }
-        //    AdParametresQueryFilterBack adParametresQueryFilterBack = new AdParametresQueryFilterBack();
-        //    string filterBox ="";
-        //    foreach (var prop in paramTypeFilter.GetType().GetProperties())
-        //    {
-        //        var value = prop.GetValue(paramTypeFilter, null);
-        //        if (value != null)
-        //        {
-        //            String[] filterArray = value.ToString().Split("_").ToArray();
-        //            string sqlIn = String.Join(",", filterArray);
-        //            string last =$"{prop.Name} IN ({sqlIn})";
-        //            adParametresQueryFilterBack.GetType().GetProperty(prop.Name).SetValue(adParametresQueryFilterBack, value.ToString());
-        //            filterBox += $"{last} or ";
-        //        }
-        //    }
-        //    //vgazoume to teleuaio or... :)
-        //    adParametresQueryFilterBack.FinalQuery = filterBox.Remove(filterBox.Length - 3);
-        //    var filteredAds = _adRepository.GetAdsByFilters(adParametresQueryFilterBack,adParameters);
-        //    if (filteredAds.Ads.Count < 1)
-        //    {
-        //        return Json(new { result="There are still no ads with current filters",filters=paramTypeFilter });
-        //    }
-        //    return Json(filteredAds);
-        //}
-
-        
 
         [HttpGet]
         [Route("/condition")]
@@ -322,14 +308,6 @@ namespace ApiOne.Controllers
             {
                 file.CopyTo(fileStream);
             }
-        }
-
-        [HttpGet]
-        [Route("/test")]
-        public async Task<IActionResult> ttess()
-        {
-            await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");    
-            return Ok();
         }
 
     }

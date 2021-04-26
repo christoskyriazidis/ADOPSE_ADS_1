@@ -17,5 +17,7 @@ namespace ApiOne.Interfaces
 
         bool UpdateProfile(CustomerDetails customerDetails);
         bool UpdateProfileImage(int customerId);
+        public int GetCustomerIdFromSub(string SubId);
+
     }
 }
