@@ -76,8 +76,8 @@ namespace WpfClientt.viewModels {
             AddToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
-        private async void ChangeToLoginView(object obj) { 
-        
+        private async void ChangeToLoginView(object obj) {
+            AddToHistory(await LoginViewModel.GetInstance(factory));
         }
 
         private async void ChangeToCategoriesView(object obj) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -28,9 +29,7 @@ namespace WpfClientt.services {
                 return categories;
             }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.CategoriesMainUrl());
-            
             categories = new HashSet<Category>();
-
             using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Stream content = await response.Content.ReadAsStreamAsync();

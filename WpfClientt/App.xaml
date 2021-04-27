@@ -91,6 +91,10 @@
             <views:RegisterView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+            <views:LoginView />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
             <views:CategoriesView />
         </DataTemplate>

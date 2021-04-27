@@ -30,6 +30,9 @@ namespace WpfClientt.viewModels.menu {
             ProfileView = new DelegateCommand(obj => {
                 Mediator.Notify("ProfileView");
             });
+            LoginView = new DelegateCommand(obj => {
+                Mediator.Notify("LoginView");
+            });
             BackView = new DelegateCommand(obj => Mediator.Notify("BackView"));
         }
 
