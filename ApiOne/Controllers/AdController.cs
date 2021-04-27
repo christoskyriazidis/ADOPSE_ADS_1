@@ -91,7 +91,7 @@ namespace ApiOne.Controllers
         [HttpPost]
         //[Produces("application/json")]
         //[Consumes("application/json")]
-        public IActionResult AddAd([FromForm] CreateAd ad)
+        public async Task<IActionResult> AddAd([FromForm] CreateAd ad)
         {
             if (!ModelState.IsValid)
             {
@@ -99,10 +99,9 @@ namespace ApiOne.Controllers
                 return BadRequest(allErrors);
             }
             //vazoume to id tou xrhsth sto object Ad 
-            string subId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var claims = User.Claims.ToList();
-
-            ad.Customer = _customerRepo.GetCustomerIdFromSub("f4ebd4c3-b7f5-4df1-8750-5a437fdaa0fc");
+            string subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            ad.Customer = _customerRepo.GetCustomerIdFromSub(subId);
             //koitaw an einai null to img 
             if (ad.Img == null) ad.NewImg = "No";
             else ad.NewImg = "NewImg";
@@ -110,9 +109,12 @@ namespace ApiOne.Controllers
             switch (result)
             {
                 case -2: return BadRequest(new { error = "something went wrong with ad creation! " });
-                case -1: return Json(new { success = "ad Added successfully created.! with default img!" });
+                case -1:
+                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
+                    return Json(new { success = "ad Added successfully created.! with default img!" });
                 case > 0:
                     SingleFileUpload(ad.Img, result);
+                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
                     return Json(new { success = "ad Added successfully created.! with users img!" });
                 default: return Json(new { error = "something went wrong with ad creation! " });
             }
