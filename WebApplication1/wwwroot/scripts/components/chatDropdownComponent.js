@@ -26,7 +26,7 @@ class ChatDropdown extends HTMLElement {
                     }
                     console.log(receiverUsername);
                     items += `
-                    <li>
+                    <li onclick="createChat(${object.id})">
                         <a href="#">
                             <span class="itemImage" style='background-image:url()' alt=""></span>
                             <div class="itemDescription">
@@ -61,3 +61,16 @@ class ChatDropdown extends HTMLElement {
 
 }
 customElements.define("chatdropdown-component", ChatDropdown)
+createChat = (id) => {
+  
+    for(let chat of document.querySelector(".chatsContainer").children){
+        console.log(chat.classList.contains(`chat${id}`));
+        if(chat.classList.contains(`chat${id}`)){
+            return
+        }
+    }
+   
+    document.querySelector(".chatsContainer").innerHTML += `
+    <chat-component class="chat${id}" chat-id="${id}" customer-id="1"></chat-component>
+    `
+}

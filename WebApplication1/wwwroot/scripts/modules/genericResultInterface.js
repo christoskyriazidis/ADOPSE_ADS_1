@@ -31,6 +31,7 @@ export default class GenericResultInterface {
                 this.handleSellers();
                 break;
             case 'myads':
+                this.handleMyAds();
                 break;
             case 'notifications':
                 break;
@@ -46,11 +47,11 @@ export default class GenericResultInterface {
         })
     }
     setLink = (num) => {
-        
+
         this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
-        this.sortField=document.querySelector(".sorting").value
+        //this.sortField = document.querySelector(".sorting").value
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search + this.sortby + this.sortField
         axios.get(this.link)
             .then((response) => response.data)
@@ -60,13 +61,13 @@ export default class GenericResultInterface {
             }).catch(console.log)
     }
     populateSearchArea = (data) => {
-        document.querySelector(".hits").innerHTML="Total results: "+data.totalAds
+        document.querySelector(".hits").innerHTML = "Total results: " + data.totalAds
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.result) {
             document.querySelector(".contentContainer").innerHTML +=
-            `<ad-component title="${object.title}"
+                `<ad-component title="${object.title}"
             customer-image="${object.profileimg}"
             customer-id="${object.customer}"
             customer-name="${object.username}"
@@ -92,6 +93,32 @@ export default class GenericResultInterface {
             //     )
             //     .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
             //     .catch(console.log)
+        }
+        const pagers = document.querySelectorAll('pagination-component')
+        for (let pager of pagers) {
+            console.log(this.currentPageNumber);
+            pager.setAttribute("current-page", this.currentPageNumber)
+            pager.setAttribute("last-page", data['totalPages'])
+        }
+    }
+    populateMyAds = (data) => {
+
+        this.lastPageNumber = data['totalPages']
+        document.querySelector(".contentContainer").innerHTML = '';
+        let allAds = ""
+        for (let object of data.result) {
+            document.querySelector(".contentContainer").innerHTML +=
+                `<ad-component title="${object.title}"
+            customer-image="${object.profileimg}"
+            case="myads"
+            customer-id="${object.customer}"
+            customer-name="${object.username}"
+            customer-rating="${object.rating}"
+            customer-reviews="${object.reviews}"
+            condition="${this.dictionary.con.get(object.condition)}"
+            price="${object.price}"
+            item-image="${object.img}"
+            id="${object.id}"></ad-component>`
         }
         const pagers = document.querySelectorAll('pagination-component')
         for (let pager of pagers) {
@@ -163,7 +190,17 @@ export default class GenericResultInterface {
         } else if (this.urlParams.get("title") != "null") {
             //this.search = "&title="+this.urlParams.get("title");
         }
-      
+
+    }
+    handleMyAds = () => {
+        this.getDictionary((maps) => {
+            this.dictionary = maps;
+            this.endpoint = "profile/myads/"
+            this.contextHandler = this.populateMyAds;
+            document.querySelector(".contentContainer").innerHTML = '';
+            let allAds = ""
+            this.setLink(1);
+        })
     }
     handleSearch = () => {
         this.endpoint = "ad/"

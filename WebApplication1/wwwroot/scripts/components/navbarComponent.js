@@ -92,10 +92,7 @@ class NavbarComponent extends HTMLElement {
         <notification-component class="fresh" style="display:none;"></notification-component>
         <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
         <div class="chatsContainer">
-        <chat-component chat-id="1" customer-id="1"></chat-component>
-        <chat-component chat-id="2" customer-id="1"></chat-component>
-        <chat-component chat-id="3" customer-id="1"></chat-component>
-        <chat-component chat-id="4" customer-id="1"></chat-component>
+
         </div>
         `
     }
