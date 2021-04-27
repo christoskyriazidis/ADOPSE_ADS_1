@@ -16,8 +16,7 @@ class ChatComponent extends HTMLElement {
     minimized = false;
     constructor() {
         super();
-
-
+        this.pageNum = 1;
         this.callApi();
         var connection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:44374/chathub", {
@@ -66,6 +65,12 @@ class ChatComponent extends HTMLElement {
     get customerId() {
         return this.getAttribute("customer-id");
     }
+    set pageNum(page) {
+        this.setAttribute("pageNum", page)
+    }
+    get pageNum() {
+        return this.getAttribute("pageNum")
+    }
     render = (chatContent) => {
         this.id = this.chatId;
         this.innerHTML = `
@@ -83,6 +88,7 @@ class ChatComponent extends HTMLElement {
             </div>
             </div>
         `
+        document.getElementById(this.id).querySelector(".contentDisplay").addEventListener("scroll", this.loadNextPage)
         document.getElementById(this.id).querySelector(".minimizeBtn").addEventListener("click", this.minimize)
         document.getElementById(this.id).querySelector(".sendBtn").addEventListener("click", () => {
             let data = {
@@ -138,6 +144,33 @@ class ChatComponent extends HTMLElement {
             if (thisChat.querySelector(".chatCellB"))
                 thisChat.querySelector(".chatCellB").classList.add("afterClickShow")
             this.minimized = false;
+        }
+    }
+    loadNextPage = (event) => {
+        if (this.querySelector(".contentDisplay").scrollTop == 0) {
+            axios.get("https://localhost:44374/message?chatid=" + this.chatId + "&pageNumber=" + this.pageNum).then(res => res.data)
+                .then(data => {
+
+                    this.pageNum++;
+                    const previousChat = document.getElementById(this.id).querySelector(".contentDisplay").innerHTML;
+                    let currentChatPage = "";
+                    data = data.reverse();
+                    for (let object of data) {
+                        if (object.customerId == this.customerId) {
+                            currentChatPage += ` <div class="chatCell" >
+                                            <div class="chatCellText">${object.message} PAGE:${this.pageNum}</div>
+                                            </div > `
+                        } else {
+                            currentChatPage += ` <div class="chatCellB" >
+                                            <div class="chatCellTextB">${object.customerId}: ${object.message} PAGE:${this.pageNum}</div>
+                                            </div > `
+                        }
+                    }
+                    
+                    console.log(data.length);
+                    document.querySelector(".contentDisplay").scrollTo(0, -document.querySelector(".contentDisplay").scrollHeight)
+                    this.render(currentChatPage + previousChat)
+                })
         }
     }
 }

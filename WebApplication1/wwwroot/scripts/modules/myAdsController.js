@@ -2,7 +2,7 @@ import Dictionary from "/scripts/modules/dictionary.js"
 export default class MyadsController {
     link = ""
     resourceServer = "https://localhost:44374/"
-    endpoint = "ad/"
+    endpoint = "profile/myads/"
     pageNumberString = "?PageNumber="
     pageSizeString = "&PageSize="
     pageSize = 10;
@@ -24,30 +24,25 @@ export default class MyadsController {
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam
         this.callCurrentLink()
     }
-    
+
     populateContentArea = (data) => {
 
         this.lastPageNumber = data['totalPages']
         document.querySelector(".contentContainer").innerHTML = '';
         let allAds = ""
         for (let object of data.result) {
-
-            axios.get(`https://localhost:44374/customer/${object.customer}`)
-                .then((response) => response.data)
-                .then((customer) =>
-                    `<ad-component title="${object.title}"
-                    case="myads"
-                customer-image="${customer.profileImg}"
-                customer-id="${object.customer}"
-                customer-name="${customer.username}"
-                customer-rating="${customer.rating}"
-                condition="${this.dictMaps.con.get(object.condition)}"
-                price="${object.price}"
-                item-image="${object.img}"
-                id="${object.id}"></ad-component>`
-                )
-                .then(ads => document.querySelector(".contentContainer").innerHTML += ads)
-                .catch(console.log)
+            document.querySelector(".contentContainer").innerHTML +=
+                `<ad-component title="${object.title}"
+            customer-image="${object.profileimg}"
+            case="myads"
+            customer-id="${object.customer}"
+            customer-name="${object.username}"
+            customer-rating="${object.rating}"
+            customer-reviews="${object.reviews}"
+            condition="${this.dictionary.con.get(object.condition)}"
+            price="${object.price}"
+            item-image="${object.img}"
+            id="${object.id}"></ad-component>`
         }
         const pagers = document.querySelectorAll('pagination-component')
         for (let pager of pagers) {

@@ -39,8 +39,8 @@ function listen() {
         .catch(x => console.log(x))
         .finally()
 }
-setSeen = (notificationId,adId) => {
-    axios.put("https://localhost:44374/wishlist/notification/seen/"+notificationId)
+setSeen = (notificationId, adId) => {
+    axios.put("https://localhost:44374/wishlist/notification/seen/" + notificationId)
         .then((response) => response.data)
         .then(() => {
             window.location.href = "https://localhost:44366/home/ad/index.html?id=" + adId
@@ -54,6 +54,7 @@ setSeen = (notificationId,adId) => {
 function handleApiDataNotifications(data) {
     let allItems = "";
     for (object of data) {
+        console.log(object.lastUpdate)
         const item = `
         <li onclick="setSeen(${object.nId},${object.adId})" class="${object.clicked ? "" : "new"}" >
             <a href="#">
@@ -62,7 +63,7 @@ function handleApiDataNotifications(data) {
                     <span class="title">${object.title}</span>
                     <span class="info">${object.username}</span>
                     <span class="price">${object.price}$</span>
-                    <span class="date">Before  ${Math.round(((new Date(Date.now())) - (new Date(Date(object.lastUpdate)))) / 1000 / 60)} minutes </span>
+                    <span class="date">Before  ${Math.round((Date.now() - Date.parse(object.lastUpdate)) / 1000 / 60)} minutes </span>
                 </div>
             </a>
         </li>
@@ -84,7 +85,7 @@ function handleApiDataNotifications(data) {
     </div>
     <style>@import "/styles/components/notification/notification.css"</style>
     `
-    
+
     return html;
 }
 customElements.define("notification-component", NotificationComponent)
