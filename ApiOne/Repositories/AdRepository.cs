@@ -135,8 +135,8 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                ad.CreateDate = DateTime.Now.ToString();
-                ad.LastUpdate = DateTime.Now.ToString();
+                ad.CreateDate = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
+                ad.LastUpdate = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
 
                 string sql = "exec insert_ad_with_img @title,@description,@createDate,@type,@condition,@category,@customer,@Manufacturer,@lastUpdate,@price,@Img,@SubCategoryId";
                 var result = conn.Query<int>(sql, new { Img=ad.NewImg,ad.Title,ad.Description,ad.CreateDate,ad.Type,ad.Category,ad.Condition,ad.Customer,ad.Manufacturer,ad.LastUpdate,ad.Price,ad.SubCategoryId }).FirstOrDefault();
@@ -154,7 +154,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                ad.LastUpdate = DateTime.Now.ToString();
+                ad.LastUpdate = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
                 string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Type=@Type,Category=@Category,Condition=@Condition," +
                                 "Manufacturer=@Manufacturer,Price=@Price,SubCategoryId=@SubCategoryId where id=@Id";
                 var result = conn.Execute(sql, new

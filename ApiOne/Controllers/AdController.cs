@@ -174,15 +174,6 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("/date")]
-        public IActionResult asd()
-        {
-            string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-
-            return Json(new { a = DateTime.Today });
-        }
-
         [HttpDelete]
         [Route("/ad/{id}")]
         public IActionResult DeleteAd([FromRoute] int id)
