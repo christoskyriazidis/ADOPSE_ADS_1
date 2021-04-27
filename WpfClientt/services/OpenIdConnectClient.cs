@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -15,16 +16,15 @@ namespace WpfClientt.services {
         private HttpClient client;
         private string state;
         private string code_verifier;
-        private DiscoveryDocumentResponse discovery;
+        private string authorizationEndpoint;
+        private string tokenEndpoint;
 
-        private OpenIdConnectClient(HttpClient client, DiscoveryDocumentResponse discovery) {
+        internal OpenIdConnectClient(string authorizationEndpoint,HttpClient client,string tokenEndpoint) {
             this.client = client;
-            this.discovery = discovery;
+            this.authorizationEndpoint = authorizationEndpoint;
+            this.tokenEndpoint = tokenEndpoint;
         }
 
-        public static OpenIdConnectClient GetInstance(HttpClient client, DiscoveryDocumentResponse discovery) {
-            return new OpenIdConnectClient(client, discovery);
-        }
 
         public async Task<string> PrepareAuthorizationRequestUrl() {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
@@ -34,11 +34,11 @@ namespace WpfClientt.services {
             parameters.Add("redirect_uri", "http://localhost/sample-wpf-app");
             parameters.Add("code_challenge", base64urlencodeNoPadding(sha256(code_verifier)));
             parameters.Add("code_challenge_method", "S256");
-            parameters.Add("scope", "ApiOne");
+            parameters.Add("scope", "ApiOne openid");
             parameters.Add("response_type", "code");
             parameters.Add("client_id", "wpf");
 
-            return CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters);
+            return CreateAuthorizationURL(authorizationEndpoint,parameters);
         }
 
         public async Task ExchangeCodeForAccessToken(String redirectUrl) {
@@ -48,7 +48,7 @@ namespace WpfClientt.services {
             }
 
             AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest() {
-                Address = discovery.TokenEndpoint,
+                Address = tokenEndpoint,
                 Code = queryValues.Get("code"),
                 CodeVerifier = code_verifier,
                 ClientId = "wpf",
@@ -65,7 +65,13 @@ namespace WpfClientt.services {
 
             client.SetBearerToken(tokenResponse.AccessToken);
         }
-     
+
+        public async Task TestGet() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44374/profile/myads");
+            Debug.WriteLine(client.DefaultRequestHeaders);
+            HttpResponseMessage response = await client.SendAsync(request);
+            Debug.WriteLine(await response.Content.ReadAsStringAsync());
+        }
 
         private string CreateAuthorizationURL(string authorizationEndPoint, IDictionary<string, string> parameters) {
             if (parameters.Count == 0) {

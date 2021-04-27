@@ -35,7 +35,8 @@ namespace WpfClientt.services {
         public async Task<OpenIdConnectClient> GetOpenIdConnectClient() {
             if(openIdConnectClient == null) {
                 DiscoveryDocumentResponse discovery = await client.GetDiscoveryDocumentAsync("https://localhost:5001/");
-                openIdConnectClient = OpenIdConnectClient.GetInstance(client, discovery);
+
+                openIdConnectClient = new OpenIdConnectClient(discovery.AuthorizeEndpoint, client, discovery.TokenEndpoint);
             }
             return openIdConnectClient;
         }

@@ -54,7 +54,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
-            Mediator.Subscribe("CreateView", ChangeToCreateAdView);
+            Mediator.Subscribe("CreateAdView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
             Mediator.Subscribe("BackView", PreviousViewModel);
         }
