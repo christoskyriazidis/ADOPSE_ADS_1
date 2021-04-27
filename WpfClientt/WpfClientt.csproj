@@ -170,7 +170,6 @@
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
     <Compile Include="model\State.cs" />
-    <Compile Include="Programm.cs" />
     <Compile Include="services\ChatServiceSignalR.cs" />
     <Compile Include="services\IChatService.cs" />
     <Compile Include="services\OpenIdConnectClient.cs" />
@@ -271,7 +270,6 @@
     <Compile Include="views\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WpfEmbeddedBrowser.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
