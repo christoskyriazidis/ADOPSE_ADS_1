@@ -35,7 +35,6 @@ namespace WpfClientt.viewModels {
             await openIdConnectClient.ExchangeCodeForAccessToken((string)redirectUri);
             Mediator.Notify("ChangeToLoginMenuView");
             Mediator.Notify("DisplayPageView", "Now've logged in successfully.");
-            await openIdConnectClient.TestGet();
         }
 
     }

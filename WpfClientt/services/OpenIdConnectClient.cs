@@ -16,13 +16,11 @@ namespace WpfClientt.services {
         private HttpClient client;
         private string state;
         private string code_verifier;
-        private string authorizationEndpoint;
-        private string tokenEndpoint;
+        private DiscoveryDocumentResponse discovery;
 
-        internal OpenIdConnectClient(string authorizationEndpoint,HttpClient client,string tokenEndpoint) {
+        internal OpenIdConnectClient(HttpClient client, DiscoveryDocumentResponse discovery) {
             this.client = client;
-            this.authorizationEndpoint = authorizationEndpoint;
-            this.tokenEndpoint = tokenEndpoint;
+            this.discovery = discovery;
         }
 
 
@@ -38,7 +36,7 @@ namespace WpfClientt.services {
             parameters.Add("response_type", "code");
             parameters.Add("client_id", "wpf");
 
-            return CreateAuthorizationURL(authorizationEndpoint,parameters);
+            return CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters);
         }
 
         public async Task ExchangeCodeForAccessToken(String redirectUrl) {
@@ -48,7 +46,7 @@ namespace WpfClientt.services {
             }
 
             AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest() {
-                Address = tokenEndpoint,
+                Address = discovery.TokenEndpoint,
                 Code = queryValues.Get("code"),
                 CodeVerifier = code_verifier,
                 ClientId = "wpf",
@@ -64,13 +62,6 @@ namespace WpfClientt.services {
             }
 
             client.SetBearerToken(tokenResponse.AccessToken);
-        }
-
-        public async Task TestGet() {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:44374/profile/myads");
-            Debug.WriteLine(client.DefaultRequestHeaders);
-            HttpResponseMessage response = await client.SendAsync(request);
-            Debug.WriteLine(await response.Content.ReadAsStringAsync());
         }
 
         private string CreateAuthorizationURL(string authorizationEndPoint, IDictionary<string, string> parameters) {
