@@ -18,6 +18,7 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -171,6 +172,15 @@ namespace ApiOne.Controllers
                 return Json(updateResult);
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("/date")]
+        public IActionResult asd()
+        {
+            string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+
+            return Json(new { a = DateTime.Today });
         }
 
         [HttpDelete]
