@@ -99,10 +99,10 @@ namespace ApiOne.Repositories
                 adPagination.PageSize = adParameters.PageSize;
                 adPagination.CurrentPage = adParameters.PageNumber;
                 int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1;
-                adPagination.NextPageUrl = $"https://localhost:44374/profile/ad?PageNumber={nextPageNumber}";
+                adPagination.NextPageUrl = $"https://localhost:44374/profile/myads?PageNumber={nextPageNumber}";
                 int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
-                adPagination.PreviousPageUrl = $"https://localhost:44374/profile/ad?PageNumber={previousPageNumber}";
-                adPagination.LastPageUrl = $"https://localhost:44374/profile/ad?PageNumber={lastPageNumber}"; ;
+                adPagination.PreviousPageUrl = $"https://localhost:44374/profile/myads?PageNumber={previousPageNumber}";
+                adPagination.LastPageUrl = $"https://localhost:44374/profile/myads?PageNumber={lastPageNumber}"; ;
                 adPagination.TotalPages = lastPageNumber;
                 return adPagination;
             }
