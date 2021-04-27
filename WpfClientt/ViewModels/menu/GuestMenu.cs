@@ -10,8 +10,6 @@ namespace WpfClientt.viewModels.menu {
         public ICommand CategoriesView { get; private set; }
         public ICommand RegisterView { get; private set; }
         public ICommand LoginView { get; private set; }
-        public ICommand CreateView { get; private set; }
-        public ICommand ProfileView { get; private set; }
         public ICommand BackView { get; private set; }
 
         public GuestMenu() {
@@ -23,12 +21,6 @@ namespace WpfClientt.viewModels.menu {
             });
             LoginView = new DelegateCommand(obj => {
                 Mediator.Notify("LoginView");
-            });
-            CreateView = new DelegateCommand(obj => { 
-                Mediator.Notify("CreateView"); 
-            });
-            ProfileView = new DelegateCommand(obj => {
-                Mediator.Notify("ProfileView");
             });
             LoginView = new DelegateCommand(obj => {
                 Mediator.Notify("LoginView");
