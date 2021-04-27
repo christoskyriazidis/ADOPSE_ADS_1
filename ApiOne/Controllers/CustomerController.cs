@@ -83,7 +83,6 @@ namespace ApiOne.Controllers
             return Json(_adRepository.GetAdsByCustomerId(adParameters, intId));
         }
         
-
         [HttpPut]
         [Consumes("application/json")]
         [Route("/profile")]
