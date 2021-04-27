@@ -4,12 +4,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 
 namespace WpfClientt.services {
     public class FactoryServices {
 
         private ICustomerService customerService;
         private IAdDetailsService adDetailsService;
+        private OpenIdConnectClient openIdConnectClient;
         private HttpClient client;
 
         public FactoryServices() {
@@ -28,6 +30,14 @@ namespace WpfClientt.services {
 
         public IAdDetailsService AdDetailsServiceInstance() {
             return adDetailsService;
+        }
+
+        public async Task<OpenIdConnectClient> GetOpenIdConnectClient() {
+            if(openIdConnectClient == null) {
+                DiscoveryDocumentResponse discovery = await client.GetDiscoveryDocumentAsync("https://localhost:5001/");
+                openIdConnectClient = OpenIdConnectClient.GetInstance(client, discovery);
+            }
+            return openIdConnectClient;
         }
 
     }

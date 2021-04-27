@@ -10,8 +10,6 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     public interface ICustomerService : IService<Customer>{
 
-        Task<bool> Login(string username, string password);
-
         Task<Customer> Profile();
 
         Task UpdateProfileImage(string fileName);

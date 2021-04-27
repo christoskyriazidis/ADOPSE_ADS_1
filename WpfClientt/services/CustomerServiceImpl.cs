@@ -1,8 +1,12 @@
-﻿using System;
+﻿using IdentityModel.Client;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -42,9 +46,6 @@ namespace WpfClientt.services {
             }
         }
 
-        public Task<bool> Login(string username, string password) {
-            throw new NotImplementedException();
-        }
 
         public async Task<Customer> Profile() {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,ApiInfo.ProfileMainUrl());
