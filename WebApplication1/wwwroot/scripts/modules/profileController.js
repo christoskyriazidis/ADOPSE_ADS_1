@@ -20,14 +20,65 @@ export default class ProfileController {
             const cats = document.querySelector("#categoryGroup")
             cats.selectedIndex = -1;
             if (this.urlParams.get("id")) {
-                axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`).then(response=>response.data)
-                .then(data=>{
-                    for(let option of cats){
-                        if(data.cats=option.value){
-                            console.log(data.cats);
+
+                axios.get(`https://localhost:44374/ad/${this.urlParams.get("id")}`).then(response => response.data)
+                    .then(data => {
+                        document.querySelector(".descriptionInput").innerHTML += data.description
+                        document.querySelector(".titleInput").value = data.title
+                        document.querySelector(".priceInput").value = data.price;
+                        let counter = 0;
+                        for (let option of cats) {
+                            if (data.category == option.value) {
+                                cats.selectedIndex = counter;
+                                this.getSubCategory(cats.options[cats.selectedIndex].value).then(() => {
+                                    const subs = document.querySelector("#subCategoryGroup");
+                                    let i = 0;
+                                    for (let suboption of subs) {
+                                        if (data.subCategoryId == suboption.value) {
+                                            console.log(counter);
+                                            subs.selectedIndex = i;
+                                        }
+                                        i++;
+                                    }
+                                })
+                            }
+                            counter++
                         }
-                    }
-                })
+                        let cond = document.querySelector("#conditionGroup")
+                        
+                        counter = 0;
+                        for (let option of cond) {
+                            console.log(data.condition);
+                            if (option.value == data.condition) {
+                                cond.selectedIndex = counter;
+                            }
+                            counter++
+                        }
+                        let man = document.querySelector("#manufacturerGroup")
+                        counter = 0;
+                        for (let option of man) {
+                            if (option.value == data.manufacturer) {
+                                man.selectedIndex = counter;
+                            }
+                            counter++
+                        }
+                        let type = document.querySelector("#typeGroup")
+                        counter = 0;
+                        for (let option of type) {
+                            if (option.value == data.type) {
+                                type.selectedIndex = counter;
+                            }
+                            counter++
+                        }
+                        let state=document.querySelector("#stateGroup");
+                        counter=0;
+                        for (let option of state) {
+                            if (option.value == data.type) {
+                                state.selectedIndex = counter;
+                            }
+                            counter++
+                        }
+                    })
             }
             cats.addEventListener("change", () => {
                 this.getSubCategory(cats.options[cats.selectedIndex].value)
@@ -37,10 +88,11 @@ export default class ProfileController {
 
     }
     getSubCategory = (id) => {
-        this.dict.getSubCategoryDictionary(id)
+        return this.dict.getSubCategoryDictionary(id)
             .then(data => {
                 const subcategories = document.querySelector("#subCategoryGroup")
                 subcategories.innerHTML = ""
+
                 for (let object of data) {
                     subcategories.innerHTML += `<option value="${object.id}" >${object.title}</option>`
                 }
@@ -98,9 +150,9 @@ export default class ProfileController {
     }
     editAd = () => {
         const ad = new Ad(
-            urlParams.get("id"),
+            this.urlParams.get("id"),
             document.querySelector(".titleInput").value,
-            document.querySelector(".description").value,
+            document.querySelector(".descriptionInput").value,
             document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value,
             document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value,
             document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value,
