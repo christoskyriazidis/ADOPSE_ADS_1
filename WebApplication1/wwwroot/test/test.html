@@ -28,9 +28,7 @@
     </main>
     <div>
       <input type="text" id="message" />
-      <ul id="chat">
-        
-      </ul>
+      <ul id="chat"></ul>
       <button id="btn">send Message</button>
     </div>
   </body>
@@ -49,7 +47,7 @@
     //       }
     //   })
     //   .catch(err => {
-    //       console.error(err); 
+    //       console.error(err);
     //   })
     // let btn = document.querySelector("#btn");
     // let message = document.querySelector("#message");
@@ -61,19 +59,20 @@
     //   .build();
 
     var connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:44374/notificationHub", {
+      .withUrl("https://localhost:44374/chatHub", {
         accessTokenFactory: () => me.access_token,
       })
       .build();
 
-    connection
-      .start()
-      .catch(function (err) {
-        return console.error(err.toString());
-      });
+    connection.start().catch(function (err) {
+      return console.error(err.toString());
+    });
 
-    connection.on("ChatRequestNotification", (message) => {
-      console.log("request");
+    connection.on("ConnectToChatHub", (message) => {
+      console.log("request " + message);
+    });
+    connection.on("ReceiveMessage", (message) => {
+      console.log("request " + message);
     });
 
     // btn.addEventListener("click", () => {

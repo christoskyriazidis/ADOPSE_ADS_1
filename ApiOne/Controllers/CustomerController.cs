@@ -64,7 +64,7 @@ namespace ApiOne.Controllers
             return Json(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("/profile")]
         public IActionResult GetProfile()
@@ -187,16 +187,19 @@ namespace ApiOne.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("/ad/sell/")]
+        [Route("/ad/sell")]
         public IActionResult SellAd([FromBody]SellAdModel sellAdModel )
         {
-
-            return Json(new { a = sellAdModel.BuyerId, b= sellAdModel.AdId });
-            //var claims = User.Claims.ToList();
-            //var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            
-            //if(_customerRepo.SellAd())
-            //return Json(new { ad = AdId });
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            if (_customerRepo.SellAd(sellAdModel.AdId,sellAdModel.BuyerId))
+            {
+                return Json(new {response=$"Ad:{sellAdModel.AdId} sold to: {sellAdModel.BuyerId} " });
+            }
+            return BadRequest(new { error="Kati pige la8os me to sold ad" });
         }
 
         [Authorize]

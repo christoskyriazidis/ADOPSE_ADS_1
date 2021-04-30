@@ -21,7 +21,7 @@ namespace ApiOne.Interfaces
         bool UpdateProfileImage(int customerId);
         public int GetCustomerIdFromSub(string SubId);
 
-        bool SellAd(int AdId,int BuyerId,int SellerId);
+        bool SellAd(int AdId,int BuyerId);
 
 
     }

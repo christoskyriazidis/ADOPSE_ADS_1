@@ -1,4 +1,5 @@
 ﻿using ApiOne.Models.Chats;
+using ApiOne.Models.Chats.ReturnObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,13 @@ namespace ApiOne.Interfaces
 {
     public interface IChatRepository
     {
-        bool InsertMessage(ChatMessage ChatMessage,int CustomerId);
+        InsertMessageReturn InsertMessage(PostChatMessage ChatMessage,int CustomerId);
+
         IEnumerable<ChatMessage> GetChatMessages(ChatMessagePagination chatMessagePagination);
         IEnumerable<ActiveChat> GetActiveChats(int cId);
-
-
         IEnumerable<ChatRequest> GetChatRequests(int CustomerId);
-        bool RequestChatByAdId(int AdId,int BuyerId);
 
+        bool RequestChatByAdId(int AdId,int BuyerId);
         bool AcceptChatRequest(int Rid);
         
 

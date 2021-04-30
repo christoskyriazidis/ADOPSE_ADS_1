@@ -1,6 +1,7 @@
 ﻿using ApiOne.Helpers;
 using ApiOne.Interfaces;
 using ApiOne.Models.Chats;
+using ApiOne.Models.Chats.ReturnObjects;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace ApiOne.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC getMessageFromChat @PageNumber,@ChatId";
-                var chatMessages = conn.Query<ChatMessage>(sql, chatMessagePagination).ToList();
+                var chatMessages = conn.Query<ChatMessage>(sql, new { chatMessagePagination.PageNumber,chatMessagePagination.ChatId }).ToList();
                 return chatMessages;
             }
             catch (SqlException sqlEx)
@@ -46,21 +47,21 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool InsertMessage(ChatMessage ChatMessage,int CustomerId)
+        public InsertMessageReturn InsertMessage(PostChatMessage ChatMessage,int CustomerId)
         {
+            InsertMessageReturn insertMessageReturn = new InsertMessageReturn();
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-
-                string sql = "INSERT INTO message (message,customerid,chatid) values (@Message,@CustomerId,@ChatId)";
-
-                var result = conn.Query<int>(sql, ChatMessage).FirstOrDefault();
-                return true;
+                string sql = "exec [send_chat_message] @MessageText,@CustomerId,@ActiveChat";
+                var result = conn.Query<string>(sql, new { ChatMessage.MessageText,CustomerId,ChatMessage.ActiveChat}).FirstOrDefault();
+                insertMessageReturn.Username = result;
+                return insertMessageReturn;
             }
             catch (SqlException sqlEx)
             {
-                Debug.WriteLine(sqlEx);
-                return false;
+                insertMessageReturn.Error = sqlEx.Message;
+                return insertMessageReturn;
             }
         }
 
@@ -103,7 +104,7 @@ namespace ApiOne.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "select ch.id,ch.BuyerId,ch.adId,cu.username,cu.profileImg,a.title,ch.Timestamp from ChatRequest ch " +
                     "join customer cu on (ch.BuyerId=cu.id) " +
-                    "join ad a on (a.id=ch.adId) where ch.sellerId=@CustomerId and ch.confirmed=0";
+                    "join ad a on (a.id=ch.adId) where ch.sellerId=@CustomerId and ch.confirmed=0 order by id desc";
                 var chatRequests = conn.Query<ChatRequest>(sql, new { CustomerId }).ToList();
                 return chatRequests;
             }

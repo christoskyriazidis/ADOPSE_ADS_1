@@ -490,8 +490,8 @@ namespace ApiOne.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC  get_wishlist_and_subcateg_notif_byid  @pageNumber,@pageSize,@customerId";
-                var chatMessages = conn.Query<WishSubNotification>(sql, new { PageNumber,PageSize=10, CustomerId}).ToList();
-                return chatMessages;
+                var notifications = conn.Query<WishSubNotification>(sql, new { PageNumber,PageSize=10, CustomerId}).ToList();
+                return notifications;
             }
             catch (SqlException sqlEx)
             {

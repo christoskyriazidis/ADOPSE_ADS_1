@@ -34,7 +34,7 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/message")]
-        public IActionResult GetChatMessagesByChatId(ChatMessagePagination chatMessagePagination)
+        public IActionResult GetChatMessagesByChatId([FromBody] ChatMessagePagination chatMessagePagination)
         {
             if (!ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace ApiOne.Controllers
         [Authorize]
         [HttpPost]
         [Route("/message")]
-        public async Task<IActionResult> SendChatMessage([FromBody] ChatMessage chatMessage)
+        public async Task<IActionResult> SendChatMessage([FromBody] PostChatMessage chatMessage)
         {
             if (!ModelState.IsValid)
             {
@@ -61,23 +61,23 @@ namespace ApiOne.Controllers
             }
             var claims = User.Claims.ToList();
             var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var username = claims.FirstOrDefault(c => c.Type =="username")?.Value;
             var intId = _customerRepo.GetCustomerIdFromSub(subId);
             //html injection prevent
-            chatMessage.Message = HttpUtility.HtmlEncode(chatMessage.Message);
+            chatMessage.MessageText = HttpUtility.HtmlEncode(chatMessage.MessageText);
             //insert message if(true)>>> push message with signalR 
-            if (_chatRepository.InsertMessage(chatMessage,intId))
+            var insertResponse = _chatRepository.InsertMessage(chatMessage, intId);
+            if (string.IsNullOrEmpty(insertResponse.Error))
             {
-                var connections = ChatHub._connections;
-                var sockets = connections.GetKeyValuePairs()["admin"];
-
-                foreach(var i in connections.GetKeyValuePairs()["admin"])
+                foreach (var connectionId in ChatHub._connections.GetConnections(insertResponse.Username))
                 {
-                    await _chatHub.Clients.Client(i).SendAsync("ReceiveMessage",chatMessage.Message);
+                    await _chatHub.Clients.Client(connectionId).SendAsync("ReceiveMessage", chatMessage.MessageText);
                 }
-                return Ok(new { success = "message sent!" });
+                return Ok(new { success = $"message sent! to {insertResponse.Username}" });
             }
-            return BadRequest(new { error = "something went wrong when trying to send message" });
+            return BadRequest(new { error = $"{insertResponse.Error}" });
         }
+
 
         [Authorize]
         [HttpGet]

@@ -112,14 +112,14 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool SellAd(int AdId, int BuyerId, int SellerId)
+        public bool SellAd(int AdId, int BuyerId)
         {
             try
             {
                 //id
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "[sell_ad_to_customer] @buyerId,@adId,@sellerId";
-                var rows = conn.Execute(sql, new { BuyerId,AdId,SellerId});
+                string sql = "EXEC [dbo].[sell_ad_to_customer] @buyerId,@adId";
+                var rows = conn.ExecuteScalar<int>(sql, new { BuyerId, AdId });
                 //true false analogos ta rows pou alaksan
                 return true;
             }
@@ -129,7 +129,7 @@ namespace ApiOne.Repositories
                 return false;
             }
         }
-        
+
         public bool UpdateProfile(CustomerDetails customerDetails)
         {
             try
