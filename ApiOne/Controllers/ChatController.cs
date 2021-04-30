@@ -34,7 +34,7 @@ namespace ApiOne.Controllers
 
         [HttpGet]
         [Route("/message")]
-        public IActionResult GetChatMessagesByChatId([FromBody] ChatMessagePagination chatMessagePagination)
+        public IActionResult GetChatMessagesByChatId([FromQuery] ChatMessagePagination chatMessagePagination)
         {
             if (!ModelState.IsValid)
             {
