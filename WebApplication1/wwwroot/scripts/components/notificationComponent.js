@@ -16,7 +16,7 @@ class NotificationComponent extends HTMLElement {
 
     }
     callApi = () => {
-        axios.get("https://localhost:44374/wishlist/notification")
+        axios.get("https://localhost:44374/notification/1")
             .then((response) => response.data)
             .then(handleApiDataNotifications)
             .then(this.render)
@@ -32,7 +32,7 @@ class NotificationComponent extends HTMLElement {
     }
 }
 function listen() {
-    axios.get("https://localhost:44374/wishlist/notification")
+    axios.get("https://localhost:44374/notification/1")
         .then((response) => response.data)
         .then(handleApiDataNotifications)
         .then(this.render)
@@ -40,7 +40,7 @@ function listen() {
         .finally()
 }
 setSeen = (notificationId, adId) => {
-    axios.put("https://localhost:44374/wishlist/notification/seen/" + notificationId)
+    axios.put("https://localhost:44374/notification/seen/" + notificationId)
         .then((response) => response.data)
         .then(() => {
             window.location.href = "https://localhost:44366/home/ad/index.html?id=" + adId
