@@ -233,7 +233,6 @@ export default class GenericResultInterface {
         this.getDictionary((maps) => {
             console.log(maps);
             maps.sub.forEach(this.fillCategories)
-            maps.sta.forEach(this.fillState)
             maps.man.forEach(this.fillManufacturer)
             maps.typ.forEach(this.fillType)
             maps.con.forEach(this.fillCondition)

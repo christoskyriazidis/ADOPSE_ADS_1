@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <WebBrowser Navigated="browser_Navigated" LoadCompleted="WebBrowser_LoadCompleted"  x:Name="browser" Height="auto" Width="auto" Source="https://www.google.com/"  >
+        <WebBrowser Navigated="browser_Navigated" x:Name="browser" Height="auto" Width="auto" Source="https://www.google.com/"  >
 
         </WebBrowser>
     </Grid>

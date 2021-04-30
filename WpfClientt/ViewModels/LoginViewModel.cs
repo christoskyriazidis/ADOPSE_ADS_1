@@ -32,7 +32,10 @@ namespace WpfClientt.viewModels {
         }
 
         private async void ExchangeToken(object redirectUri) {
-            openIdConnectClient.ExchangeCodeForAccessToken((string)redirectUri);
+            Mediator.Notify("DisplayPageView", "Authentication in progress");
+            await openIdConnectClient.RetrieveAndSetAccessToken((string)redirectUri);
+            Mediator.Notify("ChangeToLoginMenuView");
+            Mediator.Notify("DisplayPageView", "Now you've logged in successfully.");
         }
 
     }

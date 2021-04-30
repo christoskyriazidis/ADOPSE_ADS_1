@@ -46,24 +46,34 @@ namespace WpfClientt.viewModels {
             CurrentMenuView = new GuestMenu();
             ChangeToDisplayView("Welcome To Easy Market!");
 
+            Mediator.Subscribe("DisplayPageView", ChangeToDisplayView);
+            Mediator.Subscribe("ChangeToLoginMenuView", ChangeToLoginMenuView);
             Mediator.Subscribe("AdsSubcategoryView", ChangeToAdsSubcategoryView);
             Mediator.Subscribe("CategoriesView", ChangeToCategoriesView);
             Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
             Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
-            Mediator.Subscribe("CreateView", ChangeToCreateAdView);
+            Mediator.Subscribe("CreateAdView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
             Mediator.Subscribe("BackView", PreviousViewModel);
+        }
+
+        private void ChangeViewModel(IViewModel viewModel) {
+            CurrentPageViewModel = viewModel;
+        }
+
+        private void ChangeMenuView(IMenu menu) {
+            this.CurrentMenuView = menu;
+        }
+
+        private void ChangeToLoginMenuView(object param) {
+            ChangeMenuView(new LoginCustomerMenu());
         }
 
         private async void ChangeToAdsSubcategoryView(object subcategory) {
             ChangeToDisplayView("Loading Page");
             AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
-        }
-
-        private void ChangeViewModel(IViewModel viewModel) {
-            CurrentPageViewModel = viewModel;
         }
 
         private async void ChangeToSubcategoriesView(object category) {
@@ -90,8 +100,8 @@ namespace WpfClientt.viewModels {
             AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
-        private void ChangeToDisplayView(string text) {
-            CurrentPageViewModel = DisplayTextViewModel.GetInstance(text);
+        private void ChangeToDisplayView(object text) {
+            CurrentPageViewModel = DisplayTextViewModel.GetInstance((string)text);
         }
 
         private async void ChangeToAdDetailsView(object param) {

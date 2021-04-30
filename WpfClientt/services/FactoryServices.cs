@@ -34,8 +34,11 @@ namespace WpfClientt.services {
 
         public async Task<OpenIdConnectClient> GetOpenIdConnectClient() {
             if(openIdConnectClient == null) {
-                DiscoveryDocumentResponse discovery = await client.GetDiscoveryDocumentAsync("https://localhost:5001/");
-                openIdConnectClient = OpenIdConnectClient.GetInstance(client, discovery);
+                DiscoveryDocumentResponse discovery = await client.GetDiscoveryDocumentAsync("https://localhost:44305");
+                if (discovery.IsError) {
+                    throw new ApplicationException("Couldn't obtaing discovery information about the identity server.");
+                }
+                openIdConnectClient = new OpenIdConnectClient(client,discovery);
             }
             return openIdConnectClient;
         }

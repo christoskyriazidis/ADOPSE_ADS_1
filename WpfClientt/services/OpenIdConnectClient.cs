@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +19,11 @@ namespace WpfClientt.services {
         private string code_verifier;
         private DiscoveryDocumentResponse discovery;
 
-        private OpenIdConnectClient(HttpClient client, DiscoveryDocumentResponse discovery) {
+        internal OpenIdConnectClient(HttpClient client, DiscoveryDocumentResponse discovery) {
             this.client = client;
             this.discovery = discovery;
         }
 
-        public static OpenIdConnectClient GetInstance(HttpClient client, DiscoveryDocumentResponse discovery) {
-            return new OpenIdConnectClient(client, discovery);
-        }
 
         public async Task<string> PrepareAuthorizationRequestUrl() {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
@@ -34,14 +33,14 @@ namespace WpfClientt.services {
             parameters.Add("redirect_uri", "http://localhost/sample-wpf-app");
             parameters.Add("code_challenge", base64urlencodeNoPadding(sha256(code_verifier)));
             parameters.Add("code_challenge_method", "S256");
-            parameters.Add("scope", "ApiOne");
+            parameters.Add("scope", "ApiOne openid");
             parameters.Add("response_type", "code");
             parameters.Add("client_id", "wpf");
 
             return CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters);
         }
 
-        public async Task ExchangeCodeForAccessToken(String redirectUrl) {
+        public async Task RetrieveAndSetAccessToken(String redirectUrl) {
             NameValueCollection queryValues = HttpUtility.ParseQueryString(redirectUrl.Substring( redirectUrl.IndexOf("?") + 1 ));
             if (!queryValues.Get("state").Equals(state)) {
                 throw new ApplicationException("The state sent to the authorization server does not match.");
@@ -65,7 +64,15 @@ namespace WpfClientt.services {
 
             client.SetBearerToken(tokenResponse.AccessToken);
         }
-     
+
+        public async Task<UserInfoResponse> GetUserInfo() {
+            UserInfoResponse response = await client.GetUserInfoAsync(new UserInfoRequest() {
+                Address = discovery.UserInfoEndpoint,
+                Token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "")
+            }) ;
+
+            return response;
+        }
 
         private string CreateAuthorizationURL(string authorizationEndPoint, IDictionary<string, string> parameters) {
             if (parameters.Count == 0) {
