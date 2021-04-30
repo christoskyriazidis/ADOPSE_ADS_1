@@ -2,12 +2,14 @@
 using ApiOne.Interfaces;
 using ApiOne.Models.Chats;
 using ApiOne.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,16 +20,21 @@ namespace ApiOne.Controllers
     {
 
         private readonly IChatRepository _chatRepository = new ChatRepository();
+        private readonly ICustomerRepository _customerRepo = new CustomerRepository();
+        private readonly IHubContext<NotificationHub> _notificationHub;
+
         private readonly IHubContext<ChatHub> _chatHub;
 
-        public ChatController(IHubContext<ChatHub> chatHub)
+        public ChatController(IHubContext<ChatHub> chatHub, IHubContext<NotificationHub> hubContext)
         {
             _chatHub = chatHub;
+            _notificationHub = hubContext;
         }
+
 
         [HttpGet]
         [Route("/message")]
-        public IActionResult GetMessagesById(ChatMessagePagination chatMessagePagination)
+        public IActionResult GetChatMessagesByChatId(ChatMessagePagination chatMessagePagination)
         {
             if (!ModelState.IsValid)
             {
@@ -42,19 +49,23 @@ namespace ApiOne.Controllers
             return BadRequest(new { message = "something went wrong with chat messages" });
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/message")]
-        public async Task<IActionResult> PostMessage([FromBody] ChatMessage chatMessage)
+        public async Task<IActionResult> SendChatMessage([FromBody] ChatMessage chatMessage)
         {
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
-            chatMessage.CustomerId = 3;
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            //html injection prevent
             chatMessage.Message = HttpUtility.HtmlEncode(chatMessage.Message);
-            chatMessage.Message = chatMessage.Message.Replace(" ", "");
-            if (_chatRepository.InsertMessage(chatMessage))
+            //insert message if(true)>>> push message with signalR 
+            if (_chatRepository.InsertMessage(chatMessage,intId))
             {
                 var connections = ChatHub._connections;
                 var sockets = connections.GetKeyValuePairs()["admin"];
@@ -67,6 +78,69 @@ namespace ApiOne.Controllers
             }
             return BadRequest(new { error = "something went wrong when trying to send message" });
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/chat/chatrequest")]
+        public IActionResult GetChatRequests()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var chatRequests = _chatRepository.GetChatRequests(intId);
+            if (chatRequests != null)
+            {
+                return Json(chatRequests);
+            }
+            return BadRequest(new { message = "You do not have any chat requests yet" });
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [Route("/chat/chatrequest/{AdId}")]
+        public async Task<IActionResult> RequestChat(int AdId)
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            if (_chatRepository.RequestChatByAdId(AdId, intId))
+            {
+                return Json(new {response="Chat request submitted"});
+            }
+            await _notificationHub.Clients.All.SendAsync("ChatRequestNotification");
+            return BadRequest(new { message= "Chat request ALREADY submitted " });
+        }
+        
+        [Authorize]
+        [HttpPost]
+        [Route("/chat/chatrequest/confirm/{ChatId}")]
+        public IActionResult ConfirmChatRequest(int ChatId)
+        {
+            if (_chatRepository.AcceptChatRequest(ChatId))
+            {
+                return Json(new { response = $"{ChatId} accepted" });
+            }
+            return BadRequest(new { message="kati pige lathos"});
+        }
+        
+        [Authorize]
+        [HttpGet]
+        [Route("/activechat")]
+        public IActionResult GetActiveChats()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var activeChats = _chatRepository.GetActiveChats(intId);
+            if (activeChats!=null)
+            {
+                return Json(activeChats);
+            }
+            return BadRequest(new { message="kati pige lathos me to active chat"});
+        }
+
+       
 
         //[HttpGet]
         //[Route("/chat")]
@@ -82,17 +156,19 @@ namespace ApiOne.Controllers
         //}
 
         [HttpGet]
-        [Route("/profile/chat")]
+        [Route("/profile/Achat")]
         public IActionResult GetMyChats()
         {
-            int cid = 6;
-            var chatRooms = _chatRepository.GetChatRooms(cid);
-            if (chatRooms != null)
-            {
-                return Json(chatRooms);
-            }
+            //int cid = 6;
+            //var chatRooms = _chatRepository.GetChatRooms(cid);
+            //if (chatRooms != null)
+            //{
+            //    return Json(chatRooms);
+            //}
             return BadRequest(new { error= "Something went wrong with chat"});
         } 
+
+
 
     }
 }

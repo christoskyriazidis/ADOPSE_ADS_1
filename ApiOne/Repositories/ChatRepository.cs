@@ -30,15 +30,13 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<ChatRoom> GetChatRooms(int cId)
+        public IEnumerable<ActiveChat> GetActiveChats(int cId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select  (select username from customer where id = c.seller) as seller," +
-                    "(select username from customer where id = c.buyer) as buyer , c.seller as sid ," +
-                    " c.buyer as bid, c.id as id from chat c where c.seller =@Seller or buyer = @Buyer";
-                var chatRooms = conn.Query<ChatRoom>(sql, new { Seller = cId ,Buyer = cId }).ToList();
+                string sql = "EXEC get_active_chats @CustomerId";
+                var chatRooms = conn.Query<ActiveChat>(sql, new { CustomerId=cId }).ToList();
                 return chatRooms;
             }
             catch (SqlException sqlEx)
@@ -48,7 +46,7 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool InsertMessage(ChatMessage ChatMessage)
+        public bool InsertMessage(ChatMessage ChatMessage,int CustomerId)
         {
             try
             {
@@ -66,9 +64,54 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool MakeChat(int buyerId, int SellerId)
+        public bool RequestChatByAdId(int AdId, int BuyerId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec request_chat_byAdID @AdId,@BuyerId";
+                var chatMessages = conn.Query<ChatMessage>(sql, new { AdId,BuyerId}).ToList();
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
+        public bool AcceptChatRequest(int Rid)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "update ChatRequest set confirmed=1 where id=@Rid";
+                var chatMessages = conn.Query<int>(sql, new { Rid}).FirstOrDefault();
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
+        public IEnumerable<ChatRequest> GetChatRequests(int CustomerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "select ch.id,ch.BuyerId,ch.adId,cu.username,cu.profileImg,a.title,ch.Timestamp from ChatRequest ch " +
+                    "join customer cu on (ch.BuyerId=cu.id) " +
+                    "join ad a on (a.id=ch.adId) where ch.sellerId=@CustomerId and ch.confirmed=0";
+                var chatRequests = conn.Query<ChatRequest>(sql, new { CustomerId }).ToList();
+                return chatRequests;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
         }
     }
 }

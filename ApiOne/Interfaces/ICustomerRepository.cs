@@ -15,9 +15,14 @@ namespace ApiOne.Interfaces
         CustomerDetails GetCustomer(int id);
         CustomerDetails GetMyProfileInfo(int id);
 
+        bool CheckIfCustomerOwnThisAd(int AdId,int CustomerId);
+
         bool UpdateProfile(CustomerDetails customerDetails);
         bool UpdateProfileImage(int customerId);
         public int GetCustomerIdFromSub(string SubId);
+
+        bool SellAd(int AdId,int BuyerId,int SellerId);
+
 
     }
 }

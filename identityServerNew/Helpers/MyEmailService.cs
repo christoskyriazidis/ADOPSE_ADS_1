@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -12,10 +13,8 @@ namespace identityServerNew.Helpers
 {
     public class MyEmailService
     {
-        public static async Task<bool> SendMail(MailMessage mailMessage)
+        public static void SendMail(MailMessage mailMessage)
         {
-            try
-            {
                 var port = Startup._config.GetValue<int>("Email:Port");
                 var appSmtpClient = Startup._config.GetValue<string>("Email:SmtpClient");
                 var appMail = Startup._config.GetValue<string>("Email:mail");
@@ -26,14 +25,12 @@ namespace identityServerNew.Helpers
                     Credentials = new NetworkCredential(appMail, password),
                     EnableSsl = true,
                 };
-                await smtpClient.SendMailAsync(mailMessage);
-                return true;
-            }
-            catch (SmtpFailedRecipientException ex)
-            {
-                Debug.WriteLine(ex.GetBaseException()+ex.FailedRecipient);
-                return false;
-            }
+                smtpClient.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                smtpClient.SendMailAsync(mailMessage);
+        }
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            Debug.WriteLine("ojk");
         }
     }
 }

@@ -108,11 +108,8 @@ namespace identityServerNew.Controllers
                 IsBodyHtml = true,
                 To = { email}
             };
-            var emailStatus = await MyEmailService.SendMail(mailMessage);
-            if (emailStatus)
-            {
-                return Ok();
-            }
+            MyEmailService.SendMail(mailMessage);
+           
             return Ok();
         }
 
@@ -179,7 +176,7 @@ namespace identityServerNew.Controllers
                 To = { email }
             };
             //send mail
-            await MyEmailService.SendMail(mailMessage);
+            MyEmailService.SendMail(mailMessage);
             return Ok();
         }
 

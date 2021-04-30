@@ -9,10 +9,16 @@ namespace ApiOne.Interfaces
 {
     public interface IChatRepository
     {
-        bool InsertMessage(ChatMessage ChatMessage);
-        bool MakeChat(int buyerId,int SellerId);
+        bool InsertMessage(ChatMessage ChatMessage,int CustomerId);
         IEnumerable<ChatMessage> GetChatMessages(ChatMessagePagination chatMessagePagination);
-        IEnumerable<ChatRoom> GetChatRooms(int cId);
+        IEnumerable<ActiveChat> GetActiveChats(int cId);
+
+
+        IEnumerable<ChatRequest> GetChatRequests(int CustomerId);
+        bool RequestChatByAdId(int AdId,int BuyerId);
+
+        bool AcceptChatRequest(int Rid);
+        
 
     }
 }
