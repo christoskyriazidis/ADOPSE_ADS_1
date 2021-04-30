@@ -28,38 +28,72 @@ main {
         .profileDetails {
             border-radius: 20px;
             background-color: white;
-            .profilePicture {
-                display: flex;
-                background-image: url("https://localhost:44374/images/Profile/avatar.png");
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
+            background: rgb(153, 194, 236);
+            background: linear-gradient(
+                180deg,
+                rgba(153, 194, 236, 1) 0%,
+                rgba(51, 133, 217, 1) 50%,
+                rgba(27, 109, 193, 1) 100%
+            );
+            
+            display: flex;
+            justify-content: center;
+            .wrapper {
                 max-height: 100%;
-                width: 100%;
-                height: 300px;
-                border-radius: 20px;
-            }
-            .username {
-                text-align: center;
-                font-size: x-large;
+                width: 200px;
+                height: 350px;
+                display:flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .profilePicture {
+                    background: rgb(94, 120, 146);
+
+                    background-image: url("https://localhost:44374/images/Profile/avatar.png");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    max-height: 100%;
+                    width: 200px;
+                    height: 200px;
+                    border-radius: 99999px;
+                    padding:20px;
+                }
+                .username {
+                    text-align: center;
+                    font-size: x-large;
+                    color: $primary-font-color;
+                }
             }
         }
         .more {
-            display:flex;
+            display: flex;
             justify-content: space-between;
-            margin-top:20px;
-            .reviews {
-                background-color: white;
+            margin-top: 20px;
+            .leftColumn {
                 height: 200px;
-                width: 35%;
-                border-radius:20px;
-            }
-            .latestActivity {
-                background-color:white;
-                width:64%;
-                height:200px;
-                border-radius:20px;
+                width: 25%;
 
+                .bio {
+                    border-radius: 20px;
+                    background-color: white;
+                    padding: 30px;
+                    div {
+                        margin-top: 20px;
+                    }
+                }
+                .reviews {
+                    border-radius: 20px;
+                    background-color: white;
+                    margin-top: 20px;
+                }
+            }
+
+            .latestActivity {
+                background-color: white;
+                width: 74%;
+                height: 200px;
+                border-radius: 20px;
             }
         }
     }

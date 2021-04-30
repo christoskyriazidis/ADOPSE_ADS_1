@@ -28,25 +28,53 @@ main .contentArea {
 main .contentArea .profileDetails {
   border-radius: 20px;
   background-color: white;
-}
-
-main .contentArea .profileDetails .profilePicture {
+  background: #99c2ec;
+  background: -webkit-gradient(linear, left top, left bottom, from(#99c2ec), color-stop(50%, #3385d9), to(#1b6dc1));
+  background: linear-gradient(180deg, #99c2ec 0%, #3385d9 50%, #1b6dc1 100%);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+main .contentArea .profileDetails .wrapper {
+  max-height: 100%;
+  width: 200px;
+  height: 350px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .contentArea .profileDetails .wrapper .profilePicture {
+  background: #5e7892;
   background-image: url("https://localhost:44374/images/Profile/avatar.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   max-height: 100%;
-  width: 100%;
-  height: 300px;
-  border-radius: 20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 99999px;
+  padding: 20px;
 }
 
-main .contentArea .profileDetails .username {
+main .contentArea .profileDetails .wrapper .username {
   text-align: center;
   font-size: x-large;
+  color: #ebebeb;
 }
 
 main .contentArea .more {
@@ -59,16 +87,30 @@ main .contentArea .more {
   margin-top: 20px;
 }
 
-main .contentArea .more .reviews {
-  background-color: white;
+main .contentArea .more .leftColumn {
   height: 200px;
-  width: 35%;
+  width: 25%;
+}
+
+main .contentArea .more .leftColumn .bio {
   border-radius: 20px;
+  background-color: white;
+  padding: 30px;
+}
+
+main .contentArea .more .leftColumn .bio div {
+  margin-top: 20px;
+}
+
+main .contentArea .more .leftColumn .reviews {
+  border-radius: 20px;
+  background-color: white;
+  margin-top: 20px;
 }
 
 main .contentArea .more .latestActivity {
   background-color: white;
-  width: 64%;
+  width: 74%;
   height: 200px;
   border-radius: 20px;
 }

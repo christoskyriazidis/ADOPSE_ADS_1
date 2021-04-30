@@ -27,7 +27,7 @@ main {
         margin: 10px;
         border-radius: 10px;
         box-shadow: 3px 3px 5px $shadow-color;
-        .title {
+        .adTitle {
             text-align: center;
         }
         .image {
@@ -86,9 +86,27 @@ main {
         }
         .mainContentArea {
             font-size: large;
-            background-color: #fff;
+           
             padding: 10px;
-            border-radius: 20px;
+           
+            .sellerDetails{
+                padding:20px;
+                background-color: #fff;
+                border-radius: 20px;
+                margin:10px;
+            }
+            .details{
+                margin:10px;
+                padding:20px;
+                background-color: #fff;
+                border-radius: 20px;
+            }
+            .description{
+                margin:10px;
+                padding:10px;
+                border-radius: 20px;
+                background-color: #fff;
+            }
         }
     }
 }

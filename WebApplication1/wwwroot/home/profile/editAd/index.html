@@ -19,7 +19,7 @@
         <input type="text" class="titleInput" placeholder="title">
         <input type="number" class="priceInput" placeholder="price">
         <input type="file" class="image" value="add image">
-        <textarea class="description"> </textarea>
+        <textarea class="descriptionInput"> </textarea>
         <div class="info">
             <h4>Categories</h4>
         </div>
@@ -49,19 +49,8 @@
         <button class="editAd">edit ad</button>
         <button class="changeImage"></button>
 <script>
-    let urlParams = new URLSearchParams(window.location.search);
-    axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
-        .then((response) => response.data)
-        .then(data => {
-            document.querySelector(".description").innerHTML += data.description
-            document.querySelector(".title").value = data.title
-            document.querySelector(".price").value = data.price;
-            
-            // document.querySelector(".description").innerHTML=data.description
-            // document.querySelector(".description").innerHTML=data.description
-        })
-        .catch(x => console.log(x))
-        .finally()
+    
+    
    
 </script>
 <script src="/scripts/components/navbarComponent.js"></script>
