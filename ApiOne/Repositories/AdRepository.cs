@@ -29,7 +29,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT * from [Ad] where id=@Id";
+                string sql = "select a.*,c.Rating,c.username,c.profileImg,c.Rating,c.reviews,c.Address from ad a join customer c on (a.Customer=c.id) where a.id=@Id";
                 var ad = conn.Query<Ad>(sql, new { Id = id }).FirstOrDefault();
                 return ad;
             }
