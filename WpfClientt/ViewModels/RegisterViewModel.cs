@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
-    public class RegisterViewModel : BaseViewModel,IViewModel {
+    public class RegisterViewModel : FormViewModel<RegisterForm> {
 
         private static RegisterViewModel instance;
-
         private ICustomerService customerService;
-
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string SecondPassword { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public override RegisterForm Form { get; protected set; }
 
 
         private RegisterViewModel(ICustomerService customerService) {
             this.customerService = customerService;
+            Form = new RegisterForm(Validate);
         }
 
         public async static Task<RegisterViewModel> GetInstance(FactoryServices factory) {
@@ -35,7 +29,10 @@ namespace WpfClientt.viewModels {
             return instance;
         }
 
+        protected override Func<RegisterForm, Task> SubmitAction() => customerService.Create;
 
-
+        protected override void ClearFormStrep() {
+            Form = new RegisterForm(Validate);
+        }
     }
 }

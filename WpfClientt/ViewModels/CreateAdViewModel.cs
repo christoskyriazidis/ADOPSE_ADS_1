@@ -14,38 +14,35 @@ using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
-    public class CreateAdViewModel : BaseViewModel, IViewModel{
+    public class CreateAdViewModel : FormViewModel<Ad> {
+
         private static CreateAdViewModel instance;
 
         private IAdService adService;
 
-        public Ad Ad { get; private set; }
+        public override Ad Form { get; protected set; }
 
-        public ObservableCollection<Category> Categories { get;} = new ObservableCollection<Category>();
-        public ObservableCollection<Subcategory> Subcategories { get;} = new ObservableCollection<Subcategory>();
-        public ObservableCollection<AdType> Types { get;} = new ObservableCollection<AdType>();
-        public ObservableCollection<Condition> Conditions { get;} = new ObservableCollection<Condition>();
-        public ObservableCollection<Manufacturer> Manufacturers { get;} = new ObservableCollection<Manufacturer>();
-        public ObservableCollection<ValidationResult> Errors { get; } = new ObservableCollection<ValidationResult>();
-        public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
+        public ObservableCollection<Category> Categories { get; } = new ObservableCollection<Category>();
+        public ObservableCollection<Subcategory> Subcategories { get; } = new ObservableCollection<Subcategory>();
+        public ObservableCollection<AdType> Types { get; } = new ObservableCollection<AdType>();
+        public ObservableCollection<Condition> Conditions { get; } = new ObservableCollection<Condition>();
+        public ObservableCollection<Manufacturer> Manufacturers { get; } = new ObservableCollection<Manufacturer>();
         public ICommand ImageChooseCommand { get; private set; }
-        public ICommand CreateAdCommand { get; private set; }
         public ICommand ClearImageCommand { get; private set; }
 
         public string CurrentlyChosenFileName {
             get {
-                return Ad.ImageUri == null ? "Choose Image..." : Ad.ImageUri.LocalPath;
+                return Form.ImageUri == null ? "Choose Image..." : Form.ImageUri.LocalPath;
             }
         }
 
-        private CreateAdViewModel(IAdService adService,ISet<Category> categories,
+        private CreateAdViewModel(IAdService adService, ISet<Category> categories,
             ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers) {
 
             ImageChooseCommand = new DelegateCommand(ChooseImage);
-            CreateAdCommand = new DelegateCommand(CreateAd);
-            ClearImageCommand = new DelegateCommand(ClearImage);
-            
-            foreach(Category category in categories) {
+            ClearImageCommand = new DelegateCommand(_ => ClearImage());
+
+            foreach (Category category in categories) {
                 this.Categories.Add(category);
             }
 
@@ -62,8 +59,7 @@ namespace WpfClientt.viewModels {
             }
 
             this.adService = adService;
-            Ad = new AdDecorator(Validate,SetSubcategoriesOf);
-            Validate(Ad);
+            Form = new AdDecorator(Validate, SetSubcategoriesOf);
         }
 
         public static async Task<CreateAdViewModel> GetInstance(FactoryServices factory) {
@@ -73,7 +69,7 @@ namespace WpfClientt.viewModels {
             ISet<Condition> conditions = await adDetailsService.Conditions();
             ISet<Manufacturer> manufacturers = await adDetailsService.Manufacturers();
             if (instance == null) {
-                instance = new CreateAdViewModel(await factory.AdServiceInstance(),categories,types,conditions,manufacturers);
+                instance = new CreateAdViewModel(await factory.AdServiceInstance(), categories, types, conditions, manufacturers);
             }
 
             return instance;
@@ -83,37 +79,9 @@ namespace WpfClientt.viewModels {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Image files (*.jpg,*.jpeg,*.png) | *.jpg; *.jpeg;*.png";
             if (fileDialog.ShowDialog() == true) {
-                Ad.ImageUri = new Uri($"file:///{fileDialog.FileName}");
+                Form.ImageUri = new Uri($"file:///{fileDialog.FileName}");
                 OnPropertyChanged("CurrentlyChosenFileName");
             }
-        }
-
-        private async void CreateAd(object param) {
-            Validate(Ad);
-            if (Errors.Count == 0) {
-                Messages.Add("Trying to add the give ad.");
-                await adService.Create(Ad);
-                Messages.Clear();
-                Messages.Add("The ad has been successfully added.");
-                await ClearForm();
-            } else {
-                Messages.Clear();
-                Messages.Add("The form can't be submitted because of the errors.");
-            }
-        }
-
-        private async Task ClearForm() {
-            Ad = new AdDecorator(Validate,SetSubcategoriesOf);
-            OnPropertyChanged("Ad");
-            ClearImage(null);
-            await Task.Delay(3000);
-            Messages.Clear();
-        }
-
-        private void Validate(Ad ad) {
-            Errors.Clear();
-            ValidationContext validationContext = new ValidationContext(ad);
-            Validator.TryValidateObject(Ad, validationContext,Errors,true);
         }
 
 
@@ -124,9 +92,16 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        private void ClearImage(object param) {
-            Ad.ImageUri = null;
+        private void ClearImage() {
+            Form.ImageUri = null;
             OnPropertyChanged("CurrentlyChosenFileName");
+        }
+
+        protected override Func<Ad, Task> SubmitAction() => adService.Create;
+
+        protected override void ClearFormStrep(){
+            Form = new AdDecorator(Validate,SetSubcategoriesOf);
+            ClearImage();
         }
     }
 }

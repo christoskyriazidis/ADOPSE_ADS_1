@@ -8,35 +8,37 @@ using System.Threading.Tasks;
 using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.model {
-    public sealed class Customer {
+    public class Customer {
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [StringLength(25, MinimumLength = 4)]
-        [Required]
         [JsonPropertyName("name")]
-        public string FirstName { get; set; }
+        public virtual string FirstName { get; set; }
 
-        [StringLength(25, MinimumLength = 4)]
-        [Required]
         [JsonPropertyName("lastName")]
-        public string LastName { get; set; }
+        public virtual string LastName { get; set; }
 
         [JsonPropertyName("username")]
-        public string Username { get; set; }
+        public virtual string Username { get; set; }
 
-        [Required]
         [JsonPropertyName("address")]
-        public string Address{ get; set; }
+        public virtual string Address{ get; set; }
 
         [JsonPropertyName("rating")]
         public int Rating { get; set; } = 0;
+
+        [JsonPropertyName("email")]
+        public virtual string Email { get; set; }
+       
+        [JsonPropertyName("phone")]
+        public virtual string MobilePhone { get; set; }
 
         [JsonConverter(typeof(JsonStringToUriConverter))]
         [JsonPropertyName("profileImg")]
         public Uri ProfileImageUri { get; set; }
 
+        public virtual string Password {get; set;}
         public Customer() { 
         
         }
