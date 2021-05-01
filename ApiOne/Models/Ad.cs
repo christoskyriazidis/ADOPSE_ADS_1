@@ -56,6 +56,7 @@ namespace ApiOne.Models
         public string CreateDate { get; set; }
         public string Img { get; set; }
         public string ProfileImg { get; set; }
+        public string Username { get; set; }
         public int Rating { get; set; }
         public int Reviews { get; set; }
         public string Address { get; set; }
