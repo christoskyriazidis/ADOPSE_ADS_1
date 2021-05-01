@@ -1,5 +1,6 @@
 ﻿using ApiOne.Models;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Notification;
 using ApiOne.Models.Queries;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,12 @@ namespace ApiOne.Interfaces
         bool SubscribeToSubCategory(int categoryId, int customerId);
         bool RemoveFromSubscribedSubCategories(int CustomerId, int[] CatIds);
 
+        PaginationBSA GetSoldAds(Pagination pagination, int CustomerId);
+        PaginationBSA GetBoughtAds(Pagination pagination, int CustomerId);
+        IEnumerable<WishSubNotification> GetNotifications(int PageNumber, int CustomerId);
         IEnumerable<int> GetSuscribedSubCategories(int CustmerId);
         IEnumerable<Subcategory> GetSubCategories(int SubId);
-        IEnumerable<SubCategoryNotification> GetCategoryNotifications(int CustmerId);
         IEnumerable<WishList> GetWishList(int CustmerId);
-        IEnumerable<WishListNotification> GetWishListNotifications(int CustmerId);
         IEnumerable<CategoryWithImg> GetCategories();
         IEnumerable<AdFilter> GetConditions();
         IEnumerable<AdFilter> GetManufacturers();

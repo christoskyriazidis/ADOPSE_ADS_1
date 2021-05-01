@@ -1,12 +1,15 @@
 ﻿using ApiOne.Hubs;
 using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Queries;
 using ApiOne.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +21,7 @@ namespace ApiOne.Controllers
 
         private readonly IAdRepository _adRepository = new AdRepository();
         private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly ICustomerRepository _customerRepo = new CustomerRepository();
 
         public NotificationController(IHubContext<NotificationHub> hubContext)
         {
@@ -58,12 +62,15 @@ namespace ApiOne.Controllers
             return BadRequest(new { status = $" fail to remove sub from categories!" });
         }
 
+        [Authorize]
         [HttpGet]
-        [Route("/category/subscribe")]
+        [Route("/subcategory/subscribe")]
         public IActionResult GetSubscribedSubCategories()
         {
-            int custId = 3;
-            var categories = _adRepository.GetSuscribedSubCategories(custId);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var categories = _adRepository.GetSuscribedSubCategories(intId);
             if (categories != null)
             {
                 return Json(new { categories });
@@ -71,19 +78,7 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("/category/notification")]
-        public IActionResult GetSubCategoryNotifications()
-        {
-            int custId = 3;
-            var categoryNotifications = _adRepository.GetCategoryNotifications(custId);
-            if (categoryNotifications != null)
-            {
-                return Json(categoryNotifications);
-            }
-            return BadRequest();
-        }
-
+        [Authorize]
         [HttpPost]
         [Route("/wishlist/{AdId}")]
         public IActionResult AddToWishList([FromRoute] int AdId)
@@ -118,26 +113,17 @@ namespace ApiOne.Controllers
             return BadRequest(new { status = $" fail to remove from wishlist!" });
         }
 
-        [HttpGet]
-        [Route("/wishlist/notification")]
-        public IActionResult GetWishListNotifications()
-        {
-            int custId = 3;
-            var wishListNotifications = _adRepository.GetWishListNotifications(custId);
-            if (wishListNotifications != null)
-            {
-                return Json(wishListNotifications);
-            }
-            return BadRequest();
-        }
-
+        
+        [Authorize]
         [HttpGet]
         [Route("/wishlist")]
         [Produces("application/json")]
         public IActionResult GetWishList()
         {
-            var userId = 3;
-            var updateResult = _adRepository.GetWishList(userId);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var updateResult = _adRepository.GetWishList(intId);
             if (updateResult != null)
             {
                 return Json(updateResult);
@@ -156,5 +142,22 @@ namespace ApiOne.Controllers
             }
             return BadRequest(new { error = "kati pige la8os me to notification click (wishlist)" });
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/notification/{pageNumber}")]
+        public IActionResult GetNotifications(int PageNumber)
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var wishListNotifications = _adRepository.GetNotifications(PageNumber, intId);
+            if (wishListNotifications != null)
+            {
+                return Json(wishListNotifications);
+            }
+            return BadRequest();
+        }
+
     }
 }

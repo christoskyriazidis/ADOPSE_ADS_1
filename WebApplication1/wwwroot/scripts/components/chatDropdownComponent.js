@@ -11,28 +11,23 @@ class ChatDropdown extends HTMLElement {
         super();
 
         let items = "";
-        axios.get("https://localhost:44374/profile/chat")
+        axios.get("https://localhost:44374/activechat")
             .then(res => res.data)
             .then(data => {
                 console.log(data);
                 for (let object of data) {
-                    let receiverId, receiverUsername;
-                    if (object.sid == this.customerId) {
-                        receiverId = object.bid
-                        receiverUsername = object.buyer
-                    } else {
-                        receiverId = object.sid
-                        receiverUsername = object.seller
-                    }
-                    console.log(receiverUsername);
+                    
+                    
                     items += `
                     <li onclick="createChat(${object.id})">
-                        <a href="#">
-                            <span class="itemImage" style='background-image:url()' alt=""></span>
-                            <div class="itemDescription">
-                                <span class="title">${receiverUsername}</span>
+                        
+                            <span class="chatImage" style='background-image:url(${object.profileImg})' alt=""></span>
+                            <div class="chatDescription">
+                                <span class="chatUsername"><b>${object.username}</b> regarding <a href="https://localhost:44366/home/ad/index.html?id=${object.adId}">#${object.adId}</a> Ad</span>
+                                <span class="latestMessage">Latest message: ${object.latestMessage}</span>
+                                <span class="chatType">Role: ${object.type} </span>
                             </div>
-                        </a>
+                        
                     </li>
                     `
                 }

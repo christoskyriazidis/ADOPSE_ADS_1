@@ -2,7 +2,7 @@ $subtle-grey: rgba(202, 202, 202, 0.657);
 $primary-color: #1b6dc1;
 $secondary-color: #3385d9;
 $alternative-color: #7bb6f1ad;
-chatDropdown-component {
+chatRequest-component {
     position: absolute;
     z-index: 999;
     background-color: white;
@@ -12,7 +12,7 @@ chatDropdown-component {
     border-radius: 10px;
     padding-bottom: 20px;
     box-shadow: 5px 5px 25px grey;
-    .chatContainer {
+    .chatRequestContainer {
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -25,13 +25,14 @@ chatDropdown-component {
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
-        .chatItems {
+        .chatRequestItems {
             max-height: 400px;
             overflow-y: auto;
             border-bottom: 1px solid $subtle-grey;
             padding: 0px;
 
             li {
+                cursor: pointer;
                 padding: 5px;
                 padding-bottom: 15px;
                 padding-top: 15px;
@@ -43,40 +44,39 @@ chatDropdown-component {
                 text-decoration: none;
                 color: black;
                 align-items: center;
-                .chatImage {
+                .itemImage {
                     background-color: white;
                     background-size: contain;
                     background-repeat: no-repeat;
                     background-position: center;
                     max-height: 50px;
-                    height: 50px;
-                    width: 50px;
+                    height: 30px;
+                    width: 40px;
                     border: 1px solid $subtle-grey;
                     border-radius: 9999px;
                     margin-right: 10px;
                 }
-                .chatDescription {
+                .itemDescription {
                     display: flex;
                     flex-direction: column;
-                    .chatUsername {
-                        font-size: medium;
-                       
-                    }
-                    .latestMessage{
-                        font-size:small;
-                    }
-                    .chatType{
-                        font-size:smaller;
+                    .requestTitle {
+                        font-size: smaller;
                     }
                     .date {
                         font-size: small;
+                    }
+                }
+                .requestActions {
+                    display: flex;
+                    & * {
+                        margin:5px;
                     }
                 }
             }
         }
     }
 }
-.chatsContainer {
+.chatsRequestContainer {
     position: fixed;
     bottom: 0px;
     width: 100vw;

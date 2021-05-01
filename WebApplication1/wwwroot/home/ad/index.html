@@ -109,12 +109,12 @@
             .then(data => {
                 customer = data.customer;
                 document.querySelector(".description").innerHTML += data.description
-                document.querySelector(".postedOn").innerHTML+=data.createDate
-                document.querySelector(".adLocation").innerHTML+=data.location
-                document.querySelector(".adPrice").innerHTML+=data.price+"€"
+                document.querySelector(".postedOn").innerHTML += data.createDate
+                document.querySelector(".adLocation").innerHTML += data.location
+                document.querySelector(".adPrice").innerHTML += data.price + "€"
                 document.querySelector(".adTitle").innerHTML = `<h1>${data.title}</h1>`
                 document.querySelector(".imageContainer").style.backgroundImage = `url(${data.img.replace("small", "full")})`;
-                
+
                 // document.querySelector(".description").innerHTML=data.description
                 // document.querySelector(".description").innerHTML=data.description
             })
@@ -159,14 +159,16 @@
         var btn = document.querySelector(".showModal");
 
         // Get the <span> element that closes the modal
-
+        chatRequest = (id) => {
+            axios.post("https://localhost:44374/chat/chatrequest/" + id).then(console.log)
+        }
         // When the user clicks the button, open the modal 
         btn.addEventListener("click", () => {
             modal.style.display = "flex";
             modal.innerHTML = `<div class="modal-content">
                 <span class="close">&times;</span>
                 <div class="modalContent">
-                    <div class="chatOption">
+                    <div class="chatOption" onclick="chatRequest(${urlParams.get("id")})">
                         <p>Click here to start live chat conversation!</p>
                     </div>
                     <div class="vl"> </div>
@@ -205,6 +207,7 @@
     <script src="/scripts/components/notificationComponent.js"></script>
     <script src="/scripts/components/paginationComponent.js"></script>
     <script src="/scripts/components/chatDropdownComponent.js"></script>
+    <script src="/scripts/components/chatRequestsComponent.js"></script>
     <script src="/scripts/components/chatComponent.js"></script>
 
     <footer></footer>

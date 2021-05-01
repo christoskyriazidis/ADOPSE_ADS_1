@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace ApiOne.Models.Chats
 {
-    public class ChatMessage
+    public class ChatRequest
     {
         public int Id { get; set; }
-        public string Message { get; set; }
-        public int  Customer { get; set; }
-        public int ActiveChat { get; set; }
-        public string Timestamp { get; set; }
+        public int BuyerId { get; set; }
+        public int AdId { get; set; }
         public string Username { get; set; }
         public string ProfileImg { get; set; }
-        public string SubId { get; set; }
-        
+        public string Timestamp { get; set; }
+
+
     }
 }

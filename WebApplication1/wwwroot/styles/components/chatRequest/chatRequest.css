@@ -1,4 +1,4 @@
-chatDropdown-component {
+chatRequest-component {
   position: absolute;
   z-index: 999;
   background-color: white;
@@ -11,30 +11,31 @@ chatDropdown-component {
           box-shadow: 5px 5px 25px grey;
 }
 
-chatDropdown-component .chatContainer ::-webkit-scrollbar {
+chatRequest-component .chatRequestContainer ::-webkit-scrollbar {
   width: 10px;
 }
 
-chatDropdown-component .chatContainer ::-webkit-scrollbar-track {
+chatRequest-component .chatRequestContainer ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-chatDropdown-component .chatContainer ::-webkit-scrollbar-thumb {
+chatRequest-component .chatRequestContainer ::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-chatDropdown-component .chatContainer ::-webkit-scrollbar-thumb:hover {
+chatRequest-component .chatRequestContainer ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
-chatDropdown-component .chatContainer .chatItems {
+chatRequest-component .chatRequestContainer .chatRequestItems {
   max-height: 400px;
   overflow-y: auto;
   border-bottom: 1px solid rgba(202, 202, 202, 0.657);
   padding: 0px;
 }
 
-chatDropdown-component .chatContainer .chatItems li {
+chatRequest-component .chatRequestContainer .chatRequestItems li {
+  cursor: pointer;
   padding: 5px;
   padding-bottom: 15px;
   padding-top: 15px;
@@ -54,20 +55,20 @@ chatDropdown-component .chatContainer .chatItems li {
           align-items: center;
 }
 
-chatDropdown-component .chatContainer .chatItems li .chatImage {
+chatRequest-component .chatRequestContainer .chatRequestItems li .itemImage {
   background-color: white;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   max-height: 50px;
-  height: 50px;
-  width: 50px;
+  height: 30px;
+  width: 40px;
   border: 1px solid rgba(202, 202, 202, 0.657);
   border-radius: 9999px;
   margin-right: 10px;
 }
 
-chatDropdown-component .chatContainer .chatItems li .chatDescription {
+chatRequest-component .chatRequestContainer .chatRequestItems li .itemDescription {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -77,23 +78,25 @@ chatDropdown-component .chatContainer .chatItems li .chatDescription {
           flex-direction: column;
 }
 
-chatDropdown-component .chatContainer .chatItems li .chatDescription .chatUsername {
-  font-size: medium;
-}
-
-chatDropdown-component .chatContainer .chatItems li .chatDescription .latestMessage {
-  font-size: small;
-}
-
-chatDropdown-component .chatContainer .chatItems li .chatDescription .chatType {
+chatRequest-component .chatRequestContainer .chatRequestItems li .itemDescription .requestTitle {
   font-size: smaller;
 }
 
-chatDropdown-component .chatContainer .chatItems li .chatDescription .date {
+chatRequest-component .chatRequestContainer .chatRequestItems li .itemDescription .date {
   font-size: small;
 }
 
-.chatsContainer {
+chatRequest-component .chatRequestContainer .chatRequestItems li .requestActions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+chatRequest-component .chatRequestContainer .chatRequestItems li .requestActions * {
+  margin: 5px;
+}
+
+.chatsRequestContainer {
   position: fixed;
   bottom: 0px;
   width: 100vw;
@@ -108,4 +111,4 @@ chatDropdown-component .chatContainer .chatItems li .chatDescription .date {
       -ms-flex-direction: row;
           flex-direction: row;
 }
-/*# sourceMappingURL=chatDropdown.css.map */
+/*# sourceMappingURL=chatRequest.css.map */

@@ -16,6 +16,24 @@ namespace ApiOne.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+        public bool CheckIfCustomerOwnThisAd(int AdId, int CustomerId)
+        {
+            try
+            {
+                //id
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT count(*) FROM ad WHERE customer=@CustomerId and id=@AdId";
+                var rows = conn.ExecuteScalar<int>(sql, new { CustomerId,AdId});
+                //true false analogos ta rows pou alaksan
+                return (rows == 1);
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
         public CustomerDetails GetCustomer(int id)
         {
             try
@@ -83,14 +101,32 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT id,username,reviews,profileImg,Name,LastName,Address,rating FROM [Customer]";
-                var customers = conn.Query<CustomerDetails>(sql).FirstOrDefault();
+                string sql = "SELECT id,username,reviews,profileImg,Name,LastName,Address,rating,email FROM [Customer] where id=@id";
+                var customers = conn.Query<CustomerDetails>(sql,new { id}).FirstOrDefault();
                 return customers;
             }
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx);
                 return null;
+            }
+        }
+
+        public bool SellAd(int AdId, int BuyerId)
+        {
+            try
+            {
+                //id
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC [dbo].[sell_ad_to_customer] @buyerId,@adId";
+                var rows = conn.ExecuteScalar<int>(sql, new { BuyerId, AdId });
+                //true false analogos ta rows pou alaksan
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
             }
         }
 

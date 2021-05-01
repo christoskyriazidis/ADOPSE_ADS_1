@@ -41,12 +41,10 @@ axios.interceptors.response.use(
         //PREPEI NA TO DIOR9OSOUME ARGOTERA NA VGALOUME TO TRUE
         if (error.response.status === 401) {
             console.log("axios error 401");
-            signIn();
             // if already refreshing don't make another request
             if (!refreshing) {
                 console.log("starting token refresh");
                 refreshing = true;
-
                 // do the refresh
                 return userManager.signinSilent().then(user => {
                     console.log("new user:", user);

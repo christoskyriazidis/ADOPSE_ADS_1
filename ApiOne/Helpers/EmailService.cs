@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -12,10 +14,9 @@ namespace ApiOne.Helpers
 {
     public class EmailService
     {
-        public static async Task<bool> SendMail(MailMessage mailMessage)
+        
+        public static void SendMail(MailMessage mailMessage)
         {
-            try
-            {
                 var port = Startup.StaticConfig.GetValue<int>("Email:Port");
                 var appSmtpClient = Startup.StaticConfig.GetValue<string>("Email:SmtpClient");
                 var appMail = Startup.StaticConfig.GetValue<string>("Email:mail");
@@ -26,14 +27,13 @@ namespace ApiOne.Helpers
                     Credentials = new NetworkCredential(appMail, password),
                     EnableSsl = true,
                 };
-                await smtpClient.SendMailAsync(mailMessage);
-                return true;
-            }
-            catch (SmtpFailedRecipientException ex)
-            {
-                Debug.WriteLine(ex.GetBaseException() + ex.FailedRecipient);
-                return false;
-            }
+                smtpClient.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                smtpClient.SendMailAsync(mailMessage);
+        }
+
+        private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            Debug.WriteLine("ojk");
         }
     }
 }

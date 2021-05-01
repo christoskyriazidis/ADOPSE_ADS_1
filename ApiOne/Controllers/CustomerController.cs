@@ -1,6 +1,7 @@
 ﻿using ApiOne.Helpers;
 using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Ads.sell;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Mail;
 using ApiOne.Models.Queries;
@@ -63,13 +64,15 @@ namespace ApiOne.Controllers
             return Json(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("/profile")]
         public IActionResult GetProfile()
         {
-            int cid = 3;
-            return Json(_customerRepo.GetMyProfileInfo(cid));
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            return Json(_customerRepo.GetMyProfileInfo(intId));
         }
 
         [Authorize]
@@ -150,7 +153,7 @@ namespace ApiOne.Controllers
         //[Authorize]
         [HttpPost]
         [Route("/customer/mail")]
-        public async Task<IActionResult> SendMailToCustomer([FromBody] CustomerMailMessage customerMail)
+        public IActionResult SendMailToCustomer([FromBody] CustomerMailMessage customerMail)
         {
             if (!ModelState.IsValid)
             {
@@ -177,14 +180,79 @@ namespace ApiOne.Controllers
                 To = {sender.Email}
             };
             //using static class EmailService to send mail async!
-            var emailStatus = await EmailService.SendMail(mailMessage);
-            if (emailStatus)
-            {
-                return Ok();
-            }
+            EmailService.SendMail(mailMessage);
+            
             return BadRequest(new { error = "problem with email service" });
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("/ad/sell")]
+        public IActionResult SellAd([FromBody]SellAdModel sellAdModel )
+        {
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            if (_customerRepo.SellAd(sellAdModel.AdId,sellAdModel.BuyerId))
+            {
+                return Json(new {response=$"Ad:{sellAdModel.AdId} sold to: {sellAdModel.BuyerId} " });
+            }
+            return BadRequest(new { error="Kati pige la8os me to sold ad" });
+        }
 
+        [Authorize]
+        [HttpGet]
+        [Route("/profile/soldAds")]
+        public IActionResult GetSoldAds(Pagination pagination)
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var soldAds  = _adRepository.GetSoldAds(pagination, intId);
+            if (soldAds != null)
+            {
+                return Json(soldAds);
+            }
+            return BadRequest(new { message = "You have not any bought ads.!" });
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/profile/boughtAds")]
+        public IActionResult GetBoughtAds(Pagination pagination)
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var boughAds = _adRepository.GetBoughtAds(pagination, intId);
+            if (boughAds != null)
+            {
+                return Json(boughAds);
+            }
+            return BadRequest(new { message ="You have not any sold ads.!" });
+        }
+
+        //[HttpGet]
+        //[Route("/emaill")]
+        //public async Task<IActionResult> testmail()
+        //{
+        //    var dir = _env.ContentRootPath;
+        //    var emailTemplatePath = Path.Combine(dir, "EmailTemplates", "CustomerEmailTemplate.html");
+        //    string template = System.IO.File.ReadAllText(emailTemplatePath);
+
+        //    var mailMessage = new MailMessage
+        //    {
+        //        From = new MailAddress("mailservice.adopse@gmail.com"),
+        //        Subject = $"Customer: vlakas sent you a message for your product...!!!",
+        //        Body = template,
+        //        IsBodyHtml = true,
+        //        To = { "christosgalaxiz@gmail.com" }
+        //    };
+        //    //using static class EmailService to send mail async!
+        //    EmailService.SendMail(mailMessage);
+        //    return Ok();
+        //}
     }
 }

@@ -41,8 +41,7 @@ namespace ApiOne.Hubs
         {
             string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
             _connections.Add(username, Context.ConnectionId);
-            
-            await Clients.All.SendAsync("OnlineUsers", _connections.ToString(username));
+            await Clients.All.SendAsync("ConnectToChatHub", _connections.ToString(username));
             await base.OnConnectedAsync();
         }
 
@@ -50,7 +49,6 @@ namespace ApiOne.Hubs
         {
             string username = Context.User.FindFirst(claim => claim.Type == "username")?.Value;
             _connections.Remove(username, Context.ConnectionId);
-            await Clients.All.SendAsync("OnlineUsers");
             await base.OnDisconnectedAsync(ex);
         }
 

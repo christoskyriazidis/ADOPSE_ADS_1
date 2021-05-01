@@ -28,9 +28,7 @@
     </main>
     <div>
       <input type="text" id="message" />
-      <ul id="chat">
-        
-      </ul>
+      <ul id="chat"></ul>
       <button id="btn">send Message</button>
     </div>
   </body>
@@ -41,41 +39,48 @@
   <script src="/scripts/sign-in.js"></script>
 
   <script>
-      axios.get("https://localhost:44374/message?pagenumber=1&chatid=1")
-      .then(res => {
-          console.log(res)
-          for(i of res.data){
-            document.getElementById("chat").innerHTML+=`<li>${i.message}</li>`;
-          }
-      })
-      .catch(err => {
-          console.error(err); 
-      })
-    let btn = document.querySelector("#btn");
-    let message = document.querySelector("#message");
+    //   axios.get("https://localhost:44374/message?pagenumber=1&chatid=1")
+    //   .then(res => {
+    //       console.log(res)
+    //       for(i of res.data){
+    //         document.getElementById("chat").innerHTML+=`<li>${i.message}</li>`;
+    //       }
+    //   })
+    //   .catch(err => {
+    //       console.error(err);
+    //   })
+    // let btn = document.querySelector("#btn");
+    // let message = document.querySelector("#message");
+
+    // var connection = new signalR.HubConnectionBuilder()
+    //   .withUrl("https://localhost:44374/chathub", {
+    //     accessTokenFactory: () => me.access_token,
+    //   })
+    //   .build();
 
     var connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:44374/chathub", {
+      .withUrl("https://localhost:44374/chatHub", {
         accessTokenFactory: () => me.access_token,
       })
       .build();
 
-    connection
-      .start()
-      .catch(function (err) {
-        return console.error(err.toString());
-      });
+    connection.start().catch(function (err) {
+      return console.error(err.toString());
+    });
 
+    connection.on("ConnectToChatHub", (message) => {
+      console.log("request " + message);
+    });
     connection.on("ReceiveMessage", (message) => {
-      document.getElementById("chat").innerHTML+=`<li>${message}</li>`;
+      console.log("request " + message);
     });
 
-    btn.addEventListener("click", () => {
-      var message = document.getElementById("messageInput").value;
-      connection.invoke("SendPrivateMessage", message).catch(function (err) {
-        return alert(err.toString());
-      });
-      console.log("lala");
-    });
+    // btn.addEventListener("click", () => {
+    //   var message = document.getElementById("messageInput").value;
+    //   connection.invoke("SendPrivateMessage", message).catch(function (err) {
+    //     return alert(err.toString());
+    //   });
+    //   console.log("lala");
+    // });
   </script>
 </html>

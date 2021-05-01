@@ -34,17 +34,19 @@ class ChatComponent extends HTMLElement {
             let chatCell = `<div class="chatCellB">                    
                             <div class="chatCellTextB">${username}: ${message}</div>
                         </div>`
+            this.pageNum = 1;
             this.callApi();
         })
     }
     callApi = () => {
-        axios.get("https://localhost:44374/message?chatid=" + this.chatId).then(res => res.data)
+        const data = { params: { pageNumber: this.pageNum, chatId: this.chatId } }
+        axios.get("https://localhost:44374/message", data).then(res => res.data)
             .then(data => {
                 console.log("chat", data);
                 let chatUntilNow = ""
                 data = data.reverse();
                 for (let object of data) {
-                    if (object.customerId == this.customerId) {
+                    if (object.subId == me.profile.sub) {
                         chatUntilNow += ` <div class="chatCell" >
                                         <div class="chatCellText">${object.message}</div>
                                         </div > `
@@ -92,13 +94,17 @@ class ChatComponent extends HTMLElement {
         document.getElementById(this.id).querySelector(".minimizeBtn").addEventListener("click", this.minimize)
         document.getElementById(this.id).querySelector(".sendBtn").addEventListener("click", () => {
             let data = {
-                Message: document.getElementById(this.id).querySelector(".inputForm").value,
-                CustomerId: this.customerId,
-                ChatId: this.chatId
+                MessageText: document.getElementById(this.id).querySelector(".inputForm").value,
+                ActiveChat: this.chatId
             }
             axios.post("https://localhost:44374/message", data
             ).then(console.log)
                 .catch(console.error)
+            document.getElementById(this.id).querySelector(".contentDisplay").innerHTML +=
+                ` <div class="chatCell" >
+                                        <div class="chatCellText">${data.MessageText}</div>
+                                        </div > `
+            document.querySelector(".contentDisplay").scrollTo(0, document.querySelector(".contentDisplay").scrollHeight)
         })
     }
     minimize = () => {
@@ -148,7 +154,8 @@ class ChatComponent extends HTMLElement {
     }
     loadNextPage = (event) => {
         if (this.querySelector(".contentDisplay").scrollTop == 0) {
-            axios.get("https://localhost:44374/message?chatid=" + this.chatId + "&pageNumber=" + this.pageNum).then(res => res.data)
+            const data = { params: { pageNumber: this.pageNum, chatId: this.chatId } }
+            axios.get("https://localhost:44374/message", data).then(res => res.data)
                 .then(data => {
 
                     this.pageNum++;
@@ -156,7 +163,7 @@ class ChatComponent extends HTMLElement {
                     let currentChatPage = "";
                     data = data.reverse();
                     for (let object of data) {
-                        if (object.customerId == this.customerId) {
+                        if (object.subId == me.profile.sub) {
                             currentChatPage += ` <div class="chatCell" >
                                             <div class="chatCellText">${object.message} PAGE:${this.pageNum}</div>
                                             </div > `
@@ -166,7 +173,7 @@ class ChatComponent extends HTMLElement {
                                             </div > `
                         }
                     }
-                    
+
                     console.log(data.length);
                     document.querySelector(".contentDisplay").scrollTo(0, -document.querySelector(".contentDisplay").scrollHeight)
                     this.render(currentChatPage + previousChat)

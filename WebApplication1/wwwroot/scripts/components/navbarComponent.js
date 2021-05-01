@@ -32,6 +32,7 @@ class NavbarComponent extends HTMLElement {
                     <li><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
                     <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
                     <li><a href="#" onclick="attachChatDropdown(event)" class="chat">Chats</a></li>
+                    <li><a href="#" onclick="attachChatRequest(event)" class="chatRequest">Chat Requests</a></li>
                 `
                 break;
                 //const btnSignOut = document.querySelector('#btn-signOut')
@@ -91,6 +92,7 @@ class NavbarComponent extends HTMLElement {
     </div>
         <notification-component class="fresh" style="display:none;"></notification-component>
         <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
+        <chatRequest-component class="fresh" style="display:none;"></chatRequest-component>
         <div class="chatsContainer">
 
         </div>
@@ -204,12 +206,40 @@ const attachChatDropdown = (event) => {
     } else {
         document.querySelector("chatDropdown-component").style.display = "block";
     }
-    let x = document.querySelector(".chat").getBoundingClientRect().right;
+    let x = document.querySelector(".chat").getBoundingClientRect().left;
     let y = document.querySelector(".chat").getBoundingClientRect().bottom;
     const chatDropdownComponent = document.querySelector("chatdropdown-component");
     chatDropdownComponent.style.display = "block";
-    chatDropdownComponent.style.left = (x - 180) + 'px';
+    chatDropdownComponent.style.left = x + 'px';
     chatDropdownComponent.style.top = y + 'px';
+}
+
+const attachChatRequest = (event) => {
+
+    if (document.querySelector("chatrequest-component").classList.contains("fresh")) {
+        document.querySelector("chatrequest-component").classList.remove("fresh")
+        console.log("lmao")
+        let chatRequest = document.querySelector("chatrequest-component")
+        document.body.addEventListener("click", (event) => {
+            if (!((
+                event.pageY > chatRequestComponent.offsetTop &&
+                event.pageY < chatRequestComponent.offsetTop + chatRequestComponent.offsetHeight &&
+                event.pageX < chatRequestComponent.offsetLeft + chatRequestComponent.offsetWidth &&
+                event.pageX > chatRequestComponent.offsetLeft)
+                || event.target.classList.contains("chatRequest"))) {
+                chatRequestComponent.style.display = 'none'
+            }
+        })
+
+    } else {
+        document.querySelector("chatRequest-component").style.display = "block";
+    }
+    let x = document.querySelector(".chatRequest").getBoundingClientRect().left;
+    let y = document.querySelector(".chatRequest").getBoundingClientRect().bottom;
+    const chatRequestComponent = document.querySelector("chatRequest-component");
+    chatRequestComponent.style.display = "block";
+    chatRequestComponent.style.left = (x) + 'px';
+    chatRequestComponent.style.top = y + 'px';
 }
 const myAccountDropdown = ``
 customElements.define("navbar-component", NavbarComponent)

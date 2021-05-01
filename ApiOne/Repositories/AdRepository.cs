@@ -2,6 +2,7 @@
 using ApiOne.Interfaces;
 using ApiOne.Models;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Notification;
 using ApiOne.Models.Queries;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT * from [Ad] where id=@Id";
+                string sql = "select a.*,c.Rating,c.username,c.profileImg,c.Rating,c.reviews,c.Address from ad a join customer c on (a.Customer=c.id) where a.id=@Id";
                 var ad = conn.Query<Ad>(sql, new { Id = id }).FirstOrDefault();
                 return ad;
             }
@@ -246,22 +247,6 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<WishListNotification> GetWishListNotifications(int custmerId)
-        {
-            try
-            {
-                using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT w.id as nId,w.adId,c.username,a.Img,a.title,a.LastUpdate,w.clicked,w.customerId,a.Price " +
-                    "FROM [WishListNotification] w join [Ad] a ON (w.adId=a.id) join [Customer] c ON (c.id=w.customerId) where w.customerId=@CId order by w.id desc";
-                var wishListNotifications = conn.Query<WishListNotification>(sql, new { CId = custmerId }).ToList();
-                return wishListNotifications;
-            }
-            catch (SqlException sqlEx)
-            {
-                Debug.WriteLine(sqlEx);
-                return null;
-            }
-        }
 
         public IEnumerable<int> GetSuscribedSubCategories(int CustmerId)
         {
@@ -284,10 +269,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT w.adId,c.username,a.title,a.Img FROM [WishListt] w " +
-                    "join [Customer] c on (c.id=w.customerId)" +
-                    "join [Ad] a on (a.id=w.adId)" +
-                    "where customerId=@CustomerId ";
+                string sql = "select w.adId,w.sold,a.title,a.Img,c.username from WishListt w join ad a on (w.adId=a.id) join customer c on (c.id=w.customerId) where w.customerId=@CustomerId";
                 var wishList = conn.Query<WishList>(sql,new { CustomerId=CustmerId }).ToList();
                 return wishList;
             }
@@ -426,8 +408,6 @@ namespace ApiOne.Repositories
             };
         }
 
-        
-
         public bool NotificationSeen(int notId)
         {
             try
@@ -441,6 +421,82 @@ namespace ApiOne.Repositories
             {
                 Debug.WriteLine(sqlEx);
                 return false;
+            }
+        }
+
+        public PaginationBSA GetBoughtAds(Pagination pagination, int CustomerId)
+        {
+            try
+            {
+                using var conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC get_my_bought_ads @customerId,@PageNumber,@PageSize; SELECT count(*) from SoldAds WHERE buyerid=@CustomerId";
+                PaginationBSA paginationBSA = new PaginationBSA();
+                using (var results = conn.QueryMultiple(sql, new { pagination.PageNumber,pagination.PageSize, CustomerId }))
+                {
+                    paginationBSA.Result = results.Read<BoughSoldAds>().ToList();
+                    paginationBSA.TotalAds = results.Read<int>().FirstOrDefault();
+                };
+                int lastPageNumber = (paginationBSA.TotalAds % pagination.PageSize == 0) ? (int)paginationBSA.TotalAds / pagination.PageSize : (int)paginationBSA.TotalAds / pagination.PageSize + 1;
+                paginationBSA.PageSize = pagination.PageSize;
+                paginationBSA.CurrentPage = pagination.PageNumber;
+                int nextPageNumber = (pagination.PageNumber == lastPageNumber) ? lastPageNumber : pagination.PageNumber + 1;
+                paginationBSA.NextPageUrl = $"https://localhost:44374/profile/boughtAds?PageNumber={nextPageNumber}&pagesize={pagination.PageSize}";
+                int previousPageNumber = (pagination.PageNumber < 2) ? 1 : pagination.PageNumber - 1;
+                paginationBSA.PreviousPageUrl = $"https://localhost:44374/profile/boughtAds?PageNumber={previousPageNumber}&pagesize={pagination.PageSize}";
+                paginationBSA.LastPageUrl = $"https://localhost:44374/profile/boughtAds?PageNumber={lastPageNumber}&pagesize={pagination.PageSize}"; ;
+                paginationBSA.TotalPages = lastPageNumber;
+                return paginationBSA;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
+        public PaginationBSA GetSoldAds(Pagination pagination, int CustomerId)
+        {
+            try
+            {
+                using var conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC get_my_sold_ads @customerId,@PageNumber,@PageSize; SELECT count(*) from SoldAds WHERE sellerid=@CustomerId";
+                PaginationBSA paginationBSA = new PaginationBSA();
+                using (var results = conn.QueryMultiple(sql, new { pagination.PageNumber, pagination.PageSize, CustomerId }))
+                {
+                    paginationBSA.Result = results.Read<BoughSoldAds>().ToList();
+                    paginationBSA.TotalAds = results.Read<int>().FirstOrDefault();
+                };
+                int lastPageNumber = (paginationBSA.TotalAds % pagination.PageSize == 0) ? (int)paginationBSA.TotalAds / pagination.PageSize : (int)paginationBSA.TotalAds / pagination.PageSize + 1;
+                paginationBSA.PageSize = pagination.PageSize;
+                paginationBSA.CurrentPage = pagination.PageNumber;
+                int nextPageNumber = (pagination.PageNumber == lastPageNumber) ? lastPageNumber : pagination.PageNumber + 1;
+                paginationBSA.NextPageUrl = $"https://localhost:44374/profile/soldads?PageNumber={nextPageNumber}&pagesize={pagination.PageSize}";
+                int previousPageNumber = (pagination.PageNumber < 2) ? 1 : pagination.PageNumber - 1;
+                paginationBSA.PreviousPageUrl = $"https://localhost:44374/profile/soldads?PageNumber={previousPageNumber}&pagesize={pagination.PageSize}";
+                paginationBSA.LastPageUrl = $"https://localhost:44374/profile/soldads?PageNumber={lastPageNumber}&pagesize={pagination.PageSize}"; ;
+                paginationBSA.TotalPages = lastPageNumber;
+                return paginationBSA;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
+        public IEnumerable<WishSubNotification> GetNotifications(int PageNumber, int CustomerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC  get_wishlist_and_subcateg_notif_byid  @pageNumber,@pageSize,@customerId";
+                var notifications = conn.Query<WishSubNotification>(sql, new { PageNumber,PageSize=10, CustomerId}).ToList();
+                return notifications;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
             }
         }
     }
