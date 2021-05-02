@@ -21,7 +21,7 @@ namespace WpfClientt.services {
         private string mainUrl = ApiInfo.AdMainUrl();
         private JsonSerializerOptions options;
 
-        private AdServiceImpl(HttpClient client,JsonSerializerOptions options) {
+        public AdServiceImpl(HttpClient client,JsonSerializerOptions options) {
             this.client = client;
             this.options = options;
         }

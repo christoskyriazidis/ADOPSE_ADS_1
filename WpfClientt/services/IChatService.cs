@@ -16,5 +16,9 @@ namespace WpfClientt.services {
 
         Task Typing();
 
+        Task<ISet<Chat>> Chats();
+
+        IScroller<Message> Messages(int chatId);
+
     }
 }

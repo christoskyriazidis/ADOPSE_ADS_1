@@ -8,39 +8,49 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     static class ApiInfo {
 
+        private static string host = "https://localhost:44374/";
+
+        public static string MyChatsMainUrl() {
+            return "profile/Achat";
+        }
+
+        public static string MessageMainUrl() {
+            return "message";
+        }
+
         public static string AdMainUrl() {
-            return "https://localhost:44374/ad";
+            return "ad";
         }
 
         public static string CustomerMainUrl() {
-            return "https://localhost:44374/customer";
+            return "customer";
         }
 
         public static string ProfileMainUrl() {
-            return "https://localhost:44374/profile";
+            return "profile";
         }
 
         public static string CategoriesMainUrl() {
-            return "https://localhost:44374/category";
+            return "category";
         }
         public static string SubcategoriesMainUrl(Category category) {
-            return $"https://localhost:44374/category/{category.Id}";
+            return $"category/{category.Id}";
         }
 
         public static string ConditionsMainUrl() {
-            return "https://localhost:44374/condition";
+            return "condition";
         }
 
         public static string StatesMainUrl() {
-            return "https://localhost:44374/state";
+            return "state";
         }
 
         public static string TypeMainUrl() {
-            return "https://localhost:44374/type";
+            return "type";
         }
 
         public static string ManufacturersMainUrl() {
-            return "https://localhost:44374/manufacturer";
+            return "manufacturer";
         }
 
     }

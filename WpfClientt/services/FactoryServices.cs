@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityModel.Client;
+using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.services {
     public class FactoryServices {
+        private object lockObject = new object();
 
         private ICustomerService customerService;
         private IAdDetailsService adDetailsService;
+        private IChatService chatService;
+        private JsonSerializerOptions options;
         private OpenIdConnectClient openIdConnectClient;
+        private IAdService adService;
         private HttpClient client;
 
         public FactoryServices() {
@@ -21,7 +27,54 @@ namespace WpfClientt.services {
         }
 
         public async Task<IAdService> AdServiceInstance() {
-            return await AdServiceImpl.GetInstance(client,AdDetailsServiceInstance());
+            CategoryConverter categoryConverter = await CategoryConverter.getInstance(adDetailsService);
+            ConditionConverter conditionConverter = await ConditionConverter.getInstance(adDetailsService);
+            ManufacturerConverter manufacturerConverter = await ManufacturerConverter.getInstance(adDetailsService);
+            StateConverter stateConverter = await StateConverter.getInstance(adDetailsService);
+            SubcategoryConverter subcategoryConverter = await SubcategoryConverter.getInstance(adDetailsService);
+            TypeConverter typeConverter = await TypeConverter.getInstance(adDetailsService);
+            if(adDetailsService == null) {
+                lock (lockObject) {
+                    if (options == null) {
+                        options = new JsonSerializerOptions();
+                        options.Converters.Add(categoryConverter);
+                        options.Converters.Add(conditionConverter);
+                        options.Converters.Add(manufacturerConverter);
+                        options.Converters.Add(stateConverter);
+                        options.Converters.Add(subcategoryConverter);
+                        options.Converters.Add(typeConverter);
+                    }
+                }
+                adService = new AdServiceImpl(client, options);
+            }
+            
+            return adService;
+        }
+
+        public async Task<IChatService> ChatServiceInstance() {
+            CategoryConverter categoryConverter = await CategoryConverter.getInstance(adDetailsService);
+            ConditionConverter conditionConverter = await ConditionConverter.getInstance(adDetailsService);
+            ManufacturerConverter manufacturerConverter = await ManufacturerConverter.getInstance(adDetailsService);
+            StateConverter stateConverter = await StateConverter.getInstance(adDetailsService);
+            SubcategoryConverter subcategoryConverter = await SubcategoryConverter.getInstance(adDetailsService);
+            TypeConverter typeConverter = await TypeConverter.getInstance(adDetailsService);
+
+            if(chatService == null) {
+                lock (lockObject) {
+                    if(options == null) {
+                        options = new JsonSerializerOptions();
+                        options.Converters.Add(categoryConverter);
+                        options.Converters.Add(conditionConverter);
+                        options.Converters.Add(manufacturerConverter);
+                        options.Converters.Add(stateConverter);
+                        options.Converters.Add(subcategoryConverter);
+                        options.Converters.Add(typeConverter);
+                    }
+                }
+                chatService = await ChatServiceSignalR.GetInstance(client,options);
+            }
+
+            return chatService;
         }
 
         public ICustomerService CustomerServiceInstance() {
