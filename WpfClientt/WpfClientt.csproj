@@ -39,6 +39,12 @@
     <StartupObject>WpfClientt.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncAwaitBestPractices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=532360cfd341384d, processorArchitecture=MSIL">
+      <HintPath>..\packages\AsyncAwaitBestPractices.5.1.0\lib\netstandard2.0\AsyncAwaitBestPractices.dll</HintPath>
+    </Reference>
+    <Reference Include="AsyncAwaitBestPractices.MVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fd3d463fd20deb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\AsyncAwaitBestPractices.MVVM.5.1.0\lib\netstandard2.0\AsyncAwaitBestPractices.MVVM.dll</HintPath>
+    </Reference>
     <Reference Include="IdentityModel, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e7877f4675df049f, processorArchitecture=MSIL">
       <HintPath>..\packages\IdentityModel.4.1.0\lib\net472\IdentityModel.dll</HintPath>
     </Reference>
@@ -175,6 +181,7 @@
     <Compile Include="services\ChatServiceSignalR.cs" />
     <Compile Include="services\IChatService.cs" />
     <Compile Include="services\OpenIdConnectClient.cs" />
+    <Compile Include="viewModels\ChatsViewModel.cs" />
     <Compile Include="viewModels\filters\SearchFilterMember.cs" />
     <Compile Include="viewModels\FormViewModel.cs" />
     <Compile Include="viewModels\LoginViewModel.cs" />

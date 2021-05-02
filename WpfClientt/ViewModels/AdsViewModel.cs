@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using WpfClientt.viewModels.filters;
 using WpfClientt.services.filtering;
+using AsyncAwaitBestPractices.MVVM;
 
 namespace WpfClientt.viewModels {
     public class AdsViewModel : BaseViewModel, IViewModel {
@@ -39,11 +40,11 @@ namespace WpfClientt.viewModels {
             AddCurrentPageAds(scroller);
             this.adService = adService;
             FilterViewModel = filterViewModel;
-            NextPageCommand = new DelegateCommand(OnMoveNext);
-            PreviousPageCommand = new DelegateCommand(OnMoveBack);
+            NextPageCommand = new AsyncCommand(OnMoveNext);
+            PreviousPageCommand = new AsyncCommand(OnMoveBack);
+            RefreshCommand = new AsyncCommand(OnReset);
+            SearchCommand = new AsyncCommand(OnSearch);
             ReadMoreCommand = new DelegateCommand(OnReadMore);
-            SearchCommand = new DelegateCommand(OnSearch);
-            RefreshCommand = new DelegateCommand(OnReset);
         }
 
         public static async Task<AdsViewModel> GetInstanceWithSubcategoryAds(FactoryServices factory,Subcategory subcategory) {
@@ -55,13 +56,13 @@ namespace WpfClientt.viewModels {
             return new AdsViewModel(subcategoryAds, adService, filterViewModel);
         }
 
-        private async void OnMoveNext(object param) {
+        private async Task OnMoveNext() {
             if (await scroller.MoveNext()) {
                 AddCurrentPageAds(scroller);
             }
         }
 
-        private async void OnMoveBack(object param) {
+        private async Task OnMoveBack() {
             if (await scroller.MoveBack()) {
                 AddCurrentPageAds(scroller);
             }
@@ -71,14 +72,14 @@ namespace WpfClientt.viewModels {
             Mediator.Notify("AdDetailsView", param);
         }
 
-        private async void OnSearch(object param) {
+        private async Task OnSearch() {
             Enabled = false;
             scroller = adService.Fiter(FilterViewModel.GetFilterBuilder());
             await scroller.Init();
             AddCurrentPageAds(scroller);
         }
 
-        private async void OnReset(object param) {
+        private async Task OnReset() {
             Enabled = false;
             FilterViewModel.Reset();
             scroller = adService.Scroller();
