@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
+
+    /// <summary>
+    /// Decorator for the ad that invoked validation logic afte each set and calls a 
+    /// specific function when category is set.
+    /// </summary>
     public class AdDecorator : Ad {
 
         private Action validation;

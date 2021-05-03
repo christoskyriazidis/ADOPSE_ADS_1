@@ -35,7 +35,7 @@ namespace WpfClientt.viewModels {
 
         protected async Task ClearForm() {
             ClearFormStrep();
-            OnPropertyChanged("Form");
+            OnPropertyChanged(nameof(Form));
             await Task.Delay(2000);
             Messages.Clear();
         }

@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WpfClientt.model.chat;
+using WpfClientt.model;
 
 namespace WpfClientt.services {
     class ChatServiceSignalR : IChatService {

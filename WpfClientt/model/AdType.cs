@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
+    /// <summary>
+    /// Ad detail component that specified the type of the ad(for sell,exchange,buy,etc).
+    /// </summary>
     public class AdType : AdDetailComponent{
 
         [JsonPropertyName("id")]

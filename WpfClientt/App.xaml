@@ -4,12 +4,9 @@
              xmlns:local="clr-namespace:WpfClientt"
              xmlns:models="clr-namespace:WpfClientt.model"
              xmlns:viewmodels="clr-namespace:WpfClientt.viewModels"
-             xmlns:menus="clr-namespace:WpfClientt.viewModels.menu"
              xmlns:views="clr-namespace:WpfClientt.views"
              xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
-             xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus"
-             xmlns:converters="clr-namespace:WpfClientt.viewModels.converters"
-             xmlns:filters="clr-namespace:WpfClientt.viewModels.filters">
+             xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus">
     <Application.Resources>
         
         <!--COLORS-->
@@ -122,12 +119,16 @@
         <DataTemplate DataType="{x:Type viewmodels:ProfileViewModel}">
             <views:ProfileSettings />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:ChatsViewModel}">
+            <views:ChatsView />
+        </DataTemplate>
         
-        <DataTemplate DataType="{x:Type menus:GuestMenu}">
+        <DataTemplate DataType="{x:Type viewmodels:GuestMenu}">
             <viewsMenu:GuestMenu />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type menus:LoginCustomerMenu}">
+        <DataTemplate DataType="{x:Type viewmodels:LoginCustomerMenu}">
             <viewsMenu:LoginCustomerMenu />
         </DataTemplate>
 
@@ -135,32 +136,28 @@
             <viewsFilter:FilterView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:MultipleChoicesFilterMember}" >
+        <DataTemplate DataType="{x:Type viewmodels:MultipleChoicesFilterMember}" >
             <viewsFilter:MultipleChoicesFilterMemberView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:SingleChoiceFilterMember}">
+        <DataTemplate DataType="{x:Type viewmodels:SingleChoiceFilterMember}">
             <viewsFilter:SingleChoiceFilterMemberView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:MinMaxPriceFilterMember}">
+        <DataTemplate DataType="{x:Type viewmodels:MinMaxPriceFilterMember}">
             <viewsFilter:RangeFilterMemberView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type filters:SearchFilterMember}">
+        <DataTemplate DataType="{x:Type viewmodels:SearchFilterMember}">
             <viewsFilter:SearchFilterMemberView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type models:Message}">
+            <views:MessageView />
+        </DataTemplate>
+
         <!-- Converters -->
-        <converters:StringToIntConverter x:Key="IntConverter" />
-        
-        <!-- Validation Template -->
-        <ControlTemplate x:Key="validationTemplate">
-            <DockPanel>
-                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
-                <AdornedElementPlaceholder/>
-            </DockPanel>
-        </ControlTemplate>
+        <viewmodels:StringToIntConverter x:Key="IntConverter" />
 
     </Application.Resources>
 </Application>

@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using WpfClientt.model;
 using WpfClientt.services;
 using WpfClientt.services.filtering;
-using WpfClientt.viewModels.filters;
 
 namespace WpfClientt.viewModels {
+    /// <summary>
+    /// Represents the filters available to the user to use.
+    /// </summary>
     public class FilterViewModel {
         private static FilterViewModel instance;
-        private AdsFilterBuilder filterBuilder ;
+        private AdsFilterBuilder filterBuilder;
 
         public ObservableCollection<FilterMember> FilterMemebers { get; private set; } = new ObservableCollection<FilterMember>();
 
@@ -41,6 +43,10 @@ namespace WpfClientt.viewModels {
             return instance; 
         }
 
+        /// <summary>
+        /// Returns the AdsFilterBuilder that has been populated with selected values.
+        /// </summary>
+        /// <returns></returns>
         public AdsFilterBuilder GetFilterBuilder() {
             foreach (FilterMember filterMember in FilterMemebers) {
                 filterMember.Finish();
@@ -48,6 +54,9 @@ namespace WpfClientt.viewModels {
             return filterBuilder;
         }
 
+        /// <summary>
+        /// Resets all the available filters to default settings.
+        /// </summary>
         public void Reset() {
             foreach (FilterMember filterMember in FilterMemebers) {
                 filterMember.Reset();

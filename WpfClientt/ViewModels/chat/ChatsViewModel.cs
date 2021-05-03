@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using WpfClientt.model.chat;
+using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {

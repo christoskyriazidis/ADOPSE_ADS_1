@@ -18,7 +18,7 @@ namespace WpfClientt.viewModels {
             }
             private set {
                 ad = value;
-                OnPropertyChanged("DisplayedAd");
+                OnPropertyChanged(nameof(DisplayedAd));
             } 
         }
 

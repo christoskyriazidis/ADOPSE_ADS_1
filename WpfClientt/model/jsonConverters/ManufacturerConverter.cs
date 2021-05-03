@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.model.jsonConverters {
+
+    /// <summary>
+    /// Converter that converts long ids representing values of manufacturers to instances of the class Manufacturer.
+    /// </summary>
     public class ManufacturerConverter : JsonConverter<Manufacturer> {
 
         private static ManufacturerConverter instance;

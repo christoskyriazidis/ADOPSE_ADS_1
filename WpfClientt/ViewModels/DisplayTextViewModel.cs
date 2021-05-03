@@ -15,7 +15,7 @@ namespace WpfClientt.viewModels {
             }
             private set {
                 text = value;
-                OnPropertyChanged("ShownText");
+                OnPropertyChanged(nameof(ShownText));
             }
         }
 

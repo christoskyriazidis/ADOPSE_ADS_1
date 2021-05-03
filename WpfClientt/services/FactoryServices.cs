@@ -9,6 +9,9 @@ using IdentityModel.Client;
 using WpfClientt.model.jsonConverters;
 
 namespace WpfClientt.services {
+    /// <summary>
+    /// Provides static methods for retrieving core services of the application.
+    /// </summary>
     public class FactoryServices {
         private object lockObject = new object();
 

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.model.jsonConverters {
+
+    /// <summary>
+    /// Converter that converts long ids representing values of conditions to instances of the class Condition.
+    /// </summary>
     public class ConditionConverter : JsonConverter<Condition> {
 
         private static ConditionConverter instance;

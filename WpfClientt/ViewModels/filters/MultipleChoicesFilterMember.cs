@@ -7,19 +7,33 @@ using System.Threading.Tasks;
 using WpfClientt.model;
 using WpfClientt.services;
 
-namespace WpfClientt.viewModels.filters {
+namespace WpfClientt.viewModels {
+    /// <summary>
+    /// Filter that allows users to select multiple values.
+    /// </summary>
     public class MultipleChoicesFilterMember : FilterMember {
+        /// <summary>
+        /// The title to display to the user.
+        /// </summary>
         public string Title { get; private set; }
-        public ObservableCollection<Checkbox> Choices { get; private set; } = new ObservableCollection<Checkbox>();
+
+        /// <summary>
+        /// Available choices.
+        /// </summary>
+        public ObservableCollection<CheckBoxViewModel> Choices { get; private set; } = new ObservableCollection<CheckBoxViewModel>();
+
         private Action<long> finishAction;
 
         private MultipleChoicesFilterMember(ISet<AdDetailComponent> filters, string title, Action<long> finishAction) {
             this.Title = title;
-            filters.Select(component => new Checkbox(component.Title, component.Id))
+            filters.Select(component => new CheckBoxViewModel(component.Title, component.Id))
                 .ToList().ForEach(choice => Choices.Add(choice));
             this.finishAction = finishAction;
         }
 
+        /// <summary>
+        /// For every selected choice calls the finish action with its long value.
+        /// </summary>
         public void Finish() {
             Choices
                 .Where(choice => choice.Selected)
@@ -28,8 +42,11 @@ namespace WpfClientt.viewModels.filters {
                 .ForEach(finishAction);
         }
 
+        /// <summary>
+        /// Resets the filter by deselecting all the choices.
+        /// </summary>
         public void Reset() {
-            foreach (Checkbox choice in Choices) {
+            foreach (CheckBoxViewModel choice in Choices) {
                 choice.Selected = false;
             }
         }

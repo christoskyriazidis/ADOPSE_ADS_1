@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WpfClientt.viewModels.menu {
+namespace WpfClientt.viewModels {
     public class LoginCustomerMenu : IMenu {
 
         public ICommand Categories { get; private set; }

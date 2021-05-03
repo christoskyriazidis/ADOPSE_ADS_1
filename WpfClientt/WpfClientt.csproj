@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject>WpfClientt.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>images\logo\supermarketcart_89153.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncAwaitBestPractices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=532360cfd341384d, processorArchitecture=MSIL">
       <HintPath>..\packages\AsyncAwaitBestPractices.5.1.0\lib\netstandard2.0\AsyncAwaitBestPractices.dll</HintPath>
@@ -178,43 +181,43 @@
     <Compile Include="model\Manufacturer.cs" />
     <Compile Include="model\RegisterForm.cs" />
     <Compile Include="model\State.cs" />
-    <Compile Include="services\ChatServiceSignalR.cs" />
-    <Compile Include="services\IChatService.cs" />
-    <Compile Include="services\OpenIdConnectClient.cs" />
-    <Compile Include="viewModels\ChatsViewModel.cs" />
+    <Compile Include="services\chat\ChatServiceSignalR.cs" />
+    <Compile Include="services\chat\IChatService.cs" />
+    <Compile Include="services\customer\OpenIdConnectClient.cs" />
+    <Compile Include="viewModels\chat\ChatsViewModel.cs" />
     <Compile Include="viewModels\filters\SearchFilterMember.cs" />
-    <Compile Include="viewModels\FormViewModel.cs" />
-    <Compile Include="viewModels\LoginViewModel.cs" />
-    <Compile Include="viewModels\SubcategoriesViewModel.cs" />
+    <Compile Include="viewModels\customer\FormViewModel.cs" />
+    <Compile Include="viewModels\customer\LoginViewModel.cs" />
+    <Compile Include="viewModels\ad\SubcategoriesViewModel.cs" />
     <Compile Include="model\Subcategory.cs" />
     <Compile Include="model\AdType.cs" />
-    <Compile Include="services\AdDetailsServiceImpl.cs" />
-    <Compile Include="services\AdServiceImpl.cs" />
+    <Compile Include="services\ad\AdDetailsServiceImpl.cs" />
+    <Compile Include="services\ad\AdServiceImpl.cs" />
     <Compile Include="services\filtering\AdsFilterBuilder.cs" />
     <Compile Include="services\ApiInfo.cs" />
-    <Compile Include="services\CustomerServiceImpl.cs" />
+    <Compile Include="services\customer\CustomerServiceImpl.cs" />
     <Compile Include="services\FactoryServices.cs" />
     <Compile Include="services\GenericPage.cs" />
     <Compile Include="services\GenericScroller.cs" />
-    <Compile Include="services\IAdDetailsService.cs" />
-    <Compile Include="services\IAdService.cs" />
-    <Compile Include="services\ICustomerService.cs" />
+    <Compile Include="services\ad\IAdDetailsService.cs" />
+    <Compile Include="services\ad\IAdService.cs" />
+    <Compile Include="services\customer\ICustomerService.cs" />
     <Compile Include="services\IPage.cs" />
     <Compile Include="services\IScroller.cs" />
     <Compile Include="services\IService.cs" />
-    <Compile Include="viewModels\AdDetailsViewModel.cs" />
-    <Compile Include="viewModels\AdsViewModel.cs" />
+    <Compile Include="viewModels\ad\AdDetailsViewModel.cs" />
+    <Compile Include="viewModels\ad\AdsViewModel.cs" />
     <Compile Include="viewModels\BaseViewModel.cs" />
-    <Compile Include="viewModels\CategoriesViewModel.cs" />
+    <Compile Include="viewModels\ad\CategoriesViewModel.cs" />
     <Compile Include="viewModels\converters\StringToIntConverter.cs" />
-    <Compile Include="viewModels\CreateAdViewModel.cs" />
+    <Compile Include="viewModels\ad\CreateAdViewModel.cs" />
     <Compile Include="viewModels\DelegateCommand.cs" />
-    <Compile Include="viewModels\filters\Checkbox.cs" />
+    <Compile Include="viewModels\filters\CheckBoxViewModel.cs" />
     <Compile Include="viewModels\filters\FilterMember.cs" />
     <Compile Include="viewModels\filters\MinMaxFilterMember.cs" />
     <Compile Include="viewModels\filters\MinMaxPriceFilterMember.cs" />
     <Compile Include="viewModels\filters\MultipleChoicesFilterMember.cs" />
-    <Compile Include="viewModels\FilterViewModel.cs" />
+    <Compile Include="viewModels\filters\FilterViewModel.cs" />
     <Compile Include="viewModels\filters\RadioButtonViewModel.cs" />
     <Compile Include="viewModels\filters\SingleChoiceFilterMember.cs" />
     <Compile Include="viewModels\IViewModel.cs" />
@@ -223,8 +226,8 @@
     <Compile Include="viewModels\menu\GuestMenu.cs" />
     <Compile Include="viewModels\menu\IMenu.cs" />
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
-    <Compile Include="viewModels\ProfileViewModel.cs" />
-    <Compile Include="viewModels\RegisterViewModel.cs" />
+    <Compile Include="viewModels\customer\ProfileViewModel.cs" />
+    <Compile Include="viewModels\customer\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
     <Compile Include="views\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>
@@ -234,6 +237,12 @@
     </Compile>
     <Compile Include="views\CategoriesView.xaml.cs">
       <DependentUpon>CategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\ChatsView.xaml.cs">
+      <DependentUpon>ChatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\CreateAdView.xaml.cs">
       <DependentUpon>CreateAdView.xaml</DependentUpon>
@@ -268,6 +277,9 @@
     <Compile Include="views\menus\LoginCustomerMenu.xaml.cs">
       <DependentUpon>LoginCustomerMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\ProfileSettings.xaml.cs">
       <DependentUpon>ProfileSettings.xaml</DependentUpon>
     </Compile>
@@ -293,6 +305,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\CategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\ChatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\ChatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,6 +360,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\ProfileSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -383,6 +407,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\logo\supermarketcart_89153.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

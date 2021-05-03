@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.model.jsonConverters {
+
+    /// <summary>
+    /// Converter that converts long ids representing values of categories to instances of the class Category.
+    /// </summary>
     public class CategoryConverter : JsonConverter<Category> {
         private static CategoryConverter instance;
 

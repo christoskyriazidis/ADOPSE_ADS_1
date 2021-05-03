@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 using System.Windows.Input;
 using System.Diagnostics;
-using WpfClientt.viewModels.filters;
 using WpfClientt.services.filtering;
 using AsyncAwaitBestPractices.MVVM;
 
@@ -30,7 +29,7 @@ namespace WpfClientt.viewModels {
             get => enabled;
             private set {
                 enabled = value;
-                OnPropertyChanged("Enabled");
+                OnPropertyChanged(nameof(Enabled));
             }
         }
         public FilterViewModel FilterViewModel { get; set; }
