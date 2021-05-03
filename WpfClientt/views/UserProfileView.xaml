@@ -27,62 +27,142 @@
             <Label x:Name="Name" Content="Ilias Georgiou" Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="35" Margin="0,0,0,10"/>
         </Grid>
 
-        <!--Ads-->
-        <ItemsControl ItemsSource="{Binding Ads}" Grid.Row="1" Grid.Column="0">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Height="300" Width="300" Background="{StaticResource blue-light}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="10" >
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*" />
-                                <RowDefinition Height="0.05*" />
-                                <RowDefinition Height="0.01" />
-                                <RowDefinition Height="0.25*" />
-                                <RowDefinition Height="0.09*" />
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.25*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <Border Background="{StaticResource blue-light}" Margin="10" CornerRadius="8"/>
+                
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.45*"/>
+                        <ColumnDefinition Width="0.55*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.25*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.15*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Infos" FontSize="15" Padding="20,0,0,0"  VerticalAlignment="Bottom"/>
+
+                    <Label Content="Age" Grid.Row="1" FontSize="15" Padding="20,0,0,0"  VerticalAlignment="Bottom"/>
+                    <Label Content="25" Grid.Row="1" Grid.Column="1" FontSize="15" Padding="0,5,0,0"  VerticalAlignment="Bottom"/>
+                    <Label Content="Location" Grid.Row="2" FontSize="15" Padding="20,0,0,0"  VerticalAlignment="Bottom"/>
+                    <Label Content="Thessaloniki" Grid.Row="2" Grid.Column="1" FontSize="15" Padding="0,5,0,0"  VerticalAlignment="Bottom"/>
+                    <Label Content="Sales" Grid.Row="3" FontSize="15" Padding="20,0,0,0"  VerticalAlignment="Bottom"/>
+                    <Label Content="20000" Grid.Row="3" Grid.Column="1" FontSize="15" Padding="0,5,0,0"  VerticalAlignment="Bottom"/>
+
+                </Grid>
+            </Grid>
+
+            <!--Ads-->
+            <ItemsControl ItemsSource="{Binding Ads}" Grid.Column="1">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="300" Width="300" Background="{StaticResource blue-light}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="10" >
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.1*" />
-                                    <RowDefinition Height="0.9*" />
+                                    <RowDefinition Height="0.5*" />
+                                    <RowDefinition Height="0.05*" />
+                                    <RowDefinition Height="0.01" />
+                                    <RowDefinition Height="0.25*" />
+                                    <RowDefinition Height="0.09*" />
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="0.5*" />
-                                    <ColumnDefinition Width="0.5*" />
-                                </Grid.ColumnDefinitions >
-                                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="0">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="{Binding ImageUri}" />
-                                    </Image.Source>
-                                </Image>
-                                <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource green-light}" Canvas.ZIndex="1" CornerRadius="8">
+                                <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.1*" />
+                                        <RowDefinition Height="0.9*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions >
+                                        <ColumnDefinition Width="0.5*" />
+                                        <ColumnDefinition Width="0.5*" />
+                                    </Grid.ColumnDefinitions >
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="0">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="{Binding ImageUri}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource green-light}" Canvas.ZIndex="1" CornerRadius="8">
 
-                                    <TextBlock  Foreground="#fff" TextAlignment="Center" Grid.Column="0">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}$">
-                                                <Binding  Path="Price" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Border>
-                            </Grid>
+                                        <TextBlock  Foreground="#fff" TextAlignment="Center" Grid.Column="0">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}$">
+                                                    <Binding  Path="Price" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
 
-                            <TextBlock Text="{Binding Title}" TextAlignment="Center" Grid.Row="1" Foreground="#fff" />
-                            <TextBlock Grid.Row="3" Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#fff" />
-                            <Border Grid.Row="4" BorderThickness="1" CornerRadius="8" >
-                                <Button Content="Read More..." Style="{StaticResource medium_blue_button}" 
+                                <TextBlock Text="{Binding Title}" TextAlignment="Center" Grid.Row="1" Foreground="#fff" />
+                                <TextBlock Grid.Row="3" Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#fff" />
+                                <Border Grid.Row="4" BorderThickness="1" CornerRadius="8" >
+                                    <Button Content="Read More..." Style="{StaticResource medium_blue_button}" 
                                             Command="{Binding DataContext.ReadMoreCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding Id}"/>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.4*"/>
+                    <RowDefinition Height="0.6*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition Height="0.18*"/>
+                        <RowDefinition Height="0.72*"/>
+                        <RowDefinition Height="0.05*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.05*"/>
+                        <ColumnDefinition Width="0.9*"/>
+                        <ColumnDefinition Width="0.05*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource blue-light}" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" CornerRadius="8"/>
+                    <Label Content="Review" Grid.Row="1" Grid.Column="1"/>
+                    <Border Background="{StaticResource blue-medium}" Grid.Column="1" Grid.Row="2" Margin="5" CornerRadius="8">
+                        <TextBlock x:Name="userreview" Text="Leave your review..." Margin="5" TextWrapping="Wrap" />
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.05*"/>
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.75*"/>
+                        <RowDefinition Height="0.05*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.05*"/>
+                        <ColumnDefinition Width="0.9*"/>
+                        <ColumnDefinition Width="0.05*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource blue-light}" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" CornerRadius="8" />
+                    <Label Content="Past reviews" Grid.Row="1" Grid.Column="1"/>
+                    
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
