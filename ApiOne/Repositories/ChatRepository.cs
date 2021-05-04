@@ -114,5 +114,21 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
+
+        public bool DeclineChatRequest(int Rid)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "update ChatRequest set confirmed=1 where id=@Rid";
+                var chatMessages = conn.Query<int>(sql, new { Rid }).FirstOrDefault();
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
     }
 }

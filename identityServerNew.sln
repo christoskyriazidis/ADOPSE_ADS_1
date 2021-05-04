@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClientt", "WpfClientt\Wp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClientApp", "WebApplication1\WebClientApp.csproj", "{9532ED97-49AB-47F8-95B5-113A038739EF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DypaApi", "DypaApi\DypaApi.csproj", "{20CCB958-9338-4516-82B7-189552D3104E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DypaClientJs", "DypaClientJs\DypaClientJs.csproj", "{70311647-1ADC-4B4F-A389-27F6443A6616}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{9532ED97-49AB-47F8-95B5-113A038739EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9532ED97-49AB-47F8-95B5-113A038739EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9532ED97-49AB-47F8-95B5-113A038739EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20CCB958-9338-4516-82B7-189552D3104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20CCB958-9338-4516-82B7-189552D3104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20CCB958-9338-4516-82B7-189552D3104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20CCB958-9338-4516-82B7-189552D3104E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70311647-1ADC-4B4F-A389-27F6443A6616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70311647-1ADC-4B4F-A389-27F6443A6616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70311647-1ADC-4B4F-A389-27F6443A6616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70311647-1ADC-4B4F-A389-27F6443A6616}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

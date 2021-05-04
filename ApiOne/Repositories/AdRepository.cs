@@ -84,7 +84,7 @@ namespace ApiOne.Repositories
             }
         }
 
-        public AdsWithPagination GetAdsByCustomerId(Pagination adParameters,int customerId )
+        public AdsWithPagination GetMyAds(Pagination adParameters,int customerId )
         {
             try
             {
@@ -246,7 +246,6 @@ namespace ApiOne.Repositories
                 return null;
             }
         }
-
 
         public IEnumerable<int> GetSuscribedSubCategories(int CustmerId)
         {
@@ -492,6 +491,36 @@ namespace ApiOne.Repositories
                 string sql = "EXEC  get_wishlist_and_subcateg_notif_byid  @pageNumber,@pageSize,@customerId";
                 var notifications = conn.Query<WishSubNotification>(sql, new { PageNumber,PageSize=10, CustomerId}).ToList();
                 return notifications;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
+        public AdsWithPagination GetActiveAdsByCustomerId(Pagination adParameters, int customerId)
+        {
+            try
+            {
+                using var conn = ConnectionManager.GetSqlConnection();
+                string sql = "EXEC get_ads_by_customer @pageNumber,@customerId;SELECT count(*)as AdCount FROM [Ad] where customer=@customerId and state=1 ";
+                AdsWithPagination adPagination = new AdsWithPagination();
+                using (var results = conn.QueryMultiple(sql, new { adParameters.PageNumber, customerId }))
+                {
+                    adPagination.Result = results.Read<CompleteAd>().ToList();
+                    adPagination.TotalAds = results.Read<int>().FirstOrDefault();
+                };
+                int lastPageNumber = (adPagination.TotalAds % adParameters.PageSize == 0) ? (int)adPagination.TotalAds / adParameters.PageSize : (int)adPagination.TotalAds / adParameters.PageSize + 1;
+                adPagination.PageSize = adParameters.PageSize;
+                adPagination.CurrentPage = adParameters.PageNumber;
+                int nextPageNumber = (adParameters.PageNumber == lastPageNumber) ? lastPageNumber : adParameters.PageNumber + 1;
+                adPagination.NextPageUrl = $"https://localhost:44374/customer/ad/{customerId}?PageNumber={nextPageNumber}";
+                int previousPageNumber = (adParameters.PageNumber < 2) ? 1 : adParameters.PageNumber - 1;
+                adPagination.PreviousPageUrl = $"https://localhost:44374/customer/ad/{customerId}?PageNumber={previousPageNumber}";
+                adPagination.LastPageUrl = $"https://localhost:44374/customer/ad/{customerId}?PageNumber={lastPageNumber}"; ;
+                adPagination.TotalPages = lastPageNumber;
+                return adPagination;
             }
             catch (SqlException sqlEx)
             {
