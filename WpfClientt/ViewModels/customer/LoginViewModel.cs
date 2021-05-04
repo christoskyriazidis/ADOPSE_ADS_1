@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace WpfClientt.viewModels {
 
         private LoginViewModel(OpenIdConnectClient openIdConnectClient,string loginUrl) {
             this.openIdConnectClient = openIdConnectClient;
-            ExchangeTokenCommand = new DelegateCommand(ExchangeToken);
+            ExchangeTokenCommand = new AsyncCommand<string>(ExchangeToken);
             LoginUrl = loginUrl;
         }
 
@@ -31,9 +32,9 @@ namespace WpfClientt.viewModels {
             return instance;
         }
 
-        private async void ExchangeToken(object redirectUri) {
+        private async Task ExchangeToken(string redirectUri) {
             Mediator.Notify("DisplayPageView", "Authentication in progress");
-            await openIdConnectClient.RetrieveAndSetAccessToken((string)redirectUri);
+            await openIdConnectClient.RetrieveAndSetAccessToken(redirectUri);
             Mediator.Notify("ChangeToLoginMenuView");
             Mediator.Notify("DisplayPageView", "Now you've logged in successfully.");
         }

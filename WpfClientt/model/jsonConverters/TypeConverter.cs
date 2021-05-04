@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.model.jsonConverters {
+
+    /// <summary>
+    /// Converter that converts long ids representing values of ad types to instances of the class AdType.
+    /// </summary>
     public class TypeConverter : JsonConverter<AdType> {
 
         private static TypeConverter instance;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -15,10 +16,10 @@ namespace WpfClientt.viewModels {
         public ICommand SubmitCommand { get; private set; }
 
         public FormViewModel() {
-            SubmitCommand = new DelegateCommand(SubmitForm);
+            SubmitCommand = new AsyncCommand(SubmitForm);
         }
 
-        protected async void SubmitForm(object ignored) {
+        protected async Task SubmitForm() {
             Validate();
             if (Errors.Count == 0) {
                 Messages.Add("Trying to submite the form.");
@@ -34,7 +35,7 @@ namespace WpfClientt.viewModels {
 
         protected async Task ClearForm() {
             ClearFormStrep();
-            OnPropertyChanged("Form");
+            OnPropertyChanged(nameof(Form));
             await Task.Delay(2000);
             Messages.Clear();
         }

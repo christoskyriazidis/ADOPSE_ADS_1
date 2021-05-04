@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using WpfClientt.services;
 
 namespace WpfClientt.model.jsonConverters {
+
+    /// <summary>
+    /// Converter that converts long ids representing values of states to instances of the class State.
+    /// </summary>
     public class StateConverter : JsonConverter<State> {
 
         private static StateConverter instance;

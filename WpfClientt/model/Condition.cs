@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
+    /// <summary>
+    /// Ad detail component representing the condition of the ad:new,used,etc.
+    /// </summary>
     public class Condition : AdDetailComponent {
 
         [JsonPropertyName("id")]

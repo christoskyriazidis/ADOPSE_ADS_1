@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
+    /// <summary>
+    /// A model class for registration form.A decorator that calls a callback each time a 
+    /// setter is called.
+    /// </summary>
     public class RegisterForm : Customer {
 
         private string confirmatPassword = string.Empty;

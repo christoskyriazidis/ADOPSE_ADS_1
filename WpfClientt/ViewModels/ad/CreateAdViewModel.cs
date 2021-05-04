@@ -80,7 +80,7 @@ namespace WpfClientt.viewModels {
             fileDialog.Filter = "Image files (*.jpg,*.jpeg,*.png) | *.jpg; *.jpeg;*.png";
             if (fileDialog.ShowDialog() == true) {
                 Form.ImageUri = new Uri($"file:///{fileDialog.FileName}");
-                OnPropertyChanged("CurrentlyChosenFileName");
+                OnPropertyChanged(nameof(CurrentlyChosenFileName));
             }
         }
 
@@ -94,7 +94,7 @@ namespace WpfClientt.viewModels {
 
         private void ClearImage() {
             Form.ImageUri = null;
-            OnPropertyChanged("CurrentlyChosenFileName");
+            OnPropertyChanged(nameof(CurrentlyChosenFileName));
         }
 
         protected override Func<Ad, Task> SubmitAction() => adService.Create;

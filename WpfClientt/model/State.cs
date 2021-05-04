@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WpfClientt.model {
+    /// <summary>
+    /// Ad detail component that represents the state of the ad(sold,for example).
+    /// </summary>
     public class State : AdDetailComponent  {
 
         [JsonPropertyName("id")]

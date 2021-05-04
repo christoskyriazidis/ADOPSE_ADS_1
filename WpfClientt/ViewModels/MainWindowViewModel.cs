@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfClientt.model;
 using WpfClientt.services;
-using WpfClientt.viewModels.menu;
 
 namespace WpfClientt.viewModels {
     public class MainWindowViewModel : BaseViewModel {
@@ -27,7 +26,7 @@ namespace WpfClientt.viewModels {
             }
             set {
                 currentPageView = value;
-                OnPropertyChanged("CurrentPageViewModel");
+                OnPropertyChanged(nameof(CurrentPageViewModel));
             }
         }
 
@@ -37,7 +36,7 @@ namespace WpfClientt.viewModels {
             }
             set {
                 currentMenuView = value;
-                OnPropertyChanged("CurrentMenuView");
+                OnPropertyChanged(nameof(CurrentMenuView));
             }
         }
 
@@ -57,7 +56,9 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("CreateAdView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
             Mediator.Subscribe("BackView", PreviousViewModel);
+            Mediator.Subscribe("ChatsView", ChangeToChatsViewModel);
         }
+
 
         private void ChangeViewModel(IViewModel viewModel) {
             CurrentPageViewModel = viewModel;
@@ -114,6 +115,9 @@ namespace WpfClientt.viewModels {
             ChangeViewModel(await ProfileViewModel.getInstance(factory));
         }
 
+        private async void ChangeToChatsViewModel(object obj) {
+            AddToHistory(await ChatsViewModel.GetInstance(factory));
+        }
         private IViewModel currentViewModel() {
             return history.Peek();
         }
@@ -121,7 +125,7 @@ namespace WpfClientt.viewModels {
         private void PreviousViewModel(object param) {
             history.Pop();
             ChangeViewModel(currentViewModel());
-            OnPropertyChanged("IsBackButtonVisible");
+            OnPropertyChanged(nameof(IsBackButtonVisible));
         }
 
         private void AddToHistory(IViewModel viewModel) {
@@ -129,7 +133,7 @@ namespace WpfClientt.viewModels {
                 history.Push(viewModel);
             }
             ChangeViewModel(viewModel);
-            OnPropertyChanged("IsBackButtonVisible");
+            OnPropertyChanged(nameof(IsBackButtonVisible));
         }
     }
 }

@@ -7,44 +7,79 @@ using System.Threading.Tasks;
 using WpfClientt.model;
 
 namespace WpfClientt.services.filtering {
+    /// <summary>
+    /// Builder class for filter url.
+    /// </summary>
     public sealed class AdsFilterBuilder {
 
         private Subcategory subcategory;
+
         private string mainUrl = $"{ApiInfo.AdMainUrl()}?";
+
         private Regex NotCharacters = new Regex(@"[^a-z0-9 ]");
         private Regex SpaceCharacters = new Regex(@"\s+");
         private Regex LastPlusCharacter = new Regex(@"/[+]+$/");
+
         private ISet<long> conditions = new HashSet<long>();
         private ISet<long> states = new HashSet<long>();
         private ISet<long> types = new HashSet<long>();
         private ISet<long> manufacturers = new HashSet<long>();
         private string titleQuery = string.Empty;
 
+        /// <summary>
+        /// Creates new filter builder that will filter in the given subcategory.
+        /// </summary>
+        /// <param name="subcategory"></param>
         public AdsFilterBuilder(Subcategory subcategory) {
             mainUrl = $"{mainUrl}";
             this.subcategory = subcategory;
         }
 
+        /// <summary>
+        /// Adds the title search query - text.
+        /// </summary>
+        /// <param name="titleQuery"></param>
         public void AddTitleSearchQuery(string titleQuery) {
             this.titleQuery = titleQuery;
         }
 
+        /// <summary>
+        /// Adds the given condition code into the filter.
+        /// </summary>
+        /// <param name="conditionCode"></param>
         public void AddConditionFilter(long conditionCode) {
             conditions.Add(conditionCode);
         }
 
+        /// <summary>
+        /// Adds the given state code into the filter.
+        /// </summary>
+        /// <param name="stateCode"></param>
         public void AddStateFilter(long stateCode) {
             states.Add(stateCode);
         }
 
+        /// <summary>
+        /// Adds the given type code into the filter.
+        /// </summary>
+        /// <param name="typeCode"></param>
         public void AddTypeFilter(long typeCode) {
             types.Add(typeCode);
         }
 
+        /// <summary>
+        /// Adds the given manufacturer code into the filter.
+        /// </summary>
+        /// <param name="manufacturerCode"></param>
         public void AddManufacturerFilter(long manufacturerCode) {
             manufacturers.Add(manufacturerCode);
         }
 
+        /// <summary>
+        /// Builds and returns the filter url that should be used to retrieve adds that 
+        /// satisfy the filter.
+        /// </summary>
+        /// <returns></returns>
         public string Build() {
             StringBuilder filterUrl = new StringBuilder(mainUrl);
             string conditionsFilter = PrefixIfNotEmpty("Condition=",string.Join("_", conditions.Select(LongToString).ToArray()));
@@ -56,15 +91,20 @@ namespace WpfClientt.services.filtering {
             string subcategoryFilter = $"SubcategoryId={subcategory.Id}";
 
             return filterUrl.ToString() + string.Join("&",
-                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }.Where(str => str.Length > 0)
+                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }
+                .Where(str => str.Length > 0)
                 );
         }
 
+        /// <summary>
+        /// Clears the filters.
+        /// </summary>
         public void ClearFilters() {
             conditions.Clear();
             states.Clear();
             types.Clear();
             manufacturers.Clear();
+            titleQuery = string.Empty;
         }
 
         private string LongToString(long l) => l.ToString();

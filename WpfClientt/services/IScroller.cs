@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfClientt.services {
+    /// <summary>
+    /// Scroller above T instance.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IScroller<T>  {
 
         /// <summary>
