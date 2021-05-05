@@ -68,10 +68,6 @@ namespace WpfClientt.model {
         [JsonPropertyName("profileImg")]
         public Uri ProfileImageUri { get; set; }
 
-        /// <summary>
-        /// The password of the customer.
-        /// </summary>
-        public virtual string Password {get; set;}
         public Customer() { 
         
         }

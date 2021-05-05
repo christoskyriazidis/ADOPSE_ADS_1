@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNet.SignalR.Client;
+﻿
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,28 +16,29 @@ namespace WpfClientt.services {
         private static ChatServiceSignalR instance;
 
         private ConcurrentBag<Action<Message>> listeners = new ConcurrentBag<Action<Message>>();
-        private IHubProxy proxy;
         private JsonSerializerOptions options;
         private HttpClient client;
 
-        private ChatServiceSignalR(HttpClient client,JsonSerializerOptions options) {
+        private ChatServiceSignalR(HttpClient client,JsonSerializerOptions options,HubConnection hubConnection) {
             this.client = client;
             this.options = options;
+            hubConnection.On("ReceiveMessage", (Message message) => {
+                foreach (Action<Message> listener in instance.listeners.ToArray()) {
+                    listener.Invoke(message);
+                }
+            });
+
         }
 
         public static async Task<ChatServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options) {
+            Debug.WriteLine(client.DefaultRequestHeaders.Authorization.ToString());
             if(instance == null) {
-                ChatServiceSignalR instance = new ChatServiceSignalR(client, options);
-                HubConnection connection = new HubConnection("https://localhost:44374/SignalR");
-                IHubProxy proxy = connection.CreateHubProxy("ChatHub");
-
-                proxy.On("ReceiveMessage", (Message message) => {
-                    foreach (Action<Message> listener in instance.listeners.ToArray()) {
-                        listener.Invoke(message);
-                    }
-                });
-
-                await connection.Start();
+                HubConnection connection = new HubConnectionBuilder()
+                    .WithUrl(ApiInfo.ChatHubMainUrl(), 
+                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString()); }
+                    ).Build();
+                instance = new ChatServiceSignalR(client, options, connection);
+                await connection.StartAsync();
             }
 
             return instance;
@@ -52,7 +55,6 @@ namespace WpfClientt.services {
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
             }
-
         }
 
         public void RemoveMessageListener(Action<Message> listener) {
@@ -76,7 +78,7 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Message> Messages(int chatId) {
-            throw new NotImplementedException();
+            return new ChatScroller(chatId,client);
         }
     }
 }
