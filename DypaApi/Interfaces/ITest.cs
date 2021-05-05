@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiOne.Repositories
+namespace DypaApi.Interfaces
 {
-    public class AdminRepository
+    public interface ITest
     {
-        public 
+        
     }
 }

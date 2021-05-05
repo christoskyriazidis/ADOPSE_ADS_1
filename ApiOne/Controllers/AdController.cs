@@ -327,13 +327,14 @@ namespace ApiOne.Controllers
             }
         }
 
-
         [HttpGet]
-        [Route("/testbench")]
-        public IActionResult Testbench()
+        [Route("/customer/ad/{Cid}")]
+        public IActionResult GetMyAds(Pagination adParameters,int Cid)
         {
-            return Ok();
+            return Json(_adRepository.GetActiveAdsByCustomerId(adParameters, Cid));
         }
+
+       
 
     }
 }

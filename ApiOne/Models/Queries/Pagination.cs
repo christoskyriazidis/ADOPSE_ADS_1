@@ -16,8 +16,8 @@ namespace ApiOne.Models.Queries
         }
         
         const int maxPageSize = 50;
-        const int minPageSize = 10;
-        private int _pageSize = 15;
+        const int minPageSize = 20;
+        private int _pageSize = 20;
         public int PageSize
         {
             get { return _pageSize; }

@@ -83,7 +83,7 @@ namespace ApiOne.Controllers
             var claims = User.Claims.ToList();
             var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var intId = _customerRepo.GetCustomerIdFromSub(subId); 
-            return Json(_adRepository.GetAdsByCustomerId(adParameters, intId));
+            return Json(_adRepository.GetMyAds(adParameters, intId));
         }
         
         [HttpPut]
@@ -150,7 +150,7 @@ namespace ApiOne.Controllers
             return Json(new { secret = "very secret" });
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         [Route("/customer/mail")]
         public IActionResult SendMailToCustomer([FromBody] CustomerMailMessage customerMail)

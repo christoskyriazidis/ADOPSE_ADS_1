@@ -25,7 +25,6 @@ namespace identityServerNew
                         "username",ClaimTypes.Email,"Mobile","role",ClaimTypes.Role,ClaimTypes.NameIdentifier,"lastName",ClaimTypes.StreetAddress,"name","lastName"
                     }
                 }
-                //new IdentityResources.Email
             };
 
         //gia api identify
@@ -35,6 +34,7 @@ namespace identityServerNew
             new List<ApiResource> {
                 new ApiResource("ApiOne","mpourdela", new string[]{"username",ClaimTypes.Email,"Mobile","role",ClaimTypes.Role,ClaimTypes.NameIdentifier,"lastName",ClaimTypes.StreetAddress,"name","lastName"}) ,
                 new ApiResource("ApiTwo") ,
+                new ApiResource("ApiDypa","DypaApi",new string[]{"username",ClaimTypes.Email,"Mobile","role",ClaimTypes.Role,ClaimTypes.NameIdentifier,"lastName",ClaimTypes.StreetAddress,"name","lastName"}) 
             };
 
         public static IEnumerable<Client> GetClients() =>
@@ -87,7 +87,6 @@ namespace identityServerNew
                         "ApiOne",
                         "credentials"
                     },
-                    AccessTokenLifetime=1,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                 },
@@ -107,7 +106,26 @@ namespace identityServerNew
                         "ApiOne"
 
                     },
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                },
+                new Client
+                {
+                    ClientId="client_id_js_Dypa",
+                    AllowedGrantTypes=GrantTypes.Code,
+                    RequirePkce=true,
+                    //automato
+                    RequireClientSecret=false,
+                    RedirectUris ={"https://localhost:44366/home/signin.html"},
+                    PostLogoutRedirectUris ={"https://localhost:44366/Home/Index.html"},
 
+                    AllowedCorsOrigins={"https://localhost:44366"},
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        "ApiDypa",
+                        "credentials"
+                    },
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                 }

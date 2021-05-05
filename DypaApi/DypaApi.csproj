@@ -1,27 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <UserSecretsId>f2d1a636-ce84-4d03-9912-e4427c3d1b84</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Images\serverA\**" />
-    <Compile Remove="Services\**" />
-    <Content Remove="Images\serverA\**" />
-    <Content Remove="Services\**" />
-    <EmbeddedResource Remove="Images\serverA\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <None Remove="Images\serverA\**" />
-    <None Remove="Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Images\serverA\sample.png" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.78" />
     <PackageReference Include="MailKit" Version="2.10.1" />
@@ -34,10 +15,7 @@
     <PackageReference Include="SqlTableDependency" Version="8.5.8" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
-
   <ItemGroup>
-    <Folder Include="Images\serverA\full\" />
-    <Folder Include="Images\serverA\small\" />
+    <Folder Include="Images\" />
   </ItemGroup>
-
 </Project>

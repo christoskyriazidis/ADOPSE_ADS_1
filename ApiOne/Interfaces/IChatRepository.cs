@@ -18,6 +18,7 @@ namespace ApiOne.Interfaces
 
         bool RequestChatByAdId(int AdId,int BuyerId);
         bool AcceptChatRequest(int Rid);
+        bool DeclineChatRequest(int Rid);
         
 
     }
