@@ -21,7 +21,7 @@
         <Button Grid.Column="1" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding Categories}" />
         <Button Grid.Column="2" Content="My Account" Style="{StaticResource medium_blue_button}" Command="{Binding Account}" />
         <Button Grid.Column="3" Content="Create Ad" Style="{StaticResource medium_blue_button}" Command="{Binding CreateAd}" />
-        <Button Grid.Column="4" Content="{Binding NumberOfNotifications}" ContentStringFormat="Notifications{0}" Style="{StaticResource medium_blue_button}" Command="{Binding Notifications}" />
+        <Button Grid.Column="4" Content="{Binding Message}" ContentStringFormat="Notifications{0}" Style="{StaticResource medium_blue_button}" Command="{Binding Notifications}" />
         <Button Grid.Column="5" Content="Chats" Style="{StaticResource medium_blue_button}" Command="{Binding Chats}" />
         <Button Grid.Column="7" Content="Logout" Style="{StaticResource medium_blue_button}" Command="{Binding Logout}" />
     </Grid>
