@@ -22,22 +22,15 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-
+                        <Button Height="100" Content="{Binding}" Command="{Binding DataContext.SelectChatCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Margin="10" Cursor="Hand">
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
         
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
-        
-        <ScrollViewer Grid.Column="2">
-            <ItemsControl ItemsSource="{Binding Messages}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+
+        <ContentControl Grid.Column="2" Content="{Binding SelectedChat}" />
     </Grid>
 </UserControl>

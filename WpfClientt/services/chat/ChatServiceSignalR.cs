@@ -18,6 +18,7 @@ namespace WpfClientt.services {
 
         private ConcurrentBag<Func<Task>> messageListeners = new ConcurrentBag<Func<Task>>();
         private ConcurrentBag<Func<Task>> chatRequestListeners = new ConcurrentBag<Func<Task>>();
+        private ConcurrentBag<Func<Chat, Task>> activeChatListeners = new ConcurrentBag<Func<Chat, Task>>();
         private JsonSerializerOptions options;
         private HttpClient client;
         private HubConnection hubConnection;
@@ -31,47 +32,17 @@ namespace WpfClientt.services {
             this.adService = adService;
             this.customerService = customerService;
             this.hubConnection.On("ReceiveMessage", async (string message) => await ReceiveMessage(message));
+            this.hubConnection.On("ReceiveActiveChat", async (string message) => await ReceiveActiveChat(message));
             this.hubConnection.On("ReceiveChatRequest",async (string message) => await ReceiveChatRequest(message));
         }
 
-        private async Task ReceiveChatRequest(string message) {
-            long adId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
-
-            IScroller<Ad> scroller = adService.ProfileAds();
-            await scroller.Init();
-
-            bool isCustomersAd = false; //Indicates whether the ad,for wich the chat request is happening,belongs to the logged in customer.
-
-            while (!isCustomersAd) {
-                foreach(Ad ad in scroller.CurrentPage().Objects()) {
-                    if (ad.Id.Equals(adId)) {
-                        isCustomersAd = true;
-                        break;
-                    }
-                }
-                if (!await scroller.MoveNext()) {
-                    break;
-                }
-            }
-
-            if (isCustomersAd) {
-                foreach(Func<Task> listener in chatRequestListeners) {
-                    await listener.Invoke();
-                }
-            }
-        }
-
-        private async Task ReceiveMessage(string message) { 
-        
-        }
-
-        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options,IAdService adService,ICustomerService customerService) {
-            if(instance == null) {
+        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService) {
+            if (instance == null) {
                 HubConnection connection = new HubConnectionBuilder()
-                    .WithUrl(ApiInfo.ChatHubMainUrl(), 
-                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ","")); })
+                    .WithUrl(ApiInfo.ChatHubMainUrl(),
+                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "")); })
                     .Build();
-                instance = new ChatServiceSignalR(client, options, connection,adService,customerService);
+                instance = new ChatServiceSignalR(client, options, connection, adService, customerService);
                 await connection.StartAsync();
             }
 
@@ -94,10 +65,22 @@ namespace WpfClientt.services {
             chatRequestListeners.TryTake(out listenerProvider);
         }
 
+        public void AddActiveChatListener(Func<Chat, Task> listener) {
+            activeChatListeners.Add(listener);
+        }
+
+        public void RemoveActiveChatListener(Func<Chat, Task> listener) {
+            activeChatListeners.TryTake(out listener);
+        }
+
         public async Task SendMessage(Message message) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiInfo.MessageMainUrl());
-            request.Content = new StringContent(JsonSerializer.Serialize(message,options));
-
+            request.Content = new StringContent(
+                JsonSerializer.Serialize(
+                    new { MessageText = message.Body, ActiveChat = message.ChatId.ToString() },options), 
+                    Encoding.UTF8, 
+                    "application/json"
+                );
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
             }
@@ -110,18 +93,15 @@ namespace WpfClientt.services {
 
         public async Task<ISet<Chat>> Chats() {
             ISet<Chat> result = new HashSet<Chat>();
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.MyChatsMainUrl());
-            using(HttpResponseMessage response = await client.SendAsync(request)) {
-                Chat[] chats = await JsonSerializer.DeserializeAsync<Chat[]>(await response.Content.ReadAsStreamAsync(), options);
-                foreach(Chat chat in chats) {
-                    result.Add(chat);
-                }
+            ISet<ChatModel> serverChats = await ChatsFromServer();
+            foreach (ChatModel chatmodel in serverChats) {
+                result.Add(await MapChatServerToChat(chatmodel));
             }
             return result;
         }
 
-        public IScroller<Message> Messages(int chatId) {
-            return new ChatScroller(chatId,client);
+        public IScroller<Message> Messages(Chat chat) {
+            return new ChatScroller(chat,client);
         }
 
         public async Task<ISet<ChatRequest>> ChatRequests() {
@@ -162,6 +142,84 @@ namespace WpfClientt.services {
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
             }
+        }
+
+
+        private async Task ReceiveActiveChat(string message) {
+            long chatId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
+
+            ISet<ChatModel> chats = await ChatsFromServer();
+
+            bool isCustomersChat = false;
+            ChatModel foundChat = null;
+
+            foreach (ChatModel chat in chats) {
+                if (chat.ChatId.Equals(chatId)) {
+                    isCustomersChat = true;
+                    foundChat = chat;
+                    break;
+                }
+            }
+
+            if (isCustomersChat) {
+                foreach (Func<Chat, Task> activeChatListener in activeChatListeners) {
+                    await activeChatListener.Invoke(await MapChatServerToChat(foundChat));
+                }
+            }
+        }
+
+        private async Task ReceiveChatRequest(string message) {
+            long adId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
+
+            IScroller<Ad> scroller = adService.ProfileAds();
+            await scroller.Init();
+
+            bool isCustomersAd = false; //Indicates whether the ad,for wich the chat request is happening,belongs to the logged in customer.
+
+            while (!isCustomersAd) {
+                foreach (Ad ad in scroller.CurrentPage().Objects()) {
+                    if (ad.Id.Equals(adId)) {
+                        isCustomersAd = true;
+                        break;
+                    }
+                }
+                if (!await scroller.MoveNext()) {
+                    break;
+                }
+            }
+
+            if (isCustomersAd) {
+                foreach (Func<Task> listener in chatRequestListeners) {
+                    await listener.Invoke();
+                }
+            }
+        }
+
+        private async Task ReceiveMessage(string message) {
+
+        }
+
+        private async Task<ISet<ChatModel>> ChatsFromServer() {
+            ISet<ChatModel> result = new HashSet<ChatModel>();
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.MyChatsMainUrl());
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                Debug.WriteLine(await response.Content.ReadAsStringAsync());
+                ChatModel[] chats = await JsonSerializer.DeserializeAsync<ChatModel[]>(await response.Content.ReadAsStreamAsync(), options);
+                foreach (ChatModel chat in chats) {
+                    result.Add(chat);
+                }
+            }
+            return result;
+        }
+
+        private async Task<Chat> MapChatServerToChat(ChatModel model) {
+            return new Chat() {
+                ChatId = model.ChatId,
+                Sold = model.Sold,
+                LatestMessage = model.LatestMessage,
+                Ad = await adService.ReadById(model.AdId),
+                Customer = await customerService.ReadById(model.CustomerId)
+            };
         }
 
     }
