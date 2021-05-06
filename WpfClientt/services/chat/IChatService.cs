@@ -19,16 +19,28 @@ namespace WpfClientt.services {
         Task SendMessage(Message message);
 
         /// <summary>
-        /// Adds a listener for new messages that arrive.
+        /// Adds a listener that is being notified when a new message arrives.
         /// </summary>
         /// <param name="listener"></param>
-        void AddMessageListener(Action<Message> listener);
+        void AddMessageListener(Func<Task> listener);
 
         /// <summary>
-        /// Removes message listener.
+        /// Removes listener that was registreted in AddMessageListener.
         /// </summary>
         /// <param name="listener"></param>
-        void RemoveMessageListener(Action<Message> listener);
+        void RemoveMessageListener(Func<Task> listener);
+
+        /// <summary>
+        /// Adds a listener that receives notifications upon the arriaval of new chat requests.
+        /// </summary>
+        /// <param name="listener"></param>
+        void AddChatRequestListener(Func<Task> listener);
+
+        /// <summary>
+        /// Removes chat request listener registered through AddChatRequestListener
+        /// </summary>
+        /// <param name="listener"></param>
+        void RemoveChatRequestListener(Func<Task> listener);
 
         /// <summary>
         /// Sends an event that the user is typing.
@@ -48,6 +60,33 @@ namespace WpfClientt.services {
         /// <param name="chatId"></param>
         /// <returns></returns>
         IScroller<Message> Messages(int chatId);
+
+        /// <summary>
+        /// Returns the requested chats by other customers to the logged in customer.
+        /// </summary>
+        /// <returns></returns>
+        Task<ISet<ChatRequest>> ChatRequests();
+
+        /// <summary>
+        /// Sends a new chat request to the customer that created the given ad.
+        /// </summary>
+        /// <param name="ad">The ad for wich the chat is created.</param>
+        /// <returns></returns>
+        Task SendChatRequest(Ad ad);
+
+        /// <summary>
+        /// Confirms the chat request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task AcceptChatRequest(ChatRequest request);
+
+        /// <summary>
+        /// Declines the chat reuqest.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task DeclineChatRequest(ChatRequest request);
 
     }
 }

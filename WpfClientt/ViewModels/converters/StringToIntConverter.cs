@@ -20,7 +20,7 @@ namespace WpfClientt.viewModels {
             if(value != null && value.ToString().Length > 0) {
                 try {
                     result = int.Parse((string)value);
-                }catch(FormatException ignored) {
+                }catch(FormatException _) {
                 }
             }
 

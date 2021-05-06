@@ -57,82 +57,88 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
             Mediator.Subscribe("BackView", PreviousViewModel);
             Mediator.Subscribe("ChatsView", ChangeToChatsViewModel);
+            Mediator.Subscribe("NotificationsView", ChangeToNotificationsView);
         }
 
 
-        private void ChangeViewModel(IViewModel viewModel) {
+        private async Task ChangeViewModel(IViewModel viewModel) {
             CurrentPageViewModel = viewModel;
         }
 
-        private void ChangeMenuView(IMenu menu) {
+        private Task ChangeMenuView(IMenu menu) {
             this.CurrentMenuView = menu;
+            return Task.CompletedTask;
         }
 
-        private void ChangeToLoginMenuView(object param) {
-            ChangeMenuView(new LoginCustomerMenu());
+        private async Task ChangeToLoginMenuView(object param) {
+            await ChangeMenuView(await LoginCustomerMenu.GetInstance(factory));
+        }
+        private async Task ChangeToNotificationsView(object _) {
+            await ChangeToDisplayView("Loading Page");
+            AddToHistory(await NotificationsViewModel.GetInstance(factory));
         }
 
-        private async void ChangeToAdsSubcategoryView(object subcategory) {
-            ChangeToDisplayView("Loading Page");
+        private async Task ChangeToAdsSubcategoryView(object subcategory) {
+            await ChangeToDisplayView("Loading Page");
             AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
         }
 
-        private async void ChangeToSubcategoriesView(object category) {
-            ChangeToDisplayView("Loading Page");
+        private async Task ChangeToSubcategoriesView(object category) {
+            await ChangeToDisplayView("Loading Page");
             AddToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
         }
 
-        private async void ChangeToRegisterView(object obj) {
-            ChangeToDisplayView("Loading Page");
+        private async Task ChangeToRegisterView(object obj) {
+            await ChangeToDisplayView("Loading Page");
             AddToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
-        private async void ChangeToLoginView(object obj) {
+        private async Task ChangeToLoginView(object obj) {
             AddToHistory(await LoginViewModel.GetInstance(factory));
         }
 
-        private async void ChangeToCategoriesView(object obj) {
-            ChangeToDisplayView("Loading Page");
+        private async Task ChangeToCategoriesView(object obj) {
+            await ChangeToDisplayView("Loading Page");
             AddToHistory(await CategoriesViewModel.GetInstance(factory));
         }
 
-        private async void ChangeToCreateAdView(object obj) {
-            ChangeToDisplayView("Loading Page");
+        private async Task ChangeToCreateAdView(object obj) {
+            await ChangeToDisplayView("Loading Page");
             AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
-        private void ChangeToDisplayView(object text) {
+        private async Task ChangeToDisplayView(object text) {
             CurrentPageViewModel = DisplayTextViewModel.GetInstance((string)text);
         }
 
-        private async void ChangeToAdDetailsView(object param) {
-            ChangeToDisplayView("Loading Page");
-            AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param));
+        private async Task ChangeToAdDetailsView(object param) {
+            await ChangeToDisplayView("Loading Page");
+            AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param,factory));
         }
 
-        private async void ChangeToProfileView(object param) {
-            ChangeToDisplayView("Loading Page");
-            ChangeViewModel(await ProfileViewModel.getInstance(factory));
+        private async Task ChangeToProfileView(object param) {
+            await ChangeToDisplayView("Loading Page");
+            await ChangeViewModel(await ProfileViewModel.getInstance(factory));
         }
 
-        private async void ChangeToChatsViewModel(object obj) {
+        private async Task ChangeToChatsViewModel(object obj) {
             AddToHistory(await ChatsViewModel.GetInstance(factory));
         }
         private IViewModel currentViewModel() {
             return history.Peek();
         }
 
-        private void PreviousViewModel(object param) {
+        private async Task PreviousViewModel(object param) {
             history.Pop();
-            ChangeViewModel(currentViewModel());
+            await ChangeViewModel(currentViewModel());
             OnPropertyChanged(nameof(IsBackButtonVisible));
         }
 
-        private void AddToHistory(IViewModel viewModel) {
+        private async void AddToHistory(IViewModel viewModel) {
             if (!history.Contains(viewModel)) {
                 history.Push(viewModel);
             }
-            ChangeViewModel(viewModel);
+            await ChangeViewModel(viewModel);
             OnPropertyChanged(nameof(IsBackButtonVisible));
         }
     }

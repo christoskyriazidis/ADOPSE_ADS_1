@@ -1,37 +1,36 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
-    public class AdDetailsViewModel : BaseViewModel,IViewModel {
-        private static AdDetailsViewModel instance;
+    public class AdDetailsViewModel : BaseViewModel, IViewModel {
 
-        private Ad ad;
+        private IChatService chatService;
 
-        public Ad DisplayedAd {
-            get {
-                return ad;
-            }
-            private set {
-                ad = value;
-                OnPropertyChanged(nameof(DisplayedAd));
-            } 
+        public Ad Ad { get; set; }
+        public Customer Customer{get;set;}
+
+        public ICommand RequestChatCommand { get; set; }
+
+        private AdDetailsViewModel(Ad ad,IChatService chatService,Customer customer) {
+            this.Ad = ad;
+            this.Customer = customer;
+            this.chatService = chatService;
+            RequestChatCommand = new AsyncCommand(RequestChat);
         }
 
-        private AdDetailsViewModel() {
-            DisplayedAd = ad;
+        private async Task RequestChat() {
+            await chatService.SendChatRequest(Ad);
         }
 
-        public async static Task<AdDetailsViewModel> GetInstance(Ad ad) {
-            if (instance == null) {
-                instance = new AdDetailsViewModel();
-            }
-            instance.DisplayedAd = ad;
-            return instance;
+        public async static Task<AdDetailsViewModel> GetInstance(Ad ad,FactoryServices factory) {
+            return new AdDetailsViewModel(ad, await factory.ChatServiceInstance(),await factory.CustomerServiceInstance().ReadById(ad.CustomerId));
         }
 
     }

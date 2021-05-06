@@ -33,10 +33,10 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task ExchangeToken(string redirectUri) {
-            Mediator.Notify("DisplayPageView", "Authentication in progress");
+            await Mediator.Notify("DisplayPageView", "Authentication in progress");
             await openIdConnectClient.RetrieveAndSetAccessToken(redirectUri);
-            Mediator.Notify("ChangeToLoginMenuView");
-            Mediator.Notify("DisplayPageView", "Now you've logged in successfully.");
+            await Mediator.Notify("ChangeToLoginMenuView");
+            await Mediator.Notify("DisplayPageView", "Now you've logged in successfully.");
         }
 
     }

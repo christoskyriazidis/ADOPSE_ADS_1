@@ -8,9 +8,10 @@ namespace WpfClientt.viewModels {
     /// <summary>
     /// MinMax price filter that allows user to choose values in range of long values.
     /// </summary>
-    public class MinMaxPriceFilterMember : MinMaxFilterMember<long> {
+    public class MinMaxPriceFilterMember : MinMaxFilterMember<int> {
 
-        public MinMaxPriceFilterMember(string title, Action<long, long> onFinish) : base(title,onFinish) {
+        public MinMaxPriceFilterMember(Action<int> minAction,string title, Action<int> maxAction) 
+            : base(minAction,title, maxAction) {
             
         }
 

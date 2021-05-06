@@ -86,19 +86,19 @@
                 <TextBox Grid.Row="1" Grid.Column="2" Margin="10" VerticalAlignment="Center"  Text="{Binding Form.Description,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Margin="10"  Text="Category:" Style="{StaticResource centerRightAlignment}" />
-                <ComboBox Grid.Row="2" Grid.Column="2" Margin="10"  VerticalAlignment="Center" ItemsSource="{Binding Categories}" SelectedItem="{Binding Ad.AdCategory}" />
+                <ComboBox Grid.Row="2" Grid.Column="2" Margin="10"  VerticalAlignment="Center" ItemsSource="{Binding Categories}" SelectedItem="{Binding Form.AdCategory}" />
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="10"  Text="Subcategory:" Style="{StaticResource centerRightAlignment}" />
-                <ComboBox Grid.Row="3" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Subcategories}" SelectedItem="{Binding Ad.AdSubcategory}" />
+                <ComboBox Grid.Row="3" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Subcategories}" SelectedItem="{Binding Form.AdSubcategory}" />
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Margin="10"  Text="Manufacturer:" Style="{StaticResource centerRightAlignment}" />
-                <ComboBox Grid.Row="4" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding Ad.AdManufacturer}"/>
+                <ComboBox Grid.Row="4" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding Form.AdManufacturer}"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Margin="10"  Text="Condition:" Style="{StaticResource centerRightAlignment}" />
-                <ComboBox Grid.Row="5" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Conditions}" SelectedItem="{Binding Ad.AdCondition}" />
+                <ComboBox Grid.Row="5" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Conditions}" SelectedItem="{Binding Form.AdCondition}" />
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Margin="10"  Text="Type:" Style="{StaticResource centerRightAlignment}" />
-                <ComboBox Grid.Row="6" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Types}" SelectedItem="{Binding Ad.AdType}" />
+                <ComboBox Grid.Row="6" Grid.Column="2" Margin="10"  VerticalAlignment="Center"  ItemsSource="{Binding Types}" SelectedItem="{Binding Form.AdType}" />
 
                 <TextBlock Grid.Row="7" Grid.Column="0" Margin="10"  Text="Price:" Style="{StaticResource centerRightAlignment}" />
                 <TextBox Grid.Row="7" Grid.Column="2" Margin="10"  VerticalAlignment="Center" Text="{Binding Form.Price,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource IntConverter}}" />
