@@ -3,6 +3,7 @@ using ApiOne.Interfaces;
 using ApiOne.Models;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
+using ApiOne.Models.Review;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,24 @@ namespace ApiOne.Repositories
             {
                 Debug.WriteLine(sqlEx);
                 return null;
+            }
+        }
+
+        public bool ReviewAndRateCustomer(PostReview postReview)
+        {
+            try
+            {
+                //id
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec [review_and_rating] @ratingNumb,@ReviewTxt,@SoldAd,@buyerId";
+                var rows = conn.ExecuteScalar<int>(sql, new { postReview });
+                //true false analogos ta rows pou alaksan
+                return (rows > 1);
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
             }
         }
 

@@ -41,18 +41,6 @@ namespace WpfClientt.services {
         /// </summary>
         /// <param name="listener"></param>
         void RemoveChatRequestListener(Func<Task> listener);
-        /// <summary>
-        /// Adds a listener that receives notifications upon the arriaval of new active chat.
-        /// The listener get the instance of the new active chat.
-        /// </summary>
-        /// <param name="listener"></param>
-        void AddActiveChatListener(Func<Chat,Task> listener);
-
-        /// <summary>
-        /// Removes a listener that was added in AddActiveChatListener
-        /// </summary>
-        /// <param name="listener"></param>
-        void RemoveActiveChatListener(Func<Chat,Task> listener);
 
         /// <summary>
         /// Sends an event that the user is typing.
@@ -67,11 +55,11 @@ namespace WpfClientt.services {
         Task<ISet<Chat>> Chats();
 
         /// <summary>
-        /// Returns all the messages of the chat.
+        /// Returns all the messages of the chat that has the given id.
         /// </summary>
-        /// <param name="chat"></param>
+        /// <param name="chatId"></param>
         /// <returns></returns>
-        IScroller<Message> Messages(Chat chat);
+        IScroller<Message> Messages(int chatId);
 
         /// <summary>
         /// Returns the requested chats by other customers to the logged in customer.

@@ -17,7 +17,7 @@ namespace WpfClientt.model {
         /// </summary>
         [Required]
         [StringLength(250, MinimumLength = 3)]
-        [JsonPropertyName("id")]
+        [JsonPropertyName("Id")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int MessageId { get; set; }
 
@@ -25,14 +25,14 @@ namespace WpfClientt.model {
         /// The body of the message(text)
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("message")]
+        [JsonPropertyName("Message")]
         public string Body { get; set; }
 
         /// <summary>
         /// The id of the customer who sent this message.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("customer")]
+        [JsonPropertyName("Customer")]
         public int SenderId { get; set; }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WpfClientt.model {
         /// </summary>
         [Required]
         [Range(1, int.MaxValue)]
-        [JsonPropertyName("activeChat")]
+        [JsonPropertyName("ActiveChat")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int ChatId { get; set; }
 
@@ -48,28 +48,24 @@ namespace WpfClientt.model {
         /// A string indicating when the message was sent.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("timestamp")]
         public string Timestamp { get; set; }
         
         /// <summary>
         /// The username of the sender customer.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("username")]
         public string Username { get; set; }
 
         /// <summary>
         /// The url to the profile image of the sender customer.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("profileImg")]
         public string ProfileImg { get; set; }
 
         /// <summary>
         /// Subject id of the sender.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        [JsonPropertyName("subId")]
         public string SubId { get; set; }
     }
 }

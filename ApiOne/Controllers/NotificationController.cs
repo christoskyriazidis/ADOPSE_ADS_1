@@ -1,10 +1,12 @@
 ﻿using ApiOne.Hubs;
 using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Notification;
 using ApiOne.Models.Queries;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -131,14 +133,21 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "kati pige la8os me to wishlist(id mallon)" });
         }
 
+        //[Authorize]
         [HttpPut]
-        [Route("/wishlist/notification/seen/{nId}")]
+        [Route("/notification")]
         [Produces("application/json")]
-        public IActionResult NotificationSeen(int nId)
+        public IActionResult NotificationSeen([FromBody]NotificationSeen notificationSeen)
         {
-            if (_adRepository.NotificationSeen(nId))
+            if (!ModelState.IsValid)
             {
-                return Json(new { success=$"notificaiton:{nId} clicked!"});
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(allErrors);
+            }
+            notificationSeen.Type = notificationSeen.Type.ToLower();
+            if (_adRepository.NotificationSeen(notificationSeen))
+            {
+                return Json(new { success=$"notificaiton:{notificationSeen.Id} clicked!"});
             }
             return BadRequest(new { error = "kati pige la8os me to notification click (wishlist)" });
         }

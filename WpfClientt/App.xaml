@@ -85,14 +85,6 @@
         </Style>
 
         <!--Data temapltes-->
-        <DataTemplate DataType="{x:Type models:Chat}">
-            <views:ChatBoxView />
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ChatViewModel}">
-            <views:ChatView />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewmodels:NotificationsViewModel}">
             <notifications:NotificationsView />
         </DataTemplate>
@@ -175,7 +167,6 @@
 
         <!-- Converters -->
         <viewmodels:StringToIntConverter x:Key="IntConverter" />
-        <viewmodels:ReverseBooleanVaueConverter x:Key="ReverseBooleanVaueConverter" />
 
     </Application.Resources>
 </Application>

@@ -150,7 +150,7 @@ namespace ApiOne.Repositories
                 return -2;
             }
         }
-
+            
         public Ad UpdateAd(Ad ad)
         {
             try
@@ -408,13 +408,21 @@ namespace ApiOne.Repositories
             };
         }
 
-        public bool NotificationSeen(int notId)
+        public bool NotificationSeen(NotificationSeen notificationSeen)
         {
+            string sql = "";
+            if (notificationSeen.Type.Equals("wishlist"))
+            {
+                sql = $"UPDATE [WishListNotification] SET clicked=1 where id=@Id";
+            }
+            else if (notificationSeen.Type.Equals("subcategory"))
+            {
+                sql = $"UPDATE [SubCategoryNotification] SET clicked=1 where id=@Id";
+            }
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = $"UPDATE [WishListNotification] SET clicked=1 where id=@Id";
-                var result = conn.Execute(sql, new { Id = notId });
+                var result = conn.Execute(sql, new { notificationSeen.Id });
                 return true;
             }
             catch (SqlException sqlEx)
@@ -528,6 +536,22 @@ namespace ApiOne.Repositories
                 Debug.WriteLine(sqlEx);
                 return null;
             }
+        }
+
+        public IEnumerable<ReviewNotification> GetReviewNotifications(int CustomerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT r.customerid,r.timestamp,adid,c.username from reviewnotification r join customer c on (r.customerid=c.id) where r.customerid=@CustomerId";
+                var states = conn.Query<ReviewNotification>(sql, new { CustomerId }).ToList();
+                return states;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
         }
     }
 }

@@ -6,35 +6,25 @@
              xmlns:local="clr-namespace:WpfClientt.views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="0.75*" />
-            <RowDefinition Height="50" />
-        </Grid.RowDefinitions>
+    <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.68*" />
-            <ColumnDefinition Width="0.02*" />
-            <ColumnDefinition Width="0.30*" />
+            <ColumnDefinition Width="0.2*" />
+            <ColumnDefinition Width="0.05*" />
+            <ColumnDefinition Width="0.75*" />
         </Grid.ColumnDefinitions>
-        <TextBlock  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" TextAlignment="Center" Background="#dbd9d7">
-            <Run Text="{Binding Chat.Customer.FirstName}" />
-            <Run Text=" " />
-            <Run Text="{Binding Chat.Customer.LastName}" />
-        </TextBlock>
-        <ScrollViewer Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" >
-            <ItemsControl ItemsSource="{Binding Messages}" Background="#dbd9d7">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
-        <TextBox Margin="5"  Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody,Mode=OneWayToSource}" />
-
-        <Button Margin="5" Grid.Row="2" Grid.Column="3" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
-
-
+        <Image Grid.Column="0">
+            <Image.Source>
+                <BitmapImage UriSource="{Binding ProfileImg,Mode=OneWay}" />
+            </Image.Source>
+        </Image>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.485*"/>
+                <RowDefinition Height="0.01*"/>
+                <RowDefinition Height="0.485*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding Username}" Grid.Row="0" />
+            <TextBlock Text="{Binding LatestMessage}" Grid.Row="2" />
+        </Grid>
     </Grid>
 </UserControl>

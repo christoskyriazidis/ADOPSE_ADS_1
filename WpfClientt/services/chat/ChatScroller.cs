@@ -10,14 +10,14 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     class ChatScroller : IScroller<Message> {
         private object lockObject = new object();
-        private Chat chat;
+        private int chatId;
         private HttpClient client;
         private int nextPageNumber = 1;
         private ChatPage currentPage;
 
-        public ChatScroller(Chat chat,HttpClient client) {
+        public ChatScroller(int chatId,HttpClient client) {
             this.client = client;
-            this.chat = chat;
+            this.chatId = chatId;
         }
 
         public async Task Init() {
@@ -40,17 +40,17 @@ namespace WpfClientt.services {
                 nextPageNumber = nextPageNumber - 1;
             }
             await RetrievePage(pageNumber);
-            return CurrentPage().Objects().Count == 0;
+            return true;
         }
 
         public async Task<bool> MoveNext() {
             int pageNumber;
             lock (lockObject) {
-                pageNumber = nextPageNumber;
+                pageNumber = nextPageNumber+1;
                 nextPageNumber = nextPageNumber + 1;
             }
             await RetrievePage(pageNumber);
-            return CurrentPage().Objects().Count != 0;
+            return true;
         }
 
         public int NumberOfPages() {
@@ -59,7 +59,7 @@ namespace WpfClientt.services {
         }
 
         private async Task RetrievePage(int pageNumber) {
-            string url = $"{ApiInfo.MessageMainUrl()}?PageNumber={pageNumber}&ChatId={chat.ChatId}";
+            string url = ApiInfo.MessageMainUrl() + "/" + pageNumber;
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
