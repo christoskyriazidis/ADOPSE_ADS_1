@@ -257,6 +257,10 @@
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
     <Compile Include="model\notification\AdChangedNotification.cs" />
+    <Compile Include="services\chat\ChatModel.cs" />
+    <Compile Include="services\chat\ChatRequestModel.cs" />
+    <Compile Include="viewModels\chat\ChatViewModel.cs" />
+    <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
     <Compile Include="services\chat\ChatRequestModel.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\ChatRequestNotificationViewModel.cs" />
@@ -327,6 +331,9 @@
     </Compile>
     <Compile Include="views\ChatsView.xaml.cs">
       <DependentUpon>ChatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\ChatBoxView.xaml.cs">
+      <DependentUpon>ChatBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
@@ -402,6 +409,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\ChatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\ChatBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

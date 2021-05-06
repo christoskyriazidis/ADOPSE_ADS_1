@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,16 +19,20 @@ namespace WpfClientt.viewModels {
         public ICommand Chats { get; private set; }
         public ICommand Logout { get; private set; }
 
-        public string NumberOfNotifications { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
 
         private LoginCustomerMenu(IChatService chatService) {
-            Back = new DelegateCommand(_ => Mediator.Notify("BackView"));
-            Categories = new DelegateCommand(_ => Mediator.Notify("CategoriesView"));
-            Account = new DelegateCommand(_ => Mediator.Notify("ProfileView"));
-            CreateAd = new DelegateCommand(_ => Mediator.Notify("CreateAdView"));
-            Notifications = new DelegateCommand(_ => Mediator.Notify("NotificationsView"));
-            Chats = new DelegateCommand(_ => Mediator.Notify("ChatsView"));
-            Logout = new DelegateCommand(_ => Mediator.Notify("Logout"));
+            Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
+            Categories = new AsyncCommand(async () => await Mediator.Notify("CategoriesView"));
+            Account = new AsyncCommand(async () => await Mediator.Notify("ProfileView"));
+            CreateAd = new AsyncCommand(async () => await Mediator.Notify("CreateAdView"));
+            Notifications = new AsyncCommand(async () => {
+                await Mediator.Notify("NotificationsView");
+                Message = string.Empty;
+                }
+            );
+            Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
+            Logout = new AsyncCommand(async () => await Mediator.Notify("Logout"));
             chatService.AddChatRequestListener(ChatRequestListener);
         }
 
@@ -39,14 +44,11 @@ namespace WpfClientt.viewModels {
             return instance;
         }
 
-        private async Task ChatRequestListener() {
-            NumberOfNotifications = NumberOfNotifications.Equals(string.Empty) ? "(1)" : NextValue();
-            OnPropertyChanged(nameof(NumberOfNotifications));
+        private Task ChatRequestListener() {
+            Message = "(new)";
+            OnPropertyChanged(nameof(Message));
+            return Task.CompletedTask;
         }
 
-        private string NextValue() {
-            int indexOfSecondParenthesis = NumberOfNotifications.IndexOf(")");
-            return $"({int.Parse(NumberOfNotifications.Substring(1, indexOfSecondParenthesis - 1))})";
-        }
     }
 }

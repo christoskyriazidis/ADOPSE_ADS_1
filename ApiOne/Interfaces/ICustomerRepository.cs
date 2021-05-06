@@ -1,7 +1,6 @@
 ﻿using ApiOne.Models;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
-using ApiOne.Models.Review;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace ApiOne.Interfaces
         bool UpdateProfile(CustomerDetails customerDetails);
         bool UpdateProfileImage(int customerId);
         public int GetCustomerIdFromSub(string SubId);
-        bool ReviewAndRateCustomer(PostReview postReview);
+
         bool SellAd(int AdId,int BuyerId);
 
 

@@ -10,37 +10,60 @@ using WpfClientt.model;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
-    public class ChatsViewModel : IViewModel {
+    public class ChatsViewModel : BaseViewModel, IViewModel {
         private static ChatsViewModel instance;
 
         private IChatService chatService;
+        public ChatViewModel SelectedChat { get; private set; }
         public ObservableCollection<Chat> Chats { get; private set; } = new ObservableCollection<Chat>();
-        public ObservableCollection<Message> Messages { get; private set; } = new ObservableCollection<Message>();
-        public ICommand SendCommand { get; private set; }
-        public Message Message { get; private set; } = new Message();
+        public ICommand SelectChatCommand { get; set; }
 
-        private ChatsViewModel(IChatService chatService,ISet<Chat> chats) {
+        private ChatsViewModel(IChatService chatService,ISet<Chat> chats,ChatViewModel selectedChat) {
             this.chatService = chatService;
-            SendCommand = new AsyncCommand(SendMessage);
             foreach(Chat chat in chats) {
                 Chats.Add(chat);
             }
+            SelectedChat = selectedChat;
+            SelectChatCommand = new AsyncCommand<Chat>(SelectChat);
+            chatService.AddActiveChatListener(ActiveChatListener);
         }
 
         public static async Task<ChatsViewModel> GetInstance(FactoryServices factory) {
             if(instance == null) {
                 IChatService chatService = await factory.ChatServiceInstance();
                 ISet<Chat> chats = await chatService.Chats();
-                instance = new ChatsViewModel(chatService,chats);
+                ChatViewModel selected = chats.Count > 0 ? new ChatViewModel(chats.First(), chatService,await GetAllMessagesOfChat(chats.First(),chatService)) : null;
+                instance = new ChatsViewModel(chatService, chats,selected);
             }
             return instance;
         }
-
-        public async Task SendMessage() {
-            await chatService.SendMessage(Message);
-        }
         
+        private Task ActiveChatListener(Chat chat) {
+            Chats.Add(chat);
+            return Task.CompletedTask;
+        }
 
+        private async Task SelectChat(Chat chat) {
+            
+            SelectedChat = new ChatViewModel(chat, chatService,await GetAllMessagesOfChat(chat,chatService));
+            OnPropertyChanged(nameof(SelectedChat));
+        }
+
+        private static async Task<ISet<Message>> GetAllMessagesOfChat(Chat chat,IChatService chatService) {
+            IScroller<Message> scroller = chatService.Messages(chat);
+            await scroller.Init();
+            ISet<Message> messages = new HashSet<Message>();
+            foreach (Message message in scroller.CurrentPage().Objects()) {
+                messages.Add(message);
+            }
+            while (await scroller.MoveNext()) {
+                foreach (Message message in scroller.CurrentPage().Objects()) {
+                    messages.Add(message);
+                }
+            }
+
+            return messages;
+        }
 
     }
 }

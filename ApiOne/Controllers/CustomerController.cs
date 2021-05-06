@@ -1,19 +1,16 @@
 ﻿using ApiOne.Helpers;
-using ApiOne.Hubs;
 using ApiOne.Interfaces;
 using ApiOne.Models.Ads;
 using ApiOne.Models.Ads.sell;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Mail;
 using ApiOne.Models.Queries;
-using ApiOne.Models.Review;
 using ApiOne.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.SignalR;
 using Nest;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -33,12 +30,10 @@ namespace ApiOne.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly ICustomerRepository _customerRepo = new CustomerRepository();
         private readonly IAdRepository _adRepository = new AdRepository();
-        private readonly IHubContext<NotificationHub> _notificationHub;
 
-        public CustomerController(IWebHostEnvironment webHostEnvironment, IHubContext<NotificationHub> hubContext)
+        public CustomerController(IWebHostEnvironment webHostEnvironment )
         {
             _env = webHostEnvironment;
-            _notificationHub = hubContext;
         }
 
         [HttpGet]
@@ -67,41 +62,6 @@ namespace ApiOne.Controllers
                 return BadRequest(new { error = "wrong customer id" });
             }
             return Json(result);
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("/reviewNotification")]
-        public IActionResult GetReviewNotifications()
-        {
-            var claims = User.Claims.ToList();
-            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var intId = _customerRepo.GetCustomerIdFromSub(subId);
-            var requestedReviews = _adRepository.GetReviewNotifications(intId);
-            if (requestedReviews != null)
-            {
-                return Json(requestedReviews);
-            }
-            return BadRequest(new { });
-        }
-        [Authorize]
-        [HttpPost]
-        [Route("/review")]
-        public IActionResult PostReview(PostReview postReview)
-        {
-            if (!ModelState.IsValid)
-            {
-                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(allErrors);
-            }
-            var claims = User.Claims.ToList();
-            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var intId = _customerRepo.GetCustomerIdFromSub(subId);
-            if (_customerRepo.ReviewAndRateCustomer(postReview))
-            {
-                return Json(new { response="Review Submitted!"});
-            }
-            return BadRequest(new { message = "kati pige la8os me to review" });
         }
 
         [Authorize]
@@ -228,7 +188,7 @@ namespace ApiOne.Controllers
         [Authorize]
         [HttpPost]
         [Route("/ad/sell")]
-        public async Task<IActionResult> SellAd([FromBody]SellAdModel sellAdModel )
+        public IActionResult SellAd([FromBody]SellAdModel sellAdModel )
         {
             if (!ModelState.IsValid)
             {
@@ -237,7 +197,6 @@ namespace ApiOne.Controllers
             }
             if (_customerRepo.SellAd(sellAdModel.AdId,sellAdModel.BuyerId))
             {
-                await _notificationHub.Clients.All.SendAsync("AdTransaction",$"BuyerId :{sellAdModel.BuyerId} AdId:{sellAdModel.AdId}");
                 return Json(new {response=$"Ad:{sellAdModel.AdId} sold to: {sellAdModel.BuyerId} " });
             }
             return BadRequest(new { error="Kati pige la8os me to sold ad" });

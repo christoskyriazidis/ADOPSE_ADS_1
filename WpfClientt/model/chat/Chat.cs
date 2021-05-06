@@ -14,39 +14,16 @@ namespace WpfClientt.model {
         /// <summary>
         /// The chat id.
         /// </summary>
-        [JsonPropertyName("Id")]
         public int ChatId { get; set; }
 
-        /// <summary>
-        /// The id of the seller customer.
-        /// </summary>
-        [JsonPropertyName("customerId")]
-        public int SellerId { get; set; }
-
-        /// <summary>
-        /// The id of the ad for wich the chat started.
-        /// </summary>
-        public int AdId { get; set; }
+        public Ad Ad { get; set; }
+        
+        public Customer Customer { get; set; }
 
         /// <summary>
         /// Indicates whether the ad has been sold or not.
         /// </summary>
         public bool Sold { get; set; }
-
-        /// <summary>
-        /// The url to the profile image of the seller customer.
-        /// </summary>
-        public string ProfileImg { get; set; }
-
-        /// <summary>
-        /// The username of the seller
-        /// </summary>
-        public string Username { get; set; }
-
-        /// <summary>
-        /// The type of the ad for which the chat started.
-        /// </summary>
-        public AdType Type { get; set; }
 
         /// <summary>
         /// The latest message sent in this chat.

@@ -17,7 +17,7 @@ namespace ApiOne.Interfaces
         IEnumerable<ChatRequest> GetChatRequests(int CustomerId);
 
         bool RequestChatByAdId(int AdId,int BuyerId);
-        int AcceptChatRequest(int Rid);
+        bool AcceptChatRequest(int Rid);
         bool DeclineChatRequest(int Rid);
         
 
