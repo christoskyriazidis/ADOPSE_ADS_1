@@ -22,13 +22,12 @@ namespace WpfClientt.viewModels {
 
         private FilterViewModel(ISet<Condition> conditions, ISet<Manufacturer> manufacturers, ISet<State> states,ISet<AdType> types,Subcategory subcategory) {
             filterBuilder = new AdsFilterBuilder(subcategory);
-            FilterMemebers.Add(new SearchFilterMember(filterBuilder.AddTitleSearchQuery,"Title"));
+            FilterMemebers.Add(new SearchFilterMember(filterBuilder.SetTitleQuery,"Title"));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(conditions, "Conditions", filterBuilder.AddConditionFilter));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(manufacturers, "Manufacturers", filterBuilder.AddManufacturerFilter));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(states, "States", filterBuilder.AddStateFilter));
             FilterMemebers.Add(MultipleChoicesFilterMember.getInstance(types, "Types", filterBuilder.AddTypeFilter));
-            FilterMemebers.Add(new MinMaxPriceFilterMember("Price Range", (min, max) => {
-            }));
+            FilterMemebers.Add(new MinMaxPriceFilterMember(filterBuilder.SetMinPrice,"Price Range",filterBuilder.SetMaxPrice));
         }
 
         public async static Task<FilterViewModel> GetInstance(FactoryServices factory,Subcategory subcategory) {

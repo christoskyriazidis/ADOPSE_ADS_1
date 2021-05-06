@@ -36,7 +36,7 @@ namespace WpfClientt.services {
             StateConverter stateConverter = await StateConverter.getInstance(adDetailsService);
             SubcategoryConverter subcategoryConverter = await SubcategoryConverter.getInstance(adDetailsService);
             TypeConverter typeConverter = await TypeConverter.getInstance(adDetailsService);
-            if(adDetailsService == null) {
+            if(adService == null) {
                 lock (lockObject) {
                     if (options == null) {
                         options = new JsonSerializerOptions();
@@ -74,7 +74,7 @@ namespace WpfClientt.services {
                         options.Converters.Add(typeConverter);
                     }
                 }
-                chatService = await ChatServiceSignalR.GetInstance(client,options);
+                chatService = await ChatServiceSignalR.GetInstance(client,options,await AdServiceInstance(),CustomerServiceInstance());
             }
 
             return chatService;

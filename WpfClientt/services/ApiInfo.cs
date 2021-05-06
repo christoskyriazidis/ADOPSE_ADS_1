@@ -8,50 +8,77 @@ using WpfClientt.model;
 namespace WpfClientt.services {
     static class ApiInfo {
 
-        private static string host = "https://localhost:44374/";
+        private static string host = "https://localhost:44374";
 
         public static string MyChatsMainUrl() {
-            return "profile/Achat";
+            return $"{host}/activechat";
         }
 
         public static string MessageMainUrl() {
-            return "message";
+            return $"{host}/message";
         }
 
         public static string AdMainUrl() {
-            return "ad";
+            return $"{host}/ad";
         }
 
         public static string CustomerMainUrl() {
-            return "customer";
+            return $"{host}/customer";
         }
 
         public static string ProfileMainUrl() {
-            return "profile";
+            return $"{host}/profile";
         }
 
         public static string CategoriesMainUrl() {
-            return "category";
+            return $"{host}/category";
         }
         public static string SubcategoriesMainUrl(Category category) {
-            return $"category/{category.Id}";
+            return $"{host}/category/{category.Id}";
         }
 
         public static string ConditionsMainUrl() {
-            return "condition";
+            return $"{host}/condition";
+        }
+
+        internal static string ChatHubMainUrl() {
+            return $"{host}/chathub";
         }
 
         public static string StatesMainUrl() {
-            return "state";
+            return $"{host}/state";
         }
 
         public static string TypeMainUrl() {
-            return "type";
+            return $"{host}/type";
         }
 
         public static string ManufacturersMainUrl() {
-            return "manufacturer";
+            return $"{host}/manufacturer";
         }
 
+        public static string RegistrationMainUrl() {
+            return "https://localhost:44305/";
+        }
+
+        internal static string ChatRequestMainUrl(Ad ad) {
+            return $"{host}/chat/chatrequest/{ad.Id}";
+        }
+
+        internal static string ConfirmChatRequestMainUrl(ChatRequest chatRequest) {
+            return $"{host}/chat/chatrequest/confirm/{chatRequest.Id}";
+        }
+
+        internal static string DeclineChatRequestMainUrl(ChatRequest chatRequest) {
+            return $"{host}/chat/chatrequest/decline/{chatRequest.Id}";
+        }
+
+        internal static string ProfileAdsUrl() {
+            return $"{host}/profile/myads";
+        }
+
+        internal static string ChatRequestsMainUrl() {
+            return $"{host}/chat/chatrequest";
+        }
     }
 }

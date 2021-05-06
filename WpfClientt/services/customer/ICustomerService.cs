@@ -33,5 +33,7 @@ namespace WpfClientt.services {
         /// <returns></returns>
         Task UpdateProfile(Customer profile);
 
+        Task Register(RegisterForm registerForm);
+
     }
 }

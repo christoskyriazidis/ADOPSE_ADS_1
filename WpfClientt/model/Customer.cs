@@ -23,7 +23,10 @@ namespace WpfClientt.model {
         /// The first name of the customer
         /// </summary>
         [JsonPropertyName("name")]
-        public virtual string FirstName { get; set; }
+        public virtual string FirstName { 
+            get; 
+            set; 
+        }
 
         /// <summary>
         /// The last name of the customer
@@ -68,10 +71,6 @@ namespace WpfClientt.model {
         [JsonPropertyName("profileImg")]
         public Uri ProfileImageUri { get; set; }
 
-        /// <summary>
-        /// The password of the customer.
-        /// </summary>
-        public virtual string Password {get; set;}
         public Customer() { 
         
         }

@@ -24,19 +24,11 @@ namespace WpfClientt.services {
         }
 
         public async Task Create(Customer customer) {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("username",customer.Username);
-            parameters.Add("address", customer.Address);
-            parameters.Add("name", customer.FirstName);
-            parameters.Add("lastName", customer.LastName);
-            request.Content = new FormUrlEncodedContent(parameters);
-            using (HttpResponseMessage response = await client.SendAsync(request)) {
-                response.EnsureSuccessStatusCode();
-                if(customer.ProfileImageUri != null) {
-                    await UpdateProfileImage(customer.ProfileImageUri.LocalPath);
-                }
-            }
+            throw new NotImplementedException("Call the Register method instead.");
+        }
+        public Task Register(RegisterForm registerForm) {
+
+            throw new NotImplementedException();
         }
 
         public async Task Delete(Customer customer) {

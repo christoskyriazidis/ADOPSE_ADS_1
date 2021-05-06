@@ -29,7 +29,7 @@ namespace WpfClientt.viewModels {
             return instance;
         }
 
-        protected override Func<RegisterForm, Task> SubmitAction() => customerService.Create;
+        protected override Func<RegisterForm, Task> SubmitAction() => customerService.Register;
 
         protected override void ClearFormStrep() {
             Form = new RegisterForm(Validate);

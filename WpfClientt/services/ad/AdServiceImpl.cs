@@ -91,7 +91,7 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> ProfileAds() {
-            throw new NotImplementedException();
+            return new GenericScroller<Ad>(client, 10, ApiInfo.ProfileAdsUrl(), options);
         }
 
         public async Task<Ad> ReadById(long id) {
@@ -104,7 +104,7 @@ namespace WpfClientt.services {
         }
 
         public IScroller<Ad> Scroller() {
-            throw new NotImplementedException("Don't call this method.");
+            throw new NotImplementedException("Don't call this method.Instead,call SubcategoryAds");
         }
 
         public IScroller<Ad> SubcategoryAds(Subcategory subcategory) {

@@ -10,17 +10,24 @@ namespace WpfClientt.model {
     /// A model class for registration form.A decorator that calls a callback each time a 
     /// setter is called.
     /// </summary>
-    public class RegisterForm : Customer {
-
+    public class RegisterForm {
+        private string username = string.Empty;
+        private string password = string.Empty;
         private string confirmatPassword = string.Empty;
+        private string firstName = string.Empty;
+        private string lastName = string.Empty;
+        private string phone = string.Empty;
+        private string email = string.Empty;
+        private string address = string.Empty;
+
         public Action afterSetCallback;
 
         [Required(ErrorMessage = "The username is not specified.")]
         [StringLength(40, MinimumLength = 3,ErrorMessage = "Username's length must be between [3-40].")]
-        public override string Username {
-            get => base.Username; 
+        public string Username {
+            get => username; 
             set {
-                base.Username = value;
+                username = value;
                 afterSetCallback.Invoke();
             }
         }
@@ -28,10 +35,10 @@ namespace WpfClientt.model {
         [Required(ErrorMessage = "Password is not specified.")]
         [DataType(DataType.Password)]
         [StringLength(40, MinimumLength = 6, ErrorMessage = "Password's length must be between [6,40]")]
-        public override string Password {
-            get => new string('*', base.Password.Length);
+        public string Password {
+            get => new string('*', password.Length);
             set {
-                base.Password = value;
+                password = value;
                 afterSetCallback();
             }
         }
@@ -48,49 +55,48 @@ namespace WpfClientt.model {
         }
 
         [Required(ErrorMessage = "The phone number is not specifided.")]
-        //Regex not working - error/bug
-        //[RegularExpression("/^69[0-9]{8}+$",ErrorMessage = "The phone number is not a valid greek number.")]
-        public override string MobilePhone {
-            get => base.MobilePhone;
+        [RegularExpression("^69[0-9]{8}",ErrorMessage = "The phone number is not a valid greek number.")]
+        public string MobilePhone {
+            get => phone;
             set {
-                base.MobilePhone = value;
+                phone = value;
                 afterSetCallback.Invoke();
             } 
         }
 
         [Required(ErrorMessage = "The email address is not specified.")]
         [RegularExpression(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z",ErrorMessage = "The email field does not contain a valid email value.")]
-        public override string Email {
-            get => base.Email;
+        public string Email {
+            get => email;
             set {
-                base.Email = value;
+                email = value;
                 afterSetCallback.Invoke();
             } 
         }
 
         [Required(ErrorMessage = "The first name is not specified.")]
-        public override string FirstName {
-            get => base.FirstName;
+        public string FirstName {
+            get => firstName;
             set {
-                base.FirstName = value;
+                firstName = value;
                 afterSetCallback.Invoke();
             } 
         }
 
         [Required(ErrorMessage = "The last name is not specified.")]
-        public override string LastName {
-            get => base.LastName;
+        public string LastName {
+            get => lastName;
             set {
-                base.LastName = value;
+                lastName = value;
                 afterSetCallback.Invoke();
             } 
         }
 
         [Required(ErrorMessage = "The street address is not specified.")]
-        public override string Address {
-            get => base.Address;
+        public string Address {
+            get => address;
             set {
-                base.Address = value;
+                address = value;
                 afterSetCallback.Invoke();
             } 
         }
@@ -100,7 +106,6 @@ namespace WpfClientt.model {
 
         public RegisterForm(Action afterSetCallback) {
             this.afterSetCallback = afterSetCallback;
-            base.Password = "";
         }
     }
 }

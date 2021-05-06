@@ -12,13 +12,11 @@
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
-            <ColumnDefinition Width="0.13*" />
-            <ColumnDefinition Width="0.45*" />
+            <ColumnDefinition Width="0.58*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="&lt;" IsEnabled="{Binding DataContext.IsBackButtonVisible,RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource medium_blue_button}" Command="{Binding Back}" />
         <Button Grid.Column="1" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding Categories}" />
         <Button Grid.Column="2" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding Login}" />
         <Button Grid.Column="3" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding Register}" />
-        <Button Grid.Column="4" Content="Chats" Style="{StaticResource medium_blue_button}" Command="{Binding Chats}" />
     </Grid>
 </UserControl>
