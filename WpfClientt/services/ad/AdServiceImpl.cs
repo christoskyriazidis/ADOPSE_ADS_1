@@ -62,13 +62,7 @@ namespace WpfClientt.services {
             }
 
             request.Content = form;
-            Debug.WriteLine(await request.Content.ReadAsStringAsync());
-            Debug.WriteLine("\n");
-            Debug.WriteLine(request.Headers);
             using (HttpResponseMessage response = await client.SendAsync(request)) {
-                Debug.WriteLine(await response.Content.ReadAsStringAsync());
-                Debug.WriteLine(response.Headers);
-                Debug.WriteLine(response.StatusCode);
                 response.EnsureSuccessStatusCode();
             }
 

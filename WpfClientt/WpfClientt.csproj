@@ -261,6 +261,7 @@
     <Compile Include="services\chat\ChatRequestModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
+    <Compile Include="services\chat\ChatRequestModel.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\ChatRequestNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\NotificationsViewModel.cs" />

@@ -35,6 +35,18 @@ namespace WpfClientt.services {
             this.hubConnection.On("ReceiveActiveChat", async (string message) => await ReceiveActiveChat(message));
             this.hubConnection.On("ReceiveChatRequest",async (string message) => await ReceiveChatRequest(message));
         }
+        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService) {
+            if (instance == null) {
+                HubConnection connection = new HubConnectionBuilder()
+                    .WithUrl(ApiInfo.ChatHubMainUrl(),
+                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "")); })
+                    .Build();
+                instance = new ChatServiceSignalR(client, options, connection, adService, customerService);
+                await connection.StartAsync();
+            }
+
+            return instance;
+        }
 
         private async Task ReceiveActiveChat(string message) {
             long chatId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
@@ -44,7 +56,7 @@ namespace WpfClientt.services {
             bool isCustomersChat = false;
             ChatModel foundChat = null;
 
-            foreach(ChatModel chat in chats) {
+            foreach (ChatModel chat in chats) {
                 if (chat.ChatId.Equals(chatId)) {
                     isCustomersChat = true;
                     foundChat = chat;
@@ -53,7 +65,7 @@ namespace WpfClientt.services {
             }
 
             if (isCustomersChat) {
-                foreach(Func<Chat,Task> activeChatListener in activeChatListeners) {
+                foreach (Func<Chat, Task> activeChatListener in activeChatListeners) {
                     await activeChatListener.Invoke(await MapChatServerToChat(foundChat));
                 }
             }
@@ -103,18 +115,6 @@ namespace WpfClientt.services {
             return result;
         }
 
-        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options,IAdService adService,ICustomerService customerService) {
-            if(instance == null) {
-                HubConnection connection = new HubConnectionBuilder()
-                    .WithUrl(ApiInfo.ChatHubMainUrl(), 
-                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ","")); })
-                    .Build();
-                instance = new ChatServiceSignalR(client, options, connection,adService,customerService);
-                await connection.StartAsync();
-            }
-
-            return instance;
-        }
 
         public void AddMessageListener(Func<Task> listenerProvider) {
             messageListeners.Add(listenerProvider);

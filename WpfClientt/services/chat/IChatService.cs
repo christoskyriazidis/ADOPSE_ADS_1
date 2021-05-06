@@ -41,7 +41,6 @@ namespace WpfClientt.services {
         /// </summary>
         /// <param name="listener"></param>
         void RemoveChatRequestListener(Func<Task> listener);
-
         /// <summary>
         /// Adds a listener that receives notifications upon the arriaval of new active chat.
         /// The listener get the instance of the new active chat.
