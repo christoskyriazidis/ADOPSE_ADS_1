@@ -12,13 +12,14 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class ChatsViewModel : BaseViewModel, IViewModel {
         private static ChatsViewModel instance;
-
+        private Customer LoggedInCustomer;
         private IChatService chatService;
         public ChatViewModel SelectedChat { get; private set; }
         public ObservableCollection<Chat> Chats { get; private set; } = new ObservableCollection<Chat>();
         public ICommand SelectChatCommand { get; set; }
 
-        private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat) {
+        private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat,Customer loggedInCustomer) {
+            this.LoggedInCustomer = loggedInCustomer;
             this.chatService = chatService;
             foreach (Chat chat in chats) {
                 Chats.Add(chat);
@@ -29,11 +30,12 @@ namespace WpfClientt.viewModels {
         }
 
         public static async Task<ChatsViewModel> GetInstance(FactoryServices factory) {
+            Customer profile = await factory.CustomerServiceInstance().Profile();
             if (instance == null) {
                 IChatService chatService = await factory.ChatServiceInstance();
                 ISet<Chat> chats = await chatService.Chats();
-                ChatViewModel selected = chats.Count > 0 ? new ChatViewModel(chats.First(), chatService, await GetAllMessagesOfChat(chats.First(), chatService)) : null;
-                instance = new ChatsViewModel(chatService, chats, selected);
+                ChatViewModel selected = chats.Count > 0 ? new ChatViewModel(chats.First(), chatService, await GetAllMessagesOfChat(chats.First(), chatService),profile) : null;
+                instance = new ChatsViewModel(chatService, chats, selected, profile);
             }
             return instance;
         }
@@ -44,8 +46,7 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task SelectChat(Chat chat) {
-
-            SelectedChat = new ChatViewModel(chat, chatService, await GetAllMessagesOfChat(chat, chatService));
+            SelectedChat = new ChatViewModel(chat, chatService, await GetAllMessagesOfChat(chat, chatService),LoggedInCustomer);
             OnPropertyChanged(nameof(SelectedChat));
         }
 
