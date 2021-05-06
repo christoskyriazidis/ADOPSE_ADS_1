@@ -81,19 +81,19 @@ namespace ApiOne.Repositories
             }
         }
 
-        public bool AcceptChatRequest(int Rid)
+        public int AcceptChatRequest(int Rid)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "update ChatRequest set confirmed=1 where id=@Rid";
-                var chatMessages = conn.Query<int>(sql, new { Rid}).FirstOrDefault();
-                return true;
+                string sql = "exec AcceptChatRequest @RequestId";
+                var activeChatId = conn.Query<int>(sql, new { RequestId=Rid }).FirstOrDefault();
+                return activeChatId;
             }
             catch (SqlException sqlEx)
             {
                 Debug.WriteLine(sqlEx);
-                return false;
+                return -1;
             }
         }
 

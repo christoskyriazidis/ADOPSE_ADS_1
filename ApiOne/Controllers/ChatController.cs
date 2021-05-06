@@ -118,26 +118,27 @@ namespace ApiOne.Controllers
         [Route("/chat/chatrequest/confirm/{ChatId}")]
         public async Task<IActionResult> ConfirmChatRequest(int ChatId)
         {
-            if (_chatRepository.AcceptChatRequest(ChatId))
+            int activeChatId= _chatRepository.AcceptChatRequest(ChatId);
+            if (activeChatId != -1)
             {
-                await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{ChatId}");
+                await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{activeChatId} ");
                 return Json(new { response = $"{ChatId} accepted" });
             }
             return BadRequest(new { message="kati pige lathos"});
         } 
         
-        [Authorize]
-        [HttpPost]
-        [Route("/chat/chatrequest/decline/{ChatId}")]
-        public async Task<IActionResult> DeclineChatRequest(int ChatId)
-        {
-            if (_chatRepository.AcceptChatRequest(ChatId))
-            {
-                await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{ChatId}");
-                return Json(new { response = $"{ChatId} accepted" });
-            }
-            return BadRequest(new { message="kati pige lathos"});
-        }
+        //[Authorize]
+        //[HttpPost]
+        //[Route("/chat/chatrequest/decline/{ChatId}")]
+        //public async Task<IActionResult> DeclineChatRequest(int ChatId)
+        //{
+        //    if (_chatRepository.AcceptChatRequest(ChatId))
+        //    {
+        //        await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{ChatId}");
+        //        return Json(new { response = $"{ChatId} accepted" });
+        //    }
+        //    return BadRequest(new { message="kati pige lathos"});
+        //}
         
         [Authorize]
         [HttpGet]

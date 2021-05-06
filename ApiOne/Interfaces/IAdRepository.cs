@@ -19,7 +19,7 @@ namespace ApiOne.Interfaces
         Ad UpdateAd(Ad ad);
         bool UpdateAdImg(int adId);
 
-        bool NotificationSeen(int notId);
+        bool NotificationSeen(NotificationSeen notificationSeen);
         int InsertAd(CreateAd ad);
         bool DeleteAd(int id);
 
@@ -29,6 +29,7 @@ namespace ApiOne.Interfaces
         bool SubscribeToSubCategory(int categoryId, int customerId);
         bool RemoveFromSubscribedSubCategories(int CustomerId, int[] CatIds);
 
+        IEnumerable<ReviewNotification> GetReviewNotifications(int CustomerId);
         PaginationBSA GetSoldAds(Pagination pagination, int CustomerId);
         PaginationBSA GetBoughtAds(Pagination pagination, int CustomerId);
         IEnumerable<WishSubNotification> GetNotifications(int PageNumber, int CustomerId);

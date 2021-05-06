@@ -80,6 +80,11 @@ namespace ApiOne.Controllers
                     q.Terms(t => t
                         .Field(f => f.Manufacturer)
                         .Terms(adFiltersFromParamClient.Manufacturer)
+                        ) 
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.State)
+                        .Terms(1)
                         )
                 &&
                     q.Terms(t => t
@@ -161,6 +166,11 @@ namespace ApiOne.Controllers
                     q.Terms(t => t
                         .Field(f => f.Manufacturer)
                         .Terms(adFiltersFromParamClient.Manufacturer)
+                        )
+                &&
+                    q.Terms(t => t
+                        .Field(f => f.State)
+                        .Terms(1)
                         )
                 &&
                     q.Terms(t => t
