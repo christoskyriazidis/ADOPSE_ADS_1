@@ -12,7 +12,8 @@ namespace WpfClientt.viewModels {
     public abstract class MinMaxFilterMember<T> : BaseViewModel, FilterMember where T : IComparable<T>  {
         private T min;
         private T max;
-        private Action<T, T> onFinish;
+        private Action<T> minAction;
+        private Action<T> maxAction;
         /// <summary>
         /// The minimum value the user can choose inclusively.
         /// </summary>
@@ -47,13 +48,20 @@ namespace WpfClientt.viewModels {
         public string Title { get; private set; }
 
 
-        public MinMaxFilterMember(string title,Action<T,T> onFinish) {
+        public MinMaxFilterMember(Action<T> minAction,string title,Action<T> maxAction) {
             this.Title = title;
-            this.onFinish = onFinish;
+            this.minAction = minAction;
+            this.maxAction = maxAction;
         }
 
         public void Finish() {
-            onFinish.Invoke(Min, Max);
+            if(min != null) {
+                minAction.Invoke(min);
+            }
+
+            if(max != null) {
+                maxAction.Invoke(max);
+            }
         }
 
         public void Reset() {

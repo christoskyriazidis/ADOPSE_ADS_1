@@ -23,7 +23,10 @@ namespace WpfClientt.model {
         /// The first name of the customer
         /// </summary>
         [JsonPropertyName("name")]
-        public virtual string FirstName { get; set; }
+        public virtual string FirstName { 
+            get; 
+            set; 
+        }
 
         /// <summary>
         /// The last name of the customer

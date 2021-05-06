@@ -61,5 +61,24 @@ namespace WpfClientt.services {
             return "https://localhost:44305/";
         }
 
+        internal static string ChatRequestMainUrl(Ad ad) {
+            return $"{host}/chat/chatrequest/{ad.Id}";
+        }
+
+        internal static string ConfirmChatRequestMainUrl(ChatRequest chatRequest) {
+            return $"{host}/chat/chatrequest/confirm/{chatRequest.Id}";
+        }
+
+        internal static string DeclineChatRequestMainUrl(ChatRequest chatRequest) {
+            return $"{host}/chat/chatrequest/decline/{chatRequest.Id}";
+        }
+
+        internal static string ProfileAdsUrl() {
+            return $"{host}/profile/myads";
+        }
+
+        internal static string ChatRequestsMainUrl() {
+            return $"{host}/chat/chatrequest";
+        }
     }
 }

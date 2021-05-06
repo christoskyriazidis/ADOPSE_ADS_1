@@ -243,6 +243,7 @@
     <Compile Include="model\AdDecorator.cs" />
     <Compile Include="model\AdDetailComponent.cs" />
     <Compile Include="model\chat\Chat.cs" />
+    <Compile Include="model\chat\ChatRequest.cs" />
     <Compile Include="model\chat\Message.cs" />
     <Compile Include="model\Condition.cs" />
     <Compile Include="model\Customer.cs" />
@@ -255,6 +256,13 @@
     <Compile Include="model\jsonConverters\SubcategoryConverter.cs" />
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
+    <Compile Include="model\notification\AdChangedNotification.cs" />
+    <Compile Include="services\chat\ChatRequestModel.cs" />
+    <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
+    <Compile Include="viewModels\notification\ChatRequestNotificationViewModel.cs" />
+    <Compile Include="viewModels\notification\NotificationsViewModel.cs" />
+    <Compile Include="viewModels\notification\NotificationViewModel.cs" />
+    <Compile Include="viewModels\notification\SubcategoryChangedNotificationViewModel.cs" />
     <Compile Include="model\RegisterForm.cs" />
     <Compile Include="model\State.cs" />
     <Compile Include="services\chat\ChatPage.cs" />
@@ -262,6 +270,7 @@
     <Compile Include="services\chat\ChatServiceSignalR.cs" />
     <Compile Include="services\chat\IChatService.cs" />
     <Compile Include="services\customer\OpenIdConnectClient.cs" />
+    <Compile Include="services\notification\INotifyService.cs" />
     <Compile Include="viewModels\chat\ChatsViewModel.cs" />
     <Compile Include="viewModels\filters\SearchFilterMember.cs" />
     <Compile Include="viewModels\customer\FormViewModel.cs" />
@@ -358,6 +367,12 @@
     <Compile Include="views\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\notifications\ChatRequestNotificationView.xaml.cs">
+      <DependentUpon>ChatRequestNotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\notifications\NotificationsView.xaml.cs">
+      <DependentUpon>NotificationsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\ProfileSettings.xaml.cs">
       <DependentUpon>ProfileSettings.xaml</DependentUpon>
     </Compile>
@@ -442,6 +457,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\notifications\ChatRequestNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\notifications\NotificationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\ProfileSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -489,5 +512,6 @@
   <ItemGroup>
     <Resource Include="images\logo\supermarketcart_89153.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

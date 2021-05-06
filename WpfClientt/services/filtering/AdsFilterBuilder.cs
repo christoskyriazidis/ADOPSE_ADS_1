@@ -15,6 +15,8 @@ namespace WpfClientt.services.filtering {
         private Subcategory subcategory;
 
         private string mainUrl = $"{ApiInfo.AdMainUrl()}?";
+        private int min = 0;
+        private int max = 0;
 
         private Regex NotCharacters = new Regex(@"[^a-z0-9 ]");
         private Regex SpaceCharacters = new Regex(@"\s+");
@@ -39,8 +41,16 @@ namespace WpfClientt.services.filtering {
         /// Adds the title search query - text.
         /// </summary>
         /// <param name="titleQuery"></param>
-        public void AddTitleSearchQuery(string titleQuery) {
-            this.titleQuery = titleQuery;
+        public void SetTitleQuery(string titleQuery) {
+            this.titleQuery = LastPlusCharacter.Replace(SpaceCharacters.Replace(NotCharacters.Replace(titleQuery.ToLower(), ""), "+"), "");
+        }
+
+        public void SetMinPrice(int min) {
+            this.min = min;
+        }
+
+        public void SetMaxPrice(int max) {
+            this.max = max;
         }
 
         /// <summary>
@@ -86,12 +96,21 @@ namespace WpfClientt.services.filtering {
             string statesFilter = PrefixIfNotEmpty("State=",string.Join("_", states.Select(LongToString).ToArray()));
             string typesFilter = PrefixIfNotEmpty("Type=",string.Join("_", types.Select(LongToString).ToArray()));
             string manufacturersFilter = PrefixIfNotEmpty("Manufacturer=",string.Join("_", manufacturers.Select(LongToString).ToArray()));
-            titleQuery = LastPlusCharacter.Replace(SpaceCharacters.Replace(NotCharacters.Replace(titleQuery.ToLower(), ""),"+"),"");
             string titleFilter = PrefixIfNotEmpty("Title=", titleQuery);
             string subcategoryFilter = $"SubcategoryId={subcategory.Id}";
+            string minFilter = string.Empty;
+            string maxFilter = string.Empty;
+            if(min != 0 && max != 0 && min.CompareTo(max) < 0) {
+                minFilter = PrefixIfNotEmpty("MinPrice=", min.ToString());
+                maxFilter = PrefixIfNotEmpty("MaxPrice=", max.ToString());
+            }else if(min != 0) {
+                minFilter = PrefixIfNotEmpty("MinPrice=", min.ToString());
+            }else if(max != 0) {
+                minFilter = PrefixIfNotEmpty("MinPrice=", min.ToString());
+            }
 
             return filterUrl.ToString() + string.Join("&",
-                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter }
+                new string[] {subcategoryFilter,conditionsFilter, statesFilter, typesFilter, manufacturersFilter,titleFilter,minFilter,maxFilter }
                 .Where(str => str.Length > 0)
                 );
         }
