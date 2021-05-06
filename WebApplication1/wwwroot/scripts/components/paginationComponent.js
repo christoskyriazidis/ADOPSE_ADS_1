@@ -1,5 +1,5 @@
 class PaginationComponent extends HTMLElement {
-    static get observedAttributes() { return ['current-page', 'last-page', 'filter',]; }
+    static get observedAttributes() { return ['last-page']; }
     constructor() {
         super();
         console.log("ahsfhaaiowfhaowufhawoiufhwaoi")

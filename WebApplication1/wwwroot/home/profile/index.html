@@ -7,7 +7,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css">
     <link rel="stylesheet" href="/styles/profile/userProfile/userProfile.css">
+    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/customerProfile.js" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
     <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
@@ -19,7 +21,7 @@
         <div class="contentArea">
             <div class="profileDetails">
                 <div class="wrapper"><span class="profilePicture"></span>
-                    <div class="username"><b>Makhs6969</b> <br>(Makhs Drakopoylos)</div>
+                    <div class="username"><b></b></div>
                 </div>
 
 
@@ -28,15 +30,21 @@
                 <div class="leftColumn">
                     <div class="bio">
                         <h2>Details</h2>
-                        <div class="realName"><b>Real name:</b> Makhs Drakopoylos</div>
-                        <div class="email"><b>Email:</b> makhs22@gmail.com</div>
-                        <div class="address"><b>Address:</b> Xaralampou 8, Thessaloniki</div>
+                        <div class="realName"><b>Real name:</b> </div>
+                        <div class="email"><b>Email:</b> </div>
+                        <div class="address"><b>Address:</b> </div>
                     </div>
                     <div class="reviews">Makhs overview</div>
 
                 </div>
 
-                <div class="latestActivity">Latest activity</div>
+                <div class="latestActivity ">
+                    <pagination-component></pagination-component>
+                    <div class="contentContainer">
+
+                    </div>
+                    <pagination-component></pagination-component>
+                </div>
             </div>
         </div>
     </main>
@@ -45,5 +53,6 @@
 <script src="/scripts/components/wishlistComponent.js"></script>
 <script src="/scripts/components/notificationComponent.js"></script>
 <script src="/scripts/components/paginationComponent.js"></script>
+<script src="/scripts/components/adContainerComponent.js"></script>
 
 </html>

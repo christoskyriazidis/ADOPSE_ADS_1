@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="/scripts/ads.js" type="module"></script>
 </head>
 
 <body>
@@ -37,16 +38,7 @@
                     </svg> add to wishlist!
                 </div>
                 <div class="showModal addToWishlist">
-                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 391.837 391.837"
-                        style="enable-background:new 0 0 391.837 391.837;" xml:space="preserve">
-
-                        <path style="fill:#D7443E;" d="M285.257,35.528c58.743,0.286,106.294,47.836,106.58,106.58
-                   c0,107.624-195.918,214.204-195.918,214.204S0,248.165,0,142.108c0-58.862,47.717-106.58,106.58-106.58l0,0
-                   c36.032-0.281,69.718,17.842,89.339,48.065C215.674,53.517,249.273,35.441,285.257,35.528z" />
-
-
-                    </svg> Im interested!
+                    Im interested!
                 </div>
 
                 <div class="socialMediaButtons">
@@ -65,9 +57,9 @@
             </div>
             <hr>
             <div class="mainContentArea">
-                <div class="sellerDetails">soadighaoisdfh</div>
+                <div class="sellerDetails"></div>
                 <div class="details">
-                    <div class="postedOn"><b>Posted on: </b>27-Apr-21 12:02:38 AM</div>
+                    <div class="postedOn"><b>Posted on: </b></div>
                     <div class="adLocation"><b>Seller location: </b></div>
                     <div class="adPrice"><b>Price: </b></div>
                     <div class="adSubcategory"><b>Category: </b></div>
@@ -85,51 +77,16 @@
         </div>
 
     </main>
-
     <script>
-        let urlParams = new URLSearchParams(window.location.search);
-
-        // document.querySelector(".sendEmail").addEventListener("click", () => {
-        //     confirm("Do you want to send email ?")
-        // })
-        document.querySelector(".addToWishlist").addEventListener("click", () => {
-            axios.post(`https://localhost:44374/wishlist/${urlParams.get("id")}`)
-                .then(() => {
-                    alert("Ad added to wishlist succesfuly!")
-                })
-                .catch(() => {
-                    alert("Something seems to be wrong :\\ maybe you already are subscribed here")
-                })
-        })
-        let customer;
-        //delete thingy
-        //axios.delete(`https://localhost:44374/wishlist`,{data:{adids:[199055]}})
-        axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
-            .then((response) => response.data)
-            .then(data => {
-                customer = data.customer;
-                document.querySelector(".description").innerHTML += data.description
-                document.querySelector(".postedOn").innerHTML += data.createDate
-                document.querySelector(".adLocation").innerHTML += data.location
-                document.querySelector(".adPrice").innerHTML += data.price + "€"
-                document.querySelector(".adTitle").innerHTML = `<h1>${data.title}</h1>`
-                document.querySelector(".imageContainer").style.backgroundImage = `url(${data.img.replace("small", "full")})`;
-
-                // document.querySelector(".description").innerHTML=data.description
-                // document.querySelector(".description").innerHTML=data.description
-            })
-            .catch(x => console.log(x))
-            .finally()
-
-
-        changeDisplayForEmail = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const changeDisplayForEmail = () => {
             console.log("ahahahha");
             document.querySelector(".modalContent").innerHTML = `
-                <p>Write a message here</p>
-                <textarea ></textarea>
-                <button onclick="sendEmail()">Send email</button>`;
+        <p>Write a message here</p>
+        <textarea ></textarea>
+        <button onclick="sendEmail()">Send email</button>`;
         }
-        sendEmail = () => {
+        const sendEmail = () => {
             let textarea = document.querySelector("textarea");
 
             if (textarea.textLength <= 10) {
@@ -142,7 +99,7 @@
             }
             modal.style.display = "none";
             const body = {
-                sellerId: customer,
+                sellerId: window.customer,
                 adId: urlParams.get("id"),
                 message: textarea.value
             }
@@ -150,7 +107,7 @@
                 .then(() => {
                     alert("Your email has been succesfuly send")
                 })
-                .catch(console.log)
+                .catch(console.error)
         }
         // Get the modal
         var modal = document.querySelector("#myModal");
@@ -159,24 +116,24 @@
         var btn = document.querySelector(".showModal");
 
         // Get the <span> element that closes the modal
-        chatRequest = (id) => {
-            axios.post("https://localhost:44374/chat/chatrequest/" + id).then(console.log)
+        const chatRequest = (id) => {
+            axios.post("https://localhost:44374/chat/chatrequest/" + id).then(data=>{alert(data.data.response); modal.style.display = "none";}).catch(err=>alert(err.message))
         }
         // When the user clicks the button, open the modal 
         btn.addEventListener("click", () => {
             modal.style.display = "flex";
             modal.innerHTML = `<div class="modal-content">
-                <span class="close">&times;</span>
-                <div class="modalContent">
-                    <div class="chatOption" onclick="chatRequest(${urlParams.get("id")})">
-                        <p>Click here to start live chat conversation!</p>
-                    </div>
-                    <div class="vl"> </div>
-                    <div class="emailOption" onclick="changeDisplayForEmail()">
-                        <p>Click here to contact seller via email!</p>
-                    </div>
-                </div>
-            </div>`
+        <span class="close">&times;</span>
+        <div class="modalContent">
+            <div class="chatOption" onclick="chatRequest(${urlParams.get("id")})">
+                <p>Click here to start live chat conversation!</p>
+            </div>
+            <div class="vl"> </div>
+            <div class="emailOption" onclick="changeDisplayForEmail()">
+                <p>Click here to contact seller via email!</p>
+            </div>
+        </div>
+    </div>`
             var span = document.getElementsByClassName("close")[0];
 
             let chatOption = document.querySelector(".chatOption")
@@ -199,8 +156,8 @@
                 modal.style.display = "none";
             }
         }
-
     </script>
+
     <script src="/scripts/sign-in.js"></script>
     <script src="/scripts/components/navbarComponent.js"></script>
     <script src="/scripts/components/wishlistComponent.js"></script>
