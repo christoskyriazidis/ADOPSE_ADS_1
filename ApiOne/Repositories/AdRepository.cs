@@ -88,6 +88,7 @@ namespace ApiOne.Repositories
         {
             try
             {
+
                 using var conn = ConnectionManager.GetSqlConnection();
                 string sql = "EXEC get_ads_by_customer @pageNumber,@customerId;SELECT count(*)as AdCount FROM [Ad] where customer=@customerId ";
                 AdsWithPagination adPagination = new AdsWithPagination();
