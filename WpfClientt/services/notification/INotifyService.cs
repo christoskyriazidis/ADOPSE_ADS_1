@@ -11,7 +11,7 @@ namespace WpfClientt.services {
 
         Task SubscriberToSubcategory(Subcategory subcategory);
 
-        Task UnsubscribeFromSubcategory(Subcategory subcategory);
+        Task UnsubscribeFromSubcategories(Subcategory[] subcategories);
 
         Task<ISet<Subcategory>> SubscribedSubcategories();
 

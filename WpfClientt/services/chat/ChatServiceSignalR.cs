@@ -38,9 +38,12 @@ namespace WpfClientt.services {
 
         public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService) {
             if (instance == null) {
+                string token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", ""); 
                 HubConnection connection = new HubConnectionBuilder()
-                    .WithUrl(ApiInfo.ChatHubMainUrl(),
-                    config => { config.AccessTokenProvider = () => Task.FromResult(client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "")); })
+                    .WithUrl(
+                        ApiInfo.ChatHubMainUrl(),
+                        config => { config.AccessTokenProvider = () => Task.FromResult(token); }
+                    )
                     .Build();
                 instance = new ChatServiceSignalR(client, options, connection, adService, customerService);
                 await connection.StartAsync();

@@ -41,6 +41,10 @@ namespace WpfClientt.services {
             return $"{host}/condition";
         }
 
+        internal static string NotificationHubMainUrl() {
+            return $"{host}/notificationHub";
+        }
+
         internal static string ChatHubMainUrl() {
             return $"{host}/chathub";
         }
@@ -79,6 +83,18 @@ namespace WpfClientt.services {
 
         internal static string ChatRequestsMainUrl() {
             return $"{host}/chat/chatrequest";
+        }
+
+        internal static string SubscribedSubcategoriesMainUrl() {
+            return $"{host}/subcategory/subscribe";
+        }
+
+        internal static string SubscribeSubcategoryMainUrl(Subcategory subcategory) {
+            return $"{host}/category/subscribe/{subcategory.Id}";
+        }
+
+        internal static string UnsubscribeFromSubcategoriesMainUrl() {
+            return $"{host}/category/subscribe";
         }
     }
 }

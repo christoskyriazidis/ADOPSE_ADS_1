@@ -18,6 +18,9 @@ namespace WpfClientt.viewModels {
         public ICommand Notifications { get; private set; }
         public ICommand Chats { get; private set; }
         public ICommand Logout { get; private set; }
+
+        public ICommand Subscriptions { get; private set; }
+
         public string Message { get; set; } = string.Empty;
 
         private LoginCustomerMenu(IChatService chatService) {
@@ -32,6 +35,7 @@ namespace WpfClientt.viewModels {
             );
             Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
             Logout = new AsyncCommand(async () => await Mediator.Notify("Logout"));
+            Subscriptions = new AsyncCommand(async () => await Mediator.Notify("SubscriptionView"));
             chatService.AddChatRequestListener(ChatRequestListener);
         }
 
