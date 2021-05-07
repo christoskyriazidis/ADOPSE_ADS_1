@@ -7,7 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
-  background-color: #e4e4e4;
+  background-color: #e0e0e0;
 }
 
 main {
@@ -26,6 +26,8 @@ main .contentArea {
 }
 
 main .contentArea .profileDetails {
+  -webkit-box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
+          box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
   border-radius: 20px;
   background-color: white;
   background: #99c2ec;
@@ -60,7 +62,6 @@ main .contentArea .profileDetails .wrapper {
 
 main .contentArea .profileDetails .wrapper .profilePicture {
   background: #5e7892;
-  background-image: url("https://localhost:44374/images/Profile/avatar.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -93,8 +94,10 @@ main .contentArea .more .leftColumn {
 }
 
 main .contentArea .more .leftColumn .bio {
+  -webkit-box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
+          box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
   border-radius: 20px;
-  background-color: white;
+  background-color: #f8f8f8;
   padding: 30px;
 }
 
@@ -103,15 +106,54 @@ main .contentArea .more .leftColumn .bio div {
 }
 
 main .contentArea .more .leftColumn .reviews {
+  -webkit-box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
+          box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
   border-radius: 20px;
-  background-color: white;
+  background-color: #f8f8f8;
   margin-top: 20px;
 }
 
 main .contentArea .more .latestActivity {
-  background-color: white;
+  -webkit-box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
+          box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
+  background-color: #f8f8f8;
   width: 74%;
-  height: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   border-radius: 20px;
+}
+
+main .contentArea .more .latestActivity pagination-component {
+  margin-right: 10%;
+}
+
+main .contentArea .more .latestActivity .contentContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+main .contentArea .more .latestActivity .contentContainer ad-component {
+  margin: 30px;
+}
+
+main .contentArea .more .latestActivity .contentContainer ad-component .sellerData {
+  display: none;
 }
 /*# sourceMappingURL=userProfile.css.map */

@@ -18,7 +18,7 @@ export default class GenericResultInterface {
     lastPageNumber;
     allFilters = null;
     urlParams;
-    constructor(intent) {
+    constructor(intent, args = null) {
         this.urlParams = new URLSearchParams(window.location.search);
         switch (intent) {
             case 'search':
@@ -33,11 +33,15 @@ export default class GenericResultInterface {
             case 'myads':
                 this.handleMyAds();
                 break;
+            case 'customerAds':
+                this.handleCustomerAds(args);
+                break;
             case 'notifications':
                 break;
             case 'wishlist':
         }
     }
+
     async getDictionary(cb) {
         let dict = new Dictionary();
         dict.init(this.category).then(maps => {
@@ -51,11 +55,12 @@ export default class GenericResultInterface {
         this.currentPageNumber = num;
         const pageSizeParam = this.pageSizeString + this.pageSize;
         const pageNumberParam = this.pageNumberString + this.currentPageNumber
-        //this.sortField = document.querySelector(".sorting").value
+        this.sortField = document.querySelector(".sorting") ? document.querySelector(".sorting").value : "idH";
         this.link = this.resourceServer + this.endpoint + pageNumberParam + pageSizeParam + this.filters + this.search + this.sortby + this.sortField
         axios.get(this.link)
             .then((response) => response.data)
             .then((data) => {
+
                 this.contextHandler(data)
                 //this.populateSearchArea(data)
             }).catch(console.log)
@@ -247,6 +252,35 @@ export default class GenericResultInterface {
             this.dictionary = maps;
             this.setLink(1);
         })
+    }
+    handleCustomerAds = (args) => {
+
+        this.getDictionary((maps) => {
+            this.endpoint = "customer/ad/" + args.id
+            this.contextHandler = this.populateCustomerAds;
+            this.dictionary = maps;
+            this.setLink(1);
+        })
+    }
+    populateCustomerAds = (data) => {
+        console.log(data)
+        document.querySelector(".contentContainer").innerHTML=""
+        this.lastPageNumber = data['totalPages']
+        for (let object of data.result) {
+            document.querySelector(".contentContainer").innerHTML +=
+                `<ad-component title="${object.title}"
+            condition="${this.dictionary.con.get(object.condition)}"
+            price="${object.price}"
+            item-image="${object.img}"
+            id="${object.id}"></ad-component>`
+
+        }
+        const pagers = document.querySelectorAll('pagination-component')
+        for (let pager of pagers) {
+            console.log(this.currentPageNumber);
+            pager.setAttribute("current-page", this.currentPageNumber)
+            pager.setAttribute("last-page", this.lastPageNumber)
+        }
     }
     handleSellers = () => {
         let customerList = ""

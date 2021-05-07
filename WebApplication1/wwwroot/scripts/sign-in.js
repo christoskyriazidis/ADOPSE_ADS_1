@@ -15,6 +15,7 @@ var userManager = new Oidc.UserManager(config);
 userManager.getUser().then(user => {
     //console.log("user:",user);
     if (user) {
+       
         console.log(user);
         //vazoume san default header to token, global fasi
         axios.defaults.headers.common["Authorization"] = "Bearer " + user.access_token;
@@ -26,17 +27,19 @@ userManager.getUser().then(user => {
     }
 
     else {
-     
+    
     }
 });
 var refreshing = false;
 axios.interceptors.response.use(
+     
     function (response) { return response; },
     function (error) {
+        
         console.log("axios error:", error.response);
 
         var axiosConfig = error.response.config;
-
+       
         //if error response is 401 try to refresh token
         //PREPEI NA TO DIOR9OSOUME ARGOTERA NA VGALOUME TO TRUE
         if (error.response.status === 401) {
@@ -62,6 +65,7 @@ axios.interceptors.response.use(
 function callApi() {
     axios.get("https://localhost:44374/ad")
         .then(res => {
+            console.log("here");
             console.log(res)
         })
         .catch(err => {
@@ -74,12 +78,12 @@ function callApi() {
         })
 }
 userManager.events.addUserLoaded(function () {
-    alert("hedllo");
+   
 });
 
 function signIn() {
     userManager.signinRedirect();
-    
+   
 }
 function signOut() {
     userManager.signoutRedirect();

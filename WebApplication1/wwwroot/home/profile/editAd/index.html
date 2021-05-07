@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/profile/addAd/addAd.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="/scripts/profile.js" type="module"></script>
@@ -15,46 +16,69 @@
 
 <body>
     <navbar-component logged="true"></navbar-component>
-    <div>
-        <input type="text" class="titleInput" placeholder="title">
-        <input type="number" class="priceInput" placeholder="price">
-        <input type="file" class="image" value="add image">
-        <textarea class="descriptionInput"> </textarea>
-        <div class="info">
-            <h4>Categories</h4>
-        </div>
+    <main>
+        <div class="container">
+           
+            <h4>Title</h4>
+            <input type="text" class="titleInput" placeholder="title">
+            
+            <h4>Price</h4>
+            <input type="number" class="priceInput" placeholder="price">
+            
+            <h4>Description</h4>
+            <textarea class="descriptionInput"> </textarea>
 
-        <div class=" group"><select name="" id="categoryGroup"> </select></div>
-        <div class="info">
-            <h4>SubCategory</h4>
-        </div>
-        <div class=" group"><select name="" id="subCategoryGroup">  </select></div>
-        <div class="info">
-            <h4>Ad types</h4>
-        </div>
-        <div class=" group"><select name="" id="typeGroup"> </select></div>
-        <div class="info">
-            <h4>Condition</h4>
-        </div>
-        <div class=" group"><select name="" id="conditionGroup"> </select></div>
+            <div class=" group">
+                <div class="info">
+                    <h4>Category</h4>
+                </div><select name="" id="categoryGroup"> </select>
+            </div>
 
-        <div class="info">
-            <h4>Manufacturers</h4>
+            <div class=" group">
+                <div class="info">
+                    <h4>Subcategory</h4>
+                </div><select name="" id="subCategoryGroup"> </select>
+            </div>
+
+            <div class=" group">
+                <div class="info">
+                    <h4>Ad types</h4>
+                </div><select name="" id="typeGroup"> </select>
+            </div>
+
+            <div class=" group">
+                <div class="info">
+                    <h4>Condition</h4>
+                </div><select name="" id="conditionGroup"> </select>
+            </div>
+
+
+            <div class=" group">
+                <div class="info">
+                    <h4>Manufacturers</h4>
+                </div><select name="" id="manufacturerGroup"> </select>
+            </div>
+
+            <button class="submitAd">post ad</button>
+
         </div>
-        <div class=" group"><select name="" id="manufacturerGroup"> </select></div>
-        <div class="info">
-            <h4>State</h4>
+        <div class="container">
+            <div class=" group">
+                <div class="info">
+                    <h4>Select a picture</h4>
+                </div><input type="file" class="image" value="add image"></select>
+            </div>
+            <button class="changeImage">change image</button>
         </div>
-        <div class=" group"><select name="" id="stateGroup"> </select></div>
-        <button class="editAd">edit ad</button>
-        <button class="changeImage"></button>
-<script>
-    
-    
-   
-</script>
-<script src="/scripts/components/navbarComponent.js"></script>
-<script src="/scripts/components/wishlistComponent.js"></script>
-<script src="/scripts/components/notificationComponent.js"></script>
+    </main>
+
+    <script>
+
+
+
+    </script>
+    <script src="/scripts/components/navbarComponent.js"></script>
+    <script src="/scripts/components/wishlistComponent.js"></script>
+    <script src="/scripts/components/notificationComponent.js"></script>
 
 </html>
