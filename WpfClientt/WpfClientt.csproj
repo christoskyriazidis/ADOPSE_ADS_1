@@ -265,15 +265,21 @@
     <Compile Include="model\notification\AdChangedNotification.cs" />
     <Compile Include="services\chat\ChatModel.cs" />
     <Compile Include="services\chat\ChatRequestModel.cs" />
+    <Compile Include="services\notification\DeleteFromCategorySub.cs" />
     <Compile Include="services\notification\ICustomerNotifier.cs" />
     <Compile Include="services\notification\NotifyServiceSignalR.cs" />
+    <Compile Include="services\notification\SubscribedSubcategories.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
     <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />
     <Compile Include="viewModels\ad\AdViewModel.cs" />
-    <Compile Include="viewModels\ad\CategoryToSubcategoriesViewModel.cs" />
-    <Compile Include="viewModels\ad\SubcategoryToAdsViewModel.cs" />
+    <Compile Include="viewModels\ad\CategoryAdsViewModel.cs" />
+    <Compile Include="viewModels\ad\CategorySubscriptionViewModel.cs" />
+    <Compile Include="viewModels\ad\SubcategoryAdsViewModel.cs" />
     <Compile Include="viewModels\ad\CategoryViewModel.cs" />
     <Compile Include="viewModels\ad\SubcategoryViewModel.cs" />
+    <Compile Include="viewModels\ad\SubscribedSubcategoryViewModel.cs" />
+    <Compile Include="viewModels\ad\SubscriptionsViewModel.cs" />
+    <Compile Include="viewModels\ad\UnsubscribedSubcategoryViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
@@ -415,6 +421,15 @@
     <Compile Include="views\SubcategoryToAdsView.xaml.cs">
       <DependentUpon>SubcategoryToAdsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\SubscriptionsView.xaml.cs">
+      <DependentUpon>SubscriptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\SubsribedSubcategoryView.xaml.cs">
+      <DependentUpon>SubsribedSubcategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\UnsuscribedSubcategoryView.xaml.cs">
+      <DependentUpon>UnsuscribedSubcategoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
@@ -527,6 +542,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\SubcategoryToAdsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SubscriptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SubsribedSubcategoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\UnsuscribedSubcategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

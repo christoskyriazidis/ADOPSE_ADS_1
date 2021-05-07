@@ -25,7 +25,7 @@ namespace WpfClientt.viewModels {
         private LoginCustomerMenu(IChatService chatService,ICustomerNotifier notifier) {
             this.notifier = notifier;
             Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
-            Categories = new AsyncCommand(async () => await Mediator.Notify("CategoriesView"));
+            Categories = new AsyncCommand(async () => await Mediator.Notify("CategoriesAdsViewModel"));
             Account = new AsyncCommand(async () => await Mediator.Notify("ProfileView"));
             CreateAd = new AsyncCommand(async () => await Mediator.Notify("CreateAdView"));
             Notifications = new AsyncCommand(async () => {
@@ -34,7 +34,7 @@ namespace WpfClientt.viewModels {
             );
             Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
             Logout = new AsyncCommand(async () => await Mediator.Notify("Logout"));
-            Subscriptions = new AsyncCommand(async () => await Mediator.Notify("SubscriptionView"));
+            Subscriptions = new AsyncCommand(async () => await Mediator.Notify("CategoriesSubscriptionView"));
             chatService.AddChatRequestListener(ChatRequestListener);
             chatService.AddActiveChatListener(ActiveChatListener);
         }

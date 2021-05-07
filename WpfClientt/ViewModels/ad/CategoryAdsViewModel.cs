@@ -13,9 +13,9 @@ namespace WpfClientt.viewModels {
     /// Category view model that shows the subcategories that belong to this category when customer
     /// executes the command.
     /// </summary>
-    public class CategoryToSubcategoriesViewModel : CategoryViewModel {
-        public CategoryToSubcategoriesViewModel(Category category) 
-            : base(category,new AsyncCommand(async () => await Mediator.Notify("SubcategoriesView", category))) {
+    public class CategoryAdsViewModel : CategoryViewModel {
+        public CategoryAdsViewModel(Category category) 
+            : base(category,new AsyncCommand(async () => await Mediator.Notify("SubcategoriesToAdsView", category))) {
         }
     }
 }

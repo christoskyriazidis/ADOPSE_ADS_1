@@ -31,6 +31,10 @@ namespace WpfClientt.services {
             notifier = new ToastCustomerNotifier();
         }
 
+        public async Task<INotifyService> NotifyService() {
+            return await NotifyServiceSignalR.GetInstance(client,options,AdDetailsServiceInstance());
+        }
+
         public ICustomerNotifier CustomerNotifier() {
             return notifier;
         }

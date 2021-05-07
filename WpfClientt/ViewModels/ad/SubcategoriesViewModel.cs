@@ -13,14 +13,22 @@ namespace WpfClientt.viewModels {
 
         public ISet<SubcategoryViewModel> Subcategories { get; private set; } = new HashSet<SubcategoryViewModel>();
 
-        private SubcategoriesViewModel(ISet<Subcategory> subcategories) {
-            foreach(Subcategory subcategory in subcategories) {
-                Subcategories.Add(new SubcategoryToAdsViewModel(subcategory));
+        private SubcategoriesViewModel(ISet<SubcategoryViewModel> subcategories) {
+            foreach(SubcategoryViewModel subcategory in subcategories) {
+                Subcategories.Add(subcategory);
             }
         }
 
-        public static async Task<SubcategoriesViewModel> GetInstance(FactoryServices factory,Category category) {
-            return new SubcategoriesViewModel(await factory.AdDetailsServiceInstance().SubcategoriesOf(category));
+        public static async Task<SubcategoriesViewModel> SubcategoriesToAdsViewModel(FactoryServices factory,Category category) {
+            ISet<SubcategoryViewModel> subcategories = new HashSet<SubcategoryViewModel>();
+            foreach(Subcategory subcategory in await factory.AdDetailsServiceInstance().SubcategoriesOf(category)) {
+                subcategories.Add(new SubcategoryAdsViewModel(subcategory));
+            }
+            return new SubcategoriesViewModel(subcategories);
+        }
+
+        public static async Task<SubcategoriesViewModel> SubcategoriesForSubscriptionViewModel(FactoryServices facotyr,Category category) {
+            return null;
         }
 
     }

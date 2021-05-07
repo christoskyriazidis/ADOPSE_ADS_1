@@ -13,18 +13,21 @@
                 <RowDefinition Height="0.85*" />
             </Grid.RowDefinitions>
             <Button Grid.Row="0" Content="{Binding Category.Title}" Command="{Binding Command}" CommandParameter="{Binding Category}" Foreground="White" Background="{StaticResource blue-dark}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" />
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Category.Subcategories}" Background="{StaticResource blue-light}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel IsItemsHost="True" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource centerAlignment}" Text="{Binding Title}" Foreground="White" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" >
+                <ItemsControl ItemsSource="{Binding Category.Subcategories}" Background="{StaticResource blue-light}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource centerAlignment}" Text="{Binding Title}" Foreground="White" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            
         </Grid>
     </Border>
 </UserControl>

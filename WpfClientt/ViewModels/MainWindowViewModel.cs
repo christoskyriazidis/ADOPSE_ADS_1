@@ -48,8 +48,8 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("DisplayPageView", ChangeToDisplayView);
             Mediator.Subscribe("ChangeToLoginMenuView", ChangeToLoginMenuView);
             Mediator.Subscribe("AdsSubcategoryView", ChangeToAdsSubcategoryView);
-            Mediator.Subscribe("CategoriesView", ChangeToCategoriesView);
-            Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
+            Mediator.Subscribe("CategoriesAdsViewModel", ChangeToCategoriesAdsViewModel);
+            Mediator.Subscribe("SubcategoriesToAdsView", ChangeToSubcategoriesToAdsView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
             Mediator.Subscribe("AdDetailsView", ChangeToAdGuestDetailsView);
@@ -58,6 +58,8 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("BackView", PreviousViewModel);
             Mediator.Subscribe("ChatsView", ChangeToChatsViewModel);
             Mediator.Subscribe("NotificationsView", ChangeToNotificationsView);
+            Mediator.Subscribe("CategoriesSubscriptionView", ChangeToCategoriesSubscriptionViewModel);
+            Mediator.Subscribe("SubscriptionsView", ChangeToSubscriptionViewModel);
         }
 
 
@@ -75,6 +77,16 @@ namespace WpfClientt.viewModels {
             return Task.CompletedTask;
         }
 
+        private async Task ChangeToSubscriptionViewModel(object category) {
+            await ChangeToDisplayView("Loading Page");
+            AddToHistory(await SubscriptionsViewModel.GetInstance((Category)category,factory));
+        }
+
+        private async Task ChangeToCategoriesSubscriptionViewModel(object _) {
+            await ChangeToDisplayView("Loading Page");
+            AddToHistory(await CategoriesViewModel.CategoriesSubscriptionViewModel(factory));
+        }
+
         private async Task ChangeToLoginMenuView(object param) {
             await ChangeMenuView(await LoginCustomerMenu.GetInstance(factory));
         }
@@ -88,9 +100,9 @@ namespace WpfClientt.viewModels {
             AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
         }
 
-        private async Task ChangeToSubcategoriesView(object category) {
+        private async Task ChangeToSubcategoriesToAdsView(object category) {
             await ChangeToDisplayView("Loading Page");
-            AddToHistory( await SubcategoriesViewModel.GetInstance(factory, (Category)category) );
+            AddToHistory( await SubcategoriesViewModel.SubcategoriesToAdsViewModel(factory, (Category)category) );
         }
 
         private async Task ChangeToRegisterView(object obj) {
@@ -102,9 +114,9 @@ namespace WpfClientt.viewModels {
             AddToHistory(await LoginViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToCategoriesView(object obj) {
+        private async Task ChangeToCategoriesAdsViewModel(object obj) {
             await ChangeToDisplayView("Loading Page");
-            AddToHistory(await CategoriesViewModel.GetInstance(factory));
+            AddToHistory(await CategoriesViewModel.CategoriesAdsViewModel(factory));
         }
 
         private async Task ChangeToCreateAdView(object obj) {

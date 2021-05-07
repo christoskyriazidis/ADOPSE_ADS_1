@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -79,8 +80,9 @@ namespace WpfClientt.services {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.SubscribedSubcategoriesMainUrl());
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
-                int[] subcategoriesIds = await JsonSerializer.DeserializeAsync<int[]>(await response.Content.ReadAsStreamAsync(),options);
-                foreach(int id in subcategoriesIds) {
+                Debug.WriteLine(await response.Content.ReadAsStringAsync());
+                SubscribedSubcategories subscategories = await JsonSerializer.DeserializeAsync<SubscribedSubcategories>(await response.Content.ReadAsStreamAsync(),options);
+                foreach(int id in subscategories.Categories) {
                     foreach(Subcategory subcategory in subcategories) {
                         if (subcategory.Id.Equals(id)) { subscribedSubcategories.Add(subcategory); }
                     }
@@ -100,7 +102,7 @@ namespace WpfClientt.services {
         public async Task UnsubscribeFromSubcategories(Subcategory[] subcategories) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, ApiInfo.UnsubscribeFromSubcategoriesMainUrl());
             request.Content = new StringContent(
-                JsonSerializer.Serialize(subcategories.Select(sub => sub.Id).ToArray(),options),
+                JsonSerializer.Serialize(new DeleteFromCategorySub(subcategories)),
                 Encoding.UTF8,
                 "application/json"
                 );

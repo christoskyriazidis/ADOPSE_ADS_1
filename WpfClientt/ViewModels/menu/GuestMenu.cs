@@ -16,7 +16,7 @@ namespace WpfClientt.viewModels {
 
         public GuestMenu() {
             Categories = new AsyncCommand( async () => {
-                await Mediator.Notify("CategoriesView");
+                await Mediator.Notify("ChangeToCategoriesToSubcategoriesToAdsViewModel");
             });
             Register = new AsyncCommand(async () => {
                 await Mediator.Notify("RegisterView");  

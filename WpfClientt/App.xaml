@@ -88,11 +88,27 @@
             </Style>
 
             <!--Data temapltes-->
-            <DataTemplate DataType="{x:Type viewmodels:CategoryToSubcategoriesViewModel}">
+            <DataTemplate DataType="{x:Type viewmodels:SubscriptionsViewModel}">
+                <views:SubscriptionsView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodels:UnsubscribedSubcategoryViewModel}">
+                <views:UnsuscribedSubcategoryView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodels:SubscribedSubcategoryViewModel}">
+                <views:SubsribedSubcategoryView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodels:CategoryAdsViewModel}">
                 <views:CategoryToSubcategoriesView />
             </DataTemplate>
             
-            <DataTemplate DataType="{x:Type viewmodels:SubcategoryToAdsViewModel}">
+            <DataTemplate DataType="{x:Type viewmodels:CategorySubscriptionViewModel}">
+                <views:CategoryToSubcategoriesView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodels:SubcategoryAdsViewModel}">
                 <views:SubcategoryToAdsView />
             </DataTemplate>
             
