@@ -24,53 +24,6 @@
                             <WrapPanel IsItemsHost="True" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Height="300" Width="300" Background="{StaticResource blue-light}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="10" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="0.5*" />
-                                        <RowDefinition Height="0.05*" />
-                                        <RowDefinition Height="0.01" />
-                                        <RowDefinition Height="0.25*" />
-                                        <RowDefinition Height="0.09*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="0.1*" />
-                                            <RowDefinition Height="0.9*" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions >
-                                            <ColumnDefinition Width="0.5*" />
-                                            <ColumnDefinition Width="0.5*" />
-                                        </Grid.ColumnDefinitions >
-                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="0">
-                                            <Image.Source>
-                                                <BitmapImage UriSource="{Binding ImageUri}" />
-                                            </Image.Source>
-                                        </Image>
-                                        <Border Grid.Row="0" Grid.Column="1" Background="{StaticResource green-light}" Canvas.ZIndex="1" CornerRadius="8">
-                                            <TextBlock  Foreground="#fff" TextAlignment="Center" Grid.Column="0">
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat="{}{0}$">
-                                                        <Binding  Path="Price" />
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </Border>
-                                    </Grid>
-
-                                    <TextBlock Text="{Binding Title}" TextAlignment="Center" Grid.Row="1" Foreground="#fff" />
-                                    <TextBlock Grid.Row="3" Text="{Binding Description}" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#fff" />
-                                    <Border Grid.Row="4" BorderThickness="1" CornerRadius="8" >
-                                        <Button Content="Read More..." Style="{StaticResource medium_blue_button}" 
-                                            Command="{Binding DataContext.ReadMoreCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"/>
-                                    </Border>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
             

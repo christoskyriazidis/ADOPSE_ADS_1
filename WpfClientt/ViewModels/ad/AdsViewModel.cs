@@ -16,13 +16,12 @@ namespace WpfClientt.viewModels {
     public class AdsViewModel : BaseViewModel, IViewModel {
         private bool enabled = false;
 
-        public ObservableCollection<Ad> Ads { get; } = new ObservableCollection<Ad>();
+        public ObservableCollection<AdViewModel> Ads { get; } = new ObservableCollection<AdViewModel>();
         private IScroller<Ad> scroller;
         private IAdService adService;
 
         public ICommand NextPageCommand { get; private set; }
         public ICommand PreviousPageCommand { get; private set; }
-        public ICommand ReadMoreCommand { get; private set; }
         public ICommand SearchCommand { get; private set; }
         public ICommand RefreshCommand { get; private set; }
         public bool Enabled {
@@ -43,7 +42,6 @@ namespace WpfClientt.viewModels {
             PreviousPageCommand = new AsyncCommand(OnMoveBack);
             RefreshCommand = new AsyncCommand(OnReset);
             SearchCommand = new AsyncCommand(OnSearch);
-            ReadMoreCommand = new AsyncCommand<Ad>(OnReadMore);
         }
 
         public static async Task<AdsViewModel> GetInstanceWithSubcategoryAds(FactoryServices factory,Subcategory subcategory) {
@@ -67,9 +65,6 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        private async Task OnReadMore(Ad ad) {
-            await Mediator.Notify("AdDetailsView", ad);
-        }
 
         private async Task OnSearch() {
             Enabled = false;
@@ -90,7 +85,7 @@ namespace WpfClientt.viewModels {
             Enabled = true;
             Ads.Clear();
             foreach (Ad ad in scroller.CurrentPage().Objects()) {
-                Ads.Add(ad);
+                Ads.Add(new AdViewModel(ad));
             }
         }
 

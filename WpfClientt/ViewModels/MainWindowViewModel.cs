@@ -66,7 +66,7 @@ namespace WpfClientt.viewModels {
             return Task.CompletedTask;
         }
 
-        private Task ChangeMenuView(IMenu menu) {
+        private Task ChangeMenuView(IMenu menu)   {
             if(menu is LoginCustomerMenu) {
                 Mediator.Unsubscribe("AdDetailsView", ChangeToAdGuestDetailsView);
                 Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);

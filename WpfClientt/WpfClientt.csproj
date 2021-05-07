@@ -269,6 +269,11 @@
     <Compile Include="services\notification\NotifyServiceSignalR.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
     <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />
+    <Compile Include="viewModels\ad\AdViewModel.cs" />
+    <Compile Include="viewModels\ad\CategoryToSubcategoriesViewModel.cs" />
+    <Compile Include="viewModels\ad\SubcategoryToAdsViewModel.cs" />
+    <Compile Include="viewModels\ad\CategoryViewModel.cs" />
+    <Compile Include="viewModels\ad\SubcategoryViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
@@ -338,8 +343,14 @@
     <Compile Include="views\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\AdView.xaml.cs">
+      <DependentUpon>AdView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\CategoriesView.xaml.cs">
       <DependentUpon>CategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\CategoryToSubcategoriesView.xaml.cs">
+      <DependentUpon>CategoryToSubcategoriesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\ChatBoxView.xaml.cs">
       <DependentUpon>ChatBoxView.xaml</DependentUpon>
@@ -401,6 +412,9 @@
     <Compile Include="views\SubcategoriesView.xaml.cs">
       <DependentUpon>SubcategoriesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\SubcategoryToAdsView.xaml.cs">
+      <DependentUpon>SubcategoryToAdsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
@@ -420,7 +434,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\AdView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\CategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\CategoryToSubcategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -501,6 +523,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\SubcategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SubcategoryToAdsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

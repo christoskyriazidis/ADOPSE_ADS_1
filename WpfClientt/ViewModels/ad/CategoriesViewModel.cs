@@ -12,14 +12,12 @@ namespace WpfClientt.viewModels {
     public class CategoriesViewModel : IViewModel {
         private static CategoriesViewModel instance;
 
-        public ISet<Category> Categories { get; private set; }
-        public ICommand ShowSubcategories { get; private set; }
+        public ISet<CategoryViewModel> Categories { get; private set; } = new HashSet<CategoryViewModel>();
 
         private CategoriesViewModel(ISet<Category> categories) {
-            this.Categories = categories;
-            ShowSubcategories = new AsyncCommand<Category>(async category => {
-                await Mediator.Notify("SubcategoriesView", category);
-            });
+            foreach(Category category in categories) {
+                Categories.Add(new CategoryToSubcategoriesViewModel(category));
+            }
         }
 
         public static async Task<CategoriesViewModel> GetInstance(FactoryServices factory) {

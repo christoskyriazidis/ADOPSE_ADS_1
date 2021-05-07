@@ -11,12 +11,12 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class SubcategoriesViewModel : IViewModel {
 
-        public ISet<Subcategory> Subcategories { get; private set; }
-        public ICommand ShowAds { get; private set; }
+        public ISet<SubcategoryViewModel> Subcategories { get; private set; } = new HashSet<SubcategoryViewModel>();
 
         private SubcategoriesViewModel(ISet<Subcategory> subcategories) {
-            Subcategories = subcategories;
-            ShowAds = new AsyncCommand<Subcategory>(async subcategory => await Mediator.Notify("AdsSubcategoryView", subcategory));
+            foreach(Subcategory subcategory in subcategories) {
+                Subcategories.Add(new SubcategoryToAdsViewModel(subcategory));
+            }
         }
 
         public static async Task<SubcategoriesViewModel> GetInstance(FactoryServices factory,Category category) {

@@ -27,31 +27,6 @@
                         <WrapPanel IsItemsHost="True"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="30,30,30,30" Height="200" Width="200">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.15*" />
-                                    <RowDefinition Height="0.85*" />
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="{Binding Title}" Command="{Binding DataContext.ShowSubcategories,RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Foreground="White" Background="{StaticResource blue-dark}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" />
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Subcategories}" Background="{StaticResource blue-light}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel IsItemsHost="True" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Style="{StaticResource centerAlignment}" Text="{Binding Title}" Foreground="White" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
     </Grid>
