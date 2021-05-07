@@ -23,41 +23,20 @@
         <Border Grid.Row="0" Grid.Column="3" BorderThickness="0,0,0,2" BorderBrush="#ccc">
             <TextBlock Text="Create Ad" FontSize="38" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource blue-light}"/>
         </Border>
-        <Grid Grid.Row="1" Grid.Column="3" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.55*" />
-                <RowDefinition Height="0.05*" />
-                <RowDefinition Height="0.4*" />
-            </Grid.RowDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
-                <ItemsControl  ItemsSource="{Binding Errors}" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource red-medium}" FontSize="14" FontWeight="Bold" Style="{StaticResource centerAlignment}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Messages}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" Foreground="{StaticResource green-medium}" FontSize="14" FontWeight="Bold" Style="{StaticResource centerAlignment}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="3">
+            <ItemsControl  ItemsSource="{Binding Errors}" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource red-medium}" FontSize="14" FontWeight="Bold" Style="{StaticResource centerAlignment}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
             <Grid >
                 <Grid.RowDefinitions>

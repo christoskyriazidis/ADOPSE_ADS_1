@@ -24,14 +24,18 @@ namespace WpfClientt.viewModels {
                 IChatService chatService = await factory.ChatServiceInstance();
                 instance = new NotificationsViewModel(chatService);
             }
-            await instance.UpdateChatRequestsNotifications();
+            await instance.LoadChatRequests();
             return instance;
         }
 
-        private async Task UpdateChatRequestsNotifications() {
-            Notifications.Clear();
+        private Task UpdateChatRequestsNotifications(ChatRequest chatRequest) {
+            Notifications.Insert(0,new ChatRequestNotificationViewModel(chatService, (_, request) => Notifications.Remove(request), chatRequest));
+            return Task.CompletedTask;
+        }
+
+        private async Task LoadChatRequests() {
             foreach (ChatRequest chatRequest in await chatService.ChatRequests()) {
-                Notifications.Add(new ChatRequestNotificationViewModel(chatService, (_, request) => Notifications.Remove(request),chatRequest));
+                Notifications.Add(new ChatRequestNotificationViewModel(chatService, (_, request) => Notifications.Remove(request), chatRequest));
             }
         }
 

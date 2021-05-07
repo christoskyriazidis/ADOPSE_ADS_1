@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace WpfClientt.viewModels {
 
         private SubcategoriesViewModel(ISet<Subcategory> subcategories) {
             Subcategories = subcategories;
-            ShowAds = new DelegateCommand(subcategory => Mediator.Notify("AdsSubcategoryView", subcategory));
+            ShowAds = new AsyncCommand<Subcategory>(async subcategory => await Mediator.Notify("AdsSubcategoryView", subcategory));
         }
 
         public static async Task<SubcategoriesViewModel> GetInstance(FactoryServices factory,Category category) {

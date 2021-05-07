@@ -43,7 +43,7 @@ namespace WpfClientt.viewModels {
             PreviousPageCommand = new AsyncCommand(OnMoveBack);
             RefreshCommand = new AsyncCommand(OnReset);
             SearchCommand = new AsyncCommand(OnSearch);
-            ReadMoreCommand = new DelegateCommand(OnReadMore);
+            ReadMoreCommand = new AsyncCommand<Ad>(OnReadMore);
         }
 
         public static async Task<AdsViewModel> GetInstanceWithSubcategoryAds(FactoryServices factory,Subcategory subcategory) {
@@ -67,8 +67,8 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        private void OnReadMore(object param) {
-            Mediator.Notify("AdDetailsView", param);
+        private async Task OnReadMore(Ad ad) {
+            await Mediator.Notify("AdDetailsView", ad);
         }
 
         private async Task OnSearch() {

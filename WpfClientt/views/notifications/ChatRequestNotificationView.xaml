@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WpfClientt.views.notifications"
              mc:Ignorable="d" 
              d:DesignHeight="220" d:DesignWidth="800">
-    <Grid Margin="20" >
+    <Grid Margin="20" Height="200">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />

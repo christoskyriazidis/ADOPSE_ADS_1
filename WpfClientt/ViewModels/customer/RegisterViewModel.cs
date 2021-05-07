@@ -17,16 +17,16 @@ namespace WpfClientt.viewModels {
         public override RegisterForm Form { get; protected set; }
 
 
-        private RegisterViewModel(ICustomerService customerService) {
+        private RegisterViewModel(ICustomerService customerService,ICustomerNotifier notifier) : base(notifier) {
             this.customerService = customerService;
             Form = new RegisterForm(Validate);
         }
 
-        public async static Task<RegisterViewModel> GetInstance(FactoryServices factory) {
+        public static Task<RegisterViewModel> GetInstance(FactoryServices factory) {
             if (instance == null) {
-                instance = new RegisterViewModel(factory.CustomerServiceInstance());
+                instance = new RegisterViewModel(factory.CustomerServiceInstance(),factory.CustomerNotifier());
             }
-            return instance;
+            return Task.FromResult(instance);
         }
 
         protected override Func<RegisterForm, Task> SubmitAction() => customerService.Register;

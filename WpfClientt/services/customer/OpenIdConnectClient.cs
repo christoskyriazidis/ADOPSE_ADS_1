@@ -25,7 +25,7 @@ namespace WpfClientt.services {
         }
 
 
-        public async Task<string> PrepareAuthorizationRequestUrl() {
+        public Task<string> PrepareAuthorizationRequestUrl() {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
             state = randomDataBase64url(32);
             code_verifier = randomDataBase64url(32);
@@ -37,7 +37,7 @@ namespace WpfClientt.services {
             parameters.Add("response_type", "code");
             parameters.Add("client_id", "wpf");
 
-            return CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters);
+            return Task.FromResult(CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters));
         }
 
         public async Task RetrieveAndSetAccessToken(String redirectUrl) {

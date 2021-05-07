@@ -26,7 +26,7 @@ namespace WpfClientt.services {
             this.adDetailsService = adDetailsService;
         }
 
-        public static async Task<NotifyServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService) {
+        public static Task<NotifyServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService) {
             if(instance == null) {
                 string token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "");
                 HubConnection hubConnection = new HubConnectionBuilder()
@@ -37,7 +37,7 @@ namespace WpfClientt.services {
                 instance = new NotifyServiceSignalR(client, options, hubConnection,adDetailsService);
             }
 
-            return instance;
+            return Task.FromResult(instance);
         }
 
         public void AddSubcategoryChangedListener() {

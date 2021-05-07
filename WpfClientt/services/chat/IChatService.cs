@@ -47,13 +47,13 @@ namespace WpfClientt.services {
         /// Adds a listener that receives notifications upon the arriaval of new chat requests.
         /// </summary>
         /// <param name="listener"></param>
-        void AddChatRequestListener(Func<Task> listener);
+        void AddChatRequestListener(Func<ChatRequest, Task> listener);
 
         /// <summary>
         /// Removes chat request listener registered through AddChatRequestListener
         /// </summary>
         /// <param name="listener"></param>
-        void RemoveChatRequestListener(Func<Task> listener);
+        void RemoveChatRequestListener(Func<ChatRequest, Task> listener);
 
         /// <summary>
         /// Sends an event that the user is typing.

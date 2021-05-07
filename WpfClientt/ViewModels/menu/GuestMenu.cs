@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +15,17 @@ namespace WpfClientt.viewModels {
         public ICommand Back { get; private set; }
 
         public GuestMenu() {
-            Categories = new DelegateCommand(obj => {
-                Mediator.Notify("CategoriesView");
+            Categories = new AsyncCommand( async () => {
+                await Mediator.Notify("CategoriesView");
             });
-            Register = new DelegateCommand(obj => {
-                Mediator.Notify("RegisterView");  
+            Register = new AsyncCommand(async () => {
+                await Mediator.Notify("RegisterView");  
             });
-            Login = new DelegateCommand(obj => {
-                Mediator.Notify("LoginView");
+            Login = new AsyncCommand(async () => {
+               await Mediator.Notify("LoginView");
             });
-            Chats = new DelegateCommand(_ => Mediator.Notify("ChatsView"));
-            Back = new DelegateCommand(obj => Mediator.Notify("BackView"));
+            Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
+            Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
         }
 
     }

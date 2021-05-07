@@ -23,7 +23,7 @@ namespace WpfClientt.services {
             this.client = client;
         }
 
-        public async Task Create(Customer customer) {
+        public Task Create(Customer customer) {
             throw new NotImplementedException("Call the Register method instead.");
         }
         public Task Register(RegisterForm registerForm) {

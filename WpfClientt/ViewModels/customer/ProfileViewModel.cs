@@ -15,12 +15,12 @@ namespace WpfClientt.viewModels {
             this.customerService = customerService;
         }
 
-        public async static Task<ProfileViewModel> getInstance(FactoryServices factoryServices) {
+        public static Task<ProfileViewModel> GetInstance(FactoryServices factoryServices) {
             if(profileViewModel == null) {
                 profileViewModel = new ProfileViewModel(factoryServices.CustomerServiceInstance());
             }
 
-            return profileViewModel;
+            return Task.FromResult(profileViewModel);
         }
 
     }

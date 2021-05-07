@@ -61,8 +61,9 @@ namespace WpfClientt.viewModels {
         }
 
 
-        private async Task ChangeViewModel(IViewModel viewModel) {
+        private Task ChangeViewModel(IViewModel viewModel) {
             CurrentPageViewModel = viewModel;
+            return Task.CompletedTask;
         }
 
         private Task ChangeMenuView(IMenu menu) {
@@ -107,8 +108,9 @@ namespace WpfClientt.viewModels {
             AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToDisplayView(object text) {
+        private Task ChangeToDisplayView(object text) {
             CurrentPageViewModel = DisplayTextViewModel.GetInstance((string)text);
+            return Task.CompletedTask;
         }
 
         private async Task ChangeToAdDetailsView(object param) {
@@ -118,7 +120,7 @@ namespace WpfClientt.viewModels {
 
         private async Task ChangeToProfileView(object param) {
             await ChangeToDisplayView("Loading Page");
-            await ChangeViewModel(await ProfileViewModel.getInstance(factory));
+            await ChangeViewModel(await ProfileViewModel.GetInstance(factory));
         }
 
         private async Task ChangeToChatsViewModel(object obj) {

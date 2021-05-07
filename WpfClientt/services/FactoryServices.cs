@@ -22,11 +22,17 @@ namespace WpfClientt.services {
         private OpenIdConnectClient openIdConnectClient;
         private IAdService adService;
         private HttpClient client;
+        private ICustomerNotifier notifier;
 
         public FactoryServices() {
             client = new HttpClient();
             customerService = new CustomerServiceImpl(client);
             adDetailsService = new AdDetailsServiceImpl(client);
+            notifier = new ToastCustomerNotifier();
+        }
+
+        public ICustomerNotifier CustomerNotifier() {
+            return notifier;
         }
 
         public async Task<IAdService> AdServiceInstance() {

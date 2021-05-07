@@ -17,7 +17,7 @@ namespace WpfClientt.services {
         private static ChatServiceSignalR instance;
 
         private ConcurrentBag<Func<Task>> messageListeners = new ConcurrentBag<Func<Task>>();
-        private ConcurrentBag<Func<Task>> chatRequestListeners = new ConcurrentBag<Func<Task>>();
+        private ConcurrentBag<Func<ChatRequest,Task>> chatRequestListeners = new ConcurrentBag<Func<ChatRequest, Task>>();
         private ConcurrentBag<Func<Chat, Task>> activeChatListeners = new ConcurrentBag<Func<Chat, Task>>();
         private JsonSerializerOptions options;
         private HttpClient client;
@@ -60,11 +60,11 @@ namespace WpfClientt.services {
         }
 
 
-        public void AddChatRequestListener(Func<Task> listenerProvider) {
+        public void AddChatRequestListener(Func<ChatRequest, Task> listenerProvider) {
             chatRequestListeners.Add(listenerProvider);
         }
 
-        public void RemoveChatRequestListener(Func<Task> listenerProvider) {
+        public void RemoveChatRequestListener(Func<ChatRequest, Task> listenerProvider) {
             chatRequestListeners.TryTake(out listenerProvider);
         }
 
@@ -149,7 +149,7 @@ namespace WpfClientt.services {
 
 
         private async Task ReceiveActiveChat(string message) {
-            long chatId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
+            int chatId = int.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
 
             ISet<ChatModel> chats = await ChatsFromServer();
 
@@ -165,8 +165,9 @@ namespace WpfClientt.services {
             }
 
             if (isCustomersChat) {
+                Chat chat = await MapChatServerToChat(foundChat);
                 foreach (Func<Chat, Task> activeChatListener in activeChatListeners) {
-                    await activeChatListener.Invoke(await MapChatServerToChat(foundChat));
+                    await activeChatListener.Invoke(chat);
                 }
             }
         }
@@ -192,14 +193,14 @@ namespace WpfClientt.services {
             }
 
             if (isCustomersAd) {
-                foreach (Func<Task> listener in chatRequestListeners) {
-                    await listener.Invoke();
+                foreach (Func<ChatRequest, Task> listener in chatRequestListeners) {
+                    await listener.Invoke( (await ChatRequests()).First() );
                 }
             }
         }
 
-        private async Task ReceiveMessage(string message) {
-
+        private Task ReceiveMessage(string message) {
+            return Task.CompletedTask;
         }
 
         private async Task<ISet<ChatModel>> ChatsFromServer() {

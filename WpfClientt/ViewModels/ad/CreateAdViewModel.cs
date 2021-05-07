@@ -37,8 +37,7 @@ namespace WpfClientt.viewModels {
         }
 
         private CreateAdViewModel(IAdService adService, ISet<Category> categories,
-            ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers) {
-
+            ISet<AdType> types, ISet<Condition> conditions, ISet<Manufacturer> manufacturers,ICustomerNotifier notifier) : base(notifier) {
             ImageChooseCommand = new DelegateCommand(ChooseImage);
             ClearImageCommand = new DelegateCommand(_ => ClearImage());
 
@@ -69,7 +68,8 @@ namespace WpfClientt.viewModels {
             ISet<Condition> conditions = await adDetailsService.Conditions();
             ISet<Manufacturer> manufacturers = await adDetailsService.Manufacturers();
             if (instance == null) {
-                instance = new CreateAdViewModel(await factory.AdServiceInstance(), categories, types, conditions, manufacturers);
+                instance = new CreateAdViewModel(await factory.AdServiceInstance(), categories, types, conditions, 
+                    manufacturers,factory.CustomerNotifier());
             }
 
             return instance;

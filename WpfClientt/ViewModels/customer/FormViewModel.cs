@@ -7,29 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
     public abstract class FormViewModel<T> : BaseViewModel, IViewModel {
         public abstract T Form { get; protected set; }
         public ObservableCollection<ValidationResult> Errors { get; } = new ObservableCollection<ValidationResult>();
-        public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
         public ICommand SubmitCommand { get; private set; }
 
-        public FormViewModel() {
+        private ICustomerNotifier notifier;
+
+        public FormViewModel(ICustomerNotifier notifier) {
             SubmitCommand = new AsyncCommand(SubmitForm);
+            this.notifier = notifier;
         }
 
         protected async Task SubmitForm() {
             Validate();
             if (Errors.Count == 0) {
-                Messages.Add("Trying to submite the form.");
+                notifier.Information("Trying to submite the form.");
                 await SubmitAction().Invoke(Form);
-                Messages.Clear();
-                Messages.Add("The form has been submitted successfully.");
+                notifier.Success("The form has been submitted successfully.");
                 await ClearForm();
             } else {
-                Messages.Clear();
-                Messages.Add("The form can't be submitted because of the errors.");
+                notifier.Error("The form can't be submitted because of the errors.");
             }
         }
 
@@ -37,7 +38,6 @@ namespace WpfClientt.viewModels {
             ClearFormStrep();
             OnPropertyChanged(nameof(Form));
             await Task.Delay(2000);
-            Messages.Clear();
         }
 
 
