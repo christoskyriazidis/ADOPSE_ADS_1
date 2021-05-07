@@ -88,6 +88,9 @@
             </Style>
 
             <!--Data temapltes-->
+            <DataTemplate DataType="{x:Type viewmodels:AdGuestDetailsViewModel}">
+                <views:AdGuestDetailsView />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type models:Chat}">
                 <views:ChatBoxView />
             </DataTemplate>

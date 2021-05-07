@@ -52,7 +52,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe("SubcategoriesView", ChangeToSubcategoriesView);
             Mediator.Subscribe("RegisterView", ChangeToRegisterView);
             Mediator.Subscribe("LoginView", ChangeToLoginView);
-            Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
+            Mediator.Subscribe("AdDetailsView", ChangeToAdGuestDetailsView);
             Mediator.Subscribe("CreateAdView", ChangeToCreateAdView);
             Mediator.Subscribe("ProfileView", ChangeToProfileView);
             Mediator.Subscribe("BackView", PreviousViewModel);
@@ -67,6 +67,10 @@ namespace WpfClientt.viewModels {
         }
 
         private Task ChangeMenuView(IMenu menu) {
+            if(menu is LoginCustomerMenu) {
+                Mediator.Unsubscribe("AdDetailsView", ChangeToAdGuestDetailsView);
+                Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
+            }
             this.CurrentMenuView = menu;
             return Task.CompletedTask;
         }
@@ -113,9 +117,14 @@ namespace WpfClientt.viewModels {
             return Task.CompletedTask;
         }
 
+        private async Task ChangeToAdGuestDetailsView(object param) {
+            await ChangeToDisplayView("Loading Page");
+            AddToHistory(await AdGuestDetailsViewModel.GetInstance((Ad)param,factory));
+        }
+
         private async Task ChangeToAdDetailsView(object param) {
             await ChangeToDisplayView("Loading Page");
-            AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param,factory));
+            AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param, factory));
         }
 
         private async Task ChangeToProfileView(object param) {

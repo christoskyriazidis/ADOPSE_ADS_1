@@ -20,9 +20,9 @@ namespace WpfClientt.viewModels {
                     if (callback.Method.ToString() == action.Method.ToString()) {
                         found = true;
                     }
-                    if (!found) {
-                        subscribers[token].Add(action);
-                    }
+                }
+                if (!found) {
+                    subscribers[token].Add(action);
                 }
             }
 

@@ -268,6 +268,7 @@
     <Compile Include="services\notification\ICustomerNotifier.cs" />
     <Compile Include="services\notification\NotifyServiceSignalR.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
+    <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
@@ -328,6 +329,9 @@
     <Compile Include="viewModels\customer\ProfileViewModel.cs" />
     <Compile Include="viewModels\customer\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
+    <Compile Include="views\AdGuestDetailsView.xaml.cs">
+      <DependentUpon>AdGuestDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>
     </Compile>
@@ -404,6 +408,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="views\AdGuestDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\AdsDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

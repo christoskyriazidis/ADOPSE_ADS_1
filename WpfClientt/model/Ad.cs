@@ -54,7 +54,7 @@ namespace WpfClientt.model {
         /// The subcategory to which this ad/ad's item belongs.
         /// </summary>
         [Required(ErrorMessage = "The subcategory is not specified.")]
-        [JsonPropertyName("subcategory")]
+        [JsonPropertyName("subcategoryid")]
         public virtual Subcategory AdSubcategory { get; set; }
 
         /// <summary>
