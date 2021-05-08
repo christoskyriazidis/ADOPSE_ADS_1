@@ -22,7 +22,6 @@ namespace WpfClientt.views.notifications {
     public partial class ChatRequestToastNotification : NotificationDisplayPart {
         public ChatRequestToastNotification(ChatRequestToastViewModel viewmodel) {
             InitializeComponent();
-            viewmodel.Bind(notification => OnClose());
             Bind(viewmodel);
         }
 

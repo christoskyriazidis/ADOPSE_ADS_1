@@ -12,26 +12,27 @@ using WpfClientt.views.notifications;
 
 namespace WpfClientt.viewModels {
     public class ChatRequestToastViewModel : NotificationBase {
-
+        private NotificationDisplayPart displayPart;
         public ChatRequest ChatRequest { get; set; }
         public ICommand AcceptChatRequestCommand { get; set; }
         public ICommand DeclineChatRequestCommand { get; set; }
 
-        public override NotificationDisplayPart DisplayPart => new ChatRequestToastNotification(this);
+        public override NotificationDisplayPart DisplayPart => displayPart;
 
         public ChatRequestToastViewModel(MessageOptions options, IChatService chatService, ChatRequest request) 
             : base(string.Empty, options) {
             this.ChatRequest = request;
+            this.displayPart = new ChatRequestToastNotification(this);
             AcceptChatRequestCommand = new AsyncCommand(
                 async () => { 
                     await chatService.AcceptChatRequest(request);
                     await Mediator.Notify("ChatRequestDelete", request);
-                    Close();
+                    displayPart.OnClose();
                 });
             DeclineChatRequestCommand = new AsyncCommand(async () => { 
                 await chatService.DeclineChatRequest(request);
                 await Mediator.Notify("ChatRequestDelete", request);
-                Close();
+                displayPart.OnClose();
             });
         }
 

@@ -18,7 +18,7 @@ namespace WpfClientt.services {
 
         private Notifier notifier = new Notifier(cfg => {
             cfg.PositionProvider = new WindowPositionProvider(Application.Current.MainWindow,Corner.BottomRight,10,10);
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(3), MaximumNotificationCount.FromCount(2));
+            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(15), MaximumNotificationCount.FromCount(2));
             cfg.Dispatcher = Application.Current.Dispatcher;
             cfg.DisplayOptions.TopMost = true;
             cfg.DisplayOptions.Width = 400;
