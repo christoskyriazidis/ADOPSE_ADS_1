@@ -13,84 +13,124 @@ namespace WpfClientt.services {
     class AdDetailsServiceImpl : IAdDetailsService {
 
         private HttpClient httpClient;
-        private ISet<Category> categories;
-        private ISet<Category> categoriesWithSubcategories;
-        private ISet<Condition> conditions;
-        private ISet<Manufacturer> manufacturers;
-        private ISet<State> states;
-        private ISet<AdType> types;
-        private ISet<Subcategory> subcategories;
+
+        private object categoreisLock = new object();
+        private Task<ISet<Category>> categoriesTask;
+
+        private object categoriesWithSubcategoriesLock = new object();
+        private Task<ISet<Category>> categoriesWithSubcategoriesTask;
+
+        private object conditionsLock = new object();
+        private Task<ISet<Condition>> conditionsTask;
+
+        private object manufacturersLock = new object();
+        private Task<ISet<Manufacturer>> manufacturersTask;
+
+        private object statesLock = new object();
+        private Task<ISet<State>> statesTask;
+
+        private object subcategoriesLock = new object();
+        private Task<ISet<Subcategory>> subcategoriesTask;
+
+        private object adTypesLock = new object();
+        private Task<ISet<AdType>> adTypesTask;
 
         public AdDetailsServiceImpl(HttpClient httpClient) {
             this.httpClient = httpClient;
         }
 
-        public async Task<ISet<Category>> Categories() {
-            if(categories != null) {
-                return categories;
+        public Task<ISet<Category>> Categories() {
+            lock (categoreisLock) {
+                if(categoriesTask == null) {
+                    categoriesTask = DownloadCategoriesTask();
+                }
             }
+            return categoriesTask;
+        }
+
+        private async Task<ISet<Category>> DownloadCategoriesTask() {
+            ISet<Category> categories = new HashSet<Category>();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.CategoriesMainUrl());
-            categories = new HashSet<Category>();
-            using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
+            using (HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Stream content = await response.Content.ReadAsStreamAsync();
 
-                foreach(Category category in await JsonSerializer.DeserializeAsync<Category[]>(content)) {
+                foreach (Category category in await JsonSerializer.DeserializeAsync<Category[]>(content)) {
                     categories.Add(category);
                 }
             }
-
             return categories;
         }
 
-        public async Task<ISet<Category>> CategoriesWithSubcategories() {
-            if(categoriesWithSubcategories == null) {
-                categoriesWithSubcategories = new HashSet<Category>();
-                ISet<Category> categories = await Categories();
-
-                foreach (Category category in categories) {
-                    foreach (Subcategory subcategory in await SubcategoriesOf(category)) {
-                        category.Subcategories.Add(subcategory);
-                        categoriesWithSubcategories.Add(category);
-                    }
+        public Task<ISet<Category>> CategoriesWithSubcategories() {
+            lock (categoriesWithSubcategoriesLock) {
+                if(categoriesWithSubcategoriesTask == null) {
+                    categoriesWithSubcategoriesTask = DownloadCategoriesWithSubcategoriesTask();
                 }
             }
-            
+
+            return categoriesWithSubcategoriesTask;
+        }
+
+        private async Task<ISet<Category>> DownloadCategoriesWithSubcategoriesTask() {
+            ISet<Category> categories = await Categories();
+            ISet<Category> categoriesWithSubcategories = new HashSet<Category>();
+
+            foreach (Category category in categories) {
+                foreach (Subcategory subcategory in await SubcategoriesOf(category)) {
+                    category.Subcategories.Add(subcategory);
+                    categoriesWithSubcategories.Add(category);
+                }
+            }
 
             return categoriesWithSubcategories;
         }
 
-        public async Task<ISet<Condition>> Conditions() {
-            if(conditions != null) {
-                return conditions;
-            }
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ConditionsMainUrl());
-            conditions = new HashSet<Condition>();
-
-            using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
-                response.EnsureSuccessStatusCode();
-                Stream content = await response.Content.ReadAsStreamAsync();
-
-                foreach(Condition condition in await JsonSerializer.DeserializeAsync<Condition[]>(content)) {
-                    conditions.Add(condition);
+        public Task<ISet<Condition>> Conditions() {
+            lock (conditionsLock) {
+                if(conditionsTask == null) {
+                    conditionsTask = DownloadConditionsTask();
                 }
             }
+            return conditionsTask;
+        }
 
+        private async Task<ISet<Condition>> DownloadConditionsTask() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ConditionsMainUrl());
+            ISet<Condition> conditions = new HashSet<Condition>();
+
+            using (HttpResponseMessage response = await httpClient.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+
+                Stream content = await response.Content.ReadAsStreamAsync();
+
+                foreach (Condition condition in await JsonSerializer.DeserializeAsync<Condition[]>(content)) {
+                    conditions.Add(condition);
+                }
+
+            }
             return conditions;
         }
 
-        public async Task<ISet<Manufacturer>> Manufacturers() {
-            if(manufacturers != null) {
-                return manufacturers;
+        public Task<ISet<Manufacturer>> Manufacturers() {
+            lock (manufacturersLock) {
+                if(manufacturersTask == null) {
+                    manufacturersTask = DownloadManufacturersTask();
+                }
             }
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ManufacturersMainUrl());
-            manufacturers = new HashSet<Manufacturer>();
 
-            using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
+            return manufacturersTask;
+        }
+
+        private async Task<ISet<Manufacturer>> DownloadManufacturersTask() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ManufacturersMainUrl());
+            ISet<Manufacturer> manufacturers = new HashSet<Manufacturer>();
+
+            using (HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Stream content = await response.Content.ReadAsStreamAsync();
 
-                foreach(Manufacturer manufacturer in await JsonSerializer.DeserializeAsync<Manufacturer[]>(content)) {
+                foreach (Manufacturer manufacturer in await JsonSerializer.DeserializeAsync<Manufacturer[]>(content)) {
                     manufacturers.Add(manufacturer);
                 }
             }
@@ -98,18 +138,24 @@ namespace WpfClientt.services {
             return manufacturers;
         }
 
-        public async Task<ISet<State>> States() {
-            if(states != null) {
-                return states;
+        public Task<ISet<State>> States() {
+            lock (statesLock) {
+                if(statesTask == null) {
+                    statesTask = DownloadStatesTask();
+                }
             }
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.StatesMainUrl());
-            states = new HashSet<State>();
+            return statesTask;
+        }
 
-            using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
+        private async Task<ISet<State>> DownloadStatesTask() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.StatesMainUrl());
+            ISet<State> states = new HashSet<State>();
+
+            using (HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Stream content = await response.Content.ReadAsStreamAsync();
 
-                foreach(State state in await JsonSerializer.DeserializeAsync<State[]>(content)) {
+                foreach (State state in await JsonSerializer.DeserializeAsync<State[]>(content)) {
                     states.Add(state);
                 }
             }
@@ -117,15 +163,21 @@ namespace WpfClientt.services {
             return states;
         }
 
-        public async Task<ISet<Subcategory>> Subcategories() {
-            if(subcategories != null) {
-                return subcategories;
+        public Task<ISet<Subcategory>> Subcategories() {
+            lock (subcategoriesLock) {
+                if(subcategoriesTask == null) {
+                    subcategoriesTask = DownloadSubcategoriesTask();
+                }
             }
-            ISet<Category> categories = await Categories();
-            subcategories = new HashSet<Subcategory>();
+            return subcategoriesTask;
+        }
 
-            foreach(Category category in categories) {
-                foreach(Subcategory subcategory in await SubcategoriesOf(category)) {
+        private async Task<ISet<Subcategory>> DownloadSubcategoriesTask() {
+            ISet<Category> categories = await Categories();
+            ISet<Subcategory> subcategories = new HashSet<Subcategory>();
+
+            foreach (Category category in categories) {
+                foreach (Subcategory subcategory in await SubcategoriesOf(category)) {
                     subcategories.Add(subcategory);
                 }
             }
@@ -148,18 +200,26 @@ namespace WpfClientt.services {
             return subcategories;
         }
 
-        public async Task<ISet<AdType>> Types() {
-            if(types != null) {
-                return types;
+        public Task<ISet<AdType>> Types() {
+            lock (adTypesLock) {
+                if(adTypesTask == null) {
+                    adTypesTask = DownloadAdTypesTask();
+                }
             }
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.TypeMainUrl());
-            types = new HashSet<AdType>();
+            
 
-            using(HttpResponseMessage response = await httpClient.SendAsync(request)) {
+            return adTypesTask;
+        }
+
+        private async Task<ISet<AdType>> DownloadAdTypesTask() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.TypeMainUrl());
+            ISet<AdType> types = new HashSet<AdType>();
+
+            using (HttpResponseMessage response = await httpClient.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Stream content = await response.Content.ReadAsStreamAsync();
 
-                foreach(AdType type in await JsonSerializer.DeserializeAsync<AdType[]>(content)) {
+                foreach (AdType type in await JsonSerializer.DeserializeAsync<AdType[]>(content)) {
                     types.Add(type);
                 }
             }

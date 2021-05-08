@@ -27,7 +27,7 @@
             <Run Text="Ad's Title:" />
             <Run Text="{Binding Ad.Title}"/>
         </TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left">
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="10"  VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap">
             <Run Text="Last Message: "/>
             <Run Text="{Binding LatestMessage}" />
         </TextBlock>
