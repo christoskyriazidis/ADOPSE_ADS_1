@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WpfClientt.model;
+using WpfClientt.model.chat;
 
 namespace WpfClientt.services {
     class ChatServiceSignalR : IChatService {
@@ -17,9 +18,10 @@ namespace WpfClientt.services {
         private static ChatServiceSignalR instance;
 
         private ICustomerNotifier notifier;
-        private ConcurrentBag<Func<Task>> messageListeners = new ConcurrentBag<Func<Task>>();
+        private ConcurrentBag<Func<Message, Task>> messageListeners = new ConcurrentBag<Func<Message, Task>>();
         private ConcurrentBag<Func<ChatRequest,Task>> chatRequestListeners = new ConcurrentBag<Func<ChatRequest, Task>>();
         private ConcurrentBag<Func<Chat, Task>> activeChatListeners = new ConcurrentBag<Func<Chat, Task>>();
+        private ConcurrentBag<Func<Typing, Task>> typingListeners = new ConcurrentBag<Func<Typing, Task>>();
         private JsonSerializerOptions options;
         private HttpClient client;
         private HubConnection hubConnection;
@@ -54,10 +56,10 @@ namespace WpfClientt.services {
             return instance;
         }
 
-        public void AddMessageListener(Func<Task> listenerProvider) {
+        public void AddMessageListener(Func<Message, Task> listenerProvider) {
             messageListeners.Add(listenerProvider);
         }
-        public void RemoveMessageListener(Func<Task> listenerProvider) {
+        public void RemoveMessageListener(Func<Message, Task> listenerProvider) {
             messageListeners.TryTake(out listenerProvider);
         }
 
@@ -76,6 +78,14 @@ namespace WpfClientt.services {
 
         public void RemoveActiveChatListener(Func<Chat, Task> listener) {
             activeChatListeners.TryTake(out listener);
+        }
+
+        public void AddChatTypingListener(Func<Typing, Task> listener) {
+            typingListeners.Add(listener);
+        }
+
+        public void RemoveChatTypingListener(Func<Typing, Task> listener) {
+            typingListeners.TryTake(out listener);
         }
 
         public async Task SendMessage(Message message) {

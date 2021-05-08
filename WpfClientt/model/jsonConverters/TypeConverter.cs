@@ -29,7 +29,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override void Write(Utf8JsonWriter writer, AdType value, JsonSerializerOptions options) {
-            throw new NotImplementedException();
+            writer.WriteNumber("Type", value.Id);
         }
 
         public static async Task<TypeConverter> getInstance(IAdDetailsService service) {

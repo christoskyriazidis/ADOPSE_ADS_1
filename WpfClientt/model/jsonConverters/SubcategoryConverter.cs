@@ -29,7 +29,7 @@ namespace WpfClientt.model.jsonConverters {
         }
 
         public override void Write(Utf8JsonWriter writer, Subcategory value, JsonSerializerOptions options) {
-            throw new NotImplementedException();
+            writer.WriteNumber("SubCategoryId", value.Id);
         }
 
         public static async Task<SubcategoryConverter> getInstance(IAdDetailsService service) {

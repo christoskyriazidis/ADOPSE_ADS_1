@@ -251,6 +251,7 @@
     <Compile Include="model\chat\Chat.cs" />
     <Compile Include="model\chat\ChatRequest.cs" />
     <Compile Include="model\chat\Message.cs" />
+    <Compile Include="model\chat\Typing.cs" />
     <Compile Include="model\Condition.cs" />
     <Compile Include="model\Customer.cs" />
     <Compile Include="model\jsonConverters\CategoryConverter.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="viewModels\ad\SubscribedSubcategoryViewModel.cs" />
     <Compile Include="viewModels\ad\SubscriptionsViewModel.cs" />
     <Compile Include="viewModels\ad\UnsubscribedSubcategoryViewModel.cs" />
+    <Compile Include="viewModels\chat\ChatBoxViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
     <Compile Include="viewModels\MediatorToken.cs" />

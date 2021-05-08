@@ -24,6 +24,7 @@ namespace WpfClientt.viewModels {
         SubscriptionsViewToken,
         ChatRequestManagedInToastToken,
         ChatRequestManagedInNotificationsToken,
-        LogoutViewToken
+        LogoutViewToken,
+        ChangeChatViewToken
     }
 }
