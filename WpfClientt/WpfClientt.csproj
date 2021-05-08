@@ -270,6 +270,7 @@
     <Compile Include="services\notification\NotifyServiceSignalR.cs" />
     <Compile Include="services\notification\SubscribedSubcategories.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
+    <Compile Include="services\notification\ToastExtentionMethods.cs" />
     <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />
     <Compile Include="viewModels\ad\AdViewModel.cs" />
     <Compile Include="viewModels\ad\CategoryAdsViewModel.cs" />
@@ -340,6 +341,7 @@
     <Compile Include="viewModels\customer\ProfileViewModel.cs" />
     <Compile Include="viewModels\customer\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
+    <Compile Include="viewModels\toast\ChatRequestToastViewModel.cs" />
     <Compile Include="views\AdGuestDetailsView.xaml.cs">
       <DependentUpon>AdGuestDetailsView.xaml</DependentUpon>
     </Compile>
@@ -405,6 +407,9 @@
     </Compile>
     <Compile Include="views\notifications\ChatRequestNotificationView.xaml.cs">
       <DependentUpon>ChatRequestNotificationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\notifications\ChatRequestToastNotification.xaml.cs">
+      <DependentUpon>ChatRequestToastNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\notifications\NotificationsView.xaml.cs">
       <DependentUpon>NotificationsView.xaml</DependentUpon>
@@ -525,6 +530,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\notifications\ChatRequestToastNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\notifications\NotificationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -592,6 +601,5 @@
   <ItemGroup>
     <Resource Include="images\logo\supermarketcart_89153.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,6 +15,7 @@ namespace WpfClientt.viewModels {
         public ObservableCollection<NotificationViewModel> Notifications { get; set; } = new ObservableCollection<NotificationViewModel>();
 
         private NotificationsViewModel(IChatService chatService) {
+            Mediator.Subscribe("ChatRequestDelete", RemoveChatRequest);
             this.chatService = chatService;
             chatService.AddChatRequestListener(UpdateChatRequestsNotifications);
         }
@@ -26,6 +27,17 @@ namespace WpfClientt.viewModels {
             }
             await instance.LoadChatRequests();
             return instance;
+        }
+
+        private Task RemoveChatRequest(object param) {
+            ChatRequest request = (ChatRequest)param;
+            foreach(NotificationViewModel notificationViewModel in Notifications) {
+                if(notificationViewModel is ChatRequestNotificationViewModel rvm && rvm.ChatRequest.Id.Equals(request.Id)) {
+                    Notifications.Remove(notificationViewModel);
+                    break;
+                }
+            }
+            return Task.CompletedTask;
         }
 
         private Task UpdateChatRequestsNotifications(ChatRequest chatRequest) {

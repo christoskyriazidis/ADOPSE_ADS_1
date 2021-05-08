@@ -13,6 +13,7 @@ namespace WpfClientt.viewModels {
         private static LoginCustomerMenu instance;
 
         private ICustomerNotifier notifier;
+        private IChatService chatService;
         public ICommand Categories { get; private set; }
         public ICommand Back { get; private set; }
         public ICommand Account { get; private set; }
@@ -22,8 +23,9 @@ namespace WpfClientt.viewModels {
         public ICommand Logout { get; private set; }
         public ICommand Subscriptions { get; private set; }
 
-        private LoginCustomerMenu(IChatService chatService,ICustomerNotifier notifier) {
+        private LoginCustomerMenu(IChatService chatSerivce,ICustomerNotifier notifier) {
             this.notifier = notifier;
+            this.chatService = chatSerivce;
             Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
             Categories = new AsyncCommand(async () => await Mediator.Notify("CategoriesAdsViewModel"));
             Account = new AsyncCommand(async () => await Mediator.Notify("ProfileView"));
@@ -48,7 +50,7 @@ namespace WpfClientt.viewModels {
         }
 
         private Task ChatRequestListener(ChatRequest request) {
-            notifier.Information($"New chat request from {request.Buyer.FirstName} {request.Buyer.LastName} for ad with title {request.Ad.Title}");
+            notifier.ChatRequestNotification(request, chatService);
             return Task.CompletedTask;
         }
 

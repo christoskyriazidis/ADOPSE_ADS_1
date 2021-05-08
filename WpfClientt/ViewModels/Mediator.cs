@@ -29,7 +29,7 @@ namespace WpfClientt.viewModels {
         }
 
         public static async Task Notify(string token, object args = null) {
-            IList<Func<object,Task>> listeners = subscribers[token];
+            subscribers.TryGetValue(token, out List<Func<object, Task>> listeners);
             if (listeners != null) {
                 foreach (Func<object, Task> listener in listeners) {
                     await listener.Invoke(args);

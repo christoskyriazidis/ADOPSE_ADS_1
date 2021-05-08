@@ -8,9 +8,13 @@ using ToastNotifications;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
+using WpfClientt.model;
+using WpfClientt.services.notification;
+using WpfClientt.viewModels;
 
 namespace WpfClientt.services {
     class ToastCustomerNotifier : ICustomerNotifier {
+
 
         private Notifier notifier = new Notifier(cfg => {
             cfg.PositionProvider = new WindowPositionProvider(Application.Current.MainWindow,Corner.BottomRight,10,10);
@@ -28,6 +32,10 @@ namespace WpfClientt.services {
             notifier.ShowInformation(info);
         }
 
+        public void ChatRequestNotification(ChatRequest request, IChatService chatService) {
+            notifier.ShowChatRequest(request, chatService);
+        }
+
         public void Success(string success) {
             notifier.ShowSuccess(success);
         }
@@ -35,5 +43,7 @@ namespace WpfClientt.services {
         public void Warning(string warning) {
             notifier.ShowWarning(warning);
         }
+
+        
     }
 }
