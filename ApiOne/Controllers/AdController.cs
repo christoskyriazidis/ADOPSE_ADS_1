@@ -109,6 +109,7 @@ namespace ApiOne.Controllers
             //vazoume to id tou xrhsth sto object Ad 
             var claims = User.Claims.ToList();
             string subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            string username = claims.FirstOrDefault(c => c.Type == "username")?.Value;
             ad.Customer = _customerRepo.GetCustomerIdFromSub(subId);
             //koitaw an einai null to img 
             if (ad.Img == null) ad.NewImg = "No";
@@ -118,11 +119,11 @@ namespace ApiOne.Controllers
             {
                 case -2: return BadRequest(new { error = "something went wrong with ad creation! " });
                 case -1:
-                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
+                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification",subId);
                     return Json(new { success = "ad Added successfully created.! with default img!" });
                 case > 0:
                     SingleFileUpload(ad.Img, result);
-                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
+                    await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification", subId);
                     return Json(new { success = "ad Added successfully created.! with users img!" });
                 default: return Json(new { error = "something went wrong with ad creation! " });
             }
@@ -180,11 +181,12 @@ namespace ApiOne.Controllers
             //var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             //var intId = _customerRepo.GetCustomerIdFromSub(subId);
             //if (_customerRepo.CheckIfCustomerOwnThisAd(ad.Id, intId)) return BadRequest(new { error = "You do not own this ad" });
-
+            var claims = User.Claims.ToList();
+            string subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var updateResult = _adRepository.UpdateAd(ad);
             if (updateResult != null)
             {
-                await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification");
+                await _NotificationHub.Clients.All.SendAsync("ReceiveWishListNotification", subId);
                 return Json(updateResult);
             }
             return BadRequest();

@@ -71,7 +71,7 @@ namespace ApiOne.Controllers
             {
                 foreach (var connectionId in ChatHub._connections.GetConnections(insertResponse.Username))
                 {
-                    await _chatHub.Clients.Client(connectionId).SendAsync("ReceiveMessage", chatMessage.MessageText);
+                    await _chatHub.Clients.Client(connectionId).SendAsync("ReceiveMessage", chatMessage.ActiveChat);
                 }
                 return Ok(new { success = $"message sent! to {insertResponse.Username}" });
             }
@@ -106,7 +106,7 @@ namespace ApiOne.Controllers
             var intId = _customerRepo.GetCustomerIdFromSub(subId);
             if (_chatRepository.RequestChatByAdId(AdId, intId))
             {
-                await _chatHub.Clients.All.SendAsync("ReceiveChatRequest",$"AdId:{AdId}");
+                await _chatHub.Clients.All.SendAsync("ReceiveChatRequest",subId);
                 return Json(new {response="Chat request submitted"});
             }
             await _notificationHub.Clients.All.SendAsync("ChatRequestNotification");
@@ -119,9 +119,11 @@ namespace ApiOne.Controllers
         public async Task<IActionResult> ConfirmChatRequest(int ChatId)
         {
             int activeChatId= _chatRepository.AcceptChatRequest(ChatId);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (activeChatId != -1)
             {
-                await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{activeChatId} ");
+                await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", subId);
                 return Json(new { response = $"{ChatId} accepted" });
             }
             return BadRequest(new { message="kati pige lathos"});
@@ -156,20 +158,6 @@ namespace ApiOne.Controllers
             return BadRequest(new { message="kati pige lathos me to active chat"});
         }
 
-       
-
-        //[HttpGet]
-        //[Route("/chat")]
-        //public IActionResult GetChatById(int chatId)
-        //{
-        //    //int userId = 3;
-
-        //    //if (result == null)
-        //    //{
-        //    //    return BadRequest(new { error = "customer Out of range" });
-        //    //}
-        //    //return Json(result);
-        //}
 
         [HttpGet]
         [Route("/profile/Achat")]

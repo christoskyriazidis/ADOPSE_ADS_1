@@ -383,6 +383,7 @@ namespace identityServerNew.Controllers
             }
             else if (loginResult.Succeeded)
             {
+                SqlServerHelpers.LoginLogs(user.Id, "10.l2.1.1");
                 return Redirect(lvm.ReturnUrl);
             }
             var failedTimes = await _userManager.GetAccessFailedCountAsync(user);

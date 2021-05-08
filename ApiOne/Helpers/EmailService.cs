@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ApiOne.Hubs;
+using ApiOne.Interfaces;
+using ApiOne.Repositories;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +18,13 @@ namespace ApiOne.Helpers
 {
     public class EmailService
     {
-        
+        public EmailService(IHubContext<NotificationHub> hubContext)
+        {
+            _notificationHub = hubContext;
+        }
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly ICustomerRepository _customerRepo = new CustomerRepository();
+
         public static void SendMail(MailMessage mailMessage)
         {
                 var port = Startup.StaticConfig.GetValue<int>("Email:Port");
@@ -33,7 +43,20 @@ namespace ApiOne.Helpers
 
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
-            Debug.WriteLine("ojk");
+            String token = (string)e.UserState;
+            if (e.Cancelled)
+            {
+                Console.WriteLine("[{0}] Send canceled.", token);
+            }
+            if (e.Error != null)
+            {
+                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Message sent.");
+            }
+            
         }
     }
 }

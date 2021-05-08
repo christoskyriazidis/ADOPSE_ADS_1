@@ -63,7 +63,7 @@ function handleApiDataNotifications(data) {
                     <span class="title">${object.title}</span>
                     <span class="info">${object.username}</span>
                     <span class="price">${object.price}$</span>
-                    <span class="date">Before  ${Math.round((Date.now() - Date.parse(object.lastUpdate)) / 1000 / 60)} minutes </span>
+                    <span class="date">Before  ${Math.round((Date.now() - object.timestamp) / 1000 / 60)} minutes </span>
                 </div>
             </a>
         </li>

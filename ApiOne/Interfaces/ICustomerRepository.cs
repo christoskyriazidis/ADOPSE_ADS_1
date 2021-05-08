@@ -23,7 +23,9 @@ namespace ApiOne.Interfaces
         public int GetCustomerIdFromSub(string SubId);
         bool ReviewAndRateCustomer(PostReview postReview);
         bool SellAd(int AdId,int BuyerId);
-
+        //bool SaveMail(int AdId, );
+        IEnumerable<CustomerReview> GetCustomerReviews(int CustomerId);
+        IEnumerable<LoginLogs> GetLoginLogs(int CustomerId);
 
     }
 }

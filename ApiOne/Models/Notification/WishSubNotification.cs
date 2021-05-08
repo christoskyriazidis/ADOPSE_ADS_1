@@ -10,6 +10,7 @@ namespace ApiOne.Models.Notification
     {
         public int Id { get; set; }
         public string Timestamp { get; set; }
+        public string Username { get; set; }
         public int Clicked { get; set; }
         public int AdId { get; set; }
         public int CustomerId { get; set; }

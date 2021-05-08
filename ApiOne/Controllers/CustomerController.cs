@@ -87,7 +87,7 @@ namespace ApiOne.Controllers
         [Authorize]
         [HttpPost]
         [Route("/review")]
-        public IActionResult PostReview(PostReview postReview)
+        public IActionResult PostReview([FromBody]PostReview postReview)
         {
             if (!ModelState.IsValid)
             {
@@ -97,6 +97,7 @@ namespace ApiOne.Controllers
             var claims = User.Claims.ToList();
             var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            postReview.BuyerId = intId;
             if (_customerRepo.ReviewAndRateCustomer(postReview))
             {
                 return Json(new { response="Review Submitted!"});
@@ -295,5 +296,33 @@ namespace ApiOne.Controllers
         //    EmailService.SendMail(mailMessage);
         //    return Ok();
         //}
+
+        [HttpGet]
+        [Route("/customer/review/{Cid}")]
+        public IActionResult GetCustomerReviews(int Cid)
+        {
+            var reviews = _customerRepo.GetCustomerReviews(Cid);
+            if (reviews.Any())
+            {
+                return Json(reviews);
+            }
+            return Json(new { message=$"Customer:{Cid} has no reviews yet!"});
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/loginLogs")]
+        public IActionResult GetLoginLogs()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var logs = _customerRepo.GetLoginLogs(intId);
+            if (logs != null)
+            {
+                return Json(logs);
+            }
+            return Json(new {response="No loginLogs" });
+        }
     }
 }
