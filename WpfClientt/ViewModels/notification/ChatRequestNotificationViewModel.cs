@@ -11,7 +11,6 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class ChatRequestNotificationViewModel : NotificationViewModel {
 
-        private Action<bool, ChatRequestNotificationViewModel> notifier;
         private IChatService chatService;
 
         public ICommand AcceptCommand { get; set; }
@@ -19,8 +18,7 @@ namespace WpfClientt.viewModels {
         public ChatRequest ChatRequest { get; set; }
 
 
-        public ChatRequestNotificationViewModel(IChatService chatService,Action<bool,ChatRequestNotificationViewModel> notifier,ChatRequest chatRequest) {
-            this.notifier = notifier;
+        public ChatRequestNotificationViewModel(IChatService chatService,ChatRequest chatRequest) {
             this.chatService = chatService;
             this.ChatRequest = chatRequest;
             AcceptCommand = new AsyncCommand(AcceptChatReuqest);
@@ -29,12 +27,12 @@ namespace WpfClientt.viewModels {
 
         private async Task AcceptChatReuqest() {
             await chatService.AcceptChatRequest(ChatRequest);
-            notifier.Invoke(true,this);
+            await Mediator.Notify("ChatRequestManagedInNotifications", ChatRequest);
         }
 
         private async Task DeclineChatRequest() {
             await chatService.DeclineChatRequest(ChatRequest);
-            notifier.Invoke(false,this);
+            await Mediator.Notify("ChatRequestManagedInNotifications", ChatRequest);
         }
 
 

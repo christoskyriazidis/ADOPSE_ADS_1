@@ -15,7 +15,8 @@ namespace WpfClientt.viewModels {
         public ObservableCollection<NotificationViewModel> Notifications { get; set; } = new ObservableCollection<NotificationViewModel>();
 
         private NotificationsViewModel(IChatService chatService) {
-            Mediator.Subscribe("ChatRequestDelete", RemoveChatRequest);
+            Mediator.Subscribe("ChatRequestManagedInToast", RemoveChatRequest);
+            Mediator.Subscribe("ChatRequestManagedInNotifications", RemoveChatRequest);
             this.chatService = chatService;
             chatService.AddChatRequestListener(UpdateChatRequestsNotifications);
         }
@@ -41,13 +42,13 @@ namespace WpfClientt.viewModels {
         }
 
         private Task UpdateChatRequestsNotifications(ChatRequest chatRequest) {
-            Notifications.Insert(0,new ChatRequestNotificationViewModel(chatService, (_, request) => Notifications.Remove(request), chatRequest));
+            Notifications.Insert(0,new ChatRequestNotificationViewModel(chatService,chatRequest));
             return Task.CompletedTask;
         }
 
         private async Task LoadChatRequests() {
             foreach (ChatRequest chatRequest in await chatService.ChatRequests()) {
-                Notifications.Add(new ChatRequestNotificationViewModel(chatService, (_, request) => Notifications.Remove(request), chatRequest));
+                Notifications.Add(new ChatRequestNotificationViewModel(chatService, chatRequest));
             }
         }
 

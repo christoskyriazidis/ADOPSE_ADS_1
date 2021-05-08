@@ -16,6 +16,7 @@ namespace WpfClientt.services {
 
         private static ChatServiceSignalR instance;
 
+        private ICustomerNotifier notifier;
         private ConcurrentBag<Func<Task>> messageListeners = new ConcurrentBag<Func<Task>>();
         private ConcurrentBag<Func<ChatRequest,Task>> chatRequestListeners = new ConcurrentBag<Func<ChatRequest, Task>>();
         private ConcurrentBag<Func<Chat, Task>> activeChatListeners = new ConcurrentBag<Func<Chat, Task>>();
@@ -25,18 +26,18 @@ namespace WpfClientt.services {
         private IAdService adService;
         private ICustomerService customerService;
 
-        private ChatServiceSignalR(HttpClient client,JsonSerializerOptions options,HubConnection hubConnection,IAdService adService,ICustomerService customerService) {
+        private ChatServiceSignalR(HttpClient client,HubConnection hubConnection,IAdService adService,ICustomerService customerService,ICustomerNotifier notifier) {
             this.client = client;
-            this.options = options;
             this.hubConnection = hubConnection;
             this.adService = adService;
             this.customerService = customerService;
+            this.notifier = notifier;
             this.hubConnection.On("ReceiveMessage", async (string message) => await ReceiveMessage(message));
             this.hubConnection.On("ReceiveActiveChat", async (string message) => await ReceiveActiveChat(message));
             this.hubConnection.On("ReceiveChatRequest",async (string message) => await ReceiveChatRequest(message));
         }
 
-        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService) {
+        public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService,ICustomerNotifier notifier) {
             if (instance == null) {
                 string token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", ""); 
                 HubConnection connection = new HubConnectionBuilder()
@@ -45,7 +46,8 @@ namespace WpfClientt.services {
                         config => { config.AccessTokenProvider = () => Task.FromResult(token); }
                     )
                     .Build();
-                instance = new ChatServiceSignalR(client, options, connection, adService, customerService);
+                instance = new ChatServiceSignalR(client, connection, adService, customerService,notifier);
+                instance.options = options;
                 await connection.StartAsync();
             }
 
@@ -112,7 +114,6 @@ namespace WpfClientt.services {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ChatRequestsMainUrl());
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
-                Debug.WriteLine(await response.Content.ReadAsStringAsync());
                 ChatRequestModel[] chatRequests = JsonSerializer.Deserialize<ChatRequestModel[]>(await response.Content.ReadAsStringAsync(), options);
                 foreach(ChatRequestModel chatRequest in chatRequests) {
                     result.Add(new ChatRequest() {
@@ -129,7 +130,11 @@ namespace WpfClientt.services {
         public async Task SendChatRequest(Ad ad) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiInfo.ChatRequestMainUrl(ad));
             using(HttpResponseMessage response = await client.SendAsync(request)) {
-                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode) {
+                    notifier.Success($"Chat request for the ad {ad.Title} has been sent successfully.");
+                } else {
+                    notifier.Error($"Couldn't send chat request for the ad {ad.Title}.You've probably already have sent a chat request for this ad.");
+                }
             }
         }
 

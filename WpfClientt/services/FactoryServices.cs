@@ -84,7 +84,7 @@ namespace WpfClientt.services {
                         options.Converters.Add(typeConverter);
                     }
                 }
-                chatService = await ChatServiceSignalR.GetInstance(client,options,await AdServiceInstance(),CustomerServiceInstance());
+                chatService = await ChatServiceSignalR.GetInstance(client,options,await AdServiceInstance(),CustomerServiceInstance(),CustomerNotifier());
             }
 
             return chatService;
