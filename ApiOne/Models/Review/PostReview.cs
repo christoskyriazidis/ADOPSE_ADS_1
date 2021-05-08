@@ -10,6 +10,7 @@ namespace ApiOne.Models.Review
     public class PostReview
     {
         [Required]
+        [Range(1, 10)]
         public int RatingNumb { get; set; }
 
         [Required]
@@ -18,7 +19,6 @@ namespace ApiOne.Models.Review
         [Required]
         public int SoldAd { get; set; }
 
-        [Required]
         public int BuyerId { get; set; }
 
     }

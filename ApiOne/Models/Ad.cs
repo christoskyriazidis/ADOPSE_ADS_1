@@ -24,10 +24,6 @@ namespace ApiOne.Models
 
         [Range(1, 4)]
         [Required]
-        public int State { get; set; }
-
-        [Range(1, 4)]
-        [Required]
         public int Type { get; set; }
 
         [Range(1, 5)]
@@ -67,12 +63,11 @@ namespace ApiOne.Models
         {
         }
 
-        public Ad(int id, string title, string description, int state, int type, int category, int condition, int manufacturer, int subCategoryId, int price, string lastUpdate, int reports, int views, string createDate, string img, int customer)
+        public Ad(int id, string title, string description, int type, int category, int condition, int manufacturer, int subCategoryId, int price, string lastUpdate, int reports, int views, string createDate, string img, string profileImg, string username, int rating, int reviews, string address, int customer)
         {
             Id = id;
             Title = title;
             Description = description;
-            State = state;
             Type = type;
             Category = category;
             Condition = condition;
@@ -84,6 +79,11 @@ namespace ApiOne.Models
             Views = views;
             CreateDate = createDate;
             Img = img;
+            ProfileImg = profileImg;
+            Username = username;
+            Rating = rating;
+            Reviews = reviews;
+            Address = address;
             Customer = customer;
         }
     }

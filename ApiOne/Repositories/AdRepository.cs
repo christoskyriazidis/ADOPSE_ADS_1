@@ -157,14 +157,13 @@ namespace ApiOne.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 ad.LastUpdate = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
-                string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,State=@State,Type=@Type,Category=@Category,Condition=@Condition," +
+                string sql = " UPDATE [Ad] SET Title=@Title,Description=@Description,LastUpdate=@LastUpdate,Type=@Type,Category=@Category,Condition=@Condition," +
                                 "Manufacturer=@Manufacturer,Price=@Price,SubCategoryId=@SubCategoryId where id=@Id";
                 var result = conn.Execute(sql, new
                 {
                     ad.Title,
                     ad.Description,
                     ad.LastUpdate,
-                    ad.State,
                     ad.Type,
                     ad.Category,
                     ad.Condition,

@@ -67,6 +67,22 @@ namespace ApiOne.Repositories
             }
         }
 
+        public IEnumerable<CustomerReview> GetCustomerReviews(int CustomerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT r.*,c.username,c.profileImg FROM Review r join customer c ON (r.BuyerId=c.id) WHERE r.SellerId=@CustomerId";
+                var customerReviews = conn.Query<CustomerReview>(sql, new { CustomerId }).ToList();
+                return customerReviews;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
         public CustomersWithPagination GetCustomers(Pagination pagination)
         {
             try
@@ -97,6 +113,22 @@ namespace ApiOne.Repositories
             }
         }
 
+        public IEnumerable<LoginLogs> GetLoginLogs(int CustomerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * FROM LOGINLOGS WHERE CUSTOMERID=@CustomerId order by id desc";
+                var loginLogs = conn.Query<LoginLogs>(sql, new { CustomerId }).ToList();
+                return loginLogs;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
         public CustomerDetails GetMyProfileInfo(int id)
         {
             try
@@ -119,10 +151,10 @@ namespace ApiOne.Repositories
             {
                 //id
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "exec [review_and_rating] @ratingNumb,@ReviewTxt,@SoldAd,@buyerId";
-                var rows = conn.ExecuteScalar<int>(sql, new { postReview });
+                string sql = "exec [review_and_rating] @RatingNumb,@ReviewTxt,@SoldAd,@buyerId";
+                var rows = conn.ExecuteScalar<int>(sql, new {  postReview.RatingNumb,postReview.ReviewTxt,postReview.SoldAd,postReview.BuyerId });
                 //true false analogos ta rows pou alaksan
-                return (rows > 1);
+                return true;
             }
             catch (SqlException sqlEx)
             {

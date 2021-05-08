@@ -12,9 +12,7 @@ export default class ProfileController {
             maps.man.forEach(this.fillManufacturer)
             maps.typ.forEach(this.fillType)
             maps.con.forEach(this.fillCondition)
-            if (document.querySelector(".editAd")) {
-                maps.sta.forEach(this.fillState)
-            }
+            
             this.dictMaps = maps
         }).then(() => {
             const cats = document.querySelector("#categoryGroup")
@@ -70,14 +68,7 @@ export default class ProfileController {
                             }
                             counter++
                         }
-                        let state=document.querySelector("#stateGroup");
-                        counter=0;
-                        for (let option of state) {
-                            if (option.value == data.type) {
-                                state.selectedIndex = counter;
-                            }
-                            counter++
-                        }
+                        
                     })
             }
             cats.addEventListener("change", () => {
@@ -99,10 +90,7 @@ export default class ProfileController {
             })
 
     }
-    fillState = (value, id) => {
-        const categories = document.querySelector("#stateGroup")
-        categories.innerHTML += `<option value="${id}" >${value}</option>`
-    }
+    
     fillCategories = (value, id) => {
         const categories = document.querySelector("#categoryGroup")
 
@@ -128,14 +116,14 @@ export default class ProfileController {
     postAd = () => {
         var formData = new FormData();
         formData.append("Img", document.querySelector(".image").files[0]);
-        formData.append("Title", document.querySelector(".title").value);
-        formData.append("Description", document.querySelector(".description").value);
+        formData.append("Title", document.querySelector(".titleInput").value);
+        formData.append("Description", document.querySelector(".descriptionInput").value);
         formData.append("Type", document.querySelector("#typeGroup").options[document.querySelector("#typeGroup").selectedIndex].value);
         formData.append("Category", document.querySelector("#categoryGroup").options[document.querySelector("#categoryGroup").selectedIndex].value);
         formData.append("SubCategoryId", document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value);
         formData.append("Condition", document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value);
         formData.append("Manufacturer", document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value);
-        formData.append("Price", document.querySelector(".price").value);
+        formData.append("Price", document.querySelector(".priceInput").value);
         console.log(formData);
         axios.post("https://localhost:44374/ad", formData, {
             headers: {
@@ -158,7 +146,6 @@ export default class ProfileController {
             document.querySelector("#subCategoryGroup").options[document.querySelector("#subCategoryGroup").selectedIndex].value,
             document.querySelector("#conditionGroup").options[document.querySelector("#conditionGroup").selectedIndex].value,
             document.querySelector("#manufacturerGroup").options[document.querySelector("#manufacturerGroup").selectedIndex].value,
-            document.querySelector("#stateGroup").options[document.querySelector("#stateGroup").selectedIndex].value,
             document.querySelector(".priceInput").value
         )
         console.log(ad);
@@ -197,10 +184,9 @@ class Ad {
     subcategoryid;
     condition;
     manufacturer;
-    state;
     price;
     file;
-    constructor(id, title, description, type, category, subcategoryid, condition, manufacturer, state, price, file) {
+    constructor(id, title, description, type, category, subcategoryid, condition, manufacturer,  price, file=null) {
         this.id = id;
         this.title = title;
         this.description = description
@@ -209,7 +195,6 @@ class Ad {
         this.subcategoryid = subcategoryid;
         this.condition = condition;
         this.manufacturer = manufacturer;
-        this.state = state;
         this.price = price;
         this.file = file;
     }
