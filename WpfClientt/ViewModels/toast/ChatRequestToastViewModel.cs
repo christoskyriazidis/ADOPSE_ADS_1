@@ -26,15 +26,15 @@ namespace WpfClientt.viewModels {
             AcceptChatRequestCommand = new AsyncCommand(
                 async () => { 
                     await chatService.AcceptChatRequest(request);
-                    await Mediator.Notify("ChatRequestManagedInToast", request);
+                    await Mediator.Notify(MediatorToken.ChatRequestManagedInToastToken, request);
                     displayPart.OnClose();
                 });
             DeclineChatRequestCommand = new AsyncCommand(async () => { 
                 await chatService.DeclineChatRequest(request);
-                await Mediator.Notify("ChatRequestManagedInToast", request);
+                await Mediator.Notify(MediatorToken.ChatRequestManagedInToastToken, request);
                 displayPart.OnClose();
             });
-            Mediator.Subscribe("ChatRequestManagedInNotifications", (_) => {
+            Mediator.Subscribe(MediatorToken.ChatRequestManagedInNotificationsToken, (_) => {
                 displayPart.OnClose();
                 return Task.CompletedTask;
             }); ;

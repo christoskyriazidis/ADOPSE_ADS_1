@@ -43,23 +43,23 @@ namespace WpfClientt.viewModels {
         public MainWindowViewModel() {
             factory = new FactoryServices();
             CurrentMenuView = new GuestMenu();
-            ChangeToDisplayView("Welcome To Easy Market!");
+            DisplayView("Welcome To Easy Market!");
 
-            Mediator.Subscribe("DisplayPageView", ChangeToDisplayView);
-            Mediator.Subscribe("ChangeToLoginMenuView", ChangeToLoginMenuView);
-            Mediator.Subscribe("AdsSubcategoryView", ChangeToAdsSubcategoryView);
-            Mediator.Subscribe("CategoriesAdsViewModel", ChangeToCategoriesAdsViewModel);
-            Mediator.Subscribe("SubcategoriesToAdsView", ChangeToSubcategoriesToAdsView);
-            Mediator.Subscribe("RegisterView", ChangeToRegisterView);
-            Mediator.Subscribe("LoginView", ChangeToLoginView);
-            Mediator.Subscribe("AdDetailsView", ChangeToAdGuestDetailsView);
-            Mediator.Subscribe("CreateAdView", ChangeToCreateAdView);
-            Mediator.Subscribe("ProfileView", ChangeToProfileView);
-            Mediator.Subscribe("BackView", PreviousViewModel);
-            Mediator.Subscribe("ChatsView", ChangeToChatsViewModel);
-            Mediator.Subscribe("NotificationsView", ChangeToNotificationsView);
-            Mediator.Subscribe("CategoriesSubscriptionView", ChangeToCategoriesSubscriptionViewModel);
-            Mediator.Subscribe("SubscriptionsView", ChangeToSubscriptionViewModel);
+            Mediator.Subscribe(MediatorToken.DisplayPageViewToken, DisplayView);
+            Mediator.Subscribe(MediatorToken.LoginMenuViewToken, LoginMenu);
+            Mediator.Subscribe(MediatorToken.AdsViewToken, AdsView);
+            Mediator.Subscribe(MediatorToken.CategoriesAdsViewToken, CategoriesAdsView);
+            Mediator.Subscribe(MediatorToken.SubcategoriesAdsViewToken, SubcategoriesAdsView);
+            Mediator.Subscribe(MediatorToken.RegisterViewToken, RegisterView);
+            Mediator.Subscribe(MediatorToken.LoginViewToken, LoginView);
+            Mediator.Subscribe(MediatorToken.AdDetailsViewToken, GuestAdDetailsView);
+            Mediator.Subscribe(MediatorToken.CreateAdViewToken, CreateAdView);
+            Mediator.Subscribe(MediatorToken.ProfileViewToken, ProfileView);
+            Mediator.Subscribe(MediatorToken.PreviousViewToken, PreviousViewModel);
+            Mediator.Subscribe(MediatorToken.ChatsViewToken, ChatsView);
+            Mediator.Subscribe(MediatorToken.NotificationsViewToken, NotificationsView);
+            Mediator.Subscribe(MediatorToken.CategoriesSubscriptionsViewToken, CategoriesSubscriptionsView);
+            Mediator.Subscribe(MediatorToken.SubscriptionsViewToken, SubscriptionsView);
         }
 
 
@@ -70,81 +70,81 @@ namespace WpfClientt.viewModels {
 
         private Task ChangeMenuView(IMenu menu)   {
             if(menu is LoginCustomerMenu) {
-                Mediator.Unsubscribe("AdDetailsView", ChangeToAdGuestDetailsView);
-                Mediator.Subscribe("AdDetailsView", ChangeToAdDetailsView);
+                Mediator.Unsubscribe(MediatorToken.AdDetailsViewToken, GuestAdDetailsView);
+                Mediator.Subscribe(MediatorToken.AdDetailsViewToken, LoginAdDetailsView);
             }
             this.CurrentMenuView = menu;
             return Task.CompletedTask;
         }
 
-        private async Task ChangeToSubscriptionViewModel(object category) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task SubscriptionsView(object category) {
+            await DisplayView("Loading Page");
             AddToHistory(await SubscriptionsViewModel.GetInstance((Category)category,factory));
         }
 
-        private async Task ChangeToCategoriesSubscriptionViewModel(object _) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task CategoriesSubscriptionsView(object _) {
+            await DisplayView("Loading Page");
             AddToHistory(await CategoriesViewModel.CategoriesSubscriptionViewModel(factory));
         }
 
-        private async Task ChangeToLoginMenuView(object param) {
+        private async Task LoginMenu(object param) {
             await ChangeMenuView(await LoginCustomerMenu.GetInstance(factory));
         }
-        private async Task ChangeToNotificationsView(object _) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task NotificationsView(object _) {
+            await DisplayView("Loading Page");
             AddToHistory(await NotificationsViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToAdsSubcategoryView(object subcategory) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task AdsView(object subcategory) {
+            await DisplayView("Loading Page");
             AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
         }
 
-        private async Task ChangeToSubcategoriesToAdsView(object category) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task SubcategoriesAdsView(object category) {
+            await DisplayView("Loading Page");
             AddToHistory( await SubcategoriesViewModel.SubcategoriesToAdsViewModel(factory, (Category)category) );
         }
 
-        private async Task ChangeToRegisterView(object obj) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task RegisterView(object obj) {
+            await DisplayView("Loading Page");
             AddToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToLoginView(object obj) {
+        private async Task LoginView(object obj) {
             AddToHistory(await LoginViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToCategoriesAdsViewModel(object obj) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task CategoriesAdsView(object obj) {
+            await DisplayView("Loading Page");
             AddToHistory(await CategoriesViewModel.CategoriesAdsViewModel(factory));
         }
 
-        private async Task ChangeToCreateAdView(object obj) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task CreateAdView(object obj) {
+            await DisplayView("Loading Page");
             AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
-        private Task ChangeToDisplayView(object text) {
+        private Task DisplayView(object text) {
             CurrentPageViewModel = DisplayTextViewModel.GetInstance((string)text);
             return Task.CompletedTask;
         }
 
-        private async Task ChangeToAdGuestDetailsView(object param) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task GuestAdDetailsView(object param) {
+            await DisplayView("Loading Page");
             AddToHistory(await AdGuestDetailsViewModel.GetInstance((Ad)param,factory));
         }
 
-        private async Task ChangeToAdDetailsView(object param) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task LoginAdDetailsView(object param) {
+            await DisplayView("Loading Page");
             AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param, factory));
         }
 
-        private async Task ChangeToProfileView(object param) {
-            await ChangeToDisplayView("Loading Page");
+        private async Task ProfileView(object param) {
+            await DisplayView("Loading Page");
             await ChangeViewModel(await ProfileViewModel.GetInstance(factory));
         }
 
-        private async Task ChangeToChatsViewModel(object obj) {
+        private async Task ChatsView(object obj) {
             AddToHistory(await ChatsViewModel.GetInstance(factory));
         }
         private IViewModel currentViewModel() {

@@ -12,12 +12,14 @@ namespace WpfClientt.viewModels {
 
         private static LoginViewModel instance;
         private OpenIdConnectClient openIdConnectClient;
+        private ICustomerNotifier notifier;
 
         public string LoginUrl { get; private set; }
 
         public ICommand ExchangeTokenCommand { get; private set; }
 
-        private LoginViewModel(OpenIdConnectClient openIdConnectClient,string loginUrl) {
+        private LoginViewModel(OpenIdConnectClient openIdConnectClient,string loginUrl,ICustomerNotifier notifier) {
+            this.notifier = notifier;
             this.openIdConnectClient = openIdConnectClient;
             ExchangeTokenCommand = new AsyncCommand<string>(ExchangeToken);
             LoginUrl = loginUrl;
@@ -26,17 +28,17 @@ namespace WpfClientt.viewModels {
         public static async Task<LoginViewModel> GetInstance(FactoryServices factory) {
             if(instance == null) {
                 OpenIdConnectClient client = await factory.GetOpenIdConnectClient();
-                instance = new LoginViewModel(client, await client.PrepareAuthorizationRequestUrl());
+                instance = new LoginViewModel(client, await client.PrepareAuthorizationRequestUrl(),factory.CustomerNotifier());
             }
 
             return instance;
         }
 
         private async Task ExchangeToken(string redirectUri) {
-            await Mediator.Notify("DisplayPageView", "Authentication in progress");
+            await Mediator.Notify(MediatorToken.DisplayPageViewToken, "Authentication in progress");
             await openIdConnectClient.RetrieveAndSetAccessToken(redirectUri);
-            await Mediator.Notify("ChangeToLoginMenuView");
-            await Mediator.Notify("DisplayPageView", "Now you've logged in successfully.");
+            await Mediator.Notify(MediatorToken.LoginMenuViewToken);
+            notifier.Success("You've logged in successfully!");
         }
 
     }

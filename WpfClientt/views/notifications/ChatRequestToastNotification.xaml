@@ -32,8 +32,8 @@
             <LineBreak />
             <Run Text="Note!You can alaway check this chat request in your notifications."  />
         </TextBlock>
-        <Button Grid.Row="2" Grid.Column="0" Height="30" Content="Accept" Command="{Binding AcceptChatRequestCommand}" Style="{StaticResource medium_green_button}" Margin="10 0"  />
-        <Button Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Height="30" Content="Decline" Command="{Binding AcceptChatRequestCommand}" Style="{StaticResource medium_red_button}"  Margin="10 0"  />
+        <Button Grid.Row="2" Grid.Column="0" Height="30" Content="Accept" Command="{Binding AcceptChatRequestCommand}" Style="{StaticResource medium_green_button}" Margin="10"  />
+        <Button Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Height="30" Content="Decline" Command="{Binding AcceptChatRequestCommand}" Style="{StaticResource medium_red_button}"  Margin="10"  />
         <Button Grid.Row="0" Grid.Column="3" Click="CloseNotification" Cursor="Hand" Content="X" Height="20" Width="20" Background="{StaticResource blue-medium}" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right"  Margin="5"/>
     </Grid>
 </core:NotificationDisplayPart>

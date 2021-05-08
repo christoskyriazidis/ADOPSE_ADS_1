@@ -10,22 +10,20 @@ namespace WpfClientt.viewModels {
     public class GuestMenu : IMenu {
         public ICommand Categories { get; private set; }
         public ICommand Register { get; private set; }
-        public ICommand Chats { get; private set; }
         public ICommand Login { get; private set; }
         public ICommand Back { get; private set; }
 
         public GuestMenu() {
             Categories = new AsyncCommand( async () => {
-                await Mediator.Notify("ChangeToCategoriesToSubcategoriesToAdsViewModel");
+                await Mediator.Notify(MediatorToken.CategoriesAdsViewToken);
             });
             Register = new AsyncCommand(async () => {
-                await Mediator.Notify("RegisterView");  
+                await Mediator.Notify(MediatorToken.RegisterViewToken);  
             });
             Login = new AsyncCommand(async () => {
-               await Mediator.Notify("LoginView");
+               await Mediator.Notify(MediatorToken.LoginViewToken);
             });
-            Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
-            Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
+            Back = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.PreviousViewToken));
         }
 
     }

@@ -15,8 +15,8 @@ namespace WpfClientt.viewModels {
         public ObservableCollection<NotificationViewModel> Notifications { get; set; } = new ObservableCollection<NotificationViewModel>();
 
         private NotificationsViewModel(IChatService chatService) {
-            Mediator.Subscribe("ChatRequestManagedInToast", RemoveChatRequest);
-            Mediator.Subscribe("ChatRequestManagedInNotifications", RemoveChatRequest);
+            Mediator.Subscribe(MediatorToken.ChatRequestManagedInToastToken, RemoveChatRequest);
+            Mediator.Subscribe(MediatorToken.ChatRequestManagedInNotificationsToken, RemoveChatRequest);
             this.chatService = chatService;
             chatService.AddChatRequestListener(UpdateChatRequestsNotifications);
         }

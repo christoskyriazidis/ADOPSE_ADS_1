@@ -15,7 +15,7 @@ namespace WpfClientt.viewModels {
     public class SubcategoryAdsViewModel : SubcategoryViewModel {
 
         public SubcategoryAdsViewModel(Subcategory subcategory) : base(subcategory
-            ,new AsyncCommand(async () => await Mediator.Notify("AdsSubcategoryView", subcategory))) {
+            ,new AsyncCommand(async () => await Mediator.Notify(MediatorToken.AdsViewToken, subcategory))) {
         }
 
     }

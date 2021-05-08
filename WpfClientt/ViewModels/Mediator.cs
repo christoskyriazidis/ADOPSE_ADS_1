@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace WpfClientt.viewModels {
     static class Mediator {
 
-        private static Dictionary<string, List<Func<object,Task>>> subscribers = new Dictionary<string, List<Func<object, Task>>>();
+        private static Dictionary<MediatorToken, List<Func<object,Task>>> subscribers = new Dictionary<MediatorToken, List<Func<object, Task>>>();
 
-        public static void Subscribe(string token, Func<object, Task> action) {
+        public static void Subscribe(MediatorToken token, Func<object, Task> action) {
             if (!subscribers.ContainsKey(token)) {
                 List<Func<object, Task>> list = new List<Func<object, Task>>();
                 list.Add(action);
@@ -28,7 +28,7 @@ namespace WpfClientt.viewModels {
 
         }
 
-        public static async Task Notify(string token, object args = null) {
+        public static async Task Notify(MediatorToken token, object args = null) {
             subscribers.TryGetValue(token, out List<Func<object, Task>> listeners);
             if (listeners != null) {
                 foreach (Func<object, Task> listener in listeners) {
@@ -37,7 +37,7 @@ namespace WpfClientt.viewModels {
             }
         }
 
-        public static void Unsubscribe(string token, Func<object, Task> action) {
+        public static void Unsubscribe(MediatorToken token, Func<object, Task> action) {
             if (subscribers.ContainsKey(token)) {
                 subscribers[token].Remove(action);
             }

@@ -11,7 +11,7 @@ namespace WpfClientt.viewModels {
     public class CategorySubscriptionViewModel : CategoryViewModel {
 
         public CategorySubscriptionViewModel(Category category) 
-            : base(category, new AsyncCommand( async () => await Mediator.Notify("SubscriptionsView",category))) {
+            : base(category, new AsyncCommand( async () => await Mediator.Notify(MediatorToken.SubscriptionsViewToken,category))) {
         }
 
     }

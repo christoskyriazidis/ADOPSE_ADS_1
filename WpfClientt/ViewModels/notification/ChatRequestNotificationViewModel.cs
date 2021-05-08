@@ -27,12 +27,12 @@ namespace WpfClientt.viewModels {
 
         private async Task AcceptChatReuqest() {
             await chatService.AcceptChatRequest(ChatRequest);
-            await Mediator.Notify("ChatRequestManagedInNotifications", ChatRequest);
+            await Mediator.Notify(MediatorToken.ChatRequestManagedInNotificationsToken, ChatRequest);
         }
 
         private async Task DeclineChatRequest() {
             await chatService.DeclineChatRequest(ChatRequest);
-            await Mediator.Notify("ChatRequestManagedInNotifications", ChatRequest);
+            await Mediator.Notify(MediatorToken.ChatRequestManagedInNotificationsToken, ChatRequest);
         }
 
 

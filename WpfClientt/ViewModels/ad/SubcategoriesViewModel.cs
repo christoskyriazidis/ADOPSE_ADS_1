@@ -27,9 +27,5 @@ namespace WpfClientt.viewModels {
             return new SubcategoriesViewModel(subcategories);
         }
 
-        public static async Task<SubcategoriesViewModel> SubcategoriesForSubscriptionViewModel(FactoryServices facotyr,Category category) {
-            return null;
-        }
-
     }
 }

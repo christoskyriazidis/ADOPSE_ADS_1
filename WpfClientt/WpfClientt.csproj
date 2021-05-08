@@ -283,6 +283,7 @@
     <Compile Include="viewModels\ad\UnsubscribedSubcategoryViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
+    <Compile Include="viewModels\MediatorToken.cs" />
     <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\ChatRequestNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\NotificationsViewModel.cs" />

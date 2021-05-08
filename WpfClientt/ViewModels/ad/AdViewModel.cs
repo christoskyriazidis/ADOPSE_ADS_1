@@ -18,7 +18,7 @@ namespace WpfClientt.viewModels {
             this.Ad = ad;
         }
         private async Task OnReadMore(Ad ad) {
-            await Mediator.Notify("AdDetailsView", ad);
+            await Mediator.Notify(MediatorToken.AdDetailsViewToken, ad);
         }
     }
 }

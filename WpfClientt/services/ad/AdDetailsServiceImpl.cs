@@ -14,6 +14,7 @@ namespace WpfClientt.services {
 
         private HttpClient httpClient;
         private ISet<Category> categories;
+        private ISet<Category> categoriesWithSubcategories;
         private ISet<Condition> conditions;
         private ISet<Manufacturer> manufacturers;
         private ISet<State> states;
@@ -43,15 +44,20 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<Category>> CategoriesWithSubcategories() {
-            ISet<Category> categories = await Categories();
+            if(categoriesWithSubcategories == null) {
+                categoriesWithSubcategories = new HashSet<Category>();
+                ISet<Category> categories = await Categories();
 
-            foreach(Category category in categories) {
-                foreach(Subcategory subcategory in await SubcategoriesOf(category)) {
-                    category.Subcategories.Add(subcategory);
+                foreach (Category category in categories) {
+                    foreach (Subcategory subcategory in await SubcategoriesOf(category)) {
+                        category.Subcategories.Add(subcategory);
+                        categoriesWithSubcategories.Add(category);
+                    }
                 }
             }
+            
 
-            return categories;
+            return categoriesWithSubcategories;
         }
 
         public async Task<ISet<Condition>> Conditions() {

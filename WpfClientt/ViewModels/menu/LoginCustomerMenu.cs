@@ -26,17 +26,14 @@ namespace WpfClientt.viewModels {
         private LoginCustomerMenu(IChatService chatSerivce,ICustomerNotifier notifier) {
             this.notifier = notifier;
             this.chatService = chatSerivce;
-            Back = new AsyncCommand(async () => await Mediator.Notify("BackView"));
-            Categories = new AsyncCommand(async () => await Mediator.Notify("CategoriesAdsViewModel"));
-            Account = new AsyncCommand(async () => await Mediator.Notify("ProfileView"));
-            CreateAd = new AsyncCommand(async () => await Mediator.Notify("CreateAdView"));
-            Notifications = new AsyncCommand(async () => {
-                await Mediator.Notify("NotificationsView");
-            }
-            );
-            Chats = new AsyncCommand(async () => await Mediator.Notify("ChatsView"));
-            Logout = new AsyncCommand(async () => await Mediator.Notify("Logout"));
-            Subscriptions = new AsyncCommand(async () => await Mediator.Notify("CategoriesSubscriptionView"));
+            Back = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.PreviousViewToken));
+            Categories = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.CategoriesAdsViewToken));
+            Account = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.ProfileViewToken));
+            CreateAd = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.CreateAdViewToken));
+            Notifications = new AsyncCommand(async () => { await Mediator.Notify(MediatorToken.NotificationsViewToken);});
+            Chats = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.ChatsViewToken));
+            Logout = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.LogoutViewToken));
+            Subscriptions = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.CategoriesSubscriptionsViewToken));
             chatService.AddChatRequestListener(ChatRequestListener);
             chatService.AddActiveChatListener(ActiveChatListener);
         }
