@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WpfClientt.model;
+using WpfClientt.model.chat;
 
 namespace WpfClientt.services {
     class ChatServiceSignalR : IChatService {
@@ -17,9 +18,10 @@ namespace WpfClientt.services {
         private static ChatServiceSignalR instance;
 
         private ICustomerNotifier notifier;
-        private ConcurrentBag<Func<Task>> messageListeners = new ConcurrentBag<Func<Task>>();
+        private ConcurrentBag<Func<Message, Task>> messageListeners = new ConcurrentBag<Func<Message, Task>>();
         private ConcurrentBag<Func<ChatRequest,Task>> chatRequestListeners = new ConcurrentBag<Func<ChatRequest, Task>>();
         private ConcurrentBag<Func<Chat, Task>> activeChatListeners = new ConcurrentBag<Func<Chat, Task>>();
+        private ConcurrentBag<Func<Typing, Task>> typingListeners = new ConcurrentBag<Func<Typing, Task>>();
         private JsonSerializerOptions options;
         private HttpClient client;
         private HubConnection hubConnection;
@@ -32,7 +34,7 @@ namespace WpfClientt.services {
             this.adService = adService;
             this.customerService = customerService;
             this.notifier = notifier;
-            this.hubConnection.On("ReceiveMessage", async (string message) => await ReceiveMessage(message));
+            this.hubConnection.On("ReceiveMessage", async (int chatId) => await ReceiveMessage(chatId));
             this.hubConnection.On("ReceiveActiveChat", async (string message) => await ReceiveActiveChat(message));
             this.hubConnection.On("ReceiveChatRequest",async (string message) => await ReceiveChatRequest(message));
         }
@@ -54,13 +56,12 @@ namespace WpfClientt.services {
             return instance;
         }
 
-        public void AddMessageListener(Func<Task> listenerProvider) {
+        public void AddMessageListener(Func<Message, Task> listenerProvider) {
             messageListeners.Add(listenerProvider);
         }
-        public void RemoveMessageListener(Func<Task> listenerProvider) {
+        public void RemoveMessageListener(Func<Message, Task> listenerProvider) {
             messageListeners.TryTake(out listenerProvider);
         }
-
 
         public void AddChatRequestListener(Func<ChatRequest, Task> listenerProvider) {
             chatRequestListeners.Add(listenerProvider);
@@ -76,6 +77,14 @@ namespace WpfClientt.services {
 
         public void RemoveActiveChatListener(Func<Chat, Task> listener) {
             activeChatListeners.TryTake(out listener);
+        }
+
+        public void AddChatTypingListener(Func<Typing, Task> listener) {
+            typingListeners.Add(listener);
+        }
+
+        public void RemoveChatTypingListener(Func<Typing, Task> listener) {
+            typingListeners.TryTake(out listener);
         }
 
         public async Task SendMessage(Message message) {
@@ -114,7 +123,7 @@ namespace WpfClientt.services {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ChatRequestsMainUrl());
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
-                ChatRequestModel[] chatRequests = JsonSerializer.Deserialize<ChatRequestModel[]>(await response.Content.ReadAsStringAsync(), options);
+                ChatRequestModel[] chatRequests = await JsonSerializer.DeserializeAsync<ChatRequestModel[]>(await response.Content.ReadAsStreamAsync(), options);
                 foreach(ChatRequestModel chatRequest in chatRequests) {
                     result.Add(new ChatRequest() {
                         Id = chatRequest.Id,
@@ -153,8 +162,8 @@ namespace WpfClientt.services {
         }
 
 
-        private async Task ReceiveActiveChat(string message) {
-            int chatId = int.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
+        private async Task ReceiveActiveChat(string serverMessage) {
+            int chatId = int.Parse(serverMessage.Substring(serverMessage.IndexOf(":") + 1).Trim());
 
             ISet<ChatModel> chats = await ChatsFromServer();
 
@@ -177,8 +186,8 @@ namespace WpfClientt.services {
             }
         }
 
-        private async Task ReceiveChatRequest(string message) {
-            long adId = long.Parse(message.Substring(message.IndexOf(":") + 1).Trim());
+        private async Task ReceiveChatRequest(string serverMessage) {
+            long adId = long.Parse(serverMessage.Substring(serverMessage.IndexOf(":") + 1).Trim());
 
             IScroller<Ad> scroller = adService.ProfileAds();
             await scroller.Init();
@@ -204,8 +213,12 @@ namespace WpfClientt.services {
             }
         }
 
-        private Task ReceiveMessage(string message) {
-            return Task.CompletedTask;
+        private async Task ReceiveMessage(int chatId) {
+            IScroller<Message> messages = Messages(new Chat() { ChatId = chatId });
+            await messages.Init();
+            foreach(Func<Message,Task> messageListener in messageListeners) {
+                await messageListener.Invoke(messages.CurrentPage().Objects().First());
+            }
         }
 
         private async Task<ISet<ChatModel>> ChatsFromServer() {

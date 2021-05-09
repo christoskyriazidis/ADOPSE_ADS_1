@@ -113,20 +113,7 @@ namespace WpfClientt.services {
 
         public async Task Update(Ad ad) {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, mainUrl);
-
-            IDictionary<string, string> parameteres = new Dictionary<string, string>() {
-                {"id", ad.Id.ToString() },
-                {"state", ad.AdState.Id.ToString() },
-                {"type", ad.AdType.Id.ToString() },
-                {"manufacturer", ad.AdManufacturer.Id.ToString() },
-                {"condition", ad.AdCondition.Id.ToString() },
-                {"category", ad.AdCategory.Id.ToString() },
-                {"title", ad.Title },
-                {"description", ad.Description },
-                {"price", ad.Price.ToString() }
-            };
-
-            request.Content = new FormUrlEncodedContent(parameteres);
+            request.Content = new StringContent(JsonSerializer.Serialize(ad), Encoding.UTF8, "application/json");
 
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();

@@ -15,19 +15,26 @@ namespace WpfClientt.viewModels {
         private Customer LoggedInCustomer;
         private IChatService chatService;
         public ChatViewModel SelectedChat { get; private set; }
-        public ObservableCollection<Chat> Chats { get; private set; } = new ObservableCollection<Chat>();
-        public ICommand SelectChatCommand { get; set; }
+        public ObservableCollection<ChatBoxViewModel> Chats { get; private set; } = new ObservableCollection<ChatBoxViewModel>();
+
 
         private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat,Customer loggedInCustomer) {
             this.LoggedInCustomer = loggedInCustomer;
             this.chatService = chatService;
+            Mediator.Subscribe(MediatorToken.ChangeChatViewToken, SelectChat);
             foreach (Chat chat in chats) {
-                Chats.Add(chat);
+                Chats.Add(new ChatBoxViewModel(chat,chatService));
             }
             SelectedChat = selectedChat;
-            SelectChatCommand = new AsyncCommand<Chat>(SelectChat);
             chatService.AddActiveChatListener(ActiveChatListener);
         }
+
+        private async Task SelectChat(object chat) {
+            ISet<Message> messages = await GetAllMessagesOfChat((Chat)chat, chatService);
+            SelectedChat = new ChatViewModel((Chat)chat,chatService,messages,LoggedInCustomer);
+            OnPropertyChanged(nameof(SelectedChat));
+        }
+     
 
         public static async Task<ChatsViewModel> GetInstance(FactoryServices factory) {
             Customer profile = await factory.CustomerServiceInstance().Profile();
@@ -41,14 +48,10 @@ namespace WpfClientt.viewModels {
         }
 
         private Task ActiveChatListener(Chat chat) {
-            Chats.Add(chat);
+            Chats.Insert(0,new ChatBoxViewModel(chat,chatService));
             return Task.CompletedTask;
         }
 
-        private async Task SelectChat(Chat chat) {
-            SelectedChat = new ChatViewModel(chat, chatService, await GetAllMessagesOfChat(chat, chatService),LoggedInCustomer);
-            OnPropertyChanged(nameof(SelectedChat));
-        }
 
         private static async Task<ISet<Message>> GetAllMessagesOfChat(Chat chat, IChatService chatService) {
             IScroller<Message> scroller = chatService.Messages(chat);

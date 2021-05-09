@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:WpfClientt.views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid  Background="#dbdbdb">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="0.75*" />
+            <RowDefinition Height="0.05*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -17,7 +18,7 @@
             <ColumnDefinition Width="0.02*" />
             <ColumnDefinition Width="0.30*" />
         </Grid.ColumnDefinitions>
-        <TextBlock  Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="3" TextAlignment="Center" Background="#dbd9d7">
+        <TextBlock  Grid.Row="0" Grid.Column="0" FontWeight="Bold" FontSize="14" Grid.ColumnSpan="3" TextAlignment="Center">
             <Run Text="Customer:" />
             <Run Text="{Binding Chat.Customer.FirstName}" />
             <Run Text=" " />
@@ -27,7 +28,7 @@
             <Run  Text="{Binding Chat.Ad.Title}"/>
         </TextBlock>
         <ScrollViewer Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" >
-            <ItemsControl ItemsSource="{Binding Messages}" Background="#dbd9d7">
+            <ItemsControl ItemsSource="{Binding Messages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel IsItemsHost="True" />
@@ -35,9 +36,9 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
-        <TextBox Margin="5"  Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
-
-        <Button Margin="5" Grid.Row="2" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"  Text="{Binding TypingMessage,Mode=OneWay}" />
+        <TextBox Margin="5"  Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
+        <Button Margin="5" Grid.Row="3" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
 
     </Grid>
 </UserControl>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WpfClientt.model;
+using WpfClientt.model.chat;
 
 namespace WpfClientt.services {
     /// <summary>
@@ -22,13 +23,13 @@ namespace WpfClientt.services {
         /// Adds a listener that is being notified when a new message arrives.
         /// </summary>
         /// <param name="listener"></param>
-        void AddMessageListener(Func<Task> listener);
+        void AddMessageListener(Func<Message,Task> listener);
 
         /// <summary>
         /// Removes listener that was registreted in AddMessageListener.
         /// </summary>
         /// <param name="listener"></param>
-        void RemoveMessageListener(Func<Task> listener);
+        void RemoveMessageListener(Func<Message, Task> listener);
 
         /// <summary>
         /// Adds a listener that receives notifications upon the arriaval of new active chat.
@@ -54,6 +55,14 @@ namespace WpfClientt.services {
         /// </summary>
         /// <param name="listener"></param>
         void RemoveChatRequestListener(Func<ChatRequest, Task> listener);
+
+        /// <summary>
+        /// Adds a listener that receives notifications upon the typing of a customer.
+        /// </summary>
+        /// <param name="listener"></param>
+        void AddChatTypingListener(Func<Typing, Task> listener);
+
+        void RemoveChatTypingListener(Func<Typing, Task> listener);
 
         /// <summary>
         /// Sends an event that the user is typing.

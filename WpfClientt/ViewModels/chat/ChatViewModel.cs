@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfClientt.model;
+using WpfClientt.model.chat;
 using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
@@ -25,6 +26,8 @@ namespace WpfClientt.viewModels {
 
         public string MessageBody { get; set; }
 
+        public String TypingMessage { get; set; }
+
         public ChatViewModel(Chat chat, IChatService chatService, ISet<Message> messages,Customer LoggedInCustomer) {
             SendMessageCommand = new AsyncCommand(SendMessage);
             foreach (Message message in messages) {
@@ -34,6 +37,14 @@ namespace WpfClientt.viewModels {
             this.Chat = chat;
             ButtonText = !chat.Sold ? "Send Message" : "The item is sold!You can't send messages!";
             this.chatService = chatService;
+            this.chatService.AddChatTypingListener(TypingListener);
+        }
+
+        private Task TypingListener(Typing typing) {
+            if (typing.ChatId.Equals(Chat.ChatId) && typing.Username.Equals(Chat.Customer.Username)) {
+                TypingMessage = $"Customer {Chat.Customer.FirstName} {Chat.Customer.LastName} is typing...";
+            }
+            return Task.CompletedTask;
         }
 
         private async Task SendMessage() {
