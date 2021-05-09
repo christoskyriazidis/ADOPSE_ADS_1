@@ -30,16 +30,19 @@ namespace ApiOne.Controllers
             _notificationHub = hubContext;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/category/subscribe/{CatId}")]
         public IActionResult SubscribeToSubCategory([FromRoute] int CatId)
         {
-            int custId = 3;
-            if (CatId < 0)
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            if (intId < 0)
             {
                 return BadRequest(new { error = "something went wrong" });
             }
-            var subResult = _adRepository.SubscribeToSubCategory(CatId, custId);
+            var subResult = _adRepository.SubscribeToSubCategory(CatId, intId);
             if (subResult)
             {
                 return Json(new { status = $"success" });
@@ -47,6 +50,7 @@ namespace ApiOne.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("/category/subscribe")]
         public IActionResult RemoveFromSubscribedSubCategories([FromBody] DeleteFromCategorySub CatIds)
@@ -55,8 +59,10 @@ namespace ApiOne.Controllers
             {
                 return BadRequest(new { error = "wrong request." });
             }
-            int custId = 3;
-            var deleteResult = _adRepository.RemoveFromSubscribedSubCategories(custId,CatIds.CatIds);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var deleteResult = _adRepository.RemoveFromSubscribedSubCategories(intId, CatIds.CatIds);
             if (deleteResult)
             {
                 return Json(new { status = $"removed sub from categories!",CatIds=CatIds.CatIds });
@@ -85,12 +91,14 @@ namespace ApiOne.Controllers
         [Route("/wishlist/{AdId}")]
         public IActionResult AddToWishList([FromRoute] int AdId)
         {
-            int custId = 3;
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
             if (AdId < 0)
             {
                 return BadRequest(new { error = "something went wrong" });
             }
-            var subResult = _adRepository.AddToWishList(AdId, custId);
+            var subResult = _adRepository.AddToWishList(AdId, intId);
             if (subResult)
             {
                 return Json(new { status = $"success" });
@@ -98,16 +106,18 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "wrong adId" });
         }
         
-        [HttpDelete]
-        [Route("/wishlist")]
+        [HttpPost]
+        [Route("/wishlist/remove")]
         public IActionResult DeleteFromWishList([FromBody] DeleteAdsFromWishList ids)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { error = "wrong request." });
             }
-            int custId = 3;
-            var deleteResult = _adRepository.RemoveFromWishList(custId, ids.AdIds);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var deleteResult = _adRepository.RemoveFromWishList(intId, ids.AdIds);
             if (deleteResult)
             {
                 return Json(new { status = "removed from wishlist!",Adids=ids.AdIds });

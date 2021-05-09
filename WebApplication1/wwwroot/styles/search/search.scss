@@ -7,111 +7,116 @@ $shadow-color: #2020209b;
 $attention-color: #1f271b9b;
 //https://codepen.io/aaroniker/pen/ZEYoxEY
 * {
-    font-family: "Roboto", sans-serif;
-    outline: none;
+  font-family: "Roboto", sans-serif;
+  outline: none;
 }
 body {
-    margin: 0px;
-    padding: 0px;
-    overflow-x: hidden;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
 }
 
 main {
+  display: flex;
+
+  justify-content: center;
+  justify-self: center;
+
+  .optionsContainer {
+    position: static;
     display: flex;
-
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    margin-right: 220px;
+    height: 100vh;
+    ul {
+      margin: 12px;
+      padding: 0;
+      list-style: none;
+      width: 100%;
+      max-width: 320px;
+      li {
+        margin: 16px 0;
+        position: relative;
+      }
+    }
+    .group {
+      width: 100%;
+      margin: 10px;
+      margin-top: -5px;
+    }
+    .prices {
+      input {
+        width: 100px;
+        margin: 20px;
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+    }
+    .info {
+      height: 50px;
+      width: 100%;
+      margin-top: 5px;
+    }
+    title {
+    }
+  }
+  .mainContentArea {
+    width: 60%;
+    display: flex;
     justify-self: center;
+    padding: 30px;
+    flex-direction: column;
+    .hits {
+    }
+    .searchArea {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      max-height: 40px;
+      margin-right: 200px;
+      margin-bottom: 60px;
+      justify-content: center;
+      input {
+        height: 30px;
+        width: 50%;
+      }
+      button {
+        height: 30px;
+        background-color: $primary-color;
+        color: $primary-font-color;
+      }
+    }
 
-    .optionsContainer {
-        position: static;
+    .actions {
+      display: flex;
+      flex-direction: row;
+      .extras {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        padding-top:20px;
-        margin-right: 220px;
-        height: 100vh;
-        ul {
-            margin: 12px;
-            padding: 0;
-            list-style: none;
-            width: 100%;
-            max-width: 320px;
-            li {
-                margin: 16px 0;
-                position: relative;
-            }
-        }
-        .group {
-            width: 100%;
-            margin: 10px;
-            margin-top: -5px;
-        }
 
-        .info {
-            height: 50px;
-            width: 100%;
-            margin-top: 5px;
+        select {
+          outline: none;
+          padding: 5px;
         }
-        title {
-        }
+      }
     }
-    .mainContentArea {
-        width: 60%;
-        display: flex;
-        justify-self: center;
-        padding: 30px;
-        flex-direction: column;
-        .hits {
-           
-        }
-        .searchArea {
-            display: flex;
-            flex-grow:1;
-            align-items:center;
-            max-height:40px;
-            margin-right:200px;
-            margin-bottom:60px;
-            justify-content: center;;
-            input {
-                height: 30px;
-                width:50%;
-                
-            }
-            button {
-                height: 30px;
-                background-color:$primary-color;
-                color:$primary-font-color;
-            }
-        }
-
-        .actions {
-            display: flex;
-            flex-direction: row;
-            .extras {
-                display: flex;
-                align-items: center;
-               
-                select {
-                    outline: none;
-                    padding: 5px;
-                }
-            }
-        }
-        .paginationArea {
-            display: flex;
-            justify-content: flex-end;
-            flex-grow: 1;
-            max-height: 100px;
-            padding-right: 150px;
-        }
-        .contentContainer {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            ad-component {
-                margin: 30px;
-                margin-left:0px;
-            }
-        }
+    .paginationArea {
+      display: flex;
+      justify-content: flex-end;
+      flex-grow: 1;
+      max-height: 100px;
+      padding-right: 150px;
     }
+    .contentContainer {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      ad-component {
+        margin: 30px;
+        margin-left: 0px;
+      }
+    }
+  }
 }

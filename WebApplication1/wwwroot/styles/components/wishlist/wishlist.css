@@ -109,4 +109,76 @@ wishlist-component .wishlistContainer .wishlistMore a {
   background-color: #1b6dc1;
   color: white;
 }
+
+main .contentAreas {
+  background-color: white;
+  padding: 30px;
+  margin-top: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  -webkit-box-shadow: 5px 5px 5px #bdbaba;
+          box-shadow: 5px 5px 5px #bdbaba;
+}
+
+main .contentAreas div {
+  padding: 5px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+main .contentAreas div p {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+main .contentAreas div a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  text-decoration: none;
+  color: black;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .contentAreas div a .itemImage {
+  background-color: white;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 50px;
+  height: 50px;
+  width: 50px;
+  border: 1px solid rgba(202, 202, 202, 0.657);
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+main .contentAreas div a .itemDescription {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main .contentAreas div a .itemDescription .title {
+  font-size: small;
+  font-weight: bold;
+}
 /*# sourceMappingURL=wishlist.css.map */

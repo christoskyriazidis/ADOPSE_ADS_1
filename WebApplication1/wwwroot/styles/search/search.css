@@ -55,6 +55,13 @@ main .optionsContainer .group {
   margin-top: -5px;
 }
 
+main .optionsContainer .prices input {
+  width: 100px;
+  margin: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 main .optionsContainer .info {
   height: 50px;
   width: 100%;

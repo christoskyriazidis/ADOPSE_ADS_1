@@ -94,7 +94,7 @@ class ChatComponent extends HTMLElement {
                 <div class="profileImg"><img src="/styles/graphics/logo.png"></div>
                 ${
                   this.type == "Seller"
-                    ? `<span onclick="sellAd(${this.adId},${this.customerId})">sell</span>`
+                    ? `<span onclick="sellAd(${this.adId},${this.customerId})">Sell</span>`
                     : ``
                 }
                 <img class="minimizeBtn" onclick="minimize()" src="/styles/graphics/minimize.svg" alt="">
@@ -103,7 +103,9 @@ class ChatComponent extends HTMLElement {
             ${chatContent}
             </div>
             <div class="inputDiv">
-                <input type="text" class="inputForm">
+                <input type="text" class="inputForm" ${
+                  this.sold ? "disabled placeholder='This chat has ended'" : ""
+                }>
                 <div class="sendBtn"><img src="/styles/graphics/sent.svg" alt=""></div>
             </div>
             </div>
@@ -120,6 +122,9 @@ class ChatComponent extends HTMLElement {
       .getElementById(this.id)
       .querySelector(".sendBtn")
       .addEventListener("click", () => {
+        if(this.sold){
+          return;
+        }
         let data = {
           MessageText: document
             .getElementById(this.id)
@@ -238,7 +243,7 @@ sellAd = (adId, customerId) => {
   const data = { adId: adId, buyerId: customerId };
   axios
     .post("https://localhost:44374/ad/sell", data)
-    .then(()=>alert(`ad #${adId} has been marked as sold`))
+    .then(() => alert(`ad #${adId} has been marked as sold`))
     .catch(console.log);
 };
 customElements.define("chat-component", ChatComponent);

@@ -36,7 +36,7 @@ class ChatDropdown extends HTMLElement {
                             <span class="chatImage" style='background-image:url(${object.profileImg})' alt=""></span>
                             <div class="chatDescription">
                                 <span class="chatUsername"><b>${object.username}</b> regarding <a href="https://localhost:44366/home/ad/index.html?id=${object.adId}">#${object.adId}</a> Ad</span>
-                                <span class="latestMessage">Latest message: ${object.latestMessage}</span>
+                                <span class="latestMessage">${object.sold?"<p style='color:red;font-size:medium;'>Chat has ended, item is sold</p>":`Latest message: ${object.latestMessage}`}</span>
                                 <span class="chatType">Role: ${object.type} </span>
                             </div>
                         

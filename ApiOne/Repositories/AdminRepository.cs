@@ -12,19 +12,7 @@ namespace ApiOne.Repositories
 {
     public class AdminRepository : Controller
     {
-        private readonly IHubContext<ChatHub> _chatHub;
-
-        public AdminRepository(IHubContext<ChatHub> chatHub)
-        {
-            _chatHub = chatHub;
-        }
-        [Route("/admin")]
-        [Authorize(Policy = "Admin")]
-        [HttpPost]
-        public async Task<IActionResult> ChatAnnounce(string Message) {
-            await _chatHub.Clients.All.SendAsync("ReceiveMessage",Message);
-            return Ok();
-        }
+        
 
 
     }

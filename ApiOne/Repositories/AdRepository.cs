@@ -2,6 +2,7 @@
 using ApiOne.Interfaces;
 using ApiOne.Models;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Customer;
 using ApiOne.Models.Notification;
 using ApiOne.Models.Queries;
 using Dapper;
@@ -247,13 +248,13 @@ namespace ApiOne.Repositories
             }
         }
 
-        public IEnumerable<int> GetSuscribedSubCategories(int CustmerId)
+        public IEnumerable<SubscribedSubCategory> GetSuscribedSubCategories(int CustmerId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT categoryId from [SubscribedSubCategories] where CustomerId=@Id";
-                var wishListNotifications = conn.Query<int>(sql, new { Id = CustmerId }).ToList();
+                string sql = "select sb.categoryId,sc.imageUrl,sc.title from SubscribedSubCategories sb join SubCategory sc on (sb.categoryId=sc.id) where CustomerId=@Id";
+                var wishListNotifications = conn.Query<SubscribedSubCategory>(sql, new { Id = CustmerId }).ToList();
                 return wishListNotifications;
             }
             catch (SqlException sqlEx)

@@ -1,111 +1,95 @@
 ﻿<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/search/search.css">
-    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css">
-
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="/styles/search/search.css" />
+    <link
+      rel="stylesheet"
+      href="/styles/components/adContainer/adContainer.css"
+    />
 
     <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="/scripts/search.js" type="module"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/scripts/sign-in.js" defer></script>
+  </head>
 
-
-
-</head>
-
-<body>
+  <body>
     <navbar-component></navbar-component>
 
     <main>
-       
-        <div class="optionsContainer">
-
-            <div class="title info">
-                <h2>Filters</h2>
-            </div>
-            <div class="info">
-                <h4>Categories</h4>
-            </div>
-
-            <div class="categoryGroup group"></div>
-            <div class="info">
-                <h4>Ad types</h4>
-            </div>
-            <div class="typeGroup group"></div>
-            <div class="info">
-                <h4>Condition</h4>
-            </div>
-            <div class="conditionGroup group"></div>
-            
-            <div class="info">
-                <h4>Manufacturers</h4>
-            </div>
-            <div class="manufacturerGroup group"></div>
-            <button class="submitSearch">submit search</button>
+      <div class="optionsContainer">
+        <div class="title info">
+          <h2>Filters</h2>
         </div>
-       
-        <div class="mainContentArea">
-           
-            <div class="searchArea">
-                <input type="search" name="" id="searchBox"><button class="searchButton">Search</button>
-            </div>
-            <h2 class="hits"></h2>
-
-            <div class="actions">
-                <div class="extras">
-                    <select class="sorting" id="">
-                        <option value="idH">Newest</option>
-                        <option value="idL">Oldest</option>
-                        <option value="priceH">Price 🡻</option>
-                        <option value="priceL">Price 🡹</option>
-                        <option value="idH">1</option>
-                        <option value="idH">1</option>
-                    </select>
-                </div>
-              
-                <div class="paginationArea">
-
-                    <pagination-component></pagination-component>
-                </div>
-            </div>
-            <div class="contentContainer"></div>
-            <div class="paginationArea">
-                <pagination-component></pagination-component>
-            </div>
+        <div class="info">
+          <h4>Categories</h4>
         </div>
+
+        <div class="categoryGroup group"></div>
+        <div class="info">
+          <h4>Ad types</h4>
+        </div>
+        <div class="typeGroup group"></div>
+        <div class="info">
+          <h4>Condition</h4>
+        </div>
+        <div class="conditionGroup group"></div>
+
+        <div class="info">
+          <h4>Manufacturers</h4>
+        </div>
+        <div class="manufacturerGroup group"></div>
+        <div class="prices">
+          <input type="number" placeholder="min-price" id="minPrice" value="1"/> -
+          <input type="number" placeholder="max-price" id="maxPrice" value="1000000"/>
+        </div>
+        <button class="submitSearch">submit search</button>
+      </div>
+
+      <div class="mainContentArea">
+        <div class="searchArea">
+          <input type="search" name="" id="searchBox" />
+          <button class="searchButton">Search</button>
+        </div>
+        <h2 class="hits"></h2>
+
+        <div class="actions">
+          <div class="extras">
+            <select class="sorting" id="">
+              <option value="idH">Newest</option>
+              <option value="idL">Oldest</option>
+              <option value="priceH">Price 🡻</option>
+              <option value="priceL">Price 🡹</option>
+              <option value="idH">1</option>
+              <option value="idH">1</option>
+            </select>
+          </div>
+
+          <div class="paginationArea">
+            <pagination-component></pagination-component>
+          </div>
+        </div>
+        <div class="contentContainer"></div>
+        <div class="paginationArea">
+          <pagination-component></pagination-component>
+        </div>
+      </div>
     </main>
-
-</body>
-<script>
-
-
-
-
-
-
-
-
+  </body>
+  <script>
     //callPage("https://localhost:44374/ad?PageNumber=1&PageSize=10")
+  </script>
 
-</script>
+  <script></script>
 
-<script>
-
-
-</script>
-
-<script src="/scripts/components/navbarComponent.js"></script>
-<script src="/scripts/components/wishlistComponent.js"></script>
-<script src="/scripts/components/notificationComponent.js"></script>
-<script src="/scripts/components/paginationComponent.js"></script>
-<script src="/scripts/components/adContainerComponent.js"></script>
-
-
+  <script src="/scripts/components/navbarComponent.js"></script>
+  <script src="/scripts/components/wishlistComponent.js"></script>
+  <script src="/scripts/components/notificationComponent.js"></script>
+  <script src="/scripts/components/paginationComponent.js"></script>
+  <script src="/scripts/components/adContainerComponent.js"></script>
 </html>

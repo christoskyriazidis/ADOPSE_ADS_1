@@ -89,7 +89,6 @@ main .contentArea .more {
 }
 
 main .contentArea .more .leftColumn {
-  height: 200px;
   width: 25%;
 }
 
@@ -105,12 +104,79 @@ main .contentArea .more .leftColumn .bio div {
   margin-top: 20px;
 }
 
-main .contentArea .more .leftColumn .reviews {
+main .contentArea .more .leftColumn .reviewArea {
+  background-color: #f8f8f8;
+  max-height: 1500px;
   -webkit-box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
           box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.561);
   border-radius: 20px;
-  background-color: #f8f8f8;
   margin-top: 20px;
+  padding: 20px;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul {
+  list-style: none;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li {
+  width: 90%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review a {
+  text-decoration: none;
+  color: black;
+  width: 60%;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .profileImg {
+  background-color: white;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 50px;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #c4c4c4;
+  border-radius: 9999px;
+  margin-right: 10px;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .reviewerUsername {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .contentArea .more .leftColumn .reviewArea ul li .review .reviewDetails .reviewText p {
+  text-align: justify;
 }
 
 main .contentArea .more .latestActivity {

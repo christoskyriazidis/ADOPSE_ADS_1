@@ -1,5 +1,6 @@
 ﻿using ApiOne.Models;
 using ApiOne.Models.Ads;
+using ApiOne.Models.Customer;
 using ApiOne.Models.Notification;
 using ApiOne.Models.Queries;
 using System;
@@ -19,6 +20,8 @@ namespace ApiOne.Interfaces
         Ad UpdateAd(Ad ad);
         bool UpdateAdImg(int adId);
 
+
+
         bool NotificationSeen(NotificationSeen notificationSeen);
         int InsertAd(CreateAd ad);
         bool DeleteAd(int id);
@@ -33,7 +36,7 @@ namespace ApiOne.Interfaces
         PaginationBSA GetSoldAds(Pagination pagination, int CustomerId);
         PaginationBSA GetBoughtAds(Pagination pagination, int CustomerId);
         IEnumerable<WishSubNotification> GetNotifications(int PageNumber, int CustomerId);
-        IEnumerable<int> GetSuscribedSubCategories(int CustmerId);
+        IEnumerable<SubscribedSubCategory> GetSuscribedSubCategories(int CustmerId);
         IEnumerable<Subcategory> GetSubCategories(int SubId);
         IEnumerable<WishList> GetWishList(int CustmerId);
         IEnumerable<CategoryWithImg> GetCategories();
