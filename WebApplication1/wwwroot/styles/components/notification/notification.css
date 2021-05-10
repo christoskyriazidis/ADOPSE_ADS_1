@@ -71,6 +71,7 @@ notification-component .notificationContainer .notificationItems li a .itemImage
 }
 
 notification-component .notificationContainer .notificationItems li a .itemDescription {
+  width: 250px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

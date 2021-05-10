@@ -81,6 +81,7 @@ wishlist-component .wishlistContainer .wishlistItems li a .itemDescription {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  width: 250px;
 }
 
 wishlist-component .wishlistContainer .wishlistItems li a .itemDescription .title {

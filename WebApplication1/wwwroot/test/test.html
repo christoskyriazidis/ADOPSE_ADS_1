@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="/styles/style.css" />
     <link rel="stylesheet" href="/styles/sellers/sellers.css" />
+    <link rel="stylesheet" href="/styles/components/adContainer/adContainer.css" />
     <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -14,7 +15,7 @@
   <body>
     <navbar-component></navbar-component>
     <main>
-      <div class="customerContent">
+      <!-- <div class="customerContent">
         <customer-component
           id="30"
           image="http://www.mixanitouxronou.gr/wp-content/uploads/2014/01/burnbeer.jpg"
@@ -30,12 +31,19 @@
       <input type="text" id="message" />
       <ul id="chat"></ul>
       <button id="btn">send Message</button>
-    </div>
+    </div> -->
+    <stars-component star-value="5"></stars-component>
+
+
+
+
+
   </body>
   <script src="/scripts/components/navbarComponent.js"></script>
   <script src="/scripts/components/wishlistComponent.js"></script>
   <script src="/scripts/components/notificationComponent.js"></script>
   <script src="/scripts/components/customerContainerComponent.js"></script>
+  <script src="/scripts/components/starComponent.js"></script>
   <script src="/scripts/sign-in.js"></script>
 
   <script>

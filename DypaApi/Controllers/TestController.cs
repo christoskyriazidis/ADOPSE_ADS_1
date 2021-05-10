@@ -1,4 +1,5 @@
 ﻿using DypaApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,14 @@ namespace DypaApi.Controllers
 {
     public class TestController :Controller
     {
-        [Route("/")]
+        [Authorize]
+        [Route("/test")]
+        [HttpGet]
         public IActionResult TestEndPoints()
         {
-            var count = Test.Testing();
-            return Json(new {count=count });
+            //var count = Test.Testing();
+            //return Json(new {count=count });
+            return Json(new { message="authorize"});
         }
     }
 }

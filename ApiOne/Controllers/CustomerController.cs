@@ -236,9 +236,11 @@ namespace ApiOne.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (_customerRepo.SellAd(sellAdModel.AdId,sellAdModel.BuyerId))
             {
-                await _notificationHub.Clients.All.SendAsync("AdTransaction",$"BuyerId :{sellAdModel.BuyerId} AdId:{sellAdModel.AdId}");
+                await _notificationHub.Clients.All.SendAsync("ReceiveWishListNotification", subId);
                 return Json(new {response=$"Ad:{sellAdModel.AdId} sold to: {sellAdModel.BuyerId} " });
             }
             return BadRequest(new { error="Kati pige la8os me to sold ad" });
@@ -323,6 +325,21 @@ namespace ApiOne.Controllers
                 return Json(logs);
             }
             return Json(new {response="No loginLogs" });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("/report")]
+        public IActionResult ReportAd([FromBody] ReportAd reportAd)
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            if (_customerRepo.ReportAd(reportAd, intId))
+            {
+                return Json(new { response=$" Ad:{reportAd.AdId} Reported!"});
+            }
+            return Json(new { response="Exeis eidh kanei report auto to ad"});
         }
     }
 }

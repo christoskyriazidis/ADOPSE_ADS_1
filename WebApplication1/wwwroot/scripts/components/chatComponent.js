@@ -104,7 +104,9 @@ class ChatComponent extends HTMLElement {
             </div>
             <div class="inputDiv">
                 <input type="text" class="inputForm" ${
-                  this.sold ? "disabled placeholder='This chat has ended'" : ""
+                  this.sold == "true"
+                    ? "disabled placeholder='This chat has ended'"
+                    : ""
                 }>
                 <div class="sendBtn"><img src="/styles/graphics/sent.svg" alt=""></div>
             </div>
@@ -121,31 +123,32 @@ class ChatComponent extends HTMLElement {
     document
       .getElementById(this.id)
       .querySelector(".sendBtn")
-      .addEventListener("click", () => {
-        if(this.sold){
-          return;
-        }
-        let data = {
-          MessageText: document
-            .getElementById(this.id)
-            .querySelector(".inputForm").value,
-          ActiveChat: this.chatId,
-        };
-        axios
-          .post("https://localhost:44374/message", data)
-          .then(console.log)
-          .catch(console.error);
-        document
-          .getElementById(this.id)
-          .querySelector(
-            ".contentDisplay"
-          ).innerHTML += ` <div class="chatCell" >
-                                        <div class="chatCellText">${data.MessageText}</div>
-                                        </div > `;
-        document
-          .querySelector(".contentDisplay")
-          .scrollTo(0, document.querySelector(".contentDisplay").scrollHeight);
-      });
+      .addEventListener("click",this.sendMessage);
+      
+  };
+
+  sendMessage = () => {
+    if (this.sold == "true") {
+      return;
+    }
+    let data = {
+      MessageText: document.getElementById(this.id).querySelector(".inputForm")
+        .value,
+      ActiveChat: this.chatId,
+    };
+    document.getElementById(this.id).querySelector(".inputForm").value=""
+    axios
+      .post("https://localhost:44374/message", data)
+      .then(console.log)
+      .catch(console.error);
+    document
+      .getElementById(this.id)
+      .querySelector(".contentDisplay").innerHTML += ` <div class="chatCell" >
+                                    <div class="chatCellText">${data.MessageText}</div>
+                                    </div > `;
+    document
+      .querySelector(".contentDisplay")
+      .scrollTo(0, document.querySelector(".contentDisplay").scrollHeight);
   };
   minimize = () => {
     let thisChat = document.getElementById(this.chatId);

@@ -1,6 +1,7 @@
 ﻿using ApiOne.Helpers;
 using ApiOne.Interfaces;
 using ApiOne.Models;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
 using ApiOne.Models.Review;
@@ -142,6 +143,24 @@ namespace ApiOne.Repositories
             {
                 Debug.WriteLine(sqlEx);
                 return null;
+            }
+        }
+
+        public bool ReportAd(ReportAd reportAd, int CustomerId)
+        {
+            try
+            {
+                //id
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec  report_ad @adid,@CustomerID,@ReportText";
+                var rows = conn.ExecuteScalar(sql, new { reportAd.AdId, CustomerId, reportAd.ReportText});
+                //true false analogos ta rows pou alaksan
+                return true;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
             }
         }
 

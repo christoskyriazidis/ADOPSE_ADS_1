@@ -65,6 +65,11 @@ main {
           font-size: x-large;
           color: $primary-font-color;
         }
+        .rating{
+          background-color:white;
+          padding:4px;
+          border-radius:20px;
+        }
       }
     }
     .more {
@@ -92,10 +97,14 @@ main {
 
           margin-top: 20px;
           padding: 20px;
-          ul {
+          .reviews {
             list-style: none;
-            li {
+            
+            .reviewItem {
+              background-color:#fff;
+              border-radius:20px;
               width: 90%;
+              margin:5px;
               padding-top: 20px;
               padding-bottom: 20px;
               .review {
@@ -129,10 +138,17 @@ main {
                   }
                 }
                 .reviewDetails {
+                  display:flex;
+                  flex-direction:column;
+                  align-items:center;
                   .reviewText {
                     p {
                       text-align: justify;
                     }
+                  }
+                  .reviewDate{
+                    padding-top:10px;
+                    font-size:small;
                   }
                 }
               }

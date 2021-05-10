@@ -13,9 +13,13 @@ namespace ApiOne.Models.Notification
         public string Username { get; set; }
         public int Clicked { get; set; }
         public int AdId { get; set; }
+        public int Price { get; set; }
         public int CustomerId { get; set; }
         public int Sold { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
+
+        public string Img { get; set; }
+
     }
 }

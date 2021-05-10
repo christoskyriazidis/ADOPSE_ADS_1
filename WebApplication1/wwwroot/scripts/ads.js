@@ -36,7 +36,7 @@ axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
                         name="avatar"></span>
                     <label label for="avatar"> ${data.username}</label>
                     <span class="filler"></span>
-                    <span class="sellerReview">${data.rating}</span>
+                    <span class="sellerReview">${starMethod(data.rating)}</span>(${data.reviews})
                     </a>
                 `
         // document.querySelector(".description").innerHTML=data.description

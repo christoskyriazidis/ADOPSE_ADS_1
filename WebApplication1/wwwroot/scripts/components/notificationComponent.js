@@ -13,8 +13,14 @@ class NotificationComponent extends HTMLElement {
       .catch(function (err) {
         return console.error(err.toString());
       });
-    connection.on("ReceiveWishListNotification", () => {
-      this.callApi();
+    connection.on("ReceiveWishListNotification", (subId) => {
+      if (me.profile.sub != subId) {
+        document.querySelector(".notification").style.backgroundColor =
+          "#1860AA";
+        document.querySelector(".notification").style.border =
+          "1px solid white";
+        this.callApi();
+      }
     });
     this.callApi();
   }
@@ -62,7 +68,12 @@ function handleApiDataNotifications(data) {
         <li onclick="setSeen(${object.nId},${object.adId})" class="${
       object.clicked ? "" : "new"
     }" >
-            <a href="${object.type!="Review"?'https://localhost:44366/home/ad/index.html?id='+object.adId:'https://localhost:44366/home/profile/index.html?id='+object.customerId}">
+            <a href="${
+              object.type != "Review"
+                ? "https://localhost:44366/home/ad/index.html?id=" + object.adId
+                : "https://localhost:44366/home/profile/index.html?id=" +
+                  object.customerId
+            }">
                 <span class="itemImage qwe" style='background-image:url(${
                   object.img
                 })' alt=""></span>

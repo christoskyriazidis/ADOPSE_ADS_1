@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +30,7 @@ namespace DypaApi
             services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
                 config.Authority = "https://localhost:44305/";
                 //kai kala poios mporei na mpei edw.. (ApiOne)
-                config.Audience = "ApiOne";
+                config.Audience = "ApiDypa";
 
                 config.Events = new JwtBearerEvents
                 {
@@ -67,7 +68,22 @@ namespace DypaApi
                     policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
                 });
             });
-            services.
+            services.AddControllers()
+           .AddNewtonsoftJson(
+             options =>
+             {
+                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+             }).AddMvcOptions(options =>
+             {
+                 options.MaxModelValidationErrors = 50;
+                 options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                     _ => "The field is required.");
+             });
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

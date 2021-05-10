@@ -1,4 +1,5 @@
 ﻿using ApiOne.Models;
+using ApiOne.Models.Ads;
 using ApiOne.Models.Customer;
 using ApiOne.Models.Queries;
 using ApiOne.Models.Review;
@@ -17,6 +18,8 @@ namespace ApiOne.Interfaces
         CustomerDetails GetMyProfileInfo(int id);
 
         bool CheckIfCustomerOwnThisAd(int AdId,int CustomerId);
+
+        bool ReportAd(ReportAd reportAd,int CustomerId);
 
         bool UpdateProfile(CustomerDetails customerDetails);
         bool UpdateProfileImage(int customerId);

@@ -78,6 +78,12 @@ main .contentArea .profileDetails .wrapper .username {
   color: #ebebeb;
 }
 
+main .contentArea .profileDetails .wrapper .rating {
+  background-color: white;
+  padding: 4px;
+  border-radius: 20px;
+}
+
 main .contentArea .more {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -114,17 +120,20 @@ main .contentArea .more .leftColumn .reviewArea {
   padding: 20px;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul {
+main .contentArea .more .leftColumn .reviewArea .reviews {
   list-style: none;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem {
+  background-color: #fff;
+  border-radius: 20px;
   width: 90%;
+  margin: 5px;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -137,13 +146,13 @@ main .contentArea .more .leftColumn .reviewArea ul li .review {
           flex-direction: column;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review a {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review a {
   text-decoration: none;
   color: black;
   width: 60%;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review a .userDetails {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -153,7 +162,7 @@ main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails {
   width: 100%;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .profileImg {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review a .userDetails .profileImg {
   background-color: white;
   background-size: contain;
   background-repeat: no-repeat;
@@ -166,7 +175,7 @@ main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .pr
   margin-right: 10px;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .reviewerUsername {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review a .userDetails .reviewerUsername {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -175,8 +184,26 @@ main .contentArea .more .leftColumn .reviewArea ul li .review a .userDetails .re
           align-items: center;
 }
 
-main .contentArea .more .leftColumn .reviewArea ul li .review .reviewDetails .reviewText p {
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review .reviewDetails {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review .reviewDetails .reviewText p {
   text-align: justify;
+}
+
+main .contentArea .more .leftColumn .reviewArea .reviews .reviewItem .review .reviewDetails .reviewDate {
+  padding-top: 10px;
+  font-size: small;
 }
 
 main .contentArea .more .latestActivity {

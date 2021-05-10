@@ -18,6 +18,7 @@ export default class GenericResultInterface {
   lastPageNumber;
   allFilters = null;
   urlParams;
+  args = "none";
   constructor(intent, args = null) {
     this.urlParams = new URLSearchParams(window.location.search);
     switch (intent) {
@@ -34,6 +35,8 @@ export default class GenericResultInterface {
         this.handleMyAds();
         break;
       case "customerAds":
+        this.args = args;
+        console.log(this.args);
         this.handleCustomerAds(args);
         break;
       case "notifications":
@@ -91,6 +94,7 @@ export default class GenericResultInterface {
             customer-rating="${object.rating}"
             customer-reviews="${object.reviews}"
             condition="${this.dictionary.con.get(object.condition)}"
+            type="${this.dictionary.typ.get(object.type)}"
             price="${object.price}"
             item-image="${object.img}"
             id="${object.id}"></ad-component>`;
@@ -133,6 +137,7 @@ export default class GenericResultInterface {
             customer-rating="${object.rating}"
             customer-reviews="${object.reviews}"
             condition="${this.dictionary.con.get(object.condition)}"
+            type="${this.dictionary.typ.get(object.type)}"
             price="${object.price}"
             item-image="${object.img}"
             id="${object.id}"></ad-component>`;
@@ -297,23 +302,30 @@ export default class GenericResultInterface {
         const reviewArea = document.querySelector(".reviews");
         let items = "";
         for (let object of data) {
-          items += `<li>
+          items += `<li class="reviewItem">
             <div class="review">
-              <a href="https://localhost:44366/home/profile/index.html?id=${object.buyerId}">
+              <a href="https://localhost:44366/home/profile/index.html?id=${
+                object.buyerId
+              }">
                 <span class="userDetails">
-                  <span class="profileImg" style="background-image: url(${object.profileImg});"></span>
+                  <span class="profileImg" style="background-image: url(${
+                    object.profileImg
+                  });"></span>
                   <span class="reviewerUsername">${object.username}</span>
                 </span>
               </a>
                 <span class="reviewDetails">
                   <span class="reviewText"><p>${object.reviewText}</p></span>
-                  <span class="reviewRating">${object.rating}</span>
+                  <span class="reviewRating">${starMethod(object.rating)}</span>
+                  <span class="reviewDate">${
+                    new Date(parseInt(object.reviewDate)).toLocaleDateString()
+                  } ${new Date(parseInt(object.reviewDate)).toLocaleTimeString()}
                 </span>
              
             </div>
           </li>`;
         }
-        reviewArea.innerHTML=items;
+        reviewArea.innerHTML = items;
       });
     this.getDictionary((maps) => {
       this.endpoint = "customer/ad/" + args.id;
@@ -333,7 +345,10 @@ export default class GenericResultInterface {
             condition="${this.dictionary.con.get(object.condition)}"
             price="${object.price}"
             item-image="${object.img}"
-            id="${object.id}"></ad-component>`;
+            type="${this.dictionary.typ.get(object.type)}"
+            id="${object.id}" case="${
+        this.args.case == "myads" ? this.args.case : "none"
+      }"></ad-component>`;
     }
     const pagers = document.querySelectorAll("pagination-component");
     for (let pager of pagers) {

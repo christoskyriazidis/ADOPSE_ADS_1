@@ -1,56 +1,53 @@
 class NavbarComponent extends HTMLElement {
-    static get observedAttributes() { return ['logged', 'filters'] }
-    get logged() {
-        return this.getAttribute("logged");
+  static get observedAttributes() {
+    return ["logged", "filters"];
+  }
+  get logged() {
+    return this.getAttribute("logged");
+  }
+  get filters() {
+    return this.getAttribute("filters");
+  }
+  constructor() {
+    super();
+    this.render();
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.render();
+    if ((name = "filters")) {
+      if (this.filters != null) {
+        document.querySelector(".ads").href.replace(oldValue, "");
+        document.querySelector(".ads").href += this.filters;
+      }
     }
-    get filters() {
-        return this.getAttribute("filters");
-    }
-    constructor() {
-        super();
-        this.render();
-
-
-
-    }
-    attributeChangedCallback(name, oldValue, newValue) {
-        this.render();
-        if (name = "filters") {
-            if (this.filters != null) {
-                document.querySelector(".ads").href.replace(oldValue, "");
-                document.querySelector(".ads").href += this.filters;
-            }
-
-        }
-    }
-    render = () => {
-        let listItems;
-        switch (this.logged) {
-            case "true": {
-                listItems = `
+  }
+  render = () => {
+    let listItems;
+    switch (this.logged) {
+      case "true": {
+        listItems = `
                     <li><a  href="#" class="my-account" onclick="attachMyAccountDropdown(event)">My Account</a></li>
                     <li><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
                     <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
                     <li><a href="#" onclick="attachChatDropdown(event)" class="chat">Chats</a></li>
                     <li><a href="#" onclick="attachChatRequest(event)" class="chatRequest">Chat Requests</a></li>
-                `
-                break;
-                //const btnSignOut = document.querySelector('#btn-signOut')
-                //btnSignOut.addEventListener('click', signOut)
-            } default: {
-                listItems = `
+                `;
+        break;
+        //const btnSignOut = document.querySelector('#btn-signOut')
+        //btnSignOut.addEventListener('click', signOut)
+      }
+      default: {
+        listItems = `
                     <li><a href="#" onclick="signIn()" >Log In</a></li>
                     <li><a class="attention" href="https://localhost:44305/Auth/Register">Sign up</a></li>
-                `
-                break;
-                // const btnSignIn = document.querySelector('#btn-signIn')
-                // btnSignIn.addEventListener('click', signIn)
-            }
+                `;
+        break;
+        // const btnSignIn = document.querySelector('#btn-signIn')
+        // btnSignIn.addEventListener('click', signIn)
+      }
+    }
 
-
-        }
-
-        this.innerHTML = `
+    this.innerHTML = `
         <style>@import "/styles/components/navbar/navbar.css";</style>
        
         <nav>
@@ -96,150 +93,204 @@ class NavbarComponent extends HTMLElement {
         <div class="chatsContainer">
 
         </div>
-        `
-    }
+        `;
+  };
 }
 const attachWishlist = (event) => {
-    console.log("haha");
+  console.log("haha");
 
-    if (!document.querySelector("wishlist-component")) {
-        let wishlist = document.createElement("wishlist-component")
-        document.querySelector("navbar-component").appendChild(wishlist);
+  if (!document.querySelector("wishlist-component")) {
+    let wishlist = document.createElement("wishlist-component");
+    document.querySelector("navbar-component").appendChild(wishlist);
 
-        document.body.addEventListener("click", (event) => {
-            if (!((
-                event.pageY > wishlistComponent.offsetTop &&
-                event.pageY < wishlistComponent.offsetTop + wishlistComponent.offsetHeight &&
-                event.pageX < wishlistComponent.offsetLeft + wishlistComponent.offsetWidth &&
-                event.pageX > wishlistComponent.offsetLeft)
-                || event.target.classList.contains("wishlist"))) {
-                wishlist.style.display = 'none'
-            }
-        })
-
-    } else {
-        document.querySelector("wishlist-component").style.display = "block";
-    }
-    let x = document.querySelector(".wishlist").getBoundingClientRect().left;
-    let y = document.querySelector(".wishlist").getBoundingClientRect().bottom;
-    const wishlistComponent = document.querySelector("wishlist-component");
-    wishlistComponent.style.display = "block";
-    wishlistComponent.style.left = x + 'px';
-    wishlistComponent.style.top = y + 'px';
-
-
-}
+    document.body.addEventListener("click", (event) => {
+      if (
+        !(
+          (event.pageY > wishlistComponent.offsetTop &&
+            event.pageY <
+              wishlistComponent.offsetTop + wishlistComponent.offsetHeight &&
+            event.pageX <
+              wishlistComponent.offsetLeft + wishlistComponent.offsetWidth &&
+            event.pageX > wishlistComponent.offsetLeft) ||
+          event.target.classList.contains("wishlist")
+        )
+      ) {
+        wishlist.style.display = "none";
+      }
+    });
+  } else {
+    document.querySelector("wishlist-component").style.display = "block";
+  }
+  let x = document.querySelector(".wishlist").getBoundingClientRect().left;
+  let y = document.querySelector(".wishlist").getBoundingClientRect().bottom;
+  const wishlistComponent = document.querySelector("wishlist-component");
+  wishlistComponent.style.display = "block";
+  wishlistComponent.style.left = x + "px";
+  wishlistComponent.style.top = y + "px";
+};
 const attachMyAccountDropdown = (event) => {
-
-
-    if (document.querySelector(".my-account-dropdown").classList.contains("fresh")) {
-        document.querySelector(".my-account-dropdown").classList.remove("fresh")
-        document.querySelector(".my-account-dropdown")
-        document.body.addEventListener("click", (event) => {
-            if (!((
-                event.pageY > myAccountDropdown.offsetTop &&
-                event.pageY < myAccountDropdown.offsetTop + myAccountDropdown.offsetHeight &&
-                event.pageX < myAccountDropdown.offsetLeft + myAccountDropdown.offsetWidth &&
-                event.pageX > myAccountDropdown.offsetLeft)
-                || event.target.classList.contains("my-account"))) {
-                document.querySelector(".my-account-dropdown").style.display = 'none'
-            }
-        })
-
-    } else {
-        document.querySelector(".my-account-dropdown").style.display = "block";
-    }
-    let x = document.querySelector(".my-account").getBoundingClientRect().left;
-    let y = document.querySelector(".my-account").getBoundingClientRect().bottom;
-    const myAccountDropdown = document.querySelector(".my-account-dropdown");
-    myAccountDropdown.style.display = "block";
-    myAccountDropdown.style.left = x + 'px';
-    myAccountDropdown.style.top = y + 'px';
-
-
-}
+  if (
+    document.querySelector(".my-account-dropdown").classList.contains("fresh")
+  ) {
+    document.querySelector(".my-account-dropdown").classList.remove("fresh");
+    document.querySelector(".my-account-dropdown");
+    document.body.addEventListener("click", (event) => {
+      if (
+        !(
+          (event.pageY > myAccountDropdown.offsetTop &&
+            event.pageY <
+              myAccountDropdown.offsetTop + myAccountDropdown.offsetHeight &&
+            event.pageX <
+              myAccountDropdown.offsetLeft + myAccountDropdown.offsetWidth &&
+            event.pageX > myAccountDropdown.offsetLeft) ||
+          event.target.classList.contains("my-account")
+        )
+      ) {
+        document.querySelector(".my-account-dropdown").style.display = "none";
+      }
+    });
+  } else {
+    document.querySelector(".my-account-dropdown").style.display = "block";
+  }
+  let x = document.querySelector(".my-account").getBoundingClientRect().left;
+  let y = document.querySelector(".my-account").getBoundingClientRect().bottom;
+  const myAccountDropdown = document.querySelector(".my-account-dropdown");
+  myAccountDropdown.style.display = "block";
+  myAccountDropdown.style.left = x + "px";
+  myAccountDropdown.style.top = y + "px";
+};
 const attachNotifications = (event) => {
-    if (document.querySelector("notification-component").classList.contains("fresh")) {
-        document.querySelector("notification-component").classList.remove("fresh")
-        let notification = document.querySelector("notification-component")
-        document.body.addEventListener("click", (event) => {
-            if (!((
-                event.pageY > notificationComponent.offsetTop &&
-                event.pageY < notificationComponent.offsetTop + notificationComponent.offsetHeight &&
-                event.pageX < notificationComponent.offsetLeft + notificationComponent.offsetWidth &&
-                event.pageX > notificationComponent.offsetLeft)
-                || event.target.classList.contains("notification"))) {
-                notification.style.display = 'none'
-            }
-        })
-
-    } else {
-
-        document.querySelector("notification-component").style.display = "block";
-    }
-    let x = document.querySelector(".notification").getBoundingClientRect().left;
-    let y = document.querySelector(".notification").getBoundingClientRect().bottom;
-    const notificationComponent = document.querySelector("notification-component");
-    notificationComponent.style.display = "block";
-    notificationComponent.style.left = x + 'px';
-    notificationComponent.style.top = y + 'px';
-
-
-}
+  if (
+    document.querySelector("notification-component").classList.contains("fresh")
+  ) {
+    document.querySelector(".notification").style.backgroundColor =
+      "transparent";
+    document.querySelector(".notification").style.border = "none";
+    document.querySelector("notification-component").classList.remove("fresh");
+    let notification = document.querySelector("notification-component");
+    document.body.addEventListener("click", (event) => {
+      if (
+        !(
+          (event.pageY > notificationComponent.offsetTop &&
+            event.pageY <
+              notificationComponent.offsetTop +
+                notificationComponent.offsetHeight &&
+            event.pageX <
+              notificationComponent.offsetLeft +
+                notificationComponent.offsetWidth &&
+            event.pageX > notificationComponent.offsetLeft) ||
+          event.target.classList.contains("notification")
+        )
+      ) {
+        notification.style.display = "none";
+      }
+    });
+  } else {
+    document.querySelector("notification-component").style.display = "block";
+    document.querySelector(".notification").style.backgroundColor =
+      "transparent";
+    document.querySelector(".notification").style.border = "none";
+  }
+  let x = document.querySelector(".notification").getBoundingClientRect().left;
+  let y = document.querySelector(".notification").getBoundingClientRect()
+    .bottom;
+  const notificationComponent = document.querySelector(
+    "notification-component"
+  );
+  notificationComponent.style.display = "block";
+  notificationComponent.style.left = x + "px";
+  notificationComponent.style.top = y + "px";
+};
 const attachChatDropdown = (event) => {
-
-    if (document.querySelector("chatdropdown-component").classList.contains("fresh")) {
-        document.querySelector("chatdropdown-component").classList.remove("fresh")
-        console.log("lmao")
-        let chatDropdown = document.querySelector("chatdropdown-component")
-        document.body.addEventListener("click", (event) => {
-            if (!((
-                event.pageY > chatDropdownComponent.offsetTop &&
-                event.pageY < chatDropdownComponent.offsetTop + chatDropdownComponent.offsetHeight &&
-                event.pageX < chatDropdownComponent.offsetLeft + chatDropdownComponent.offsetWidth &&
-                event.pageX > chatDropdownComponent.offsetLeft)
-                || event.target.classList.contains("chat"))) {
-                chatDropdownComponent.style.display = 'none'
-            }
-        })
-
-    } else {
-        document.querySelector("chatDropdown-component").style.display = "block";
-    }
-    let x = document.querySelector(".chat").getBoundingClientRect().left;
-    let y = document.querySelector(".chat").getBoundingClientRect().bottom;
-    const chatDropdownComponent = document.querySelector("chatdropdown-component");
-    chatDropdownComponent.style.display = "block";
-    chatDropdownComponent.style.left = x + 'px';
-    chatDropdownComponent.style.top = y + 'px';
-}
+  if (
+    document.querySelector("chatdropdown-component").classList.contains("fresh")
+  ) {
+    document.querySelector("chatdropdown-component").classList.remove("fresh");
+    console.log("lmao");
+    let chatDropdown = document.querySelector("chatdropdown-component");
+    document.body.addEventListener("click", (event) => {
+      if (
+        !(
+          (event.pageY > chatDropdownComponent.offsetTop &&
+            event.pageY <
+              chatDropdownComponent.offsetTop +
+                chatDropdownComponent.offsetHeight &&
+            event.pageX <
+              chatDropdownComponent.offsetLeft +
+                chatDropdownComponent.offsetWidth &&
+            event.pageX > chatDropdownComponent.offsetLeft) ||
+          event.target.classList.contains("chat")
+        )
+      ) {
+        chatDropdownComponent.style.display = "none";
+      }
+    });
+  } else {
+    document.querySelector("chatDropdown-component").style.display = "block";
+  }
+  let x = document.querySelector(".chat").getBoundingClientRect().left;
+  let y = document.querySelector(".chat").getBoundingClientRect().bottom;
+  const chatDropdownComponent = document.querySelector(
+    "chatdropdown-component"
+  );
+  chatDropdownComponent.style.display = "block";
+  chatDropdownComponent.style.left = x + "px";
+  chatDropdownComponent.style.top = y + "px";
+};
 
 const attachChatRequest = (event) => {
-
-    if (document.querySelector("chatrequest-component").classList.contains("fresh")) {
-        document.querySelector("chatrequest-component").classList.remove("fresh")
-        console.log("lmao")
-        let chatRequest = document.querySelector("chatrequest-component")
-        document.body.addEventListener("click", (event) => {
-            if (!((
-                event.pageY > chatRequestComponent.offsetTop &&
-                event.pageY < chatRequestComponent.offsetTop + chatRequestComponent.offsetHeight &&
-                event.pageX < chatRequestComponent.offsetLeft + chatRequestComponent.offsetWidth &&
-                event.pageX > chatRequestComponent.offsetLeft)
-                || event.target.classList.contains("chatRequest"))) {
-                chatRequestComponent.style.display = 'none'
-            }
-        })
-
-    } else {
-        document.querySelector("chatRequest-component").style.display = "block";
-    }
-    let x = document.querySelector(".chatRequest").getBoundingClientRect().left;
-    let y = document.querySelector(".chatRequest").getBoundingClientRect().bottom;
-    const chatRequestComponent = document.querySelector("chatRequest-component");
-    chatRequestComponent.style.display = "block";
-    chatRequestComponent.style.left = (x) + 'px';
-    chatRequestComponent.style.top = y + 'px';
-}
-const myAccountDropdown = ``
-customElements.define("navbar-component", NavbarComponent)
+  if (
+    document.querySelector("chatrequest-component").classList.contains("fresh")
+  ) {
+    document.querySelector("chatrequest-component").classList.remove("fresh");
+    console.log("lmao");
+    let chatRequest = document.querySelector("chatrequest-component");
+    document.body.addEventListener("click", (event) => {
+      if (
+        !(
+          (event.pageY > chatRequestComponent.offsetTop &&
+            event.pageY <
+              chatRequestComponent.offsetTop +
+                chatRequestComponent.offsetHeight &&
+            event.pageX <
+              chatRequestComponent.offsetLeft +
+                chatRequestComponent.offsetWidth &&
+            event.pageX > chatRequestComponent.offsetLeft) ||
+          event.target.classList.contains("chatRequest")
+        )
+      ) {
+        chatRequestComponent.style.display = "none";
+      }
+    });
+  } else {
+    document.querySelector("chatRequest-component").style.display = "block";
+  }
+  let x = document.querySelector(".chatRequest").getBoundingClientRect().left;
+  let y = document.querySelector(".chatRequest").getBoundingClientRect().bottom;
+  const chatRequestComponent = document.querySelector("chatRequest-component");
+  chatRequestComponent.style.display = "block";
+  chatRequestComponent.style.left = x + "px";
+  chatRequestComponent.style.top = y + "px";
+};
+starMethod = (value) => {
+  const stars = value / 2;
+  let starList = "";
+  for (let i = 1; i <= stars; i++) {
+    starList += "<li></li>";
+  }
+  if (value % 2 == 0) {
+  } else if (value != 1) {
+    starList += "<li style='width:10%;'></li>";
+  }
+  return `
+      <div class="outterLayer">
+      <div class="innerLayer">
+        <ul>
+          ${starList}     
+        </ul>
+      </div>
+    </div>
+      `;
+};
+const myAccountDropdown = ``;
+customElements.define("navbar-component", NavbarComponent);

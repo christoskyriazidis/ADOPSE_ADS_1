@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Images\CategorySubcategory\" />
     <Folder Include="Images\serverA\full\" />
     <Folder Include="Images\serverA\small\" />
   </ItemGroup>

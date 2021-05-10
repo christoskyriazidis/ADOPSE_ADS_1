@@ -188,6 +188,12 @@ footer {
 }
 
 .sellerDetails a .sellerReview {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   background-color: white;
   background-size: contain;
   background-repeat: no-repeat;
@@ -200,7 +206,7 @@ footer {
   margin-right: 10px;
 }
 
-.modal {
+.modals {
   display: none;
   /* Hidden by default */
   position: fixed;
@@ -226,7 +232,7 @@ footer {
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content2 {
   background-color: #e9e9e9;
   margin: auto;
   padding: 20px;
@@ -246,8 +252,8 @@ footer {
           justify-content: center;
 }
 
-.modal-content .chatOption,
-.modal-content .emailOption {
+.modal-content2 .chatOption,
+.modal-content2 .emailOption {
   width: 450px;
   height: 200px;
   display: -webkit-box;
@@ -263,20 +269,20 @@ footer {
   margin-top: 10px;
 }
 
-.modal-content .chatOption:hover,
-.modal-content .emailOption:hover {
+.modal-content2 .chatOption:hover,
+.modal-content2 .emailOption:hover {
   background-color: #fff;
   border-radius: 20px;
   cursor: pointer;
 }
 
-.modal-content .chatOption p,
-.modal-content .emailOption p {
+.modal-content2 .chatOption p,
+.modal-content2 .emailOption p {
   font-size: x-large;
   text-decoration: underline;
 }
 
-.modal-content textarea {
+.modal-content2 textarea {
   resize: none;
   width: 400px;
   height: 200px;
