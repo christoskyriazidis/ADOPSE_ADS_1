@@ -13,6 +13,8 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class ChatViewModel : BaseViewModel{
 
+        private object messagesLock = new object();
+
         private Customer LoggedInCustomer;
         private IChatService chatService;
 
@@ -30,19 +32,23 @@ namespace WpfClientt.viewModels {
 
         public ChatViewModel(Chat chat, IChatService chatService, ISet<Message> messages,Customer LoggedInCustomer) {
             SendMessageCommand = new AsyncCommand(SendMessage);
-            foreach (Message message in messages) {
-                Messages.Insert(0,message);
+            lock (messagesLock) {
+                foreach (Message message in messages) {
+                    Messages.Insert(0, message);
+                }
             }
             this.LoggedInCustomer = LoggedInCustomer;
             this.Chat = chat;
             ButtonText = !chat.Sold ? "Send Message" : "The item is sold!You can't send messages!";
             this.chatService = chatService;
-            this.chatService.AddChatTypingListener(TypingListener);
+            this.chatService.AddMessageListener(MessageListener);
         }
 
-        private Task TypingListener(Typing typing) {
-            if (typing.ChatId.Equals(Chat.ChatId) && typing.Username.Equals(Chat.Customer.Username)) {
-                TypingMessage = $"Customer {Chat.Customer.FirstName} {Chat.Customer.LastName} is typing...";
+        private Task MessageListener(Message message) {
+            if (message.ChatId.Equals(Chat.ChatId)) {
+                lock (messagesLock) {
+                    Messages.Add(message);
+                }
             }
             return Task.CompletedTask;
         }
@@ -56,7 +62,9 @@ namespace WpfClientt.viewModels {
                 Username = LoggedInCustomer.Username,Timestamp = DateTime.UtcNow.ToString("MMMM dd yyyy hh:mm tt")
             };
             await chatService.SendMessage(message);
-            Messages.Add(message);
+            lock (messagesLock) {
+                Messages.Add(message);
+            }
             MessageBody = string.Empty;
             OnPropertyChanged(nameof(MessageBody));
         }
