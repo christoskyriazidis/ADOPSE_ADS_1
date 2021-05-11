@@ -42,6 +42,7 @@ namespace WpfClientt.services {
 
         public async Task RetrieveAndSetAccessToken(String redirectUrl) {
             NameValueCollection queryValues = HttpUtility.ParseQueryString(redirectUrl.Substring( redirectUrl.IndexOf("?") + 1 ));
+            Debug.WriteLine(queryValues.Get("state"));
             if (!queryValues.Get("state").Equals(state)) {
                 throw new ApplicationException("The state sent to the authorization server does not match.");
             }

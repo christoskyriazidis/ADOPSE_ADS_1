@@ -20,13 +20,15 @@ namespace WpfClientt.services {
         private HttpClient client;
         private string mainUrl = ApiInfo.AdMainUrl();
         private JsonSerializerOptions options;
+        private ICustomerNotifier notifier;
 
-        public AdServiceImpl(HttpClient client,JsonSerializerOptions options) {
+        public AdServiceImpl(HttpClient client,JsonSerializerOptions options,ICustomerNotifier notifier) {
             this.client = client;
             this.options = options;
+            this.notifier = notifier;
         }
 
-        public async static Task<AdServiceImpl> GetInstance(HttpClient httpClient,IAdDetailsService adDetailsService) { 
+        public async static Task<AdServiceImpl> GetInstance(HttpClient httpClient,IAdDetailsService adDetailsService,ICustomerNotifier notifier) { 
             
             if(adServiceImpl == null) {
                 JsonSerializerOptions options = new JsonSerializerOptions();
@@ -36,7 +38,7 @@ namespace WpfClientt.services {
                 options.Converters.Add(await StateConverter.getInstance(adDetailsService));
                 options.Converters.Add(await SubcategoryConverter.getInstance(adDetailsService));
                 options.Converters.Add(await TypeConverter.getInstance(adDetailsService));
-                adServiceImpl = new AdServiceImpl(httpClient, options);
+                adServiceImpl = new AdServiceImpl(httpClient, options,notifier);
             }
 
             return adServiceImpl;
@@ -143,8 +145,17 @@ namespace WpfClientt.services {
                     response.EnsureSuccessStatusCode();
                 }
             }
+        }
+        
+        public async Task SellAd(Ad ad, Customer buyer) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiInfo.SellAdMainUrl());
+            var data = new { adId = ad.Id, buyerId = buyer.Id };
+            request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
 
-            
+            using (HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+                notifier.Success($"The ad with title {ad.Title} has been succesfully sold to {buyer.FirstName} {buyer.LastName}");
+            }
         }
     }
 }

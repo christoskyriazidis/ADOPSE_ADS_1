@@ -36,7 +36,7 @@ namespace WpfClientt.services {
             this.customerService = customerService;
             this.notifier = notifier;
             this.hubConnection.On("ReceiveMessage", async (int chatId) => await ReceiveMessage(chatId));
-            this.hubConnection.On("ReceiveActiveChatWpf", async (string message) => await ReceiveActiveChat(message));
+            this.hubConnection.On("ReceiveActiveChatWpf", async (int chatId) => await ReceiveActiveChat(chatId));
             this.hubConnection.On("ReceiveChatRequestWpf", async (int adId) => await ReceiveChatRequest(adId));
         }
 
@@ -172,8 +172,7 @@ namespace WpfClientt.services {
         }
 
 
-        private async Task ReceiveActiveChat(string serverMessage) {
-            int chatId = int.Parse(serverMessage.Substring(serverMessage.IndexOf(":") + 1).Trim());
+        private async Task ReceiveActiveChat(int chatId) {
 
             ISet<ChatModel> chats = await ChatsFromServer();
 

@@ -96,5 +96,9 @@ namespace WpfClientt.services {
         internal static string UnsubscribeFromSubcategoriesMainUrl() {
             return $"{host}/category/subscribe";
         }
+
+        internal static string SellAdMainUrl() {
+            return $"{host}/ad/sell";
+        }
     }
 }

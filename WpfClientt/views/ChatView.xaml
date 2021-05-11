@@ -9,7 +9,8 @@
     <Grid  Background="#dbdbdb">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
-            <RowDefinition Height="0.75*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="0.90*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -26,7 +27,8 @@
             <Run  Text="Ad Title: "/>
             <Run  Text="{Binding Chat.Ad.Title}"/>
         </TextBlock>
-        <ScrollViewer Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" >
+        <Button Margin="5" Grid.Row="1" Grid.ColumnSpan="3" Command="{Binding SellCommand}" Style="{StaticResource medium_blue_button}" Content="Sell To This Customer" Visibility="{Binding SellButtonVisibility}" />
+        <ScrollViewer Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" >
             <ItemsControl ItemsSource="{Binding Messages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -35,8 +37,8 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
-        <TextBox Margin="5"  Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
-        <Button Margin="5" Grid.Row="2" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
+        <TextBox Margin="5"  Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
+        <Button Margin="5" Grid.Row="3" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
 
     </Grid>
 </UserControl>

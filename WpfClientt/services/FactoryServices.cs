@@ -58,7 +58,7 @@ namespace WpfClientt.services {
                         options.Converters.Add(typeConverter);
                     }
                 }
-                adService = new AdServiceImpl(client, options);
+                adService = new AdServiceImpl(client, options,CustomerNotifier());
             }
             
             return adService;
