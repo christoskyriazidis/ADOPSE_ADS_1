@@ -51,6 +51,7 @@
           </div>
 
           <div class="latestActivity">
+            
             <pagination-component></pagination-component>
             <div class="contentContainer"></div>
             <pagination-component></pagination-component>
@@ -196,7 +197,7 @@
           </button>
           <button
             type="button"
-            
+            onclick="postReview()"
             class="btn btn-primary saveChanges"
           >
            Submit review
@@ -206,6 +207,20 @@
     </div>
   </div>
   <script>
+    postReview=()=>{
+      let myparams = new URLSearchParams(window.location.search);
+      let data={
+        ReviewTxt:document.querySelector("textarea").value,
+        RatingNumb:document.querySelector(".reviewBody").querySelectorAll("li").length*2,
+        SoldAd:parseInt(myparams.get("adId")),
+      }
+      axios.post("https://localhost:44374/review",data).then(()=>{
+        alert("Your review has been submitted")
+        location.href="https://localhost:44366/home/profile/index.html?id=2"
+      }).catch(console.log)
+     
+    }
+    document.querySelector(".reviewBody").innerHTML+=starMethod(0,true)
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.get("reviewMode")=="1"){
       $("#submitReview").modal().show()

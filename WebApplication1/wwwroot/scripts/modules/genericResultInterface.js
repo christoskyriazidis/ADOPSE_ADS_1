@@ -39,6 +39,12 @@ export default class GenericResultInterface {
         console.log(this.args);
         this.handleCustomerAds(args);
         break;
+      case "soldAds":
+        this.handleSoldAds();
+        break;
+      case "boughtAds":
+        this.handleBoughtAds();
+        break;
       case "notifications":
         break;
       case "wishlist":
@@ -123,6 +129,7 @@ export default class GenericResultInterface {
     }
   };
   populateMyAds = (data) => {
+    console.log("lol ",data)
     this.lastPageNumber = data["totalPages"];
     document.querySelector(".contentContainer").innerHTML = "";
     let allAds = "";
@@ -239,6 +246,48 @@ export default class GenericResultInterface {
       this.setLink(1);
     });
   };
+  populateBoughtSoldAds = (data) => {
+    console.log("lol ",data)
+    this.lastPageNumber = data["totalPages"];
+    document.querySelector(".contentContainer").innerHTML = "";
+    let allAds = "";
+    for (let object of data.result) {
+      document.querySelector(
+        ".contentContainer"
+      ).innerHTML += `<ad-component title="${object.title}"
+            customer-image="${object.profileimg}"
+           
+            customer-id="${object.customer}"
+            customer-name="${object.username}"
+            customer-rating="${object.rating}"
+            customer-reviews="${object.reviews}"
+            condition="${new Date(parseInt(object.transactionDate)).toLocaleDateString()}"
+            type="${object.username}"
+            price="${object.price}"
+            item-image="${object.img}"
+            id="${object.id}"></ad-component>`;
+    }
+  }
+  handleBoughtAds = () => {
+    this.getDictionary((maps) => {
+      this.dictionary = maps;
+      this.endpoint = "profile/boughtAds";
+      this.contextHandler = this.populateBoughtSoldAds;
+      document.querySelector(".contentContainer").innerHTML = "";
+      let allAds = "";
+      this.setLink(1);
+    });
+  };
+  handleSoldAds = () => {
+    this.getDictionary((maps) => {
+      this.dictionary = maps;
+      this.endpoint = "profile/soldAds";
+      this.contextHandler = this.populateBoughtSoldAds;
+      document.querySelector(".contentContainer").innerHTML = "";
+      let allAds = "";
+      this.setLink(1);
+    });
+  };
   handleSearch = () => {
     this.endpoint = "ad/";
     const search = this.urlParams.get("title");
@@ -317,9 +366,11 @@ export default class GenericResultInterface {
                 <span class="reviewDetails">
                   <span class="reviewText"><p>${object.reviewText}</p></span>
                   <span class="reviewRating">${starMethod(object.rating)}</span>
-                  <span class="reviewDate">${
-                    new Date(parseInt(object.reviewDate)).toLocaleDateString()
-                  } ${new Date(parseInt(object.reviewDate)).toLocaleTimeString()}
+                  <span class="reviewDate">${new Date(
+                    parseInt(object.reviewDate)
+                  ).toLocaleDateString()} ${new Date(
+            parseInt(object.reviewDate)
+          ).toLocaleTimeString()}
                 </span>
              
             </div>

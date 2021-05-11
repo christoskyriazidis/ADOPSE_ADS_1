@@ -19,6 +19,12 @@ class ChatDropdown extends HTMLElement {
       });
     connection.on("ReceiveActiveChat", (subId) => {
       this.callApi();
+      if(subId==me.profile.sub){
+        document.querySelector(".chat").style.backgroundColor =
+        "#1860AA";
+      document.querySelector(".chat").style.border =
+        "1px solid white";
+      }
     });
     this.callApi();
   }
