@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfClientt.model;
@@ -12,10 +13,6 @@ using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
     public class ChatViewModel : BaseViewModel{
-
-        private object messagesLock = new object();
-
-        private Customer LoggedInCustomer;
         private IChatService chatService;
 
         public Chat Chat { get; set; }
@@ -28,16 +25,11 @@ namespace WpfClientt.viewModels {
 
         public string MessageBody { get; set; }
 
-        public String TypingMessage { get; set; }
-
-        public ChatViewModel(Chat chat, IChatService chatService, ISet<Message> messages,Customer LoggedInCustomer) {
+        public ChatViewModel(Chat chat, IChatService chatService, ISet<Message> messages) {
             SendMessageCommand = new AsyncCommand(SendMessage);
-            lock (messagesLock) {
-                foreach (Message message in messages) {
-                    Messages.Insert(0, message);
-                }
+            foreach (Message message in messages) {
+                Messages.Insert(0, message);
             }
-            this.LoggedInCustomer = LoggedInCustomer;
             this.Chat = chat;
             ButtonText = !chat.Sold ? "Send Message" : "The item is sold!You can't send messages!";
             this.chatService = chatService;
@@ -46,9 +38,7 @@ namespace WpfClientt.viewModels {
 
         private Task MessageListener(Message message) {
             if (message.ChatId.Equals(Chat.ChatId)) {
-                lock (messagesLock) {
-                    Messages.Add(message);
-                }
+                Messages.Add(message);
             }
             return Task.CompletedTask;
         }
@@ -58,13 +48,9 @@ namespace WpfClientt.viewModels {
                 return;
             }
             Message message = new Message() { 
-                Body = MessageBody, ChatId = Chat.ChatId ,
-                Username = LoggedInCustomer.Username,Timestamp = DateTime.UtcNow.ToString("MMMM dd yyyy hh:mm tt")
+                Body = MessageBody, ChatId = Chat.ChatId
             };
             await chatService.SendMessage(message);
-            lock (messagesLock) {
-                Messages.Add(message);
-            }
             MessageBody = string.Empty;
             OnPropertyChanged(nameof(MessageBody));
         }

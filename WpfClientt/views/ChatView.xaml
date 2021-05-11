@@ -10,7 +10,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="0.75*" />
-            <RowDefinition Height="0.05*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -36,9 +35,8 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"  Text="{Binding TypingMessage,Mode=OneWay}" />
-        <TextBox Margin="5"  Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
-        <Button Margin="5" Grid.Row="3" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
+        <TextBox Margin="5"  Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Text="{Binding MessageBody}" />
+        <Button Margin="5" Grid.Row="2" Grid.Column="3" Command="{Binding SendMessageCommand}" Style="{StaticResource medium_green_button}" Content="{Binding ButtonText}" IsEnabled="{Binding Chat.Sold,Mode=OneWay,Converter={StaticResource ReverseBooleanVaueConverter}}" />
 
     </Grid>
 </UserControl>

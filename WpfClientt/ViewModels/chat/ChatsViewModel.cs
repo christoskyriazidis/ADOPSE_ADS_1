@@ -12,14 +12,12 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class ChatsViewModel : BaseViewModel, IViewModel {
         private static ChatsViewModel instance;
-        private Customer LoggedInCustomer;
         private IChatService chatService;
         public ChatViewModel SelectedChat { get; private set; }
         public ObservableCollection<ChatBoxViewModel> Chats { get; private set; } = new ObservableCollection<ChatBoxViewModel>();
 
 
-        private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat,Customer loggedInCustomer) {
-            this.LoggedInCustomer = loggedInCustomer;
+        private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat) {
             this.chatService = chatService;
             Mediator.Subscribe(MediatorToken.ChangeChatViewToken, SelectChat);
             foreach (Chat chat in chats) {
@@ -31,18 +29,17 @@ namespace WpfClientt.viewModels {
 
         private async Task SelectChat(object chat) {
             ISet<Message> messages = await GetAllMessagesOfChat((Chat)chat, chatService);
-            SelectedChat = new ChatViewModel((Chat)chat,chatService,messages,LoggedInCustomer);
+            SelectedChat = new ChatViewModel((Chat)chat,chatService,messages);
             OnPropertyChanged(nameof(SelectedChat));
         }
      
 
         public static async Task<ChatsViewModel> GetInstance(FactoryServices factory) {
-            Customer profile = await factory.CustomerServiceInstance().Profile();
             if (instance == null) {
                 IChatService chatService = await factory.ChatServiceInstance();
                 ISet<Chat> chats = await chatService.Chats();
-                ChatViewModel selected = chats.Count > 0 ? new ChatViewModel(chats.First(), chatService, await GetAllMessagesOfChat(chats.First(), chatService),profile) : null;
-                instance = new ChatsViewModel(chatService, chats, selected, profile);
+                ChatViewModel selected = chats.Count > 0 ? new ChatViewModel(chats.First(), chatService, await GetAllMessagesOfChat(chats.First(), chatService)) : null;
+                instance = new ChatsViewModel(chatService, chats, selected);
             }
             return instance;
         }

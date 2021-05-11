@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using WpfClientt.model;
 
 namespace WpfClientt.services {
@@ -14,6 +16,9 @@ namespace WpfClientt.services {
         public ChatPage(int pageNumber,IList<Message> messages) {
             this.pageNumber = pageNumber;
             this.messages = messages;
+            foreach (Message message in messages) {
+                message.Body = HttpUtility.HtmlDecode(message.Body);
+            }
         }
 
         public int Number() {

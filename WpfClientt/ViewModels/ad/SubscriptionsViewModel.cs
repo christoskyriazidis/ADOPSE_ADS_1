@@ -28,12 +28,14 @@ namespace WpfClientt.viewModels {
         public static async Task<SubscriptionsViewModel> GetInstance(Category category,FactoryServices factoryServices) {
             INotifyService service = await factoryServices.NotifyService();
             ICollection<Subcategory> subcategoriesOfCategory = category.Subcategories;
-            ISet<Subcategory> subscribedSubcategories = await service.SubscribedSubcategories();
+            ISet<Subcategory> allSubscribedSubcategories = await service.SubscribedSubcategories();
+
+            ISet<Subcategory> subscribedSubcategories = new HashSet<Subcategory>();
             ISet<Subcategory> unsubscribedSubcategories = new HashSet<Subcategory>();
 
             foreach(Subcategory subcategory in subcategoriesOfCategory) {
                 bool alreadySubscribed = false;
-                foreach(Subcategory subscribedSubcategory in subscribedSubcategories) {
+                foreach(Subcategory subscribedSubcategory in allSubscribedSubcategories) {
                     if (subscribedSubcategory.Id.Equals(subcategory.Id)) {
                         alreadySubscribed = true;
                         break;
@@ -41,6 +43,8 @@ namespace WpfClientt.viewModels {
                 }
                 if (!alreadySubscribed) {
                     unsubscribedSubcategories.Add(subcategory);
+                } else {
+                    subscribedSubcategories.Add(subcategory);
                 }
             }
 

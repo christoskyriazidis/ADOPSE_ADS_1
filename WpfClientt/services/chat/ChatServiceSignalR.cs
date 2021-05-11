@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 using WpfClientt.model;
 using WpfClientt.model.chat;
 
@@ -35,8 +36,8 @@ namespace WpfClientt.services {
             this.customerService = customerService;
             this.notifier = notifier;
             this.hubConnection.On("ReceiveMessage", async (int chatId) => await ReceiveMessage(chatId));
-            this.hubConnection.On("ReceiveActiveChat", async (string message) => await ReceiveActiveChat(message));
-            this.hubConnection.On("ReceiveChatRequest",async (string message) => await ReceiveChatRequest(message));
+            this.hubConnection.On("ReceiveActiveChatWpf", async (string message) => await ReceiveActiveChat(message));
+            this.hubConnection.On("ReceiveChatRequestWpf", async (int adId) => await ReceiveChatRequest(adId));
         }
 
         public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService,ICustomerNotifier notifier) {
@@ -97,6 +98,13 @@ namespace WpfClientt.services {
                 );
             using (HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
+                Customer profile = await customerService.Profile();
+                message.Timestamp = DateTime.UtcNow.ToString("MMMM dd yyyy hh:mm tt");
+                message.Username = profile.Username;
+                message.ProfileImg = profile.ProfileImageUri.AbsoluteUri;
+                foreach (Func<Message,Task> listener in messageListeners) {
+                    await listener.Invoke(message);
+                }
             }
         }
 
@@ -109,7 +117,9 @@ namespace WpfClientt.services {
             ISet<Chat> result = new HashSet<Chat>();
             ISet<ChatModel> serverChats = await ChatsFromServer();
             foreach (ChatModel chatmodel in serverChats) {
-                result.Add(await MapChatServerToChat(chatmodel));
+                Chat chat = await MapChatServerToChat(chatmodel);
+                chat.LatestMessage = HttpUtility.HtmlDecode(chat.LatestMessage);
+                result.Add(chat);
             }
             return result;
         }
@@ -186,9 +196,7 @@ namespace WpfClientt.services {
             }
         }
 
-        private async Task ReceiveChatRequest(string serverMessage) {
-            long adId = long.Parse(serverMessage.Substring(serverMessage.IndexOf(":") + 1).Trim());
-
+        private async Task ReceiveChatRequest(int adId) {
             IScroller<Ad> scroller = adService.ProfileAds();
             await scroller.Init();
 
