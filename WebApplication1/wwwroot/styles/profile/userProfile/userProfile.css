@@ -290,12 +290,29 @@ main .contentArea .more .latestActivity .contentContainer ad-component .sellerDa
   display: none;
 }
 
-.modalBody {
+.modal-body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.modal-body textarea {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body h4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+      align-content: center;
 }
 /*# sourceMappingURL=userProfile.css.map */

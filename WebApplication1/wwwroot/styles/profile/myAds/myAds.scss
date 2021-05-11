@@ -1,6 +1,14 @@
 body{
     display:flex;
     justify-content:center;
+    flex-direction:column;
+    main{
+        
+        display:flex;
+        flex-direction:row;
+        justify-content:center;
+        align-items:center;
+    }
     .contentContainer{
         width:100%;
         display:flex;

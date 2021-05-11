@@ -56,8 +56,16 @@ setSeen = (type, adId, id) => {
     .put("https://localhost:44374/notification/", data)
     .then((response) => response.data)
     .then(() => {
-      window.location.href =
-        "https://localhost:44366/home/ad/index.html?id=" + adId;
+      if (type != "Review") {
+        window.location.href =
+          "https://localhost:44366/home/ad/index.html?id=" + adId;
+      } else {
+        window.location.href =
+          "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
+          object.customerId +
+          "&adId=" +
+          object.adId;
+      }
     })
     .then(this.render)
     .catch((x) => console.log(x))
@@ -72,12 +80,7 @@ function handleApiDataNotifications(data) {
         <li onclick="setSeen('${object.type}',${object.adId},${
       object.id
     })" class="${object.clicked ? "" : "new"}" >
-            <a href="${
-              object.type != "Review"
-                ? "#"
-                : "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
-                  object.customerId
-            }">
+            <a href="${object.type != "Review" ? "#" : "#"}">
                 <span class="itemImage qwe" style='background-image:url(${
                   object.img
                 })' alt=""></span>

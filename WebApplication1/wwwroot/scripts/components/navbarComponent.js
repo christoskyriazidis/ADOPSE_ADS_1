@@ -86,7 +86,8 @@ class NavbarComponent extends HTMLElement {
             <li><a href="/home/profile/index.html?id=me">My profile</a></li>
             <li><a href="/home/profile/myAds/index.html">My ads</a></li>
             <li><a href="/home/profile/addAd/index.html">Create an ad</a></li>
-            <li><a href="#">Account settings</a></li>
+            <li><a href="/home/profile/boughtAds/index.html">Bought ads</a></li>
+            <li><a href="/home/profile/soldAds/index.html">Sold ads</a></li>
             <li><a href="#" onclick="signOut()">Logout</a></li>
         </ul>
     </div>
@@ -193,8 +194,9 @@ const attachNotifications = (event) => {
     document.querySelector(".notification").style.border = "none";
   }
   let x = document.querySelector(".notification").getBoundingClientRect().left;
-  let y = document.querySelector(".notification").getBoundingClientRect()
-    .bottom;
+  let y = document
+    .querySelector(".notification")
+    .getBoundingClientRect().bottom;
   const notificationComponent = document.querySelector(
     "notification-component"
   );
@@ -228,6 +230,9 @@ const attachChatDropdown = (event) => {
     });
   } else {
     document.querySelector("chatDropdown-component").style.display = "block";
+    document.querySelector(".chat").style.backgroundColor =
+      "transparent";
+    document.querySelector(".chat").style.border = "none";
   }
   let x = document.querySelector(".chat").getBoundingClientRect().left;
   let y = document.querySelector(".chat").getBoundingClientRect().bottom;
@@ -265,6 +270,9 @@ const attachChatRequest = (event) => {
     });
   } else {
     document.querySelector("chatRequest-component").style.display = "block";
+    document.querySelector(".chatRequest").style.backgroundColor =
+    "transparent";
+  document.querySelector(".chatRequest").style.border = "none";
   }
   let x = document.querySelector(".chatRequest").getBoundingClientRect().left;
   let y = document.querySelector(".chatRequest").getBoundingClientRect().bottom;
@@ -273,16 +281,25 @@ const attachChatRequest = (event) => {
   chatRequestComponent.style.left = x + "px";
   chatRequestComponent.style.top = y + "px";
 };
-starMethod = (value) => {
-  const stars = value / 2;
-  let starList = "";
-  for (let i = 1; i <= stars; i++) {
-    starList += "<li></li>";
+starMethod = (value, reviewMode) => {
+  let starList
+  if (reviewMode) {
+     starList = "";
+    for (let i = 1; i <= 5; i++) {
+      starList += `<li style="background-image:url();" onclick="fillStars(${i*2})" value="${i*2}"></li>`;
+    }
+  }else{
+    const stars = value / 2;
+     starList = "";
+    for (let i = 1; i <= stars; i++) {
+      starList += "<li></li>";
+    }
+    if (value % 2 == 0) {
+    } else if (value != 1) {
+      starList += "<li style='width:10%;'></li>";
+    }
   }
-  if (value % 2 == 0) {
-  } else if (value != 1) {
-    starList += "<li style='width:10%;'></li>";
-  }
+  
   return `
       <div class="outterLayer">
       <div class="innerLayer">
@@ -293,5 +310,12 @@ starMethod = (value) => {
     </div>
       `;
 };
+fillStars=(num)=>{
+  const sometext=document.querySelector("textarea").value
+  console.log("eimai edw twra ",)
+  document.querySelector(".reviewBody").removeChild(document.querySelector(".reviewBody").querySelector(".outterLayer"));
+  document.querySelector(".reviewBody").innerHTML+=starMethod(num)
+  document.querySelector("textarea").value=sometext
+}
 const myAccountDropdown = ``;
 customElements.define("navbar-component", NavbarComponent);

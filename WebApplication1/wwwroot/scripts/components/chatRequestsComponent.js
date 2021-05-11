@@ -29,6 +29,10 @@ class ChatRequest extends HTMLElement {
     connection.on("ReceiveChatRequest", (subId) => {
       this.callApi();
       if (subId == me.profile.sub) {
+        document.querySelector(".chatRequest").style.backgroundColor =
+          "#1860AA";
+        document.querySelector(".chatRequest").style.border =
+          "1px solid white";
       }
     });
   }
