@@ -86,6 +86,9 @@ class ChatComponent extends HTMLElement {
   get sold() {
     return this.getAttribute("sold");
   }
+  get profileImg(){
+    return this.getAttribute("profile-img");
+  }
   render = (chatContent) => {
     this.id = this.chatId;
     this.innerHTML = `

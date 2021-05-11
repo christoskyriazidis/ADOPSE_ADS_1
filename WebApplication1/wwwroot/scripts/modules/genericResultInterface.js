@@ -374,6 +374,7 @@ export default class GenericResultInterface {
                         username="${object.username}"
                         rating="${object.rating}"
                         address="${object.address}"
+                        review="${object.reviews}"
                     ></customer-component>
                 `;
         }

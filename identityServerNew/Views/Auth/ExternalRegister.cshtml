@@ -1,14 +1,165 @@
 ﻿@model ExternalRegisterViewModel
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
 
-<form asp-controller="Auth" asp-action="ExternalRegister" method="post">
-    <div>
-        <label class="">@ViewBag.Message</label>
-        <input type="hidden" asp-for="ReturnUrl" />
-        <label>Username</label>
-        <input asp-for="Username" />
-        <span asp-validation-for="Username"></span>
-    </div>
-    <div>
-        <button type="submit">SignUp</button>
-    </div>
-</form> 
+        body {
+            background: rgb(153,194,236);
+            background: linear-gradient(180deg, rgba(153,194,236,1) 0%, rgba(51,133,217,1) 50%, rgba(27,109,193,1) 100%);
+            height: 100vh;
+            width: 100vw;
+            margin: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .authorizationContainer {
+            flex-direction: column;
+            display: flex;
+            width: 20vw;
+            height: fit-content;
+            border-radius: 10px;
+            box-shadow: 5px 5px 50px rgb(41, 41, 41);
+            border: 0.5px solid rgb(82, 82, 82);
+            background-color: #ebebeb;
+            justify-content: center;
+            align-items: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+
+            .authorizationContainer form {
+                width: 75%;
+            }
+
+            .authorizationContainer h1 {
+                color: rgb(76, 120, 163);
+                display: flex;
+            }
+
+            .authorizationContainer .inputs {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+            }
+
+        input {
+            border: 0px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid rgb(127, 170, 214);
+            outline-width: 0;
+            font-size: x-large;
+        }
+
+            input:focus {
+                border-bottom: 3px solid rgb(5, 32, 59);
+            }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            width: 35%;
+        }
+
+        button {
+            color: white;
+            outline-width: 0;
+            border: none;
+            background: rgb(41 103 167);
+            font-size: x-large;
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            text-decoration: none;
+            box-shadow: 5px 5px 5px rgba(41, 41, 41,.5);
+            cursor: pointer;
+            margin-top: 30px;
+            border: 2px solid rgb(76, 120, 163);
+        }
+
+        span {
+            text-align: center;
+            width: 100%;
+        }
+
+        .inputContainer {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            margin: 30px;
+            width: 80%;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        label {
+            position: relative;
+            bottom: -3px;
+            color: rgb(76, 120, 163);
+            font-size: x-large;
+        }
+
+
+
+        input {
+            margin: 20px;
+            padding: 0px;
+            width: 250px;
+        }
+
+        .signup-btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+            .signup-btn-container button {
+                padding: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                background-color: rgb(76, 120, 163);
+                color: white;
+            }
+
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .error {
+            margin-top: 10px;
+            font-size: larger;
+            color: #dc3545
+        }
+
+        .login-btn {
+            color: rgb(49, 78, 107);
+            font-size: larger;
+            margin-top: 0px;
+            display: flex;
+            text-align: center;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+            .login-btn:hover {
+                box-shadow: 5px 5px 5px rgba(41, 41, 41,.5);
+            }
+    </style>
+    <form asp-controller="Auth" asp-action="ExternalRegister" method="post">
+        <div class="authorizationContainer">
+            <h1>External Sign Up</h1>
+            <label class="">@ViewBag.Message</label>
+            <input type="hidden" asp-for="ReturnUrl" />
+            <label>Username</label>
+            <input asp-for="Username" />
+            <span asp-validation-for="Username"></span>
+            <button type="submit">SignUp</button>
+        </div>
+        
+    </form> 

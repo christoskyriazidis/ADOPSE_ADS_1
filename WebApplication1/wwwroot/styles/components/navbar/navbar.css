@@ -53,7 +53,7 @@ nav .primary-nav .navListContainer {
           justify-content: flex-end;
 }
 
-nav .primary-nav .navListContainer ul {
+nav .primary-nav .navListContainer .navHeader {
   list-style-type: none;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -73,7 +73,7 @@ nav .primary-nav .navListContainer ul {
   margin-right: 150px;
 }
 
-nav .primary-nav .navListContainer ul li {
+nav .primary-nav .navListContainer .navHeader .primNavItems {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -83,7 +83,7 @@ nav .primary-nav .navListContainer ul li {
   margin: 15px;
 }
 
-nav .primary-nav .navListContainer ul li a {
+nav .primary-nav .navListContainer .navHeader .primNavItems a {
   text-decoration: none;
   color: #ebebeb;
   font-size: larger;
@@ -91,16 +91,16 @@ nav .primary-nav .navListContainer ul li a {
   border-radius: 10px;
 }
 
-nav .primary-nav .navListContainer ul li a:hover {
+nav .primary-nav .navListContainer .navHeader .primNavItems a:hover {
   background-color: #7bb6f1ad;
 }
 
-nav .primary-nav .navListContainer ul .attention {
+nav .primary-nav .navListContainer .navHeader .attention {
   background-color: #1f271b9b;
   text-decoration: underline;
 }
 
-nav .primary-nav .navListContainer ul .active {
+nav .primary-nav .navListContainer .navHeader .active {
   background-color: #1b6dc1;
 }
 

@@ -4,6 +4,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="/styles/style.css" />
     <link rel="stylesheet" href="/styles/profile/userProfile/userProfile.css" />
     <link
@@ -31,7 +37,9 @@
         <div class="more">
           <div class="leftColumn">
             <div class="bio">
-              <h2>Details</h2>
+              <div class="header">
+                <h2>Details</h2>
+              </div>
               <div class="realName"><b>Real name:</b></div>
               <div class="email"><b>Email:</b></div>
               <div class="address"><b>Address:</b></div>
@@ -59,6 +67,172 @@
   <script src="/scripts/components/adContainerComponent.js"></script>
   <script src="/scripts/components/starComponent.js"></script>
   <script src="/scripts/components/chatDropdownComponent.js"></script>
-    <script src="/scripts/components/chatRequestsComponent.js"></script>
-    <script src="/scripts/components/chatComponent.js"></script>
+  <script src="/scripts/components/chatRequestsComponent.js"></script>
+  <script src="/scripts/components/chatComponent.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+  
+  <div
+    class="modal fade"
+    id="changeSettingsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" style="margin-top: 20%" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Account settings</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"><h4><a href="https://localhost:44305/changePassword">Click here to change password</a></h1></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="changeProfilePicture"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" style="margin-top: 20%" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Change your profile picture
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="chooseProfilePicture">Choose a picture</label>
+          <input
+            type="file"
+            class="btn-secondary"
+            name=""
+            id="chooseProfilePicture"
+          />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            
+            class="btn btn-primary saveChanges"
+          >
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="submitReview"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" style="margin-top: 20%" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Review this user
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body reviewBody">
+          <textarea class=""></textarea>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            
+            class="btn btn-primary saveChanges"
+          >
+           Submit review
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.get("reviewMode")=="1"){
+      $("#submitReview").modal().show()
+    }
+    document
+      .querySelector(".saveChanges")
+      .addEventListener("click", ()=>{
+        var formData = new FormData();
+      formData.append(
+        "Img",
+        document.querySelector("#chooseProfilePicture").files[0]
+      );
+      axios
+        .put("https://localhost:44374/profile/image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+      });
+    
+    
+  </script>
 </html>

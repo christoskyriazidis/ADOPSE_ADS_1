@@ -26,11 +26,14 @@ class NavbarComponent extends HTMLElement {
     switch (this.logged) {
       case "true": {
         listItems = `
-                    <li><a  href="#" class="my-account" onclick="attachMyAccountDropdown(event)">My Account</a></li>
-                    <li><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
-                    <li><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
-                    <li><a href="#" onclick="attachChatDropdown(event)" class="chat">Chats</a></li>
-                    <li><a href="#" onclick="attachChatRequest(event)" class="chatRequest">Chat Requests</a></li>
+                    <li class="primNavItems"><a  href="#" class="my-account" onclick="attachMyAccountDropdown(event)">My Account</a></li>
+                    <li class="primNavItems"><a href="#" onclick="attachWishlist(event)" class="wishlist">Wishlist</a></li>
+                    <li class="primNavItems"><a href="#" onclick="attachNotifications(event)" class="notification">Notifications</a></li>
+                    <li class="primNavItems"><a href="#" onclick="attachChatDropdown(event)" class="chat">Chats</a></li>
+                    <li class="primNavItems"><a href="#" onclick="attachChatRequest(event)" class="chatRequest">Chat Requests</a></li>
+                    <notification-component class="fresh" style="display:none;"></notification-component>
+                    <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
+                    <chatRequest-component class="fresh" style="display:none;"></chatRequest-component>
                 `;
         break;
         //const btnSignOut = document.querySelector('#btn-signOut')
@@ -38,8 +41,8 @@ class NavbarComponent extends HTMLElement {
       }
       default: {
         listItems = `
-                    <li><a href="#" onclick="signIn()" >Log In</a></li>
-                    <li><a class="attention" href="https://localhost:44305/Auth/Register">Sign up</a></li>
+                    <li class="primNavItems"><a href="#" onclick="signIn()" >Log In</a></li>
+                    <li class="primNavItems"><a class="attention" href="https://localhost:44305/Auth/Register">Sign up</a></li>
                 `;
         break;
         // const btnSignIn = document.querySelector('#btn-signIn')
@@ -56,7 +59,7 @@ class NavbarComponent extends HTMLElement {
             <a href="/home/index.html"></a>
             </div>
             <div class="navListContainer">
-                <ul class="loggedIn hidden">
+                <ul class="loggedIn navHeader hidden">
                     ${listItems}
                 </ul>
             </div>
@@ -87,9 +90,7 @@ class NavbarComponent extends HTMLElement {
             <li><a href="#" onclick="signOut()">Logout</a></li>
         </ul>
     </div>
-        <notification-component class="fresh" style="display:none;"></notification-component>
-        <chatDropdown-component class="fresh" style="display:none;"></chatDropdown-component>
-        <chatRequest-component class="fresh" style="display:none;"></chatRequest-component>
+      
         <div class="chatsContainer">
 
         </div>

@@ -143,7 +143,7 @@ namespace ApiOne.Controllers
             return BadRequest(new { error = "kati pige la8os me to wishlist(id mallon)" });
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         [Route("/notification")]
         [Produces("application/json")]

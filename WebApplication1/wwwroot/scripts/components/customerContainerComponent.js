@@ -20,6 +20,9 @@ class CustomerContainerComponent extends HTMLElement {
     get address() {
         return this.getAttribute("address")
     }
+    get review() {
+        return this.getAttribute("review")
+    }
 
     constructor() {
         super();
@@ -38,7 +41,8 @@ class CustomerContainerComponent extends HTMLElement {
             <p>${this.firstName}, ${this.lastName}</p>
             <p>${this.address}</p>
         </div>
-        <div class="moreInfo">${this.rating}</div>
+        <div class="moreInfo">${starMethod(this.rating)}</div>
+        (${this.review})
         </a>
     </div>
             `

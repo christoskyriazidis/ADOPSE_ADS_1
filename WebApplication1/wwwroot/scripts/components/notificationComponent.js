@@ -47,9 +47,13 @@ function listen() {
     .catch((x) => console.log(x))
     .finally();
 }
-setSeen = (notificationId, adId) => {
+setSeen = (type, adId, id) => {
+  const data = {
+    Type: type,
+    Id: id,
+  };
   axios
-    .put("https://localhost:44374/notification/seen/" + notificationId)
+    .put("https://localhost:44374/notification/", data)
     .then((response) => response.data)
     .then(() => {
       window.location.href =
@@ -65,13 +69,13 @@ function handleApiDataNotifications(data) {
   for (object of data) {
     console.log(object);
     const item = `
-        <li onclick="setSeen(${object.nId},${object.adId})" class="${
-      object.clicked ? "" : "new"
-    }" >
+        <li onclick="setSeen('${object.type}',${object.adId},${
+      object.id
+    })" class="${object.clicked ? "" : "new"}" >
             <a href="${
               object.type != "Review"
-                ? "https://localhost:44366/home/ad/index.html?id=" + object.adId
-                : "https://localhost:44366/home/profile/index.html?id=" +
+                ? "#"
+                : "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
                   object.customerId
             }">
                 <span class="itemImage qwe" style='background-image:url(${
@@ -92,9 +96,9 @@ function handleApiDataNotifications(data) {
                         : `<span class="price">${object.price}$</span>
                         <span class="info">${object.username}</span>`
                     }
-                    <span class="date">Before  ${Math.round(
-                      (Date.now() - object.timestamp) / 1000 / 60
-                    )} minutes </span>
+                    <span class="date">Before  ${determineNotation(
+                      Math.round((Date.now() - object.timestamp) / 1000)
+                    )}</span>
                 </div>
             </a>
         </li>
@@ -119,4 +123,16 @@ function handleApiDataNotifications(data) {
 
   return html;
 }
+determineNotation = (seconds) => {
+  let final;
+  if (seconds < 60) {
+    return seconds + " seconds";
+  } else if (seconds / 60 < 60) {
+    return Math.round(seconds / 60) + " minutes";
+  } else if (seconds / 60 / 60 < 24) {
+    return Math.round(seconds / 60 / 60) + " hours";
+  } else if (seconds / 60 / 60 / 24 < 30) {
+    return Math.round(seconds / 60 / 60 / 24) + " days";
+  }
+};
 customElements.define("notification-component", NotificationComponent);

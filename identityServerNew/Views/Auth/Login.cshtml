@@ -20,7 +20,7 @@
         flex-direction: column;
         display: flex;
         width: 20vw;
-        height: 60vh;
+        height: 65vh;
         border-radius: 10px;
         box-shadow: 5px 5px 50px rgb(41, 41, 41);
         border: 0.5px solid rgb(82, 82, 82);
@@ -80,7 +80,11 @@
         color: #fff;
         margin-top: 40px;
     }
-
+        .login:hover {
+            background-color: #fff;
+            color: rgb(76, 120, 163);
+            
+        }
     .Facebook-login {
         background-color: #ebebeb;
         border: 2px solid rgb(76, 120, 163);
@@ -102,6 +106,10 @@
 
     ::placeholder {
         color: rgb(76, 120, 163);
+        font-size: medium;
+    }
+    label {
+
     }
 </style>
 @model LoginViewModel
@@ -116,13 +124,14 @@
 
 <div class="authorizationContainer">
     <h1>Sign In With</h1>
-    <label class="">@ViewBag.Message @registerResult</label>
+    <label class=""> @registerResult</label>
+    <label class="">@ViewBag.Message </label>
 
     <form class="inputs" asp-controller="Auth" asp-action="Login" method="post">
         @*hidden gia to returnUrl*@
 
         <input type="hidden" asp-for="ReturnUrl" />
-        <input asp-for="Username" placeholder="Username" />
+        <input asp-for="Username" placeholder="Username/Email" />
         <span asp-validation-for="Username"></span>
 
         <input asp-for="Password" placeholder="Password" />

@@ -11,7 +11,15 @@
     });
     //  const userManger = new Oidc.UserManager();
     userManger.signinCallback().then(res => {
-        window.location.href = '/home/index.html';
+        console.log(res)
+        const token=JSON.parse(userManger._userStore._store["oidc.user:https://localhost:44305/:client_id_js"])
+        //window.location.href = '/home/index.html';
+        const role=token.profile["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        if(role!="Customer"){
+            window.location.href = '/home/admin/index.html';
+        }else{
+            window.location.href = '/home/index.html';
+        }
     })
     
 </script>

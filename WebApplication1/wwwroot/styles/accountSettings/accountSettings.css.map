@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,CAAA;EACA,OAAO,EAAC,IAAI;EACZ,eAAe,EAAC,MAAM;EACtB,WAAW,EAAC,MAAM;EAClB,MAAM,EAAC,IAAI;CAMd;;AAVD,AAKI,IALA,CAKA,gBAAgB,CAAA;EACZ,KAAK,EAAC,GAAG;EACT,MAAM,EAAC,KAAK;EACZ,gBAAgB,EAAC,KAAK;CACzB",
+    "sources": [
+        "accountSettings.scss"
+    ],
+    "names": [],
+    "file": "accountSettings.css"
+}

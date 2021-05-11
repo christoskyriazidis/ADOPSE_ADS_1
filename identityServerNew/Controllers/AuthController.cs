@@ -325,7 +325,7 @@ namespace identityServerNew.Controllers
             var claimResult = await _userManager.AddClaimsAsync(user, claims);
             var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var emailConfirm = await _userManager.ConfirmEmailAsync(user, emailToken);
-            //var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
+            //SqlServerHelpers.InsertIntoDb(vm.Username, "nomail", info., rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
 
             if (!claimResult.Succeeded)
             {
@@ -353,7 +353,7 @@ namespace identityServerNew.Controllers
             //vlepoume an einai valid to request (model)
             if (lvm.Password == null || lvm.Username == null)
             {
-                ViewBag.Message = "You must fill the form dumb kid!";
+                ViewBag.Message = "You must fill the form ";
                 return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
             }
 
@@ -364,7 +364,7 @@ namespace identityServerNew.Controllers
                 user = await _userManager.FindByNameAsync(lvm.Username);
                 if (user == null)
                 {
-                    ViewBag.Message = $"Wrong username or password (den uparxei o xrhsths/email)";
+                    ViewBag.Message = $"Wrong username or password";
                     return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
                 }
             }
@@ -378,7 +378,7 @@ namespace identityServerNew.Controllers
             var loginResult = await _signInManager.PasswordSignInAsync(user, lvm.Password, false, true);
             if (loginResult.IsLockedOut)
             {
-                ViewBag.Message = $"You have been lockedOut wait 1 minute. ";
+                ViewBag.Message = $"You have been locked out. wait 1 minute. ";
                 return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
             }
             else if (loginResult.Succeeded)
@@ -390,7 +390,7 @@ namespace identityServerNew.Controllers
                 return Redirect(lvm.ReturnUrl);
             }
             var failedTimes = await _userManager.GetAccessFailedCountAsync(user);
-            ViewBag.Message = $"Wrong password.Sou menoun akoma {4 - failedTimes} prospa8ies";
+            ViewBag.Message = $"Wrong password. You have {4 - failedTimes} more tries";
             return View(new LoginViewModel { ExternalProviders = externalProvidres, ReturnUrl = lvm.ReturnUrl, Username = lvm.Username });
         }
 
@@ -439,7 +439,7 @@ namespace identityServerNew.Controllers
                 //stelnoume sto mail tou xrhsth to token...
                 await EmailConfirmation(rgv.Username, rgv.Email);
                 //pane pisw apo ekei pou ir8es dhladh..
-                TempData["register"] = "Registration success Plz verify Your Email!!!";
+                TempData["register"] = "Registration success please verify your email.";
                 return Redirect(rgv.ReturnUrl);
             }
             

@@ -30,7 +30,8 @@ notification-component {
             overflow-y: auto;
             border-bottom: 1px solid $subtle-grey;
             padding: 0px;
-
+            display:flex;
+            flex-direction: column;
             li {
                 padding: 5px;
                 padding-bottom: 15px;

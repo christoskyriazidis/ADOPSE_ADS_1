@@ -157,12 +157,14 @@ namespace ApiOne.Controllers
             {
                 return BadRequest(new { error = "File is too big (max 3mb)" });
             }
-            var claims = User.Claims.ToList(); 
-            var id = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            int uid = 4;
-            if (_customerRepo.UpdateProfileImage(uid))
+      
+           
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            if (_customerRepo.UpdateProfileImage(intId))
             {
-                SingleFileUpload(img, uid);
+                SingleFileUpload(img, intId);
                 return Json(new { message = "profile image changed!!!" });
             }
             return BadRequest(new { error = "image change failed." });

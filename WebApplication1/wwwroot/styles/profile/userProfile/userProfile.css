@@ -62,6 +62,15 @@ main .contentArea .profileDetails .wrapper {
 
 main .contentArea .profileDetails .wrapper .profilePicture {
   background: #5e7892;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -70,6 +79,16 @@ main .contentArea .profileDetails .wrapper .profilePicture {
   height: 200px;
   border-radius: 99999px;
   padding: 20px;
+}
+
+main .contentArea .profileDetails .wrapper .profilePicture p {
+  margin-bottom: -20px;
+  font-size: 1.8rem;
+}
+
+main .contentArea .profileDetails .wrapper .profilePicture p:hover {
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 main .contentArea .profileDetails .wrapper .username {
@@ -104,6 +123,27 @@ main .contentArea .more .leftColumn .bio {
   border-radius: 20px;
   background-color: #f8f8f8;
   padding: 30px;
+}
+
+main .contentArea .more .leftColumn .bio .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+main .contentArea .more .leftColumn .bio .header h3 {
+  cursor: pointer;
+}
+
+main .contentArea .more .leftColumn .bio .header h3:hover {
+  font-size: 1.90em;
 }
 
 main .contentArea .more .leftColumn .bio div {
@@ -248,5 +288,14 @@ main .contentArea .more .latestActivity .contentContainer ad-component {
 
 main .contentArea .more .latestActivity .contentContainer ad-component .sellerData {
   display: none;
+}
+
+.modalBody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=userProfile.css.map */

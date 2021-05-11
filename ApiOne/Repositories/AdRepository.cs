@@ -418,6 +418,9 @@ namespace ApiOne.Repositories
             else if (notificationSeen.Type.Equals("subcategory"))
             {
                 sql = $"UPDATE [SubCategoryNotification] SET clicked=1 where id=@Id";
+            }else if (notificationSeen.Type.Equals("review"))
+            {
+                sql = $"UPDATE [ReviewNotification] SET commented=1 where id=@Id";
             }
             try
             {

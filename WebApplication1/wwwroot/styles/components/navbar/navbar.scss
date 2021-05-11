@@ -43,7 +43,7 @@ nav {
             display: flex;
             justify-content: flex-end;
 
-            ul {
+            .navHeader {
                 list-style-type: none;
                 display: flex;
                 flex-direction: row;
@@ -52,7 +52,7 @@ nav {
                 padding: 0px;
                 margin: 0px;
                 margin-right: 150px;
-                li {
+                .primNavItems {
                     display: flex;
                     align-items: center;
                     margin: 15px;

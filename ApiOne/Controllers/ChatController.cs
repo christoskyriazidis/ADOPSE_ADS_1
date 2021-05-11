@@ -107,6 +107,8 @@ namespace ApiOne.Controllers
             if (_chatRepository.RequestChatByAdId(AdId, intId))
             {
                 await _chatHub.Clients.All.SendAsync("ReceiveChatRequest",subId);
+                await _chatHub.Clients.All.SendAsync("ReceiveChatRequestWpf", AdId);
+                
                 return Json(new {response="Chat request submitted"});
             }
             await _notificationHub.Clients.All.SendAsync("ChatRequestNotification");
@@ -124,6 +126,7 @@ namespace ApiOne.Controllers
             if (activeChatId != -1)
             {
                 await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", subId);
+                await _chatHub.Clients.All.SendAsync("ReceiveActiveChatWpf", ChatId);
                 return Json(new { response = $"{ChatId} accepted" });
             }
             return BadRequest(new { message="kati pige lathos"});

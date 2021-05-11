@@ -157,9 +157,10 @@ export default class ProfileController {
             });
     }
     changeImage = () => {
+        
         var formData = new FormData();
         formData.append("Img", document.querySelector(".image").files[0]);
-        formData.append("adId", urlParams.get("id"));
+        formData.append("adId", this.urlParams.get("id"));
 
         axios.put("https://localhost:44374/ad/image", formData, {
             headers: {
@@ -167,9 +168,11 @@ export default class ProfileController {
             }
         }).then(response => {
             console.log(response)
+            alert("Ad image changed")
         }).catch(error => {
             console.log(error)
         });
+
     }
 
 
