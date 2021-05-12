@@ -74,22 +74,24 @@ namespace WpfClientt.services {
         }
 
         public async Task<ISet<Subcategory>> SubscribedSubcategories() {
-            ISet<Subcategory> subscribedSubcategories = new HashSet<Subcategory>();
+            ISet<Subcategory> result = new HashSet<Subcategory>();
             ISet<Subcategory> subcategories = await adDetailsService.Subcategories();
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.SubscribedSubcategoriesMainUrl());
             using(HttpResponseMessage response = await client.SendAsync(request)) {
                 response.EnsureSuccessStatusCode();
                 Debug.WriteLine(await response.Content.ReadAsStringAsync());
-                SubscribedSubcategories subscategories = await JsonSerializer.DeserializeAsync<SubscribedSubcategories>(await response.Content.ReadAsStreamAsync(),options);
-                foreach(int id in subscategories.Categories) {
+                SubscribedSubcategories subscribedSubcategories = await JsonSerializer.DeserializeAsync<SubscribedSubcategories>(await response.Content.ReadAsStreamAsync(),options);
+                foreach(SubscribedSubcategory subscribedSubcategory in subscribedSubcategories.Subcategories) {
                     foreach(Subcategory subcategory in subcategories) {
-                        if (subcategory.Id.Equals(id)) { subscribedSubcategories.Add(subcategory); }
+                        if (subscribedSubcategory.SubcategoryId.Equals(subcategory.Id)) {
+                            result.Add(subcategory);
+                        }
                     }
                 }
             }
 
-            return subscribedSubcategories;
+            return result;
         }
 
         public async Task SubscriberToSubcategory(Subcategory subcategory) {

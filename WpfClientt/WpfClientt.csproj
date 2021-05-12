@@ -270,6 +270,7 @@
     <Compile Include="services\notification\ICustomerNotifier.cs" />
     <Compile Include="services\notification\NotifyServiceSignalR.cs" />
     <Compile Include="services\notification\SubscribedSubcategories.cs" />
+    <Compile Include="services\notification\SubscribedSubcategory.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
     <Compile Include="services\notification\ToastExtentionMethods.cs" />
     <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />

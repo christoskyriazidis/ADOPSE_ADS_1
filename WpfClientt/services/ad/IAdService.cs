@@ -41,5 +41,12 @@ namespace WpfClientt.services {
         /// <returns></returns>
         IScroller<Ad> SubcategoryAds(Subcategory subcategory);
 
+        /// <summary>
+        /// Sells the given ad to the given buyers.
+        /// </summary>
+        /// <param name="ad"></param>
+        /// <param name="buyer"></param>
+        /// <returns></returns>
+        Task SellAd(Ad ad, Customer buyer);
     }
 }

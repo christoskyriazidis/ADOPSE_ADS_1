@@ -17,7 +17,7 @@ namespace WpfClientt.model {
         /// The id of the customer on the server.
         /// </summary>
         [JsonPropertyName("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// The first name of the customer
