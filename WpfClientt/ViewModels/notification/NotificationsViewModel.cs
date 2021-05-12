@@ -30,10 +30,9 @@ namespace WpfClientt.viewModels {
                 IChatService chatService = await factory.ChatServiceInstance();
                 INotificationService notificationService = await factory.NotificationService();
                 instance = new NotificationsViewModel(chatService, notificationService);
+                await instance.LoadChatRequests();
+                await instance.LoadAdReviewNotifications();
             }
-            instance.Notifications.Clear();
-            await instance.LoadChatRequests();
-            await instance.LoadAdReviewNotifications();
             return instance;
         }
 

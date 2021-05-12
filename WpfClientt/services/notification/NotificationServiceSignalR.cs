@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,22 +29,27 @@ namespace WpfClientt.services {
             this.adDetailsService = adDetailsService;
             this.adService = adService;
             this.customerService = customerService;
-            this.hubConnection.On("ReceiveReviewNotificationsWpf", async (int adId) => await ReceiveReviewNotification(adId));
+            this.hubConnection.On<int>("ReceiveReviewNotificationsWpf", ReceiveReviewNotification);
         }
 
-        public static Task<NotificationServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService,IAdService adService,ICustomerService customerService) {
+        public static async Task<NotificationServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService,IAdService adService,ICustomerService customerService) {
             if(instance == null) {
                 string token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "");
                 HubConnection hubConnection = new HubConnectionBuilder()
                     .WithUrl(
                         ApiInfo.NotificationHubMainUrl(),
                         config => { config.AccessTokenProvider = () => Task.FromResult(token); }
-                    ).Build();
+                    ).WithAutomaticReconnect()
+                    .ConfigureLogging(logging => {
+                        logging.AddDebug();
+                        logging.SetMinimumLevel(LogLevel.Debug);
+                    }).Build();
                 instance = new NotificationServiceSignalR(client, hubConnection,adDetailsService,adService,customerService);
                 instance.options = options;
+                await hubConnection.StartAsync();
             }
 
-            return Task.FromResult(instance);
+            return instance;
         }
 
         public async Task<ISet<ReviewAdNotification>> ReviewAdNotifications() {
@@ -157,7 +163,7 @@ namespace WpfClientt.services {
         }
 
 
-        private async Task ReceiveReviewNotification(int adId) {
+        private async void ReceiveReviewNotification(int adId) {
             ISet<ReviewAdNotification> notifications = await ReviewAdNotifications();
             bool isForCustomer = false;
             ReviewAdNotification foundNotification = null;

@@ -36,15 +36,9 @@ namespace WpfClientt.services {
             this.adService = adService;
             this.customerService = customerService;
             this.notifier = notifier;
-            this.hubConnection.On<int>("ReceiveMessage", async chatId => { 
-                await ReceiveMessage(chatId); 
-            });
-            this.hubConnection.On<int>("ReceiveActiveChatWpf", async chatId => { 
-                await ReceiveActiveChat(chatId); 
-            });
-            this.hubConnection.On<int>("ReceiveChatRequestWpf", async (int adId) => {
-                await ReceiveChatRequest(adId); 
-            });
+            this.hubConnection.On<int>("ReceiveMessage", ReceiveMessage);
+            this.hubConnection.On<int>("ReceiveActiveChatWpf", ReceiveActiveChat);
+            this.hubConnection.On<int>("ReceiveChatRequestWpf", ReceiveChatRequest);
         }
 
         public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService,ICustomerNotifier notifier) {
@@ -183,7 +177,7 @@ namespace WpfClientt.services {
         }
 
 
-        private async Task ReceiveActiveChat(int chatId) {
+        private async void ReceiveActiveChat(int chatId) {
 
             ISet<ChatModel> chats = await ChatsFromServer();
 
@@ -206,7 +200,7 @@ namespace WpfClientt.services {
             }
         }
 
-        private async Task ReceiveChatRequest(int adId) {
+        private async void ReceiveChatRequest(int adId) {
             ISet<ChatRequest> requests = await ChatRequests();
             IScroller<Ad> scroller = adService.ProfileAds();
             await scroller.Init();
@@ -232,7 +226,7 @@ namespace WpfClientt.services {
             }
         }
 
-        private async Task ReceiveMessage(int chatId) {
+        private async void ReceiveMessage(int chatId) {
             IScroller<Message> messages = Messages(new Chat() { ChatId = chatId });
             await messages.Init();
             foreach(Func<Message,Task> messageListener in messageListeners) {
