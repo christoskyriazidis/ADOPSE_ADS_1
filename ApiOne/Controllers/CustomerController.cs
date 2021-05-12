@@ -243,6 +243,7 @@ namespace ApiOne.Controllers
             if (_customerRepo.SellAd(sellAdModel.AdId,sellAdModel.BuyerId))
             {
                 await _notificationHub.Clients.All.SendAsync("ReceiveWishListNotification", subId);
+                await _notificationHub.Clients.All.SendAsync("ReceiveReviewNotificationsWpf", sellAdModel.AdId);
                 return Json(new {response=$"Ad:{sellAdModel.AdId} sold to: {sellAdModel.BuyerId} " });
             }
             return BadRequest(new { error="Kati pige la8os me to sold ad" });
