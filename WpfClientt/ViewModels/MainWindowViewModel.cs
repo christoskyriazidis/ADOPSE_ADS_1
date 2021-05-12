@@ -77,9 +77,10 @@ namespace WpfClientt.viewModels {
             return Task.CompletedTask;
         }
 
-        private async Task ReviewView(object param) {
+        private Task ReviewView(object param) {
             ReviewAdNotification notification = (ReviewAdNotification)param;
             AddToHistory(ReviewViewModel.GetInstance(factory, notification.Ad,notification.AdOwner));
+            return Task.CompletedTask;
         }
 
         private async Task SubscriptionsView(object category) {

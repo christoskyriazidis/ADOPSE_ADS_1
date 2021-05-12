@@ -23,7 +23,7 @@ namespace WpfClientt.viewModels {
         public ICommand Logout { get; private set; }
         public ICommand Subscriptions { get; private set; }
 
-        private LoginCustomerMenu(IChatService chatSerivce,ICustomerNotifier notifier) {
+        private LoginCustomerMenu(IChatService chatSerivce,ICustomerNotifier notifier,INotificationService notificationService) {
             this.notifier = notifier;
             this.chatService = chatSerivce;
             Back = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.PreviousViewToken));
@@ -36,11 +36,12 @@ namespace WpfClientt.viewModels {
             Subscriptions = new AsyncCommand(async () => await Mediator.Notify(MediatorToken.CategoriesSubscriptionsViewToken));
             chatService.AddChatRequestListener(ChatRequestListener);
             chatService.AddActiveChatListener(ActiveChatListener);
+            notificationService.AddReviewNotificationListener(ReviewListener);
         }
 
         public static async Task<LoginCustomerMenu> GetInstance(FactoryServices factory) { 
             if(instance == null) {
-                instance = new LoginCustomerMenu(await factory.ChatServiceInstance(),factory.CustomerNotifier());
+                instance = new LoginCustomerMenu(await factory.ChatServiceInstance(),factory.CustomerNotifier(),await factory.NotificationService());
             }
 
             return instance;
@@ -54,6 +55,11 @@ namespace WpfClientt.viewModels {
         private Task ActiveChatListener(Chat chat) {
             notifier.Success($"New chat with customer {chat.Customer.FirstName} {chat.Customer.LastName} has been established." +
                 $"You can now chat!");
+            return Task.CompletedTask;
+        }
+
+        private Task ReviewListener(ReviewAdNotification notification) {
+            notifier.ReviewAdNotification(notification);
             return Task.CompletedTask;
         }
     }

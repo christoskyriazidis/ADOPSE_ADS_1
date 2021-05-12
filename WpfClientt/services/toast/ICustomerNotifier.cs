@@ -18,5 +18,7 @@ namespace WpfClientt.services {
 
         void ChatRequestNotification(ChatRequest request,IChatService chatService);
 
+        void ReviewAdNotification(ReviewAdNotification notification);
+
     }
 }

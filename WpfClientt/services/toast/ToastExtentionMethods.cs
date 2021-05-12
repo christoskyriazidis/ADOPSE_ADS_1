@@ -15,5 +15,11 @@ namespace WpfClientt.services.notification {
             options.ShowCloseButton = true;
             notifier.Notify(() => new ChatRequestToastViewModel(options, chatService, request));
         }
+
+        public static void ShowReviewAdNotification(this Notifier notifier,ReviewAdNotification notification) {
+            MessageOptions options = new MessageOptions();
+            options.ShowCloseButton = true;
+            notifier.Notify(() => new AdReviewToastViewModel(options, notification));
+        }
     }
 }

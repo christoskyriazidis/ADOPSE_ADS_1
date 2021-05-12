@@ -19,8 +19,8 @@ namespace WpfClientt.views {
     /// <summary>
     /// Interaction logic for ChatRequestToastNotification.xaml
     /// </summary>
-    public partial class ChatRequestToastNotification : NotificationDisplayPart {
-        public ChatRequestToastNotification(ChatRequestToastViewModel viewmodel) {
+    public partial class ChatRequestToastView : NotificationDisplayPart {
+        public ChatRequestToastView(ChatRequestToastViewModel viewmodel) {
             InitializeComponent();
             Bind(viewmodel);
         }

@@ -283,13 +283,13 @@
     <Compile Include="services\chat\ChatModel.cs" />
     <Compile Include="services\chat\ChatRequestModel.cs" />
     <Compile Include="services\notification\DeleteFromCategorySub.cs" />
-    <Compile Include="services\notification\ICustomerNotifier.cs" />
+    <Compile Include="services\toast\ICustomerNotifier.cs" />
     <Compile Include="services\notification\NotificationServiceSignalR.cs" />
     <Compile Include="services\notification\ReviewNotification.cs" />
     <Compile Include="services\notification\SubscribedSubcategories.cs" />
     <Compile Include="services\notification\SubscribedSubcategory.cs" />
-    <Compile Include="services\notification\ToastCustomerNotifier.cs" />
-    <Compile Include="services\notification\ToastExtentionMethods.cs" />
+    <Compile Include="services\toast\ToastCustomerNotifier.cs" />
+    <Compile Include="services\toast\ToastExtentionMethods.cs" />
     <Compile Include="viewModels\ad\AdGuestDetailsViewModel.cs" />
     <Compile Include="viewModels\ad\AdViewModel.cs" />
     <Compile Include="viewModels\ad\CategoryAdsViewModel.cs" />
@@ -361,6 +361,7 @@
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
     <Compile Include="viewModels\customer\ProfileViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
+    <Compile Include="viewModels\toast\AdReviewToastViewModel.cs" />
     <Compile Include="viewModels\toast\ChatRequestToastViewModel.cs" />
     <Compile Include="views\ad\AdGuestDetailsView.xaml.cs">
       <DependentUpon>AdGuestDetailsView.xaml</DependentUpon>
@@ -434,8 +435,11 @@
     <Compile Include="views\notifications\ChatRequestNotificationView.xaml.cs">
       <DependentUpon>ChatRequestNotificationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\notifications\ChatRequestToastNotification.xaml.cs">
-      <DependentUpon>ChatRequestToastNotification.xaml</DependentUpon>
+    <Compile Include="views\toast\AdReviewToastView.xaml.cs">
+      <DependentUpon>AdReviewToastView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\toast\ChatRequestToastView.xaml.cs">
+      <DependentUpon>ChatRequestToastView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\notifications\NotificationsView.xaml.cs">
       <DependentUpon>NotificationsView.xaml</DependentUpon>
@@ -561,7 +565,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\notifications\ChatRequestToastNotification.xaml">
+    <Page Include="views\toast\AdReviewToastView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\toast\ChatRequestToastView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

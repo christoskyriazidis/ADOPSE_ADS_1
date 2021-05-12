@@ -43,6 +43,8 @@ namespace WpfClientt.services {
             notifier.ShowWarning(warning);
         }
 
-        
+        public void ReviewAdNotification(ReviewAdNotification notification) {
+            notifier.ShowReviewAdNotification(notification);
+        }
     }
 }
