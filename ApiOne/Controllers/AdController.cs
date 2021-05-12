@@ -337,6 +337,11 @@ namespace ApiOne.Controllers
         }
 
        
-
+        [HttpGet]
+        [Route("/ad/futured")]
+        public IActionResult GetFuturedAds()
+        {
+            return Json(_adRepository.GetFutureAds());
+        }
     }
 }

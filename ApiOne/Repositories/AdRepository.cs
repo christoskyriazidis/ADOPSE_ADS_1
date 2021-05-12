@@ -556,5 +556,21 @@ namespace ApiOne.Repositories
                 return null;
             };
         }
+
+        public IEnumerable<CompleteAd> GetFutureAds()
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "select top 20 a.*,c.username,c.profileImg,c.Rating,c.reviews from ad a join customer c on (a.Customer=c.id) order by id desc";
+                var futuredAds = conn.Query<CompleteAd>(sql).ToList();
+                return futuredAds;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            };
+        }
     }
 }

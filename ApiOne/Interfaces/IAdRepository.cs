@@ -20,7 +20,7 @@ namespace ApiOne.Interfaces
         Ad UpdateAd(Ad ad);
         bool UpdateAdImg(int adId);
 
-
+        IEnumerable<CompleteAd> GetFutureAds();
 
         bool NotificationSeen(NotificationSeen notificationSeen);
         int InsertAd(CreateAd ad);
