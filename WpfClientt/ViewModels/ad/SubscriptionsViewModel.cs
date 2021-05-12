@@ -10,11 +10,11 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class SubscriptionsViewModel : IViewModel {
 
-        private INotifyService service;
+        private INotificationService service;
         public ObservableCollection<SubscribedSubcategoryViewModel> SubsribedSubcategories { get; set; } = new ObservableCollection<SubscribedSubcategoryViewModel>();
         public ObservableCollection<UnsubscribedSubcategoryViewModel> UnsubscribedSubcategories { get; set; } = new ObservableCollection<UnsubscribedSubcategoryViewModel>();
 
-        private SubscriptionsViewModel(ISet<Subcategory> subscribedSubcategories,INotifyService service,ISet<Subcategory> unsubscribedSubcategories) {
+        private SubscriptionsViewModel(ISet<Subcategory> subscribedSubcategories,INotificationService service,ISet<Subcategory> unsubscribedSubcategories) {
             this.service = service;
             foreach(Subcategory subsribecSubcategory in subscribedSubcategories) {
                 SubsribedSubcategories.Add(new SubscribedSubcategoryViewModel(subsribecSubcategory, service, Unsubscribed));
@@ -26,7 +26,7 @@ namespace WpfClientt.viewModels {
         }
 
         public static async Task<SubscriptionsViewModel> GetInstance(Category category,FactoryServices factoryServices) {
-            INotifyService service = await factoryServices.NotifyService();
+            INotificationService service = await factoryServices.NotificationService();
             ICollection<Subcategory> subcategoriesOfCategory = category.Subcategories;
             ISet<Subcategory> allSubscribedSubcategories = await service.SubscribedSubcategories();
 

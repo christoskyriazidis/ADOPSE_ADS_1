@@ -25,6 +25,8 @@ namespace WpfClientt.viewModels {
         ChatRequestManagedInToastToken,
         ChatRequestManagedInNotificationsToken,
         LogoutViewToken,
-        ChangeChatViewToken
+        ChangeChatViewToken,
+        ReviewViewToken,
+        ReviewSentToken
     }
 }

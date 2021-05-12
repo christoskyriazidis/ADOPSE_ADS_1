@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WpfClientt.views {
     /// <summary>
-    /// Interaction logic for RegisterView.xaml
+    /// Interaction logic for AdReviewNotificationView.xaml
     /// </summary>
-    public partial class RegisterView : UserControl {
-        public RegisterView() {
+    public partial class AdReviewNotificationView : UserControl {
+        public AdReviewNotificationView() {
             InitializeComponent();
         }
     }

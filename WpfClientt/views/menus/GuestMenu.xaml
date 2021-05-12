@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="WpfClientt.views.menus.GuestMenu"
+﻿<UserControl x:Class="WpfClientt.views.GuestMenu"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WpfClientt.views.menus"
+             xmlns:local="clr-namespace:WpfClientt.views"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="800">
     <Grid  Background="{StaticResource blue-medium}">
@@ -11,12 +11,10 @@
             <ColumnDefinition Width="0.03*" />
             <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.13*" />
-            <ColumnDefinition Width="0.13*" />
             <ColumnDefinition Width="0.58*" />
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Content="&lt;" IsEnabled="{Binding DataContext.IsBackButtonVisible,RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource medium_blue_button}" Command="{Binding Back}" />
         <Button Grid.Column="1" Content="Ads" Style="{StaticResource medium_blue_button}" Command="{Binding Categories}" />
         <Button Grid.Column="2" Content="Login" Style="{StaticResource medium_blue_button}" Command="{Binding Login}" />
-        <Button Grid.Column="3" Content="Register" Style="{StaticResource medium_blue_button}" Command="{Binding Register}" />
     </Grid>
 </UserControl>

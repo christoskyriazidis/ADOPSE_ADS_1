@@ -14,7 +14,7 @@ namespace WpfClientt.model {
         /// The id of the ad.
         /// </summary>
         [JsonPropertyName("id")]
-        public virtual long Id { get; set; }
+        public virtual int Id { get; set; }
 
         /// <summary>
         /// The state in which the ad is.

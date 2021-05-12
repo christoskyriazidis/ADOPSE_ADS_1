@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using ToastNotifications.Core;
 using WpfClientt.viewModels;
 
-namespace WpfClientt.views.notifications {
+namespace WpfClientt.views {
     /// <summary>
     /// Interaction logic for ChatRequestToastNotification.xaml
     /// </summary>

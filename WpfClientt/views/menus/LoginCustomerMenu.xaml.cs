@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfClientt.views.menus {
+namespace WpfClientt.views {
     /// <summary>
     /// Interaction logic for LoginCustomerMenu.xaml
     /// </summary>

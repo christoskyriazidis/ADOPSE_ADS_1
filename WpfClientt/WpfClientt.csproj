@@ -54,29 +54,29 @@
     <Reference Include="IdentityModel.OidcClient, Version=3.0.0.0, Culture=neutral, PublicKeyToken=5580d04c1b6c37c1, processorArchitecture=MSIL">
       <HintPath>..\packages\IdentityModel.OidcClient.3.1.2\lib\net472\IdentityModel.OidcClient.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Connections.Abstractions.5.0.5\lib\net461\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Connections.Abstractions.5.0.6\lib\net461\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Connections.Client, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Connections.Client.5.0.5\lib\net461\Microsoft.AspNetCore.Http.Connections.Client.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.Http.Connections.Client, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Connections.Client.5.0.6\lib\net461\Microsoft.AspNetCore.Http.Connections.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Connections.Common, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Connections.Common.5.0.5\lib\net461\Microsoft.AspNetCore.Http.Connections.Common.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.Http.Connections.Common, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Connections.Common.5.0.6\lib\net461\Microsoft.AspNetCore.Http.Connections.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.5.0.5\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.5.0.6\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.SignalR.Client, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Client.5.0.5\lib\net461\Microsoft.AspNetCore.SignalR.Client.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Client, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Client.5.0.6\lib\net461\Microsoft.AspNetCore.SignalR.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.SignalR.Client.Core, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Client.Core.5.0.5\lib\net461\Microsoft.AspNetCore.SignalR.Client.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Client.Core, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Client.Core.5.0.6\lib\net461\Microsoft.AspNetCore.SignalR.Client.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.SignalR.Common, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Common.5.0.5\lib\net461\Microsoft.AspNetCore.SignalR.Common.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Common, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Common.5.0.6\lib\net461\Microsoft.AspNetCore.SignalR.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNetCore.SignalR.Protocols.Json, Version=5.0.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Protocols.Json.5.0.5\lib\net461\Microsoft.AspNetCore.SignalR.Protocols.Json.dll</HintPath>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Protocols.Json, Version=5.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Protocols.Json.5.0.6\lib\net461\Microsoft.AspNetCore.SignalR.Protocols.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -85,14 +85,14 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.5.0.0\lib\net461\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.5.0.0\lib\net461\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=5.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.5.0.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
@@ -106,8 +106,20 @@
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.5.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.5.0.0\lib\net461\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Console, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.5.0.0\lib\net461\Microsoft.Extensions.Logging.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Debug, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Debug.5.0.0\lib\net461\Microsoft.Extensions.Logging.Debug.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Options.5.0.0\lib\net461\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.5.0.0\lib\net461\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.5.0.1\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -263,12 +275,17 @@
     <Compile Include="model\jsonConverters\SubcategoryConverter.cs" />
     <Compile Include="model\jsonConverters\TypeConverter.cs" />
     <Compile Include="model\Manufacturer.cs" />
-    <Compile Include="model\notification\AdChangedNotification.cs" />
+    <Compile Include="model\notification\AdNotification.cs" />
+    <Compile Include="model\notification\ReviewAdNotification.cs" />
+    <Compile Include="model\notification\SubcategoryChangedNotification.cs" />
+    <Compile Include="model\notification\WishlistAdChangedNotification.cs" />
+    <Compile Include="model\Review.cs" />
     <Compile Include="services\chat\ChatModel.cs" />
     <Compile Include="services\chat\ChatRequestModel.cs" />
     <Compile Include="services\notification\DeleteFromCategorySub.cs" />
     <Compile Include="services\notification\ICustomerNotifier.cs" />
-    <Compile Include="services\notification\NotifyServiceSignalR.cs" />
+    <Compile Include="services\notification\NotificationServiceSignalR.cs" />
+    <Compile Include="services\notification\ReviewNotification.cs" />
     <Compile Include="services\notification\SubscribedSubcategories.cs" />
     <Compile Include="services\notification\SubscribedSubcategory.cs" />
     <Compile Include="services\notification\ToastCustomerNotifier.cs" />
@@ -286,20 +303,20 @@
     <Compile Include="viewModels\chat\ChatBoxViewModel.cs" />
     <Compile Include="viewModels\chat\ChatViewModel.cs" />
     <Compile Include="viewModels\converters\ReverseBooleanVaueConverter.cs" />
+    <Compile Include="viewModels\customer\ReviewViewModel.cs" />
     <Compile Include="viewModels\MediatorToken.cs" />
-    <Compile Include="viewModels\notification\AdChangedNotificationViewModel.cs" />
+    <Compile Include="viewModels\notification\AdReviewNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\ChatRequestNotificationViewModel.cs" />
     <Compile Include="viewModels\notification\NotificationsViewModel.cs" />
     <Compile Include="viewModels\notification\NotificationViewModel.cs" />
     <Compile Include="viewModels\notification\SubcategoryChangedNotificationViewModel.cs" />
-    <Compile Include="model\RegisterForm.cs" />
     <Compile Include="model\State.cs" />
     <Compile Include="services\chat\ChatPage.cs" />
     <Compile Include="services\chat\ChatScroller.cs" />
     <Compile Include="services\chat\ChatServiceSignalR.cs" />
     <Compile Include="services\chat\IChatService.cs" />
     <Compile Include="services\customer\OpenIdConnectClient.cs" />
-    <Compile Include="services\notification\INotifyService.cs" />
+    <Compile Include="services\notification\INotificationService.cs" />
     <Compile Include="viewModels\chat\ChatsViewModel.cs" />
     <Compile Include="viewModels\filters\SearchFilterMember.cs" />
     <Compile Include="viewModels\customer\FormViewModel.cs" />
@@ -343,38 +360,40 @@
     <Compile Include="viewModels\menu\IMenu.cs" />
     <Compile Include="viewModels\menu\LoginCustomerMenu.cs" />
     <Compile Include="viewModels\customer\ProfileViewModel.cs" />
-    <Compile Include="viewModels\customer\RegisterViewModel.cs" />
     <Compile Include="viewModels\DisplayTextViewModel.cs" />
     <Compile Include="viewModels\toast\ChatRequestToastViewModel.cs" />
-    <Compile Include="views\AdGuestDetailsView.xaml.cs">
+    <Compile Include="views\ad\AdGuestDetailsView.xaml.cs">
       <DependentUpon>AdGuestDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\AdsDetailView.xaml.cs">
+    <Compile Include="views\ad\AdsDetailView.xaml.cs">
       <DependentUpon>AdsDetailView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\AdsView.xaml.cs">
+    <Compile Include="views\ad\AdsView.xaml.cs">
       <DependentUpon>AdsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\AdView.xaml.cs">
+    <Compile Include="views\ad\AdView.xaml.cs">
       <DependentUpon>AdView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\CategoriesView.xaml.cs">
+    <Compile Include="views\ad\CategoriesView.xaml.cs">
       <DependentUpon>CategoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\CategoryToSubcategoriesView.xaml.cs">
+    <Compile Include="views\ad\CategoryToSubcategoriesView.xaml.cs">
       <DependentUpon>CategoryToSubcategoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\ChatBoxView.xaml.cs">
+    <Compile Include="views\chat\ChatBoxView.xaml.cs">
       <DependentUpon>ChatBoxView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\ChatsView.xaml.cs">
+    <Compile Include="views\chat\ChatsView.xaml.cs">
       <DependentUpon>ChatsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\ChatView.xaml.cs">
+    <Compile Include="views\chat\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\CreateAdView.xaml.cs">
+    <Compile Include="views\ad\CreateAdView.xaml.cs">
       <DependentUpon>CreateAdView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\customer\ReviewView.xaml.cs">
+      <DependentUpon>ReviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\DisplayTextView.xaml.cs">
       <DependentUpon>DisplayTextView.xaml</DependentUpon>
@@ -394,7 +413,7 @@
     <Compile Include="views\filters\SingleChoiceFilterMemberView.xaml.cs">
       <DependentUpon>SingleChoiceFilterMemberView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\LoginView.xaml.cs">
+    <Compile Include="views\customer\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\MainWindow.xaml.cs">
@@ -406,8 +425,11 @@
     <Compile Include="views\menus\LoginCustomerMenu.xaml.cs">
       <DependentUpon>LoginCustomerMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\MessageView.xaml.cs">
+    <Compile Include="views\chat\MessageView.xaml.cs">
       <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\notifications\AdReviewNotificationView.xaml.cs">
+      <DependentUpon>AdReviewNotificationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\notifications\ChatRequestNotificationView.xaml.cs">
       <DependentUpon>ChatRequestNotificationView.xaml</DependentUpon>
@@ -418,71 +440,72 @@
     <Compile Include="views\notifications\NotificationsView.xaml.cs">
       <DependentUpon>NotificationsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\ProfileSettings.xaml.cs">
+    <Compile Include="views\customer\ProfileSettings.xaml.cs">
       <DependentUpon>ProfileSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\RegisterView.xaml.cs">
-      <DependentUpon>RegisterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="views\SubcategoriesView.xaml.cs">
+    <Compile Include="views\ad\SubcategoriesView.xaml.cs">
       <DependentUpon>SubcategoriesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\SubcategoryToAdsView.xaml.cs">
+    <Compile Include="views\ad\SubcategoryToAdsView.xaml.cs">
       <DependentUpon>SubcategoryToAdsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\SubscriptionsView.xaml.cs">
+    <Compile Include="views\ad\SubscriptionsView.xaml.cs">
       <DependentUpon>SubscriptionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\SubsribedSubcategoryView.xaml.cs">
+    <Compile Include="views\ad\SubsribedSubcategoryView.xaml.cs">
       <DependentUpon>SubsribedSubcategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\UnsuscribedSubcategoryView.xaml.cs">
+    <Compile Include="views\ad\UnsuscribedSubcategoryView.xaml.cs">
       <DependentUpon>UnsuscribedSubcategoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\UserProfileView.xaml.cs">
+    <Compile Include="views\customer\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="views\AdGuestDetailsView.xaml">
+    <Page Include="views\ad\AdGuestDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\AdsDetailView.xaml">
+    <Page Include="views\ad\AdsDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\AdsView.xaml">
+    <Page Include="views\ad\AdsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\AdView.xaml">
+    <Page Include="views\ad\AdView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\CategoriesView.xaml">
+    <Page Include="views\ad\CategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\CategoryToSubcategoriesView.xaml">
+    <Page Include="views\ad\CategoryToSubcategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\ChatBoxView.xaml">
+    <Page Include="views\chat\ChatBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\ChatsView.xaml">
+    <Page Include="views\chat\ChatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\ChatView.xaml">
+    <Page Include="views\chat\ChatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\CreateAdView.xaml">
+    <Page Include="views\ad\CreateAdView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\customer\ReviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -510,7 +533,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\LoginView.xaml">
+    <Page Include="views\customer\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -526,7 +549,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\MessageView.xaml">
+    <Page Include="views\chat\MessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\notifications\AdReviewNotificationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -542,35 +569,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\ProfileSettings.xaml">
+    <Page Include="views\customer\ProfileSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\RegisterView.xaml">
+    <Page Include="views\ad\SubcategoriesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\SubcategoriesView.xaml">
+    <Page Include="views\ad\SubcategoryToAdsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\SubcategoryToAdsView.xaml">
+    <Page Include="views\ad\SubscriptionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\SubscriptionsView.xaml">
+    <Page Include="views\ad\SubsribedSubcategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\SubsribedSubcategoryView.xaml">
+    <Page Include="views\ad\UnsuscribedSubcategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\UnsuscribedSubcategoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="views\UserProfileView.xaml">
+    <Page Include="views\customer\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

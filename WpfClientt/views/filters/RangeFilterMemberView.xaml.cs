@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfClientt.views.filters {
+namespace WpfClientt.views {
     /// <summary>
     /// Interaction logic for RangeFilterMemberView.xaml
     /// </summary>

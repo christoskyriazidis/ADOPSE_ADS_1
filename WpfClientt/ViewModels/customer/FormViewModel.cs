@@ -16,10 +16,12 @@ namespace WpfClientt.viewModels {
         public ICommand SubmitCommand { get; private set; }
 
         private ICustomerNotifier notifier;
+        private string succesMessage;
 
-        public FormViewModel(ICustomerNotifier notifier) {
+        public FormViewModel(ICustomerNotifier notifier, string succesMessage) {
             SubmitCommand = new AsyncCommand(SubmitForm);
             this.notifier = notifier;
+            this.succesMessage = succesMessage;
         }
 
         protected async Task SubmitForm() {
@@ -27,7 +29,7 @@ namespace WpfClientt.viewModels {
             if (Errors.Count == 0) {
                 notifier.Information("Trying to submite the form.");
                 await SubmitAction().Invoke(Form);
-                notifier.Success("The form has been submitted successfully.");
+                notifier.Success(succesMessage);
                 await ClearForm();
             } else {
                 notifier.Error("The form can't be submitted because of the errors.");

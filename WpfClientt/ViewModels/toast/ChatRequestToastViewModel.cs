@@ -8,7 +8,7 @@ using System.Windows.Input;
 using ToastNotifications.Core;
 using WpfClientt.model;
 using WpfClientt.services;
-using WpfClientt.views.notifications;
+using WpfClientt.views;
 
 namespace WpfClientt.viewModels {
     public class ChatRequestToastViewModel : NotificationBase {

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,9 +36,15 @@ namespace WpfClientt.services {
             this.adService = adService;
             this.customerService = customerService;
             this.notifier = notifier;
-            this.hubConnection.On("ReceiveMessage", async (int chatId) => await ReceiveMessage(chatId));
-            this.hubConnection.On("ReceiveActiveChatWpf", async (int chatId) => await ReceiveActiveChat(chatId));
-            this.hubConnection.On("ReceiveChatRequestWpf", async (int adId) => await ReceiveChatRequest(adId));
+            this.hubConnection.On<int>("ReceiveMessage", async chatId => { 
+                await ReceiveMessage(chatId); 
+            });
+            this.hubConnection.On<int>("ReceiveActiveChatWpf", async chatId => { 
+                await ReceiveActiveChat(chatId); 
+            });
+            this.hubConnection.On<int>("ReceiveChatRequestWpf", async (int adId) => {
+                await ReceiveChatRequest(adId); 
+            });
         }
 
         public static async Task<ChatServiceSignalR> GetInstance(HttpClient client, JsonSerializerOptions options, IAdService adService, ICustomerService customerService,ICustomerNotifier notifier) {
@@ -46,8 +53,12 @@ namespace WpfClientt.services {
                 HubConnection connection = new HubConnectionBuilder()
                     .WithUrl(
                         ApiInfo.ChatHubMainUrl(),
-                        config => { config.AccessTokenProvider = () => Task.FromResult(token); }
-                    )
+                        config => { config.AccessTokenProvider = () => Task.FromResult(token);}
+                    ).WithAutomaticReconnect()
+                    .ConfigureLogging(logging => {
+                        logging.AddDebug();
+                        logging.SetMinimumLevel(LogLevel.Debug);
+                    })
                     .Build();
                 instance = new ChatServiceSignalR(client, connection, adService, customerService,notifier);
                 instance.options = options;
@@ -196,6 +207,7 @@ namespace WpfClientt.services {
         }
 
         private async Task ReceiveChatRequest(int adId) {
+            ISet<ChatRequest> requests = await ChatRequests();
             IScroller<Ad> scroller = adService.ProfileAds();
             await scroller.Init();
 
@@ -215,7 +227,7 @@ namespace WpfClientt.services {
 
             if (isCustomersAd) {
                 foreach (Func<ChatRequest, Task> listener in chatRequestListeners) {
-                    await listener.Invoke( (await ChatRequests()).First() );
+                    await listener.Invoke( requests.First() );
                 }
             }
         }
@@ -250,6 +262,7 @@ namespace WpfClientt.services {
                 Customer = await customerService.ReadById(model.CustomerId)
             };
         }
+
 
     }
 }

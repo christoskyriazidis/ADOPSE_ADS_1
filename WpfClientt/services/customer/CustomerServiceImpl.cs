@@ -23,12 +23,16 @@ namespace WpfClientt.services {
             this.client = client;
         }
 
-        public Task Create(Customer customer) {
-            throw new NotImplementedException("Call the Register method instead.");
+        public async Task AddReview(Review review) {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiInfo.ReviewMainUrl());
+            request.Content = new StringContent(JsonSerializer.Serialize(review),Encoding.UTF8,"application/json");
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                response.EnsureSuccessStatusCode();
+            }
         }
-        public Task Register(RegisterForm registerForm) {
 
-            throw new NotImplementedException();
+        public Task Create(Customer customer) {
+            throw new NotImplementedException("Not supported!");
         }
 
         public async Task Delete(Customer customer) {

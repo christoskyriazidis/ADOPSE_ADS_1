@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,26 +9,29 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WpfClientt.model;
-using WpfClientt.model.notification;
 
 namespace WpfClientt.services {
-    class NotifyServiceSignalR : INotifyService {
-        private static NotifyServiceSignalR instance;
+    class NotificationServiceSignalR : INotificationService {
+        private static NotificationServiceSignalR instance;
 
         private HttpClient client;
         private JsonSerializerOptions options;
         private HubConnection hubConnection;
         private IAdDetailsService adDetailsService;
+        private ICustomerService customerService;
+        private IAdService adService;
+        private ConcurrentBag<Func<ReviewAdNotification, Task>> reviewListeners = new ConcurrentBag<Func<ReviewAdNotification, Task>>();
 
-        private NotifyServiceSignalR(HttpClient client,JsonSerializerOptions options,
-            HubConnection hubConnection,IAdDetailsService adDetailsService) {
+        private NotificationServiceSignalR(HttpClient client,HubConnection hubConnection,IAdDetailsService adDetailsService,IAdService adService,ICustomerService customerService) {
             this.client = client;
-            this.options = options;
             this.hubConnection = hubConnection;
             this.adDetailsService = adDetailsService;
+            this.adService = adService;
+            this.customerService = customerService;
+            this.hubConnection.On("ReceiveReviewNotificationsWpf", async (int adId) => await ReceiveReviewNotification(adId));
         }
 
-        public static Task<NotifyServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService) {
+        public static Task<NotificationServiceSignalR> GetInstance(HttpClient client,JsonSerializerOptions options, IAdDetailsService adDetailsService,IAdService adService,ICustomerService customerService) {
             if(instance == null) {
                 string token = client.DefaultRequestHeaders.Authorization.ToString().Replace("Bearer ", "");
                 HubConnection hubConnection = new HubConnectionBuilder()
@@ -35,13 +39,51 @@ namespace WpfClientt.services {
                         ApiInfo.NotificationHubMainUrl(),
                         config => { config.AccessTokenProvider = () => Task.FromResult(token); }
                     ).Build();
-                instance = new NotifyServiceSignalR(client, options, hubConnection,adDetailsService);
+                instance = new NotificationServiceSignalR(client, hubConnection,adDetailsService,adService,customerService);
+                instance.options = options;
             }
 
             return Task.FromResult(instance);
         }
 
-        public void AddSubcategoryChangedListener() {
+        public async Task<ISet<ReviewAdNotification>> ReviewAdNotifications() {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiInfo.ReviewNotificationsMainUrl());
+            ISet<ReviewAdNotification> notifications = new HashSet<ReviewAdNotification>();
+
+            using(HttpResponseMessage response = await client.SendAsync(request)) {
+                ReviewNotification[] reviewNotifications = await JsonSerializer
+                                                            .DeserializeAsync<ReviewNotification[]>(await response.Content.ReadAsStreamAsync(), options);
+                foreach(ReviewNotification reviewNotification in reviewNotifications) {
+                    Ad ad = await adService.ReadById(reviewNotification.AdId);
+                    Customer customer = await customerService.ReadById(reviewNotification.CustomerId);
+                    notifications.Add(new ReviewAdNotification(ad, reviewNotification.Timestamp,customer));
+                }
+
+            }
+
+            return notifications;
+        }
+
+
+        public Task<ISet<SubcategoryChangedNotification>> SubcategoryNotifications() {
+            throw new NotImplementedException();
+        }
+
+
+        public Task<ISet<WishlistAdChangedNotification>> WishlistAdNotifications() {
+            throw new NotImplementedException();
+        }
+
+
+        public void AddReviewNotificationListener(Func<ReviewAdNotification, Task> listener) {
+            reviewListeners.Add(listener);
+        }
+
+        public void RemoveReviewNotificationListener(Func<ReviewAdNotification, Task> listener) {
+            reviewListeners.Add(listener);
+        }
+
+        public void AddSubcategoryChangedListener(Action notifier) {
             throw new NotImplementedException();
         }
 
@@ -49,15 +91,11 @@ namespace WpfClientt.services {
             throw new NotImplementedException();
         }
 
-        public void AddWishListChangedListener() {
+        public void AddWishListChangedListener(Action notifier) {
             throw new NotImplementedException();
         }
 
-        public IScroller<AdChangedNotification> Notifications() {
-            throw new NotImplementedException();
-        }
-
-        public Task NotificationSeen(AdChangedNotification notification) {
+        public Task NotificationSeen(AdNotification notification) {
             throw new NotImplementedException();
         }
 
@@ -65,11 +103,12 @@ namespace WpfClientt.services {
             throw new NotImplementedException();
         }
 
-        public void RemoveSubcategoryChangedListener() {
+
+        public void RemoveSubcategoryChangedListener(Action notifier) {
             throw new NotImplementedException();
         }
 
-        public void RemoveWishListChangedListener() {
+        public void RemoveWishListChangedListener(Action notifier) {
             throw new NotImplementedException();
         }
 
@@ -116,5 +155,28 @@ namespace WpfClientt.services {
         public Task<ISet<Ad>> WishList() {
             throw new NotImplementedException();
         }
+
+
+        private async Task ReceiveReviewNotification(int adId) {
+            ISet<ReviewAdNotification> notifications = await ReviewAdNotifications();
+            bool isForCustomer = false;
+            ReviewAdNotification foundNotification = null;
+
+            foreach(ReviewAdNotification notification in notifications) {
+                if (notification.Ad.Id.Equals(adId)) {
+                    isForCustomer = true;
+                    foundNotification = notification;
+                    break;
+                }
+            }
+
+            if (isForCustomer) {
+                foreach(Func<ReviewAdNotification,Task> listener in reviewListeners) {
+                    await listener.Invoke(foundNotification);
+                }
+            }
+
+        }
+
     }
 }

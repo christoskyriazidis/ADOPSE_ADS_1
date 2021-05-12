@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace WpfClientt.views {
     /// <summary>
-    /// Interaction logic for GuestMenu.xaml
+    /// Interaction logic for ReviewView.xaml
     /// </summary>
-    public partial class GuestMenu : UserControl {
-        public GuestMenu() {
+    public partial class ReviewView : UserControl {
+        public ReviewView() {
             InitializeComponent();
         }
     }

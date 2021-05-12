@@ -50,7 +50,6 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe(MediatorToken.AdsViewToken, AdsView);
             Mediator.Subscribe(MediatorToken.CategoriesAdsViewToken, CategoriesAdsView);
             Mediator.Subscribe(MediatorToken.SubcategoriesAdsViewToken, SubcategoriesAdsView);
-            Mediator.Subscribe(MediatorToken.RegisterViewToken, RegisterView);
             Mediator.Subscribe(MediatorToken.LoginViewToken, LoginView);
             Mediator.Subscribe(MediatorToken.AdDetailsViewToken, GuestAdDetailsView);
             Mediator.Subscribe(MediatorToken.CreateAdViewToken, CreateAdView);
@@ -60,6 +59,7 @@ namespace WpfClientt.viewModels {
             Mediator.Subscribe(MediatorToken.NotificationsViewToken, NotificationsView);
             Mediator.Subscribe(MediatorToken.CategoriesSubscriptionsViewToken, CategoriesSubscriptionsView);
             Mediator.Subscribe(MediatorToken.SubscriptionsViewToken, SubscriptionsView);
+            Mediator.Subscribe(MediatorToken.ReviewViewToken, ReviewView);
         }
 
 
@@ -75,6 +75,11 @@ namespace WpfClientt.viewModels {
             }
             this.CurrentMenuView = menu;
             return Task.CompletedTask;
+        }
+
+        private async Task ReviewView(object param) {
+            ReviewAdNotification notification = (ReviewAdNotification)param;
+            AddToHistory(ReviewViewModel.GetInstance(factory, notification.Ad,notification.AdOwner));
         }
 
         private async Task SubscriptionsView(object category) {
@@ -103,11 +108,6 @@ namespace WpfClientt.viewModels {
         private async Task SubcategoriesAdsView(object category) {
             await DisplayView("Loading Page");
             AddToHistory( await SubcategoriesViewModel.SubcategoriesToAdsViewModel(factory, (Category)category) );
-        }
-
-        private async Task RegisterView(object obj) {
-            await DisplayView("Loading Page");
-            AddToHistory(await RegisterViewModel.GetInstance(factory));
         }
 
         private async Task LoginView(object obj) {

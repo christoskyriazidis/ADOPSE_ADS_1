@@ -11,7 +11,7 @@ using WpfClientt.services;
 namespace WpfClientt.viewModels {
     public class SubscribedSubcategoryViewModel : SubcategoryViewModel {
 
-        public SubscribedSubcategoryViewModel(Subcategory subcategory, INotifyService service, Action<Subcategory> notifier)
+        public SubscribedSubcategoryViewModel(Subcategory subcategory, INotificationService service, Action<Subcategory> notifier)
             : base(subcategory, new AsyncCommand(async () => { 
                         await service.UnsubscribeFromSubcategories(subcategory);
                         notifier.Invoke(subcategory);

@@ -4,10 +4,7 @@
              xmlns:local="clr-namespace:WpfClientt"
              xmlns:models="clr-namespace:WpfClientt.model"
              xmlns:viewmodels="clr-namespace:WpfClientt.viewModels"
-             xmlns:views="clr-namespace:WpfClientt.views"
-             xmlns:viewsFilter="clr-namespace:WpfClientt.views.filters"
-             xmlns:notifications="clr-namespace:WpfClientt.views.notifications"
-             xmlns:viewsMenu="clr-namespace:WpfClientt.views.menus">
+             xmlns:views="clr-namespace:WpfClientt.views">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -88,6 +85,14 @@
             </Style>
 
             <!--Data temapltes-->
+            <DataTemplate DataType="{x:Type viewmodels:ReviewViewModel}">
+                <views:ReviewView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodels:AdReviewNotificationViewModel}">
+                <views:AdReviewNotificationView />
+            </DataTemplate>
+            
             <DataTemplate DataType="{x:Type viewmodels:SubscriptionsViewModel}">
                 <views:SubscriptionsView />
             </DataTemplate>
@@ -129,15 +134,11 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:NotificationsViewModel}">
-                <notifications:NotificationsView />
+                <views:NotificationsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:ChatRequestNotificationViewModel}">
-                <notifications:ChatRequestNotificationView />
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
-                <views:RegisterView />
+                <views:ChatRequestNotificationView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
@@ -177,31 +178,31 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:GuestMenu}">
-                <viewsMenu:GuestMenu />
+                <views:GuestMenu />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:LoginCustomerMenu}">
-                <viewsMenu:LoginCustomerMenu />
+                <views:LoginCustomerMenu />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:FilterViewModel}">
-                <viewsFilter:FilterView />
+                <views:FilterView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:MultipleChoicesFilterMember}" >
-                <viewsFilter:MultipleChoicesFilterMemberView />
+                <views:MultipleChoicesFilterMemberView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:SingleChoiceFilterMember}">
-                <viewsFilter:SingleChoiceFilterMemberView />
+                <views:SingleChoiceFilterMemberView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:MinMaxPriceFilterMember}">
-                <viewsFilter:RangeFilterMemberView />
+                <views:RangeFilterMemberView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:SearchFilterMember}">
-                <viewsFilter:SearchFilterMemberView />
+                <views:SearchFilterMemberView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type models:Message}">

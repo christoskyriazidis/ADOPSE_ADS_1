@@ -30,6 +30,10 @@ namespace WpfClientt.services {
             return $"{host}/profile";
         }
 
+        internal static string ReviewMainUrl() {
+            return $"{host}/review";
+        }
+
         public static string CategoriesMainUrl() {
             return $"{host}/category";
         }
@@ -75,6 +79,10 @@ namespace WpfClientt.services {
 
         internal static string DeclineChatRequestMainUrl(ChatRequest chatRequest) {
             return $"{host}/chat/chatrequest/decline/{chatRequest.Id}";
+        }
+
+        internal static string ReviewNotificationsMainUrl() {
+            return $"{host}/reviewNotification";
         }
 
         internal static string ProfileAdsUrl() {
