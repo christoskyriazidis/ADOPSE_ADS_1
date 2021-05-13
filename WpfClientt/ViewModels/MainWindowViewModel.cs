@@ -146,6 +146,7 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task ChatsView(object obj) {
+            await DisplayView("Loading Page");
             AddToHistory(await ChatsViewModel.GetInstance(factory));
         }
         private IViewModel currentViewModel() {

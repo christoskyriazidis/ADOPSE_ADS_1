@@ -31,22 +31,30 @@ namespace WpfClientt.viewModels {
 
         public string MessageBody { get; set; }
 
-        public ChatViewModel(Chat chat, IChatService chatService, IAdService adService,ISet<Message> messages,bool isCustomersAd) {
+        public ChatViewModel(Chat chat, IChatService chatService, IAdService adService,INotificationService notificationService,bool isCustomersAd) {
             SendMessageCommand = new AsyncCommand(SendMessage);
             SellCommand = new AsyncCommand(SellAd);
-            foreach (Message message in messages) {
-                Messages.Insert(0, message);
-            }
             if(chat.Sold || !isCustomersAd) {
                 SellButtonVisibility = Visibility.Hidden;
             } else {
                 SellButtonVisibility = Visibility.Visible;
             }
             Chat = chat;
-            ButtonText = !chat.Sold ? "Send Message" : "The item is sold!You can't send messages!";
+            ButtonText = !chat.Sold ? "Send Message" : "The item is sold!You can't send messages anymore!";
             this.chatService = chatService;
-            this.chatService.AddMessageListener(MessageListener);
             this.adService = adService;
+            this.chatService.AddMessageListener(MessageListener);
+            notificationService.AddAdSoldListener(SoldListener);
+        }
+
+        private Task SoldListener(Ad ad) {
+            if (Chat.Ad.Id.Equals(ad.Id)) {
+                Chat.Sold = true;
+                ButtonText = "The item is sold!You can't send messages anymore!";
+                OnPropertyChanged(nameof(Chat.Sold));
+                OnPropertyChanged(nameof(ButtonText));
+            }
+            return Task.CompletedTask;
         }
 
         private async Task SellAd() {
@@ -55,6 +63,13 @@ namespace WpfClientt.viewModels {
             SellButtonVisibility = Visibility.Hidden;
             OnPropertyChanged(nameof(Chat.Sold));
             OnPropertyChanged(nameof(SellButtonVisibility));
+        }
+
+        internal async Task LoadMessages() {
+            ISet<Message> messages = await ChatsViewModel.GetAllMessagesOfChat(Chat, chatService);
+            foreach (Message message in messages) {
+                Messages.Insert(0, message);
+            }
         }
 
         private Task MessageListener(Message message) {

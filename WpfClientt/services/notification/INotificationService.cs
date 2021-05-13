@@ -38,5 +38,8 @@ namespace WpfClientt.services {
 
         void AddReviewNotificationListener(Func<ReviewAdNotification, Task> listener);
         void RemoveReviewNotificationListener(Func<ReviewAdNotification, Task> listener);
+
+        void AddAdSoldListener(Func<Ad, Task> listener);
+        void RemoveAdSoldListener(Func<Ad, Task> listener);
     }
 }

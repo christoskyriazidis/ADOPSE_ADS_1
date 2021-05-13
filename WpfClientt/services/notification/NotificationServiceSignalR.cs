@@ -22,6 +22,7 @@ namespace WpfClientt.services {
         private ICustomerService customerService;
         private IAdService adService;
         private ConcurrentBag<Func<ReviewAdNotification, Task>> reviewListeners = new ConcurrentBag<Func<ReviewAdNotification, Task>>();
+        private ConcurrentBag<Func<Ad, Task>> soldAdListeners = new ConcurrentBag<Func<Ad, Task>>();
 
         private NotificationServiceSignalR(HttpClient client,HubConnection hubConnection,IAdDetailsService adDetailsService,IAdService adService,ICustomerService customerService) {
             this.client = client;
@@ -62,7 +63,8 @@ namespace WpfClientt.services {
                 foreach(ReviewNotification reviewNotification in reviewNotifications) {
                     Ad ad = await adService.ReadById(reviewNotification.AdId);
                     Customer customer = await customerService.ReadById(reviewNotification.CustomerId);
-                    notifications.Add(new ReviewAdNotification(ad, reviewNotification.Timestamp,customer));
+                    string timestamp = new DateTime(1970, 1, 1).AddMilliseconds(double.Parse(reviewNotification.Timestamp)).ToString("MMMM dd yyyy hh:mm tt");
+                    notifications.Add(new ReviewAdNotification(ad, timestamp,customer));
                 }
 
             }
@@ -87,6 +89,14 @@ namespace WpfClientt.services {
 
         public void RemoveReviewNotificationListener(Func<ReviewAdNotification, Task> listener) {
             reviewListeners.Add(listener);
+        }
+
+        public void AddAdSoldListener(Func<Ad, Task> listener) {
+            soldAdListeners.Add(listener);
+        }
+
+        public void RemoveAdSoldListener(Func<Ad, Task> listener) {
+            soldAdListeners.TryTake(out listener);
         }
 
         public void AddSubcategoryChangedListener(Action notifier) {
@@ -164,6 +174,7 @@ namespace WpfClientt.services {
 
 
         private async void ReceiveReviewNotification(int adId) {
+            await NotifySoldAdListeners(adId);
             ISet<ReviewAdNotification> notifications = await ReviewAdNotifications();
             bool isForCustomer = false;
             ReviewAdNotification foundNotification = null;
@@ -182,6 +193,13 @@ namespace WpfClientt.services {
                 }
             }
 
+        }
+
+        private async Task NotifySoldAdListeners(int adId) {
+            Ad ad = await adService.ReadById(adId);
+            foreach(Func<Ad,Task> listener in soldAdListeners) {
+                await listener.Invoke(ad);
+            }
         }
 
     }

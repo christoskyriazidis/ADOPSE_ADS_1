@@ -16,14 +16,16 @@ namespace WpfClientt.viewModels {
         private IChatService chatService;
         private Customer loginCustomer;
         private IAdService adService;
+        private INotificationService notificationService;
         public ChatViewModel SelectedChat { get; private set; }
         public ObservableCollection<ChatBoxViewModel> Chats { get; private set; } = new ObservableCollection<ChatBoxViewModel>();
 
 
-        private ChatsViewModel(IChatService chatService, ISet<Chat> chats, ChatViewModel selectedChat,Customer loginCustomer,IAdService adService) {
+        private ChatsViewModel(IChatService chatService,INotificationService notificationService, ISet<Chat> chats, ChatViewModel selectedChat,Customer loginCustomer,IAdService adService) {
             this.chatService = chatService;
             this.loginCustomer = loginCustomer;
             this.adService = adService;
+            this.notificationService = notificationService;
             Mediator.Subscribe(MediatorToken.ChangeChatViewToken, SelectChat);
             foreach (Chat chat in chats) {
                 Chats.Add(new ChatBoxViewModel(chat,chatService));
@@ -34,8 +36,8 @@ namespace WpfClientt.viewModels {
 
         private async Task SelectChat(object param) {
             Chat chat = (Chat)param;
-            ISet<Message> messages = await GetAllMessagesOfChat((Chat)chat, chatService);
-            SelectedChat = new ChatViewModel(chat,chatService,adService,messages,chat.Ad.CustomerId.Equals(loginCustomer.Id));
+            SelectedChat = new ChatViewModel(chat,chatService,adService,notificationService,chat.Ad.CustomerId.Equals(loginCustomer.Id));
+            await SelectedChat.LoadMessages();
             OnPropertyChanged(nameof(SelectedChat));
         }
      
@@ -45,13 +47,17 @@ namespace WpfClientt.viewModels {
                 IChatService chatService = await factory.ChatServiceInstance();
                 Customer loginCustomer = await factory.CustomerServiceInstance().Profile();
                 IAdService adService = await factory.AdServiceInstance();
+                INotificationService notificationService = await factory.NotificationService();
                 ISet<Chat> chats = await chatService.Chats();
                 ChatViewModel selected = chats.Count > 0 ? 
-                    new ChatViewModel(chats.First(), chatService,adService,await GetAllMessagesOfChat(chats.First(), chatService),
+                    new ChatViewModel(chats.First(), chatService,adService,notificationService,
                                         chats.First().Ad.CustomerId.Equals(loginCustomer.Id)) 
                     : 
                     null;
-                instance = new ChatsViewModel(chatService, chats, selected,loginCustomer, adService);
+                if(selected != null) {
+                    await selected.LoadMessages();
+                }
+                instance = new ChatsViewModel(chatService,notificationService, chats, selected,loginCustomer, adService);
             }
             return instance;
         }
@@ -62,7 +68,7 @@ namespace WpfClientt.viewModels {
         }
 
 
-        private static async Task<ISet<Message>> GetAllMessagesOfChat(Chat chat, IChatService chatService) {
+        internal static async Task<ISet<Message>> GetAllMessagesOfChat(Chat chat, IChatService chatService) {
             IScroller<Message> scroller = chatService.Messages(chat);
             await scroller.Init();
             ISet<Message> messages = new HashSet<Message>();

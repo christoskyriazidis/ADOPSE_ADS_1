@@ -8,7 +8,6 @@ namespace WpfClientt.model {
     public class ReviewAdNotification : AdNotification {
 
         public Ad Ad { get; set; }
-
         public Customer AdOwner { get; set; }
         public string Timestamp { get; set; }
 
