@@ -13,7 +13,8 @@ using System.Web;
 
 namespace WpfClientt.services {
     public class OpenIdConnectClient {
-
+        private object stateLock = new object();
+        private object codeVerifierLock = new object();
         private HttpClient client;
         private string state;
         private string code_verifier;
@@ -27,35 +28,43 @@ namespace WpfClientt.services {
 
         public Task<string> PrepareAuthorizationRequestUrl() {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
-            state = randomDataBase64url(32);
-            code_verifier = randomDataBase64url(32);
-            parameters.Add("state", state);
+            lock (stateLock) {
+                state = randomDataBase64url(32);
+                parameters.Add("state", state);
+            }
+            lock (codeVerifierLock) {
+                code_verifier = randomDataBase64url(32);
+                parameters.Add("code_challenge", base64urlencodeNoPadding(sha256(code_verifier)));
+            }
             parameters.Add("redirect_uri", "http://localhost/sample-wpf-app");
-            parameters.Add("code_challenge", base64urlencodeNoPadding(sha256(code_verifier)));
             parameters.Add("code_challenge_method", "S256");
             parameters.Add("scope", "ApiOne openid");
             parameters.Add("response_type", "code");
             parameters.Add("client_id", "wpf");
-
+            
             return Task.FromResult(CreateAuthorizationURL(discovery.AuthorizeEndpoint,parameters));
         }
 
         public async Task RetrieveAndSetAccessToken(String redirectUrl) {
             NameValueCollection queryValues = HttpUtility.ParseQueryString(redirectUrl.Substring( redirectUrl.IndexOf("?") + 1 ));
-            Debug.WriteLine(queryValues.Get("state"));
-            if (!queryValues.Get("state").Equals(state)) {
-                throw new ApplicationException("The state sent to the authorization server does not match.");
+            lock (stateLock) {
+                if (!queryValues.Get("state").Equals(state)) {
+                    throw new ApplicationException("The state sent to the authorization server does not match.");
+                }
             }
 
-            AuthorizationCodeTokenRequest tokenRequest = new AuthorizationCodeTokenRequest() {
-                Address = discovery.TokenEndpoint,
-                Code = queryValues.Get("code"),
-                CodeVerifier = code_verifier,
-                ClientId = "wpf",
-                RedirectUri = "http://localhost/sample-wpf-app",
-                Method = HttpMethod.Post,
-                GrantType = "code"
-            };
+            AuthorizationCodeTokenRequest tokenRequest = null;
+            lock (codeVerifierLock) {
+                tokenRequest = new AuthorizationCodeTokenRequest() {
+                    Address = discovery.TokenEndpoint,
+                    Code = queryValues.Get("code"),
+                    CodeVerifier = code_verifier,
+                    ClientId = "wpf",
+                    RedirectUri = "http://localhost/sample-wpf-app",
+                    Method = HttpMethod.Post,
+                    GrantType = "code"
+                };
+            }
 
             TokenResponse tokenResponse = await client.RequestAuthorizationCodeTokenAsync(tokenRequest);
 

@@ -23,7 +23,7 @@ namespace WpfClientt.views {
     /// Interaction logic for LoginView.xaml
     /// </summary>
     public partial class LoginView : UserControl {
-        private Boolean firedOnce = false;
+        private bool firedOnce = false;
         public LoginView() {
             InitializeComponent();
             DataContextChanged += DataContextListener;

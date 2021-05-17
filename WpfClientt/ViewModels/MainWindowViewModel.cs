@@ -84,12 +84,12 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task SubscriptionsView(object category) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Subscription Page");
             AddToHistory(await SubscriptionsViewModel.GetInstance((Category)category,factory));
         }
 
         private async Task CategoriesSubscriptionsView(object _) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Categories Page");
             AddToHistory(await CategoriesViewModel.CategoriesSubscriptionViewModel(factory));
         }
 
@@ -102,26 +102,27 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task AdsView(object subcategory) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Ads Page");
             AddToHistory(await AdsViewModel.GetInstanceWithSubcategoryAds(factory,(Subcategory)subcategory));
         }
 
         private async Task SubcategoriesAdsView(object category) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Subcategories Page");
             AddToHistory( await SubcategoriesViewModel.SubcategoriesToAdsViewModel(factory, (Category)category) );
         }
 
         private async Task LoginView(object obj) {
+            await DisplayView("Loading Login Page");
             AddToHistory(await LoginViewModel.GetInstance(factory));
         }
 
         private async Task CategoriesAdsView(object obj) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Categories Page");
             AddToHistory(await CategoriesViewModel.CategoriesAdsViewModel(factory));
         }
 
         private async Task CreateAdView(object obj) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Form Page");
             AddToHistory(await CreateAdViewModel.GetInstance(factory));
         }
 
@@ -131,22 +132,22 @@ namespace WpfClientt.viewModels {
         }
 
         private async Task GuestAdDetailsView(object param) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Details Page");
             AddToHistory(await AdGuestDetailsViewModel.GetInstance((Ad)param,factory));
         }
 
         private async Task LoginAdDetailsView(object param) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading DEtails Page");
             AddToHistory(await AdDetailsViewModel.GetInstance((Ad)param, factory));
         }
 
         private async Task ProfileView(object param) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Profile Page");
             await ChangeViewModel(await ProfileViewModel.GetInstance(factory));
         }
 
         private async Task ChatsView(object obj) {
-            await DisplayView("Loading Page");
+            await DisplayView("Loading Chats Page");
             AddToHistory(await ChatsViewModel.GetInstance(factory));
         }
         private IViewModel currentViewModel() {

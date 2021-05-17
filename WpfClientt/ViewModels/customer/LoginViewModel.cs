@@ -9,8 +9,8 @@ using WpfClientt.services;
 
 namespace WpfClientt.viewModels {
     public class LoginViewModel : IViewModel {
-
-        private static LoginViewModel instance;
+        private static object instanceLock = new object();
+        private static Task<LoginViewModel> instance;
         private OpenIdConnectClient openIdConnectClient;
         private ICustomerNotifier notifier;
 
@@ -25,10 +25,14 @@ namespace WpfClientt.viewModels {
             LoginUrl = loginUrl;
         }
 
-        public static async Task<LoginViewModel> GetInstance(FactoryServices factory) {
-            if(instance == null) {
-                OpenIdConnectClient client = await factory.GetOpenIdConnectClient();
-                instance = new LoginViewModel(client, await client.PrepareAuthorizationRequestUrl(),factory.CustomerNotifier());
+        public static Task<LoginViewModel> GetInstance(FactoryServices factory) {
+            lock (instanceLock) {
+                if (instance == null) {
+                    instance = Task.Run(async () => {
+                        OpenIdConnectClient client = await factory.GetOpenIdConnectClient();
+                        return new LoginViewModel(client, await client.PrepareAuthorizationRequestUrl(), factory.CustomerNotifier());
+                    });
+                }
             }
 
             return instance;
@@ -38,6 +42,7 @@ namespace WpfClientt.viewModels {
             await Mediator.Notify(MediatorToken.DisplayPageViewToken, "Authentication in progress");
             await openIdConnectClient.RetrieveAndSetAccessToken(redirectUri);
             await Mediator.Notify(MediatorToken.LoginMenuViewToken);
+            await Mediator.Notify(MediatorToken.DisplayPageViewToken, "Successful Login");
             notifier.Success("You've logged in successfully!");
         }
 
