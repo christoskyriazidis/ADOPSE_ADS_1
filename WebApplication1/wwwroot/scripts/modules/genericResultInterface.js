@@ -19,8 +19,8 @@ export default class GenericResultInterface {
   allFilters = null;
   urlParams;
   args = "none";
-  distance=10000;
-  distancefield="&distance="
+  distance = 10000;
+  distancefield = "&distance=";
   constructor(intent, args = null) {
     this.urlParams = new URLSearchParams(window.location.search);
     switch (intent) {
@@ -61,16 +61,16 @@ export default class GenericResultInterface {
       cb(this.dictionary);
     });
   }
-  setLink = (num,value) => {
+  setLink = (num, value) => {
     this.currentPageNumber = num;
     const pageSizeParam = this.pageSizeString + this.pageSize;
     const pageNumberParam = this.pageNumberString + this.currentPageNumber;
     this.sortField = document.querySelector(".sorting")
       ? document.querySelector(".sorting").value
       : "idH";
-    this.distance=value?value:10000
-    if(value>195){
-      this.distance=10000
+    this.distance = value ? value : 10000;
+    if (value > 195) {
+      this.distance = 10000;
     }
     this.link =
       this.resourceServer +
@@ -80,7 +80,9 @@ export default class GenericResultInterface {
       this.filters +
       this.search +
       this.sortby +
-      this.sortField+this.distancefield+this.distance
+      this.sortField +
+      this.distancefield +
+      this.distance;
     axios
       .get(this.link)
       .then((response) => response.data)
@@ -90,7 +92,7 @@ export default class GenericResultInterface {
       })
       .catch(console.log);
   };
-  populateMainPage=(data)=>{
+  populateMainPage = (data) => {
     this.lastPageNumber = data["totalPages"];
     document.querySelector(".contentContainer").innerHTML = "";
     let allAds = "";
@@ -103,7 +105,9 @@ export default class GenericResultInterface {
             customer-name="${object.username}"
             customer-rating="${object.rating}"
             customer-reviews="${object.reviews}"
-            condition="Posted ${determineNotation((Date.now()-Date.parse(object.createdate))/1000)} ago"
+            condition="Posted ${determineNotation(
+              (Date.now() - Date.parse(object.createdate)) / 1000
+            )} ago"
             type="${this.dictionary.typ.get(object.type)}"
             price="${object.price}"
             item-image="${object.img}"
@@ -131,20 +135,29 @@ export default class GenericResultInterface {
       pager.setAttribute("current-page", this.currentPageNumber);
       pager.setAttribute("last-page", data["totalPages"]);
     }
-  }
+  };
   populateSearchArea = (data) => {
     document.querySelector(".hits").innerHTML =
       "Total results: " + data.totalAds;
     this.lastPageNumber = data["totalPages"];
     document.querySelector(".contentContainer").innerHTML = "";
     let allAds = "";
-    const sort=document.querySelector(".sorting").options[document.querySelector(".sorting").selectedIndex].value;
+    const sort =
+      document.querySelector(".sorting").options[
+        document.querySelector(".sorting").selectedIndex
+      ].value;
     for (let object of data.result) {
       document.querySelector(
         ".contentContainer"
       ).innerHTML += `<ad-component title="${object.title}"
             customer-image="${object.profileimg}"
-            customer-id="${me!=null?(object.subid==me.profile.sub?"me":object.customer):""}"
+            customer-id="${
+              me != null
+                ? object.subid == me.profile.sub
+                  ? "me"
+                  : object.customer
+                : ""
+            }"
             customer-name="${object.username}"
             customer-rating="${object.rating}"
             customer-reviews="${object.reviews}"
@@ -152,7 +165,11 @@ export default class GenericResultInterface {
             type="${this.dictionary.typ.get(object.type)}"
             price="${object.price}"
             item-image="${object.img}"
-            ${(sort=="coordsL"||sort=="coordsH")?"distance="+object.distance+"km away":""}
+            ${
+              sort == "coordsL" || sort == "coordsH"
+                ? "distance=" + object.distance + "km away"
+                : ""
+            }
             id="${object.id}"></ad-component>`;
       // axios.get(`https://localhost:44374/customer/${object.customer}`)
       //     .then((response) => response.data)
@@ -179,7 +196,7 @@ export default class GenericResultInterface {
     }
   };
   populateMyAds = (data) => {
-    console.log("lol ",data)
+    console.log("lol ", data);
     this.lastPageNumber = data["totalPages"];
     document.querySelector(".contentContainer").innerHTML = "";
     let allAds = "";
@@ -270,8 +287,7 @@ export default class GenericResultInterface {
     console.log(this.allFilters);
 
     this.setSearchQuery();
-    if(document.querySelector("#searchBox").value.length==0){
-     
+    if (document.querySelector("#searchBox").value.length == 0) {
     }
     this.setLink(1);
   };
@@ -285,8 +301,8 @@ export default class GenericResultInterface {
           .replace(/[^a-z0-9 ]/g, "")
           .replace(/\s+/g, "+")
           .replace(/[+]+$/, "");
-    } else  {
-      this.search=""
+    } else {
+      this.search = "";
       //this.search = "&title="+this.urlParams.get("title");
     }
   };
@@ -301,7 +317,7 @@ export default class GenericResultInterface {
     });
   };
   populateBoughtSoldAds = (data) => {
-    console.log("lol ",data)
+    console.log("lol ", data);
     this.lastPageNumber = data["totalPages"];
     document.querySelector(".contentContainer").innerHTML = "";
     let allAds = "";
@@ -315,13 +331,15 @@ export default class GenericResultInterface {
             customer-name="${object.username}"
             customer-rating="${object.rating}"
             customer-reviews="${object.reviews}"
-            condition="${new Date(parseInt(object.transactionDate)).toLocaleDateString()}"
+            condition="${new Date(
+              parseInt(object.transactionDate)
+            ).toLocaleDateString()}"
             type="${object.username}"
             price="${object.price}"
             item-image="${object.img}"
             id="${object.id}"></ad-component>`;
     }
-  }
+  };
   handleBoughtAds = () => {
     this.getDictionary((maps) => {
       this.dictionary = maps;
@@ -390,7 +408,7 @@ export default class GenericResultInterface {
     });
   };
   handleMain = () => {
-    this.endpoint="ad/featured"
+    this.endpoint = "ad/featured";
     this.contextHandler = this.populateMainPage;
     let dict = new Dictionary();
     this.getDictionary((maps) => {
@@ -464,11 +482,17 @@ export default class GenericResultInterface {
     }
   };
   handleSellers = () => {
+    this.pageSize=20;
     let customerList = "";
-    axios
-      .get("https://localhost:44374/customer")
-      .then((response) => response.data)
-      .then((data) => {
+    this.endpoint = "customer";
+    this.contextHandler=this.sellerContextHandler;
+    this.setLink(1)
+  };
+  sellerContextHandler = (data) => {
+        
+        let customerList=""
+        this.lastPageNumber = data["totalPages"];
+        this.currentPageNumber = data["currentPage"];
         for (let object of data.result) {
           console.log(object);
           customerList += `
@@ -488,10 +512,10 @@ export default class GenericResultInterface {
         for (let pager of pagers) {
           console.log(this.currentPageNumber);
           pager.setAttribute("current-page", this.currentPageNumber);
-          pager.setAttribute("last-page", data["totalPages"]);
+          pager.setAttribute("last-page", this.lastPageNumber);
         }
         document.querySelector(".customerContent").innerHTML = customerList;
-      });
+     
   };
   callNext() {
     if (this.lastPageNumber > this.currentPageNumber) {

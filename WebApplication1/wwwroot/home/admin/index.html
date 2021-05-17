@@ -9,11 +9,19 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/scripts/sign-in.js"></script>
     <title>Document</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#3385d9;">
-      <a class="navbar-brand" href="#"><img src="/styles/graphics/logo.png" width="140" height="70" alt=""></a>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark"
+      style="background-color: #3385d9"
+    >
+      <a class="navbar-brand" href="#"
+        ><img src="/styles/graphics/logo.png" width="140" height="70" alt=""
+      /></a>
       <button
         class="navbar-toggler"
         type="button"
@@ -27,35 +35,34 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Log out</a>
-          </li>
-          
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown h4">
             <a
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle active"
               href="#"
               id="navbarDropdownMenuLink"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Dropdown link
+              Utils
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" onclick="showModalCat()" href="#"
+                >Add Category</a
+              >
+              <a class="dropdown-item" onclick="showModalSub()" href="#"
+                >Add SubCategory</a
+              >
+              <a class="dropdown-item" href="#">Reports</a>
             </div>
+          </li>
+          <li class="nav-item active h4">
+            <a class="nav-link" href="#" onclick="signOut()">Log out</a>
           </li>
         </ul>
       </div>
     </nav>
+    <h1>Welcome Admin</h1>
   </body>
   <script
     src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -72,4 +79,169 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"
   ></script>
+  <div class="modal catModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add category</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body addCategoryContent">
+          <div
+            class="picPreview"
+            style="
+              display: none;
+              width: 300px;
+              height: 300px;
+              background-size: contain;
+            "
+          ></div>
+          <input
+            onchange="displayPreview(event)"
+            type="file"
+            name="image"
+            id="image"
+          />
+          <input type="text" placeholder="title" name="" id="titleInput" />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="postCategory()"
+          >
+            Save changes
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal subModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add category</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body addCategoryContent">
+          <select name="" id="categories"></select>
+          <div
+            class="picPreview2"
+            style="
+              display: none;
+              width: 300px;
+              height: 300px;
+              background-size: contain;
+            "
+          ></div>
+          <input
+            onchange="displayPreview(event)"
+            type="file"
+            name="image"
+            id="subimage"
+          />
+          <input type="text" placeholder="title" name="" id="subtitleInput" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="postSubcat()">
+            Save changes
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showModalSub() {
+      $(".subModal").modal("show");
+    }
+    function showModalCat() {
+      $(".catModal").modal("show");
+    }
+    function postCategory() {
+      var formData = new FormData();
+      formData.append("Img", document.querySelector("#image").files[0]);
+      formData.append("Title", document.querySelector("#titleInput").value);
+
+      axios
+        .post("https://localhost:44374/admin/category", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          alert("Succesfuly added category");
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
+    function postSubcat() {
+      var formData2 = new FormData();
+      formData2.append("Img", document.querySelector("#subimage").files[0]);
+      formData2.append("Title", document.querySelector("#subtitleInput").value);
+      formData2.append("CategoryId",document.querySelector("#categories").options[document.querySelector("#categories").selectedIndex].value)
+
+      axios
+        .post("https://localhost:44374/admin/subcategory", formData2, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          alert("Succesfuly added category");
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
+    function displayPreview(evt) {
+      console.log("wtfc");
+      document.querySelector(".picPreview").style.display = "block";
+      document.querySelector(
+        ".picPreview"
+      ).style.backgroundImage = `url(${URL.createObjectURL(
+        document.querySelector("#image").files[0]
+      )})`;
+    }
+
+    getCategoryDictionary = () => {
+       axios
+        .get("https://localhost:44374/category")
+        .then((response) => response.data)
+        .then((data) => {
+          console.log(data)
+          for(object of data){
+            fillWithCats(object.title,object.id)
+          }
+        });
+    };
+    getCategoryDictionary()
+    function fillWithCats(value, id) {
+      document.querySelector(
+        "#categories"
+      ).innerHTML += `<option value="${id}">${value}</option>`;
+    }
+  </script>
 </html>

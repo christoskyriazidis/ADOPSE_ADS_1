@@ -88,6 +88,7 @@ class NavbarComponent extends HTMLElement {
             <li><a href="/home/profile/addAd/index.html">Create an ad</a></li>
             <li><a href="/home/profile/boughtAds/index.html">Bought ads</a></li>
             <li><a href="/home/profile/soldAds/index.html">Sold ads</a></li>
+            <li><a href="/home/profile/loginLogs/index.html">Login logs</a></li>
             <li><a href="#" onclick="signOut()">Logout</a></li>
         </ul>
     </div>

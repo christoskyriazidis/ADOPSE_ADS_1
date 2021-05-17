@@ -50,6 +50,13 @@
   overflow-wrap: break-word;
 }
 
+.sellAd {
+  background-color: #00b100;
+  color: white;
+  border-radius: 20px;
+  padding: 5px;
+}
+
 .afterLoad {
   -webkit-animation: 0.4s ease-out 0s 1 slideInFromLeft;
           animation: 0.4s ease-out 0s 1 slideInFromLeft;

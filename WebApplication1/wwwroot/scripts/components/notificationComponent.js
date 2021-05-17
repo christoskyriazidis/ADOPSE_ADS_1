@@ -21,7 +21,11 @@ class NotificationComponent extends HTMLElement {
           "#1860AA";
         document.querySelector(".notification").style.border =
           "1px solid white";
+        notifCounter = 0;
+        document.querySelector(".notificationItems").innerHTML="";
         this.callApi();
+
+
       }
     });
     this.callApi();
@@ -98,9 +102,12 @@ setSeen = (type, adId, id, sold) => {
 };
 //style="background-image:url('${object.productphoto}')
 function handleApiDataNotifications(data) {
-  let prevData=document.querySelector(".notificationItems")?document.querySelector(".notificationItems").innerHTML:""
-  let allItems= "";
-  data=data.reverse();
+  console.log(data);
+  let prevData = document.querySelector(".notificationItems")
+    ? document.querySelector(".notificationItems").innerHTML
+    : "";
+  let allItems = "";
+  data = data.reverse();
   for (object of data) {
     console.log(object);
     const item = `
@@ -140,7 +147,7 @@ function handleApiDataNotifications(data) {
     <div class="notificationContainer">
         <div class="notificationContent">
             <ul class="notificationItems">
-                ${allItems+prevData}
+                ${allItems + prevData}
             </ul>
         </div>
         <br>

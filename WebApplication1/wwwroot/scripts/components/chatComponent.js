@@ -100,7 +100,7 @@ class ChatComponent extends HTMLElement {
                 <div class="profileImg"><img src="${this.profileImg}"></div>
                 ${
                   this.type == "Seller"
-                    ? `<span onclick="sellAd(${this.adId},${this.customerId})">Sell</span>`
+                    ? `<span onclick="sellAd(${this.adId},${this.customerId})" class="sellAd" >Sell</span>`
                     : ``
                 }
                 <img class="minimizeBtn" onclick="minimize()" src="/styles/graphics/minimize.svg" alt="">
