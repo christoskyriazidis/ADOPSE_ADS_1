@@ -36,5 +36,6 @@ namespace ApiOne.Models.Queries
         public int MinPrice { get; set; } = 1;
 
         public string SortBy { get; set; } = "idH";
+        public string Distance { get; set; } = "10000";
     }
 }

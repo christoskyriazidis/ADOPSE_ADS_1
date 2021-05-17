@@ -1,9 +1,11 @@
 // const template = document.createElement('template');
 // template.innerHTML = html
-
+let notifCounter = 0;
 class NotificationComponent extends HTMLElement {
+  counter = 0;
   constructor() {
     super();
+
     var connection = new signalR.HubConnectionBuilder()
       .withUrl("https://localhost:44374/NotificationHub")
       .build();
@@ -25,8 +27,9 @@ class NotificationComponent extends HTMLElement {
     this.callApi();
   }
   callApi = () => {
+    notifCounter++;
     axios
-      .get("https://localhost:44374/notification/1")
+      .get("https://localhost:44374/notification/" + notifCounter)
       .then((response) => response.data)
       .then(handleApiDataNotifications)
       .then(this.render)
@@ -36,6 +39,21 @@ class NotificationComponent extends HTMLElement {
   connectedCallback() {}
   render = (html) => {
     this.innerHTML = html;
+    console.log("....", document.querySelector(".notificationItems"));
+    document
+      .querySelector(".notificationItems")
+      .addEventListener("scroll", () => {
+        if (document.querySelector(".notificationItems").scrollTop == 0) {
+          notifCounter++;
+          axios
+            .get("https://localhost:44374/notification/" + notifCounter)
+            .then((response) => response.data)
+            .then(handleApiDataNotifications)
+            .then(this.render)
+            .catch((x) => console.log(x))
+            .finally();
+        }
+      });
   };
 }
 function listen() {
@@ -47,38 +65,47 @@ function listen() {
     .catch((x) => console.log(x))
     .finally();
 }
-setSeen = (type, adId, id) => {
+setSeen = (type, adId, id, sold) => {
   const data = {
     Type: type,
     Id: id,
   };
-  axios
-    .put("https://localhost:44374/notification/", data)
-    .then((response) => response.data)
-    .then(() => {
-      if (type != "Review") {
-        window.location.href =
-          "https://localhost:44366/home/ad/index.html?id=" + adId;
-      } else {
-        window.location.href =
-          "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
-          object.customerId +
-          "&adId=" +
-          object.adId;
-      }
-    })
-    .then(this.render)
-    .catch((x) => console.log(x))
-    .finally();
+  if (sold) {
+    alert("Already droped a review");
+    return;
+  }
+  if (type != "Review") {
+    axios
+      .put("https://localhost:44374/notification/", data)
+      .then((response) => response.data)
+      .then(() => {
+        if (type != "Review") {
+          window.location.href =
+            "https://localhost:44366/home/ad/index.html?id=" + adId;
+        } else {
+        }
+      })
+      .then(this.render)
+      .catch((x) => console.log(x))
+      .finally();
+  } else {
+    window.location.href =
+      "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
+      object.customerId +
+      "&adId=" +
+      object.adId;
+  }
 };
 //style="background-image:url('${object.productphoto}')
 function handleApiDataNotifications(data) {
-  let allItems = "";
+  let prevData=document.querySelector(".notificationItems")?document.querySelector(".notificationItems").innerHTML:""
+  let allItems= "";
+  data=data.reverse();
   for (object of data) {
     console.log(object);
     const item = `
-        <li onclick="setSeen('${object.type}',${object.adId},${
-      object.id
+        <li onclick="setSeen('${object.type}',${object.adId},${object.id},${
+      object.sold
     })" class="${object.clicked ? "" : "new"}" >
             <a href="${object.type != "Review" ? "#" : "#"}">
                 <span class="itemImage qwe" style='background-image:url(${
@@ -113,7 +140,7 @@ function handleApiDataNotifications(data) {
     <div class="notificationContainer">
         <div class="notificationContent">
             <ul class="notificationItems">
-                ${allItems}
+                ${allItems+prevData}
             </ul>
         </div>
         <br>
@@ -126,10 +153,11 @@ function handleApiDataNotifications(data) {
 
   return html;
 }
+
 determineNotation = (seconds) => {
   let final;
   if (seconds < 60) {
-    return seconds + " seconds";
+    return Math.round(seconds) + " seconds";
   } else if (seconds / 60 < 60) {
     return Math.round(seconds / 60) + " minutes";
   } else if (seconds / 60 / 60 < 24) {
@@ -138,4 +166,5 @@ determineNotation = (seconds) => {
     return Math.round(seconds / 60 / 60 / 24) + " days";
   }
 };
+
 customElements.define("notification-component", NotificationComponent);

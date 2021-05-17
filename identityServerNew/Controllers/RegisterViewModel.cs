@@ -40,6 +40,9 @@ namespace identityServerNew.Controllers
         [Required]
         public string StreetAddress { get; set; }
 
+        [Required]
+        public string PostalCode { get; set; }
+
         public string ReturnUrl { get; set; }
     }
 }

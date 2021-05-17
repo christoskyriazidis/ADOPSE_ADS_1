@@ -27,7 +27,10 @@ userManager.getUser().then(user => {
     }
 
     else {
-    
+        document.querySelector(".sorting").innerHTML=`<option value="idH">Newest</option>
+        <option value="idL">Oldest</option>
+        <option value="priceH">Price 🡻</option>
+        <option value="priceL">Price 🡹</option>`
     }
 });
 var refreshing = false;

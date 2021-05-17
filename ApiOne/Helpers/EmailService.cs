@@ -24,6 +24,7 @@ namespace ApiOne.Helpers
         }
         private readonly IHubContext<NotificationHub> _notificationHub;
         private readonly ICustomerRepository _customerRepo = new CustomerRepository();
+        static bool mailSent = false;
 
         public static void SendMail(MailMessage mailMessage)
         {
@@ -43,20 +44,20 @@ namespace ApiOne.Helpers
 
         private static void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
-            String token = (string)e.UserState;
+            
             if (e.Cancelled)
             {
-                Console.WriteLine("[{0}] Send canceled.", token);
+                Debug.WriteLine("[{0}] Send canceled.");
             }
             if (e.Error != null)
             {
-                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+                Debug.WriteLine("[{0}] {1}", e.Error.ToString());
             }
             else
             {
-                Console.WriteLine("Message sent.");
+                Debug.WriteLine("Message sent.");
             }
-            
+
         }
     }
 }

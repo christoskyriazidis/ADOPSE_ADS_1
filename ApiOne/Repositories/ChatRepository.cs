@@ -120,7 +120,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "update ChatRequest set confirmed=1 where id=@Rid";
+                string sql = "delete from ChatRequest where id=@Rid";
                 var chatMessages = conn.Query<int>(sql, new { Rid }).FirstOrDefault();
                 return true;
             }

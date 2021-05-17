@@ -120,3 +120,16 @@ main {
     }
   }
 }
+.distance{
+  width:200px;
+  margin-left:50px;
+  input{
+    width:100%;
+  }
+}
+.labels{
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+  margin-bottom:-20px;
+}

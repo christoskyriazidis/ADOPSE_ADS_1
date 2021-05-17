@@ -25,6 +25,7 @@ h1 {
 }
 
 .categoriesContainer .categories li {
+  cursor: pointer;
   height: 200px;
   width: 200px;
   background-repeat: no-repeat;
@@ -62,6 +63,6 @@ h1 {
 .categoriesContainer .categories li button {
   background-color: transparent;
   border: none;
-  font-size: larger;
+  font-size: x-large;
 }
 /*# sourceMappingURL=categories.css.map */

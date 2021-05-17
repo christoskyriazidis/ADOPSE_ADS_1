@@ -21,6 +21,7 @@ export default class ProfileController {
 
                 axios.get(`https://localhost:44374/ad/${this.urlParams.get("id")}`).then(response => response.data)
                     .then(data => {
+                        document.querySelector(".picPreview").style.backgroundImage=`url(${data.img})`
                         document.querySelector(".descriptionInput").innerHTML += data.description
                         document.querySelector(".titleInput").value = data.title
                         document.querySelector(".priceInput").value = data.price;
@@ -131,6 +132,7 @@ export default class ProfileController {
             }
 
         }).then(response => {
+            window.location="https://localhost:44366/home/profile/myAds/index.html"
             console.log(response)
         }).catch(error => {
             console.log(error.response.data)
@@ -152,6 +154,7 @@ export default class ProfileController {
         axios.put(`https://localhost:44374/ad`, ad)
             .then(response => {
                 console.log(response)
+                window.location.reload(true)
             }).catch(error => {
                 console.log(error.response.data)
             });

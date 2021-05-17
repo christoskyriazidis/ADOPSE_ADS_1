@@ -203,7 +203,10 @@ namespace ApiOne.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
-            var sender = _customerRepo.GetCustomer(3);
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _customerRepo.GetCustomerIdFromSub(subId);
+            var sender = _customerRepo.GetCustomer(intId);
             var receiver = _customerRepo.GetCustomer(customerMail.SellerId);
 
             var dir = _env.ContentRootPath;
@@ -213,14 +216,15 @@ namespace ApiOne.Controllers
             string template2 = template1.Replace("#user#", sender.Username);
             string template3 = template2.Replace("#email#", sender.Email);
             string template4 = template3.Replace("#adId#", customerMail.AdId.ToString());
+            string template5 = template4.Replace("#custid#", $"https://localhost:44366/home/profile/index.html?id={sender.Id}");
 
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("mailservice.adopse@gmail.com"),
                 Subject = $"Customer:{sender.Username} sent you a message for your product...!!!",
-                Body = template4,
+                Body = template5,
                 IsBodyHtml = true,
-                To = {sender.Email}
+                To = { receiver.Email}
             };
             //using static class EmailService to send mail async!
             EmailService.SendMail(mailMessage);
@@ -343,6 +347,16 @@ namespace ApiOne.Controllers
                 return Json(new { response=$" Ad:{reportAd.AdId} Reported!"});
             }
             return Json(new { response="Exeis eidh kanei report auto to ad"});
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("/test")]
+        public IActionResult test()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            return Json(_customerRepo.GetCoordsBySubId(subId));
         }
     }
 }

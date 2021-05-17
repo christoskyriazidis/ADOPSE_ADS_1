@@ -25,8 +25,11 @@ namespace ApiOne.Models.Ads
 
         public string username { get; set; }
         public string profileimg { get; set; }
+        public string subid { get; set; }
+        public string coords { get; set; }
         public int rating { get; set; }
         public int reviews { get; set; }
+        public double distance{ get; set; }
 
 
         public int subcategoryid { get; set; }

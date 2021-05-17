@@ -30,10 +30,10 @@
   border-radius: 20px;
   margin-top: 15px;
   margin-bottom: 15px;
-  background-color: #d59ef5;
+  background-color: #3385d9;
   -webkit-box-shadow: 5px 5px 5px grey;
           box-shadow: 5px 5px 5px grey;
-  border: 0.5px solid #ab80c4;
+  border: 0.5px solid #3385d9;
   margin-left: auto;
   opacity: 1;
   -webkit-transition-duration: 1s;
@@ -44,10 +44,10 @@
 }
 
 .chatCellText {
+  color: white;
   text-align: right;
   padding: 5px;
   overflow-wrap: break-word;
-  color: #1f1f1f;
 }
 
 .afterLoad {

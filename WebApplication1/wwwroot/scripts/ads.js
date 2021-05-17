@@ -22,6 +22,7 @@ axios.get(`https://localhost:44374/ad/${urlParams.get("id")}`)
         window.customer=customer
         document.querySelector(".description").innerHTML += data.description
         document.querySelector(".postedOn").innerHTML += data.createDate
+        document.querySelector(".lastUpdate").innerHTML += determineNotation((Date.now()-Date.parse(data.lastUpdate))/1000)+" ago"
         document.querySelector(".adLocation").innerHTML += data.address
         document.querySelector(".adPrice").innerHTML += data.price + "€"
         document.querySelector(".adTitle").innerHTML = `<h1>${data.title}</h1>`

@@ -165,6 +165,7 @@ const attachNotifications = (event) => {
   if (
     document.querySelector("notification-component").classList.contains("fresh")
   ) {
+    
     document.querySelector(".notification").style.backgroundColor =
       "transparent";
     document.querySelector(".notification").style.border = "none";
@@ -188,7 +189,9 @@ const attachNotifications = (event) => {
       }
     });
   } else {
+   
     document.querySelector("notification-component").style.display = "block";
+    
     document.querySelector(".notification").style.backgroundColor =
       "transparent";
     document.querySelector(".notification").style.border = "none";
@@ -200,7 +203,10 @@ const attachNotifications = (event) => {
   const notificationComponent = document.querySelector(
     "notification-component"
   );
+  
   notificationComponent.style.display = "block";
+  document.querySelector(".notificationItems").scrollTo(0,document.querySelector(".notificationItems").scrollHeight)
+  console.log(document.querySelector(".notificationItems").scrollHeight);
   notificationComponent.style.left = x + "px";
   notificationComponent.style.top = y + "px";
 };

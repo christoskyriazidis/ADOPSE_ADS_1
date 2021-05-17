@@ -161,4 +161,27 @@ main .mainContentArea .contentContainer ad-component {
   margin: 30px;
   margin-left: 0px;
 }
+
+.distance {
+  width: 200px;
+  margin-left: 50px;
+}
+
+.distance input {
+  width: 100%;
+}
+
+.labels {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: -20px;
+}
 /*# sourceMappingURL=search.css.map */

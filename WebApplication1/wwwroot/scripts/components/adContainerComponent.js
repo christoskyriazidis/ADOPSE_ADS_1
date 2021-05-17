@@ -38,6 +38,9 @@ class AdContainerComponent extends HTMLElement {
   get case() {
     return this.getAttribute("case");
   }
+  get distance(){
+    return this.getAttribute("distance");
+  }
   constructor() {
     super();
     this.render();
@@ -57,8 +60,9 @@ class AdContainerComponent extends HTMLElement {
                         <div class="itemInfo">
                             <span class="title" >${this.title}</span>
                             <span class="condition">${this.condition}</span>
+                            ${this.distance?`<span class='addistance'>${this.distance}</span>`:""}
                             <span class="price">${this.price}$</span>
-                           
+
                         </div>
 
                     </a>

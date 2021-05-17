@@ -418,9 +418,6 @@ namespace ApiOne.Repositories
             else if (notificationSeen.Type.Equals("subcategory"))
             {
                 sql = $"UPDATE [SubCategoryNotification] SET clicked=1 where id=@Id";
-            }else if (notificationSeen.Type.Equals("review"))
-            {
-                sql = $"UPDATE [ReviewNotification] SET commented=1 where id=@Id";
             }
             try
             {
@@ -562,7 +559,7 @@ namespace ApiOne.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select top 20 a.*,c.username,c.profileImg,c.Rating,c.reviews from ad a join customer c on (a.Customer=c.id) order by id desc";
+                string sql = "select top 10 a.*,c.username,c.profileImg,c.Rating,c.reviews,c.subId from ad a join customer c on (a.Customer=c.id) order by id desc";
                 var futuredAds = conn.Query<CompleteAd>(sql).ToList();
                 return futuredAds;
             }
