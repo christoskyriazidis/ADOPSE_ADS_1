@@ -17,8 +17,8 @@
                 <ColumnDefinition Width="0.15*" />
             </Grid.ColumnDefinitions>
             <!--Ads-->
-            <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Ads}" HorizontalAlignment="Center">
+            <ScrollViewer  VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Ads}" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
