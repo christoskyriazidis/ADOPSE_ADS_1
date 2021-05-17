@@ -1,4 +1,5 @@
 ﻿using identityServerNew.Controllers;
+using identityServerNew.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -12,11 +13,11 @@ namespace identityServerNew.Helpers
 {
     public class SqlServerHelpers
     {
-        public static bool InsertIntoDb(string username,string email,string name,string lastname,string address, string subid,string mobilePhone)
+        public static bool InsertIntoDb(string username,string email,string name,string lastname,string address, string subid,string mobilePhone, LocationModel locationModel)
         {
             using (SqlConnection connection = new SqlConnection(Startup._config.GetConnectionString("AdDb")))
             {
-                String query = "INSERT INTO [customer] (username,name,email,lastname,address,subid,MobilePhone) VALUES (@username,@name,@email,@lastname,@address,@subid,@MobilePhone)";
+                String query = "INSERT INTO [customer] (username,name,email,lastname,address,subid,MobilePhone,coordinates) VALUES (@username,@name,@email,@lastname,@address,@subid,@MobilePhone,@coordinates)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -27,6 +28,7 @@ namespace identityServerNew.Helpers
                     command.Parameters.AddWithValue("@address", address);
                     command.Parameters.AddWithValue("@subid", subid);
                     command.Parameters.AddWithValue("@MobilePhone", mobilePhone);
+                    command.Parameters.AddWithValue("@coordinates", $"{locationModel.Latitude},{locationModel.Longitude}");
 
                     connection.Open();
                     int result = command.ExecuteNonQuery();

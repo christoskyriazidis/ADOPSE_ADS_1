@@ -58,23 +58,27 @@
                     <h4>Manufacturers</h4>
                 </div><select name="" id="manufacturerGroup"> </select>
             </div>
-
+            
             <button class="editAd">edit ad</button>
 
         </div>
         <div class="container">
+            <div class="picPreview"></div>
             <div class=" group">
                 <div class="info">
                     <h4>Select a picture</h4>
-                </div><input type="file" class="image" value="add image"></select>
+                </div><input onchange="displayPreview(event)" type="file" class="image" value="add image"></select>
             </div>
             <button class="changeImage">change image</button>
         </div>
     </main>
 
     <script>
-
-
+        
+        function displayPreview(evt){
+            console.log("wtfc")
+            document.querySelector(".picPreview").style.backgroundImage=`url(${URL.createObjectURL(document.querySelector(".image").files[0])})`
+        }
 
     </script>
     <script src="/scripts/sign-in.js" ></script>

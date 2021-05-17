@@ -28,7 +28,7 @@ class ChatRequest extends HTMLElement {
       });
     connection.on("ReceiveChatRequest", (subId) => {
       this.callApi();
-      if (subId == me.profile.sub) {
+      if (subId != me.profile.sub) {
         document.querySelector(".chatRequest").style.backgroundColor =
           "#1860AA";
         document.querySelector(".chatRequest").style.border =
@@ -85,6 +85,16 @@ class ChatRequest extends HTMLElement {
 acceptRequest = (id) => {
   axios
     .post("https://localhost:44374/chat/chatrequest/confirm/" + id)
+    .then(console.log)
+    .then(() => {
+      document
+        .querySelector("chatrequest-component")
+        .setAttribute("fresh", true);
+    });
+};
+declineRequest = (id) => {
+  axios
+    .post("https://localhost:44374/chat/chatrequest/decline/" + id)
     .then(console.log)
     .then(() => {
       document

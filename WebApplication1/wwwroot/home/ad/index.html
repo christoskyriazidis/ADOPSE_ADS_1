@@ -116,6 +116,7 @@
           <div class="sellerDetails"></div>
           <div class="details">
             <div class="postedOn"><b>Posted on: </b></div>
+            <div class="lastUpdate"><b>Last update: </b></div>
             <div class="adLocation"><b>Seller location: </b></div>
             <div class="adPrice"><b>Price: </b></div>
             <div class="adSubcategory"><b>Category: </b></div>
@@ -143,11 +144,11 @@
         console.log("ahahahha");
         document.querySelector(".modalContent").innerHTML = `
           <p>Write a message here</p>
-          <textarea ></textarea>
+          <textarea class="textarea2"></textarea>
           <button onclick="sendEmail()">Send email</button>`;
       };
       const sendEmail = () => {
-        let textarea = document.querySelector("textarea");
+        let textarea = document.querySelector(".textarea2");
 
         if (textarea.textLength <= 10) {
           alert(

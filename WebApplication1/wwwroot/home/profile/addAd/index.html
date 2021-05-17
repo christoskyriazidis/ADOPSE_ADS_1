@@ -59,9 +59,9 @@
             <div class=" group">
                 <div class="info">
                     <h4>Select a picture</h4>
-                </div><input type="file" class="image" value="add image"></select>
+                </div><input onchange="displayPreview(event)" type="file" class="image" value="add image"></select>
             </div>
-        
+            <div class="picPreview" style="display:none;"></div>
             <button class="submitAd">post ad</button>
         </div>
     </main>
@@ -74,4 +74,13 @@
 <script src="/scripts/components/chatDropdownComponent.js"></script>
     <script src="/scripts/components/chatRequestsComponent.js"></script>
     <script src="/scripts/components/chatComponent.js"></script>
+    <script>
+        
+        function displayPreview(evt){
+            document.querySelector(".picPreview").style.display="block"
+            console.log("wtfc")
+            document.querySelector(".picPreview").style.backgroundImage=`url(${URL.createObjectURL(document.querySelector(".image").files[0])})`
+        }
+
+    </script>
 </html>

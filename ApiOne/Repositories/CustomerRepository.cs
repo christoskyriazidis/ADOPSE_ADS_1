@@ -36,6 +36,22 @@ namespace ApiOne.Repositories
             }
         }
 
+        public string GetCoordsBySubId(string SubId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT coordinates from Customer where SubId=@SubId";
+                var sub = conn.Query<string>(sql, new { SubId }).FirstOrDefault();
+                return sub;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
         public CustomerDetails GetCustomer(int id)
         {
             try

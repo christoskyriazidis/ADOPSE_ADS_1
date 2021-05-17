@@ -130,21 +130,21 @@ namespace ApiOne.Controllers
                 return Json(new { response = $"{ChatId} accepted" });
             }
             return BadRequest(new { message="kati pige lathos"});
-        } 
-        
-        //[Authorize]
-        //[HttpPost]
-        //[Route("/chat/chatrequest/decline/{ChatId}")]
-        //public async Task<IActionResult> DeclineChatRequest(int ChatId)
-        //{
-        //    if (_chatRepository.AcceptChatRequest(ChatId))
-        //    {
-        //        await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{ChatId}");
-        //        return Json(new { response = $"{ChatId} accepted" });
-        //    }
-        //    return BadRequest(new { message="kati pige lathos"});
-        //}
-        
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("/chat/chatrequest/decline/{ChatId}")]
+        public async Task<IActionResult> DeclineChatRequest(int ChatId)
+        {
+            if (_chatRepository.DeclineChatRequest(ChatId))
+            {
+                //await _chatHub.Clients.All.SendAsync("ReceiveActiveChat", $" ActiveChatId:{ChatId}");
+                return Json(new { response = $"{ChatId} declined" });
+            }
+            return BadRequest(new { message = "kati pige lathos" });
+        }
+
         [Authorize]
         [HttpGet]
         [Route("/activechat")]

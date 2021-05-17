@@ -89,12 +89,15 @@ class ChatComponent extends HTMLElement {
   get profileImg(){
     return this.getAttribute("profile-img");
   }
+  get username(){
+    return this.getAttribute("customer-username");
+  }
   render = (chatContent) => {
     this.id = this.chatId;
     this.innerHTML = `
             <div class="mainChatBody showBorder">
             <div class="chatHeader ">
-                <div class="profileImg"><img src="/styles/graphics/logo.png"></div>
+                <div class="profileImg"><img src="${this.profileImg}"></div>
                 ${
                   this.type == "Seller"
                     ? `<span onclick="sellAd(${this.adId},${this.customerId})">Sell</span>`
@@ -207,7 +210,9 @@ class ChatComponent extends HTMLElement {
     }
   };
   loadNextPage = (event) => {
+    console.log(this.querySelector(".contentDisplay").scrollTop)
     if (this.querySelector(".contentDisplay").scrollTop == 0) {
+      this.pageNum++;
       const data = {
         params: { pageNumber: this.pageNum, chatId: this.chatId },
       };
@@ -215,10 +220,11 @@ class ChatComponent extends HTMLElement {
         .get("https://localhost:44374/message", data)
         .then((res) => res.data)
         .then((data) => {
-          this.pageNum++;
-          const previousChat = document
+          
+          let previousChat = document
             .getElementById(this.id)
             .querySelector(".contentDisplay").innerHTML;
+           
           let currentChatPage = "";
           data = data.reverse();
           for (let object of data) {
@@ -228,19 +234,19 @@ class ChatComponent extends HTMLElement {
                                             </div > `;
             } else {
               currentChatPage += ` <div class="chatCellB" >
-                                            <div class="chatCellTextB">${object.username}: ${object.message}</div>
+                                            <div class="chatCellTextB">${object.username}: ${object.message} </div>
                                             </div > `;
             }
           }
 
           console.log(data.length);
-          document
-            .querySelector(".contentDisplay")
-            .scrollTo(
-              0,
-              -document.querySelector(".contentDisplay").scrollHeight
-            );
-          this.render(currentChatPage + previousChat);
+          // document
+          //   .querySelector(".contentDisplay")
+          //   .scrollTo(
+          //     0,
+          //     -1000
+          //   );
+          this.render(currentChatPage+previousChat);
         });
     }
   };

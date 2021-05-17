@@ -17,6 +17,8 @@ namespace ApiOne.Models.Ads
         public int CustomerId{ get; set; }
         public int AdId{ get; set; }
         public int Price{ get; set; }
+        public int reviews{ get; set; }
+        public int rating{ get; set; }
 
     }
 }

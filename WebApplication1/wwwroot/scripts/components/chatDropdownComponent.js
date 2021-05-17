@@ -19,7 +19,7 @@ class ChatDropdown extends HTMLElement {
       });
     connection.on("ReceiveActiveChat", (subId) => {
       this.callApi();
-      if(subId==me.profile.sub){
+      if(true){
         document.querySelector(".chat").style.backgroundColor =
         "#1860AA";
       document.querySelector(".chat").style.border =
@@ -37,7 +37,7 @@ class ChatDropdown extends HTMLElement {
         console.log(data);
         for (let object of data) {
           items += `
-                    <li onclick="createChat(${object.id},${object.adId},${object.sold},${object.customerId},'${object.type}','${object.profileImg}')">
+                    <li onclick="createChat(${object.id},${object.adId},${object.sold},${object.customerId},'${object.type}','${object.profileImg}','${object.username}')">
                         
                             <span class="chatImage" style='background-image:url(${object.profileImg})' alt=""></span>
                             <div class="chatDescription">
@@ -70,7 +70,7 @@ class ChatDropdown extends HTMLElement {
   };
 }
 customElements.define("chatdropdown-component", ChatDropdown);
-createChat = (id, adId, sold, customerId, type,profileImage) => {
+createChat = (id, adId, sold, customerId, type,profileImage,username) => {
   for (let chat of document.querySelector(".chatsContainer").children) {
     console.log(chat.classList.contains(`chat${id}`));
     if (chat.classList.contains(`chat${id}`)) {
@@ -79,6 +79,6 @@ createChat = (id, adId, sold, customerId, type,profileImage) => {
   }
 
   document.querySelector(".chatsContainer").innerHTML += `
-    <chat-component class="chat${id}" chat-id="${id}" sold="${sold}" ad-id="${adId}"  type="${type}" profile-img="${profileImage}" customer-id="${customerId}"></chat-component>
+    <chat-component class="chat${id}" chat-id="${id}" sold="${sold}" ad-id="${adId}"  type="${type}" profile-img="${profileImage}" customer-id="${customerId}" customer-username="${username}"></chat-component>
     `;
 };

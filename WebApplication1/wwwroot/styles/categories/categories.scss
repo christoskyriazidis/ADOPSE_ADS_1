@@ -11,8 +11,9 @@ h1 {
     flex-direction: row;
     list-style: none;
     padding: 0px;
-
+    
     li {
+      cursor: pointer;
       height: 200px;
       width: 200px;
       background-repeat: no-repeat;
@@ -35,7 +36,9 @@ h1 {
       button {
         background-color:transparent;
         border:none;
-        font-size:larger;
+        font-size:x-large;
+        
+        
       }
     }
   }

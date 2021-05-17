@@ -65,13 +65,13 @@ namespace identityServerNew.Controllers
         }
 
 
-        [HttpGet]
-        [Route("/sql")]
-        public IActionResult testingg()
-        {
+        //[HttpGet]
+        //[Route("/sql")]
+        //public IActionResult testingg()
+        //{
 
-            return Json(new { result= SqlServerHelpers.InsertIntoDb("takhs", "mail", "name", "lastname", "adress", "idd","phone?") }) ;
-        }
+        //    return Json(new { result= SqlServerHelpers.InsertIntoDb("takhs", "mail", "name", "lastname", "adress", "idd","phone?") }) ;
+        //}
         //[Route("/cssMail")]
         //[HttpGet]
         //public async Task<IActionResult> mailSending()
@@ -306,6 +306,7 @@ namespace identityServerNew.Controllers
             }
             var externalClaims = info.Principal.Claims.ToList();
             var emailClaim = externalClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            //var nameClaim = externalClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
             var user = new IdentityUser
             {
@@ -318,15 +319,18 @@ namespace identityServerNew.Controllers
             {
                 return View(vm);
             }
-           
+
             var claims = new List<Claim>();
             claims.Add(new Claim("username", vm.Username));
             claims.Add(new Claim(ClaimTypes.Role, "Customer"));
             var claimResult = await _userManager.AddClaimsAsync(user, claims);
             var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var emailConfirm = await _userManager.ConfirmEmailAsync(user, emailToken);
-            //SqlServerHelpers.InsertIntoDb(vm.Username, "nomail", info., rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
 
+            //var coords = await MapsHelpers.GetCoordsFromAddress(rgv.StreetAddress, rgv.PostalCode);
+            LocationModel locationModel = new LocationModel{Address="waiting for address",Latitude=-1,Longitude=-1 };
+            
+            var adResult = SqlServerHelpers.InsertIntoDb(vm.Username, emailClaim, info.ProviderDisplayName, info.ProviderDisplayName, info.ProviderDisplayName, user.Id, info.ProviderDisplayName, locationModel);
             if (!claimResult.Succeeded)
             {
                 return View(vm);
@@ -421,8 +425,14 @@ namespace identityServerNew.Controllers
                 UserName = rgv.Username,
                 Email = rgv.Email,
             };
+            var coords = await MapsHelpers.GetCoordsFromAddress(rgv.StreetAddress,rgv.PostalCode);
+            if (coords == null)
+            {
+                ViewBag.Message = "Wrong address/postalcode";
+                return View(rgv);
+            }
             var result = await _userManager.CreateAsync(user, rgv.Password);
-            var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone);
+            var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone, coords);
 
             if (result.Succeeded && adResult)
                 //if (result.Succeeded)

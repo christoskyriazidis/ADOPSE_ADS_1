@@ -26,9 +26,10 @@
     border-radius: 20px;
     margin-top: 15px;
     margin-bottom: 15px;
-    background-color: rgb(213, 158, 245);
+    background-color: #3385d9;
     box-shadow: 5px 5px 5px grey;
-    border: 0.5px solid rgb(171, 128, 196);
+    border: 0.5px solid #3385d9;
+    
     margin-left: auto;
     opacity: 1;
     transition-duration: 1s;
@@ -36,10 +37,11 @@
 }
 
 .chatCellText {
+    color:white;
     text-align: right;
     padding: 5px;
     overflow-wrap: break-word;
-    color: rgb(31, 31, 31);
+
 }
 
 .afterLoad {
@@ -71,6 +73,7 @@ chat-component {
                 height: 100%;
                 width: 44px;
                 padding: 5px;
+               
                 img {
                     width: 100%;
                     border-radius: 100%;
