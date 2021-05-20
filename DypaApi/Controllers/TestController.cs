@@ -20,5 +20,16 @@ namespace DypaApi.Controllers
             //return Json(new {count=count });
             return Json(new { message="authorize"});
         }
+        
+        [HttpGet]
+        [Route("/okay")]
+        public IActionResult TestEndPointss()
+        {
+
+            //var count = Test.Testing();
+            //return Json(new {count=count });
+
+            return Json(new { message="11111dfutdsahorizeeee"});
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace ApiOne
             services.AddAuthentication("Bearer").AddJwtBearer("Bearer", config => {
                 config.Authority = "https://localhost:44305/";
                 //kai kala poios mporei na mpei edw.. (ApiOne)
-                config.Audience = "ApiOne"
+                config.Audience = "ApiOne";
                 config.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
