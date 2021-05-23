@@ -1,0 +1,182 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:display=swap");
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+nav {
+  background: #a3bcb6;
+  background: -webkit-gradient(linear, left top, right top, color-stop(80%, #a3bcb6), to(#daded4));
+  background: linear-gradient(90deg, #a3bcb6 80%, #daded4 100%);
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 999;
+  -webkit-box-shadow: 1px 1px 15px #2d2f2d;
+          box-shadow: 1px 1px 15px #2d2f2d;
+}
+
+nav .navbar-brand {
+  font-size: xx-large;
+  color: #2d2f2d;
+}
+
+nav .navbar-collapse {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+nav .navbar-collapse .unauthorized {
+  width: 100px;
+  color: #2d2f2d;
+  font-weight: 500;
+  margin-left: 20px;
+  border: 1px solid #2d2f2d;
+  text-align: center;
+}
+
+nav .navbar-collapse .authorized {
+  color: #2d2f2d;
+  font-size: large;
+  border: 1px solid transparent;
+  margin-left: 10px;
+  width: 150px;
+  text-align: center;
+}
+
+nav .navbar-collapse .authorized:hover {
+  border: 1px solid #2d2f2d;
+  background-color: rgba(255, 255, 255, 0.157);
+}
+
+nav .navbar-collapse .signUpBtn {
+  background-color: #daded4;
+}
+
+nav notification-component {
+  position: absolute;
+  z-index: 999;
+  background-color: white;
+  font-family: "Roboto", sans-serif;
+  width: 300px;
+  border: 1px solid rgba(202, 202, 202, 0.657);
+  padding-bottom: 20px;
+  -webkit-box-shadow: 5px 5px 25px grey;
+          box-shadow: 5px 5px 25px grey;
+}
+
+nav notification-component .notificationContainer ::-webkit-scrollbar {
+  width: 10px;
+}
+
+nav notification-component .notificationContainer ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+nav notification-component .notificationContainer ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+nav notification-component .notificationContainer ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+nav notification-component .notificationContainer .notificationItems {
+  max-height: 400px;
+  overflow-y: auto;
+  border-bottom: 1px solid rgba(202, 202, 202, 0.657);
+  padding: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+nav notification-component .notificationContainer .notificationItems li {
+  padding: 5px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  list-style: none;
+  background-color: rgba(230, 230, 230, 0.424);
+}
+
+nav notification-component .notificationContainer .notificationItems li a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  text-decoration: none;
+  color: black;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+nav notification-component .notificationContainer .notificationItems li a .itemImage {
+  background-color: white;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-height: 50px;
+  height: 50px;
+  width: 50px;
+  border: 1px solid rgba(202, 202, 202, 0.657);
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+nav notification-component .notificationContainer .notificationItems li a .itemDescription {
+  width: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+nav notification-component .notificationContainer .notificationItems li a .itemDescription .title {
+  font-size: small;
+  font-weight: bold;
+}
+
+nav notification-component .notificationContainer .notificationItems li a .itemDescription .date {
+  font-size: small;
+}
+
+nav notification-component .notificationContainer .notificationItems .new {
+  background-color: white;
+}
+
+nav notification-component .notificationContainer .notificationItems .new * {
+  color: #0e5fca;
+}
+
+nav notification-component .notificationContainer .notificationMore {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+nav notification-component .notificationContainer .notificationMore a {
+  text-decoration: none;
+  -webkit-box-shadow: 3px 5px 10px grey;
+          box-shadow: 3px 5px 10px grey;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+  color: black;
+  background-color: #1b6dc1;
+  color: white;
+}
+/*# sourceMappingURL=navbar.css.map */

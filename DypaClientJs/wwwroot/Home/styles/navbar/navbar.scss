@@ -1,0 +1,144 @@
+$green-primary: #39603d;
+$green-secondary: #a3bcb6;
+$dark-grey: #2d2f2d;
+$light-grey: #daded4;
+$white: #fff;
+$dark-yellow: #2c2c2b;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:display=swap");
+* {
+    font-family: "Roboto", sans-serif;
+}
+nav {
+    background: rgb(163, 188, 182);
+    background: linear-gradient(90deg, $green-secondary 80%, $light-grey  100%);
+    position: sticky;
+    z-index: 999;
+    box-shadow: 1px 1px 15px $dark-grey;
+    .navbar-brand {
+        font-size: xx-large;
+        color: $dark-grey;
+    }
+    .navbar-collapse {
+        justify-content: flex-end;
+        .unauthorized {
+            width: 100px;
+            color: $dark-grey;
+            font-weight: 500;
+            margin-left: 20px;
+            border: 1px solid $dark-grey;
+            text-align: center;
+        }
+        .authorized {
+            color: $dark-grey;
+            font-size: large;
+            border: 1px solid transparent;
+            margin-left: 10px;
+            width: 150px;
+            text-align: center;
+            &:hover {
+                border: 1px solid $dark-grey;
+                background-color: rgba(255, 255, 255, 0.157);
+            }
+        }
+
+        .signUpBtn {
+            background-color: $light-grey;
+        }
+    }
+    $subtle-grey: rgba(202, 202, 202, 0.657);
+    $primary-color: #1b6dc1;
+    $secondary-color: #3385d9;
+    $alternative-color: #7bb6f1ad;
+    notification-component {
+        position: absolute;
+        z-index: 999;
+        background-color: white;
+        font-family: "Roboto", sans-serif;
+        width: 300px;
+        border: 1px solid $subtle-grey;
+        
+        padding-bottom: 20px;
+        box-shadow: 5px 5px 25px grey;
+        .notificationContainer {
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+            .notificationItems {
+                max-height: 400px;
+                overflow-y: auto;
+                border-bottom: 1px solid $subtle-grey;
+                padding: 0px;
+                display: flex;
+                flex-direction: column;
+                li {
+                    padding: 5px;
+                    padding-bottom: 15px;
+                    padding-top: 15px;
+                    list-style: none;
+                    background-color: rgba(230, 230, 230, 0.424);
+                    a {
+                        display: flex;
+                        flex-direction: row;
+                        text-decoration: none;
+                        color: black;
+                        align-items: center;
+                        .itemImage {
+                            background-color: white;
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            max-height: 50px;
+                            height: 50px;
+                            width: 50px;
+                            border: 1px solid $subtle-grey;
+                            border-radius: 10px;
+                            margin-right: 10px;
+                        }
+                        .itemDescription {
+                            width: 250px;
+                            display: flex;
+                            flex-direction: column;
+                            .title {
+                                font-size: small;
+                                font-weight: bold;
+                            }
+                            .date {
+                                font-size: small;
+                            }
+                        }
+                    }
+                }
+                .new {
+                    background-color: white;
+                }
+                .new * {
+                    color: rgb(14, 95, 202);
+                }
+            }
+            .notificationMore {
+                display: flex;
+                justify-content: center;
+                a {
+                    text-decoration: none;
+                    box-shadow: 3px 5px 10px grey;
+                    padding: 5px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    border-radius: 10px;
+                    color: black;
+                    background-color: $primary-color;
+                    color: white;
+                }
+            }
+        }
+    }
+}
