@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.weatherWrapper {
+  background-color: #5c5f5c;
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.containers {
+  width: 100vw;
+  margin: 0px;
+}
+
+.widget {
+  margin: 20px;
+  width: 300px;
+  height: 200px;
+  border-radius: 20px;
+  background: #a3bcb6;
+}
+
+.center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.widget .center .left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 50%;
+}
+
+.widget .center .right {
+  width: 50%;
+  color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.icon {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+.weather-status {
+  color: #fff;
+  text-align: center;
+  margin-top: -20px;
+}
+
+.widget .right .city {
+  font-size: 1em;
+  text-align: center;
+  margin: 0;
+  text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .right .degree {
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .bottom {
+  width: 100%;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+}
+
+.widget .bottom div {
+  text-align: center;
+  line-height: 100%;
+  font-size: 0.83em;
+  text-shadow: 1px 1px 5px #707070;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.bottom div span {
+  display: block;
+}
+/*# sourceMappingURL=fieldOverview.css.map */

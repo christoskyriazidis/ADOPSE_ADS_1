@@ -1,0 +1,112 @@
+$green-primary: #3e6943;
+$green-secondary: #a3bcb6;
+$dark-grey: #5c5f5c;
+$light-grey: #daded4;
+$white: #fff;
+$dark-yellow: #2c2c2b;
+*{
+	
+	margin: 0;
+	font-family: 'Roboto', sans-serif;
+}
+.weatherWrapper{
+    background-color:$dark-grey;
+    width:100vw;
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    flex-wrap:wrap;
+}
+
+.containers{
+	width:100vw;
+    margin:0px;
+}
+
+.widget{
+    margin:20px;
+	width: 300px;
+	height: 200px;
+	border-radius: 20px;
+	background: $green-secondary;
+}
+.center{
+    display:flex;
+    justify-content: space-around;
+}
+.widget .center .left{
+	display:flex;
+    align-items: center;;
+	flex-direction:column;
+	width: 50%;
+}
+
+.widget .center .right{
+	
+	
+	width: 50%;
+	color: #fff;
+	display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items:center;
+}
+
+.icon{
+	
+	width:120px;
+    height:120px;
+	display: block;
+	
+}
+
+.weather-status{
+	color: #fff;
+	text-align: center;
+	margin-top: -20px;
+}
+
+.widget .right .city{
+	font-size: 1em;
+	text-align: center;
+	margin: 0;
+	text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .right .degree{
+	font-size: 3em;
+	font-weight: bold;
+	text-align: center;
+	margin: 0;
+	text-shadow: 1px 1px 5px #707070;
+}
+
+.widget .bottom{
+	width: 100%;
+	// position: absolute;
+	margin-top:20px;
+	display: flex;
+	justify-content: center;
+	color: #fff;
+}
+
+.widget .bottom div{
+	
+	text-align: center;
+	line-height: 100%;
+	font-size: 0.83em;
+	text-shadow: 1px 1px 5px #707070;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.bottom div span{
+	display: block;
+}
+
+
+
+
+
+
+

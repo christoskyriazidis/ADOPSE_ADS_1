@@ -1,4 +1,4 @@
-$green-primary: #39603d;
+$green-primary: #59925f;
 $green-secondary: #a3bcb6;
 $dark-grey: #2d2f2d;
 $light-grey: #daded4;
@@ -9,8 +9,8 @@ $dark-yellow: #2c2c2b;
     font-family: "Roboto", sans-serif;
 }
 nav {
-    background: rgb(163, 188, 182);
-    background: linear-gradient(90deg, $green-secondary 80%, $light-grey  100%);
+    background: $green-secondary;
+
     position: sticky;
     z-index: 999;
     box-shadow: 1px 1px 15px $dark-grey;
@@ -27,6 +27,7 @@ nav {
             margin-left: 20px;
             border: 1px solid $dark-grey;
             text-align: center;
+          
         }
         .authorized {
             color: $dark-grey;
