@@ -1,0 +1,52 @@
+:root {
+    font-size: 16px;
+    font-family: "Open Sans" sans-serif;
+    --text-primary: #b6b6b6;
+    --text-secondary: #23232e;
+    --bg-primary: #23232e;
+    --bg-secondary: #141418;
+    --transition-speed: 600ms;
+  }
+
+.flexbox-container{
+    display: flex;
+    flex-wrap: wrap;
+    height: 600px;
+    justify-content: space-around;
+    align-content: center;   
+    background-color: #a3bcb6;
+
+}
+
+
+.flexbox-item-1{
+    height: 300px;
+    width: 20%;
+    border-radius: 30px;
+    background-color: #fff;
+
+}
+
+.flexbox-item-2{
+    height: 500px;
+    width: 50%;
+    border-radius: 30px;
+    background-color: #fff;
+    float: left;
+}
+
+.flexbox-item-3{
+    height: 100px;
+    width: 20%;
+    border-radius: 30px;
+    background-color: #fff;
+    text-align: center;
+    
+ 
+}
+
+.flexbox-item-1 p{
+    font-size: medium;
+    
+}
+
