@@ -55,7 +55,7 @@ class NavbarComponent extends HTMLElement {
             default: {
                 listItems = `
                 <li class="nav-item">
-                    <a class="nav-link unauthorized" href="#">Log In</a>
+                    <a class="nav-link unauthorized" href="#" onclick="signIn()">Log In</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link signUpBtn unauthorized" href="#">Sign Up</a>
