@@ -44,7 +44,7 @@ class NavbarComponent extends HTMLElement {
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link authorized" href="#">Log out</a>
+                    <a class="nav-link authorized" href="#" onclick="signOut()">Log out</a>
                 </li>
                 <notification-component class="fresh" style="display:none;"></notification-component>
 
@@ -58,7 +58,7 @@ class NavbarComponent extends HTMLElement {
                     <a class="nav-link unauthorized" href="#" onclick="signIn()">Log In</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link signUpBtn unauthorized" href="#">Sign Up</a>
+                    <a class="nav-link signUpBtn unauthorized" href="https://localhost:44305/Auth/Register">Sign Up</a>
                 </li>
                   `;
                 break;
