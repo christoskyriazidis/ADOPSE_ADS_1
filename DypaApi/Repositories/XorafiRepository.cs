@@ -122,7 +122,7 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT TOP(1) * FROM xorafi WHERE id =@Xid";
+                string sql = "select x.*,l.title as locationTitle,l.latitude,l.longitude from xorafi x join location l on (x.id=l.xorafiid)  WHERE x.id =@Xid";
                 var xorafi = conn.Query<Xorafi>(sql,new { Xid}).FirstOrDefault();
                 return xorafi;
             }

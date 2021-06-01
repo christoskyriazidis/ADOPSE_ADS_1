@@ -389,7 +389,7 @@ namespace identityServerNew.Controllers
             {
                 if (user.UserName != "admin")
                 {
-                    SqlServerHelpers.LoginLogs(user.Id, "10.l2.1.1");
+                    //SqlServerHelpers.LoginLogs(user.Id, "10.l2.1.1");
                 }
                 return Redirect(lvm.ReturnUrl);
             }
