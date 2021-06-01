@@ -13,7 +13,7 @@ namespace DypaApi.Helpers
         public static SqlConnection GetSqlConnection()
         {
 
-            string connString = Startup.StaticConfig.GetConnectionString("AzureServer");
+            string connString = Startup.StaticConfig.GetConnectionString("DefaultConnection");
 
             var connection = new SqlConnection(connString);
             connection.Open();

@@ -57,5 +57,37 @@ namespace identityServerNew.Helpers
                 }
             }
         }
+
+        public static bool InsertIntoDypaDb(string username, string email, string name, string lastname, string address, string subid, string mobilePhone, LocationModel locationModel)
+        {
+            using (SqlConnection connection = new SqlConnection(Startup._config.GetConnectionString("SmartXorafi")))
+            {
+                String query = "INSERT INTO [Users] (username,email,address,coords,subid,MobilePhone,name,LastName,role) VALUES " +
+                    "(@username,@email,@address,@coords,@subid,@mobilephone,@name,@lastname,@role)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@name", name);
+                    command.Parameters.AddWithValue("@email", email);
+                    command.Parameters.AddWithValue("@lastname", lastname);
+                    command.Parameters.AddWithValue("@address", address);
+                    command.Parameters.AddWithValue("@subid", subid);
+                    command.Parameters.AddWithValue("@mobilephone", mobilePhone);
+                    command.Parameters.AddWithValue("@role", 1);
+                    command.Parameters.AddWithValue("@coords", $"{locationModel.Latitude},{locationModel.Longitude}");
+
+                    connection.Open();
+                    int result = command.ExecuteNonQuery();
+                    // Check Error
+                    if (result < 0)
+                        return false;
+
+                    return true;
+
+                }
+            }
+        }
+
     }
 }

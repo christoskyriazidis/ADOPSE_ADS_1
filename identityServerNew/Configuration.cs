@@ -114,7 +114,7 @@ namespace identityServerNew
                     ClientId="client_id_js_Dypa",
                     AllowedGrantTypes=GrantTypes.Code,
                     RequirePkce=true,
-                    //automato
+
                     RequireClientSecret=false,
                     RedirectUris ={"https://localhost:44376/home/signin.html"},
                     PostLogoutRedirectUris ={"https://localhost:44376/Home/Index.html"},

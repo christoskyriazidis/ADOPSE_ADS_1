@@ -433,8 +433,9 @@ namespace identityServerNew.Controllers
             }
             var result = await _userManager.CreateAsync(user, rgv.Password);
             var adResult = SqlServerHelpers.InsertIntoDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone, coords);
+            var xorafiResult = SqlServerHelpers.InsertIntoDypaDb(rgv.Username, rgv.Email, rgv.Name, rgv.LastName, rgv.StreetAddress, user.Id, rgv.MobilePhone, coords);
 
-            if (result.Succeeded && adResult)
+            if (result.Succeeded && adResult && xorafiResult)
                 //if (result.Succeeded)
             {
                 var claims = new List<Claim>();

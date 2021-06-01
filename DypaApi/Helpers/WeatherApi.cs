@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DypaApi.Interfaces
+namespace DypaApi.Helpers
 {
-    public interface ITest
+    public class WeatherApi
     {
-        
+        //public static async Task<>
     }
 }

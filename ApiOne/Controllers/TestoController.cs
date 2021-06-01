@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using ApiOne.Models.Location;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiOne.Controllers
 {
@@ -60,6 +61,28 @@ namespace ApiOne.Controllers
             }
             return locationModel;
         }
+
+        [Route("/asfaleia")]
+        public IActionResult GetTest()
+        {
+            return Json(new { response = "message"});
+        }
+
+        [Authorize]
+        [Route("/asfaleia/customer")]
+        public IActionResult GetTestCustomer()
+        {
+            return Json(new { response = "Customer message"});
+        }
+
+        [Authorize(Policy ="Admin")]
+        [Route("/asfaleia/admin")]
+        public IActionResult GetTestAdmin()
+        {
+            return Json(new { response = "Admin message"});
+        }
+
+
     }
 }
 

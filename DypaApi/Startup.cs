@@ -1,4 +1,5 @@
 using DypaApi.Hubs;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -13,8 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using DypaApi.CronJobs;
 
 namespace DypaApi
 {
@@ -68,6 +73,14 @@ namespace DypaApi
                     policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
                 });
             });
+            services.AddHangfire(config => {
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage();
+                
+            });
+            services.AddHangfireServer();
             services.AddControllers()
            .AddNewtonsoftJson(
              options =>
@@ -83,11 +96,17 @@ namespace DypaApi
             {
                 o.EnableDetailedErrors = true;
             });
-
+            services.AddSingleton<ICronJob, CronJob>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            IBackgroundJobClient backgroundJobClient,
+            IRecurringJobManager recurringJobManager,
+            IServiceProvider serviceProvider
+            )
         {
             if (env.IsDevelopment())
             {
@@ -100,7 +119,7 @@ namespace DypaApi
                Path.Combine(Directory.GetCurrentDirectory(), "Images")),
                 RequestPath = "/Images",
                 EnableDirectoryBrowsing = true
-            }); ;
+            });
 
             //app.UseCors("AllowAll");
             app.UseCors(x => x
@@ -120,8 +139,17 @@ namespace DypaApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<NotificationHub>("/chathub");   
+                endpoints.MapHub<NotificationHub>("/notificationHub");   
             });
+            app.UseHangfireDashboard();
+
+            //recurringJobManager.AddOrUpdate("HourlySensors",
+            //    () => serviceProvider.GetService<ICronJob>().FetchSensorAsync(),
+            //    Cron.Minutely);
+            //recurringJobManager.AddOrUpdate("WeeklyForecast",
+            //    () => serviceProvider.GetService<ICronJob>().WeeklyForecastAsync(),
+            //    Cron.Minutely);
+
         }
     }
 }
