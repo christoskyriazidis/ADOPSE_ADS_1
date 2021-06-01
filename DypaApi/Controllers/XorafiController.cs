@@ -34,7 +34,11 @@ namespace DypaApi.Controllers
             }
             if (string.IsNullOrEmpty(xorafi.LocationTitle))
             {
-                xorafi.LocationTitle = "Unnamed";
+                xorafi.LocationTitle = "UnnamedLocation";
+            }
+            if (string.IsNullOrEmpty(xorafi.Title))
+            {
+                xorafi.Title = "UnnamedTitle";
             }
             var claims = User.Claims.ToList();
             var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
