@@ -12,15 +12,18 @@
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <link rel="stylesheet" href="/Home/styles/fieldOverview/fieldOverview.css">
 
+
 </head>
 
 <body>
-<navbar-component></navbar-component>
-<main>
-    
+    <navbar-component></navbar-component>
     <main>
-        <div class="containers">
-            <!-- Weather Widget -->
+
+
+
+
+        <!-- <div class="containers">
+            
             <div class="weatherWrapper">
                 <div class="widget">
                     <div class="center">
@@ -191,17 +194,49 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+        <weather-component></weather-component>
+        <div class="weatherArea"></div>
+        <div class="moreDetails">
+            <div class="leftColumn">
+                <div class="innerUpperLeft">
+                    <h1>General details:</h1>
+                    <p>Field area: <span class="fieldAreaInfo"> Kammena</span></p>
+                    <br>
+                    <p>Acres of field: <span class="fieldAcresInfo"> 2</span></p>
+                    <br>
+                    <p>Number of plant roots: <span class="fieldRootsInfo">1</span></p>
+                    <br>
+                    <p>Water supply: <span class="fieldWaterSupplyInfo">34</span>L/m</p>
+                </div>
+                <div class="innerLowerLeft">
+                    <h2>Current Hourly Sensor Report:</h2>
+                    <img src="/images/cloud.svg" class="icon">
+                    <p>Temperature: <span class="fieldAreaInfo"> Kammena</span></p>
+                    <br>
+                    <p>Soil Humidity: <span class="fieldAcresInfo"> 2</span></p>
+                    <br>
+                    <p>Pressure: <span class="fieldWorkersInfo">1</span></p>
+                    <br>
+                    <p>Wind Speed: <span class="fieldWaterSupplyInfo">34</span></p>
+                    <br>
+                    <p>Report Timestamp: <span class="fieldWaterSupplyInfo">34</span></p>
+                </div>
+            </div>
+            <div class="rightColumn">asd</div>
         </div>
+
         
     </main>
-</main>
 </body>
 <script src="/Home/scripts/components/navComponent.js"></script>
 
 
 
-
 </body>
+<script src="/Home/scripts/components/weatherComponent.js"></script>
+<script src="/Home/scripts/myXorafi.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
