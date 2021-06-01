@@ -29,7 +29,7 @@ class WeatherComponent extends HTMLElement {
                 data=data.reverse();
                 for(let object of data){
                     days+=`
-                <div class="widget">
+                <div class="widget ${(new Date(Date.now())).getDay()!=(new Date(object.timestamp*1000)).getDay()?"todayDay":""}todayDay">
                     <h5 class="day">${this.days[(new Date(object.timestamp*1000)).getDay()]}</h5>
                     <div class="center">
                         
