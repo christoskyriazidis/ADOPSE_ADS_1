@@ -162,5 +162,18 @@ namespace DypaApi.Controllers
             return BadRequest(new { response="Den uparxei to xorafi or error?"});
         }
 
+
+        [HttpGet]
+        [Route("/xorafi/monthly/")]
+        public IActionResult GetMonthlyXorafiReport(int XorafiId, int PageNumber)
+        {
+            var hourlyXorafiReport = _sensorRepo.GetWeeklyForecastXorafiReports(XorafiId, PageNumber);
+            if (hourlyXorafiReport != null)
+            {
+                return Json(hourlyXorafiReport);
+            }
+            return BadRequest(new { response = "Den uparxei to xorafi or error?" });
+        }
+
     }
 }

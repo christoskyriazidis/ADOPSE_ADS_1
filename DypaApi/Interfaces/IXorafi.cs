@@ -25,9 +25,12 @@ namespace DypaApi.Interfaces
 
         List<Xorafi> GetXorafia();
 
-        IEnumerable<Xorafi> GetXorafiaByOwnerId(int OwnderId);
-        IEnumerable<SubCategory> GetSubCategories();
+
         IEnumerable<Category> GetCategories();
+        IEnumerable<SubCategory> GetSubCategories();
+
+        IEnumerable<Xorafi> GetXorafiaByOwnerId(int OwnderId);
+        
 
     }
 }

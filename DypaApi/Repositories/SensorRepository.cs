@@ -114,6 +114,26 @@ namespace DypaApi.Repositories
             }
         }
 
+        public void Test(int xorafiId, int PageNumber)
+        {
+            try {
+                using var conn = ConnectionManager.GetSqlConnection();
+                var ad=1;
+                List<WeeklyForecastXorafiReport> ad2;
+                string sql = $"EXEC get_forecast_by_xorafi_monthly @pageNumber,@XorafiId; select count(*) from ForeCast where xorafiId = {xorafiId}";
+                using (var results = conn.QueryMultiple(sql, new { PageNumber ,xorafiId}))
+                {
+                    ad2 = results.Read<WeeklyForecastXorafiReport>().ToList();
+                    ad = results.Read<int>().FirstOrDefault();
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                //return false;
+            }
+        }
+
         public bool UpdateSensor(Sensor sensor)
         {
             try

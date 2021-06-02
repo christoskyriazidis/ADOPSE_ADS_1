@@ -2,10 +2,15 @@
 using DypaApi.Models.Worker;
 using DypaApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -17,6 +22,13 @@ namespace DypaApi.Controllers
     {
         private readonly IXorafi _xorafiRepo = new XorafiRepository();
         private readonly IWorker _workerRepo = new WorkerRepository();
+        private readonly IWebHostEnvironment _env;
+
+        public OwnerController(IWebHostEnvironment webHostEnvironment)
+        {
+            _env = webHostEnvironment;
+
+        }
 
         //[Authorize]
         [HttpGet]
@@ -52,7 +64,6 @@ namespace DypaApi.Controllers
             return BadRequest(new { response = "No info or error" });
         }
 
-        [Authorize(Policy ="Admin")]
         [HttpPost]
         [Route("/category")]
         public IActionResult AddCategory([FromBody] Category category)
@@ -69,19 +80,31 @@ namespace DypaApi.Controllers
             return BadRequest(new { response="addcategory faild" });
         }
 
-        [Authorize(Policy = "Admin")]
         [HttpPost]
         [Route("/subcategory")]
-        public IActionResult AddSubCategory([FromBody] SubCategory subCategory)
+        public IActionResult AddSubCategory([FromForm] SubCategory subCategory)
         {
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
-            if (_xorafiRepo.AddSubCategory(subCategory))
+            if (subCategory.Image != null)
             {
-                return Json(new { response = "subCategory success" });
+                subCategory.ImageUrl = $"https://localhost:44331/Images/Subcategory/{subCategory.Title}.png";
+                if (_xorafiRepo.AddSubCategory(subCategory))
+                {
+                    SingleFileUpload(subCategory.Image, subCategory.Title);
+                    return Json(new { response = "subCategory success with img" });
+                }
+            }
+            else
+            {
+                subCategory.ImageUrl = $"https://localhost:44331/Images/sample.png";
+                if (_xorafiRepo.AddSubCategory(subCategory))
+                {
+                    return Json(new { response = "subCategory success default img" });
+                }
             }
             return BadRequest(new { response = "subCategory faild" });
         }
@@ -92,7 +115,21 @@ namespace DypaApi.Controllers
         {
             return Json(_xorafiRepo.GetCategories());
         }
-        
+
+        public void SingleFileUpload(IFormFile file, string title)
+        {
+            var dir = _env.ContentRootPath;
+            var smallSizeAdPath = Path.Combine(dir, "Images", "Subcategory", $"{title}.png");
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(300, 300));
+            image.Save(smallSizeAdPath);
+            //var FullSizeAdPath = Path.Combine(dir, "Images", "serverA", "full", $"{title}.png");
+            //using (var fileStream = new FileStream(FullSizeAdPath, FileMode.Create, FileAccess.Write))
+            //{
+            //    file.CopyTo(fileStream);
+            //}
+        }
+
         [HttpGet]
         [Route("/subcategory")]
         public IActionResult GetSubCategories()

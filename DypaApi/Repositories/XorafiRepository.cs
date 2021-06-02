@@ -36,8 +36,18 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "insert into subcategory (categoryid,title) values (@categoryid,@title)";
-                var inserted = conn.Execute(sql, new { subCategory.CategoryId,subCategory.Title});
+                string sql = "insert into subcategory (categoryid,title,ImageUrl,OptimalSoilMoisture,LowestNormalSoilMoisture,UpperNormalSoilMoisture,weeklyRootWaterWinter,weeklyRootWaterSummer) " +
+                    "values (@categoryid,@title,@ImageUrl,@OptimalSoilMoisture,@LowestNormalSoilMoisture,@UpperNormalSoilMoisture,@weeklyRootWaterWinter,@weeklyRootWaterSummer)";
+                var inserted = conn.Execute(sql, new { 
+                    subCategory.CategoryId,
+                    subCategory.Title,
+                    subCategory.ImageUrl,
+                    subCategory.OptimalSoilMoisture,
+                    subCategory.LowestNormalSoilMoisture,
+                    subCategory.UpperNormalSoilMoisture,
+                    subCategory.WeeklyRootWaterWinter,
+                    subCategory.WeeklyRootWaterSummer
+                });
                 return inserted > 0;
             }
             catch (SqlException sqlEx)

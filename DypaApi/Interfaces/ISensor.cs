@@ -18,6 +18,7 @@ namespace DypaApi.Interfaces
         bool WeeklyForecast(WeeklyWeatherModel weeklyWeatherModel,int XorafiId);
         bool HourlySensorLogs(WeatherNow weatherNow, int XorafiId);
         IEnumerable<Sensor> GetSensors();
+        void Test(int xorafiId,int PageNumber);
         IEnumerable<WeeklyForecastXorafiReport> GetWeeklyForecastXorafiReports(int XorafiId,int PageNumber);
         HourlySensorXorafiReport GetHourlySensorXorafiReport(int XorafiId);
     }

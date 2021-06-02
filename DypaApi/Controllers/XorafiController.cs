@@ -96,7 +96,5 @@ namespace DypaApi.Controllers
             return BadRequest(new { response="Kati pige la8os"+SensorID});
         }
 
-
-       
     }
 }
