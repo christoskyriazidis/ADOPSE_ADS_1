@@ -63,21 +63,21 @@ axios.interceptors.response.use(
 
         return Promise.reject(error);
     });
-function callApi() {
-    axios.get("https://localhost:44374/ad")
-        .then(res => {
-            console.log("here");
-            console.log(res)
-        })
-        .catch(err => {
+// function callApi() {
+//     axios.get("https://localhost:44374/ad")
+//         .then(res => {
+//             console.log("here");
+//             console.log(res)
+//         })
+//         .catch(err => {
 
 
-            if (err.status === 401) {
-                console.error(err);
-                signIn();
-            }
-        })
-}
+//             if (err.status === 401) {
+//                 console.error(err);
+//                 signIn();
+//             }
+//         })
+// }
 userManager.events.addUserLoaded(function () {
    
 });

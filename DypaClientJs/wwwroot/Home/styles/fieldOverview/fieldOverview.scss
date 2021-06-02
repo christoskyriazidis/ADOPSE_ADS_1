@@ -1,4 +1,4 @@
-$green-primary: #3e6943;
+$green-primary: #5a7e5e;
 $green-secondary: #a3bcb6;
 $dark-grey: #5c5f5c;
 $light-grey: #daded4;
@@ -6,7 +6,7 @@ $white: #fff;
 $dark-yellow: #2c2c2b;
 * {
 	margin: 0;
-	box-sizing:border-box;
+	box-sizing: border-box;
 	font-family: "Roboto", sans-serif;
 }
 .weatherWrapper {
@@ -31,7 +31,7 @@ $dark-yellow: #2c2c2b;
 	background: $green-secondary;
 }
 .center {
-	height:100px;
+	height: 100px;
 	display: flex;
 	justify-content: space-around;
 }
@@ -53,7 +53,7 @@ $dark-yellow: #2c2c2b;
 
 .icon {
 	width: 90px;
-	height:90px;
+	height: 90px;
 	display: block;
 }
 
@@ -61,13 +61,11 @@ $dark-yellow: #2c2c2b;
 	color: #fff;
 	text-align: center;
 	margin-top: -20px;
-	font-size:1em;
+	font-size: 1em;
 }
 .day {
 	color: #fff;
 	text-align: center;
-	
-	
 }
 .widget .right .city {
 	font-size: 1em;
@@ -105,64 +103,138 @@ $dark-yellow: #2c2c2b;
 .bottom div span {
 	display: block;
 }
-
+.todayDay {
+	background-color: $green-primary;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.472);
+}
 body {
-	overflow-x:hidden;
-	background-color:$light-grey;
+	overflow-x: hidden;
+	background-color: $light-grey;
 	main {
 		.moreDetails {
-			
-			
 			width: 100%;
 			height: 200px;
 			display: flex;
 			flex-direction: row;
 			.leftColumn {
-				
-				flex-direction:column;
+				flex-direction: column;
 				display: flex;
 				width: 33%;
 				height: fit-content;
-				
-				margin:20px;
-				
-				* p{
-					padding-left:30px;
+
+				margin: 20px;
+
+				* p {
+					padding-left: 30px;
 				}
 
-				.innerUpperLeft{
-					
-					
-					font-size:large;
-					padding:20px;
-					flex-direction:column;
+				.innerUpperLeft {
+					font-size: large;
+					padding: 20px;
+					flex-direction: column;
 					display: flex;
-					background-color:white;
-					width:100%;
-				}
-				.innerLowerLeft{
-					.icon{
-						margin-left:30px;
-						background-color:$dark-yellow;
-						border-radius:20px;
-					}
-					padding:20px;
-					flex-direction:column;
-					display: flex;
-					background-color:white;
+					background-color: white;
 					width: 100%;
-					margin-top:10px;
+				}
+				.innerLowerLeft {
+					font-size: large;
+					.lowerLeftContainer {
+						flex-direction: row;
+						display: flex;
+						align-items: center;
+						.icon {
+							margin-left: 30px;
+							background-color: $dark-yellow;
+							border-radius: 20px;
+							display: inline-block;
+						}
+					}
+
+					padding: 20px;
+					flex-direction: column;
+					display: flex;
+					background-color: white;
+					width: 100%;
+					margin-top: 10px;
+				}
+				.innerLowestLeft {
+					padding: 20px;
+					flex-direction: column;
+					display: flex;
+					background-color: white;
+					width: 100%;
+					margin-top: 10px;
 				}
 			}
 			.rightColumn {
 				display: flex;
 				width: 64%;
-				height: 200px;
-				background-color:white;
-				margin:20px;
-				border-radius:10px;
+				height: fit-content;
+				background-color: white;
+				margin: 20px;
+				height: 700px;
+				.mapouter {
+					position: relative;
+					text-align: right;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 100%;
+					height: 100%;
+				}
 
+				.gmap_canvas {
+					height: 90%;
+					width: 95%;
+					display: flex;
+					justify-content: center;
+					overflow: hidden;
+					background: none !important;
+					iframe {
+						width: 100%;
+						height: 100%;
+					}
+				}
 			}
 		}
+	}
+}
+.group {
+	display: flex;
+	flex-direction: row;
+	margin-top: 20px;
+	label {
+		display: flex;
+		flex-grow: 1;
+	}
+}
+#sensorLogs {
+	
+	
+	table{
+		
+		width:100%;
+		text-align:center;
+	}
+	tr{
+		text-align:center;
+	}
+	td,
+	th {
+		border: 1px solid #ddd;
+		padding: 8px;
+	}
+	tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+	tr:hover {
+		background-color: #ddd;
+	}
+	th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		
+		background-color: #04aa6d;
+		color: white;
 	}
 }
