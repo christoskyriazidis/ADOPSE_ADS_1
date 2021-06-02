@@ -22,14 +22,18 @@ namespace DypaApi.Interfaces
         bool AddCategory(Category category);
         bool SetWatering(int XorafiId,bool state);
         bool WaterXorafi(int XorafiId);
+        bool AddPresetToXorafi(int XorafiId,int PresetId);
+
+        IEnumerable<XorafiWithPreset> GetXorafiWithPreset(int XorafiId);
 
         List<Xorafi> GetXorafia();
 
 
         IEnumerable<Category> GetCategories();
+        IEnumerable<Category> GetCategoriesByOwnerId(int OwnerId);
         IEnumerable<SubCategory> GetSubCategories();
 
-        IEnumerable<Xorafi> GetXorafiaByOwnerId(int OwnderId);
+        IEnumerable<Xorafia> GetXorafiaByOwnerId(int OwnderId);
         
 
     }

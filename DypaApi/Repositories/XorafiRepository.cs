@@ -21,8 +21,18 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "insert into category (title) values (@title)";
-                var inserted = conn.Execute(sql, new { category.Title });
+                string sql = "insert into category (title,imgUrl,OptimalSoilMoisture,LowestNormalSoilMoisture,UpperNormalSoilMoisture,weeklyRootWaterWinter,weeklyRootWaterSummer,ownerid) values " +
+                    "(@title,@imgUrl,@OptimalSoilMoisture,@LowestNormalSoilMoisture,@UpperNormalSoilMoisture,@weeklyRootWaterWinter,@weeklyRootWaterSummer,@OwnerId)";
+                var inserted = conn.Execute(sql, new { 
+                    category.Title,
+                    category.ImgUrl,
+                    category.OptimalSoilMoisture,
+                    category.LowestNormalSoilMoisture,
+                    category.UpperNormalSoilMoisture,
+                    category.WeeklyRootWaterWinter,
+                    category.WeeklyRootWaterSummer,
+                    category.OwnerId
+                });
                 return inserted > 0;
             }
             catch (SqlException sqlEx)
@@ -36,17 +46,11 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "insert into subcategory (categoryid,title,ImageUrl,OptimalSoilMoisture,LowestNormalSoilMoisture,UpperNormalSoilMoisture,weeklyRootWaterWinter,weeklyRootWaterSummer) " +
-                    "values (@categoryid,@title,@ImageUrl,@OptimalSoilMoisture,@LowestNormalSoilMoisture,@UpperNormalSoilMoisture,@weeklyRootWaterWinter,@weeklyRootWaterSummer)";
+                string sql = "insert into subcategory (categoryid,title,ImageUrl) values (@categoryid,@title,@ImageUrl)";
                 var inserted = conn.Execute(sql, new { 
                     subCategory.CategoryId,
                     subCategory.Title,
-                    subCategory.ImageUrl,
-                    subCategory.OptimalSoilMoisture,
-                    subCategory.LowestNormalSoilMoisture,
-                    subCategory.UpperNormalSoilMoisture,
-                    subCategory.WeeklyRootWaterWinter,
-                    subCategory.WeeklyRootWaterSummer
+                    subCategory.ImageUrl
                 });
                 return inserted > 0;
             }
@@ -142,13 +146,13 @@ namespace DypaApi.Repositories
             }
         }
 
-        public IEnumerable<Xorafi> GetXorafiaByOwnerId(int OwnderId)
+        public IEnumerable<Xorafia> GetXorafiaByOwnerId(int OwnderId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle from xorafi x join location l on (l.xorafiId=x.id) WHERE owner =@OwnderId";
-                var xorafia = conn.Query<Xorafi>(sql, new { OwnderId }).ToList();
+                string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle,h.humidity,h.icon,h.pressure,h.temp,h.visibility,h.wind_deg,h.humidity from xorafi x join location l on (l.xorafiId=x.id) join Hourlysensorreport h on (h.xorafiId=x.id) WHERE owner =@OwnderId";
+                var xorafia = conn.Query<Xorafia>(sql, new { OwnderId }).ToList();
                 return xorafia;
             }
             catch (SqlException sqlEx)
@@ -219,6 +223,54 @@ namespace DypaApi.Repositories
             {
                 Debug.WriteLine(sqlEx);
                 return false;
+            }
+        }
+
+        public IEnumerable<Category> GetCategoriesByOwnerId(int OwnerId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "SELECT * FROM Category where OwnerId=@OwnerId";
+                var categories = conn.Query<Category>(sql,new { OwnerId}).ToList();
+                return categories;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
+        public bool AddPresetToXorafi(int XorafiId, int PresetId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec add_remove_preset @PresetId,@XorafiId";
+                var inserted = conn.Execute(sql, new{ PresetId, XorafiId });
+                return inserted > 0;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
+        public IEnumerable<XorafiWithPreset> GetXorafiWithPreset(int XorafiId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "select C.*,p.xorafiId from PresetPerXorafi p join Category c on(c.id=p.presetId) where p.xorafiId=@XorafiId";
+                var xorafiWithPresets = conn.Query<XorafiWithPreset>(sql,new { XorafiId}).ToList();
+                return xorafiWithPresets;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
             }
         }
     }

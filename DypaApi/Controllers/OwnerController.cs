@@ -63,20 +63,51 @@ namespace DypaApi.Controllers
             return BadRequest(new { response = "No info or error" });
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("/owner/category")]
+        public IActionResult GetOwnerCategories()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _workerRepo.GetCustomerIdFromSub(subId);
+            var info = _xorafiRepo.GetCategoriesByOwnerId(intId);
+            if (info != null)
+            {
+                return Json(info);
+            }
+            return BadRequest(new { response = "No info or error" });
+        }
+
+
+
         [HttpPost]
         [Route("/category")]
-        public IActionResult AddCategory([FromBody] Category category)
+        public IActionResult AddCategory([FromForm] Category category)
         {
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
-            if (_xorafiRepo.AddCategory(category))
+            if (category.Image != null)
             {
-                return Json(new { response = "addcategory success" });
+                category.ImgUrl = $"https://localhost:44331/Images/category/{category.Title}.png";
+                if (_xorafiRepo.AddCategory(category))
+                {
+                    SingleFileUpload(category.Image, category.Title,"Category");
+                    return Json(new { response = "Category success with img" });
+                }
             }
-            return BadRequest(new { response="addcategory faild" });
+            else
+            {
+                category.ImgUrl = $"https://localhost:44331/Images/sample.png";
+                if (_xorafiRepo.AddCategory(category))
+                {
+                    return Json(new { response = "Category success default img" });
+                }
+            }
+            return BadRequest(new { response = "subCategory faild" });
         }
 
         [HttpPost]
@@ -90,11 +121,11 @@ namespace DypaApi.Controllers
             }
             if (subCategory.Image != null)
             {
-                subCategory.ImageUrl = $"https://localhost:44331/Images/Subcategory/{subCategory.Title}.png";
+                subCategory.ImageUrl = $"https://localhost:44331/Images/category/{subCategory.Title}.png";
                 if (_xorafiRepo.AddSubCategory(subCategory))
                 {
-                    SingleFileUpload(subCategory.Image, subCategory.Title);
-                    return Json(new { response = "subCategory success with img" });
+                    SingleFileUpload(subCategory.Image, subCategory.Title, "Category");
+                    return Json(new { response = "Category success with img" });
                 }
             }
             else
@@ -102,7 +133,7 @@ namespace DypaApi.Controllers
                 subCategory.ImageUrl = $"https://localhost:44331/Images/sample.png";
                 if (_xorafiRepo.AddSubCategory(subCategory))
                 {
-                    return Json(new { response = "subCategory success default img" });
+                    return Json(new { response = "Category success default img" });
                 }
             }
             return BadRequest(new { response = "subCategory faild" });
@@ -115,10 +146,10 @@ namespace DypaApi.Controllers
             return Json(_xorafiRepo.GetCategories());
         }
 
-        public void SingleFileUpload(IFormFile file, string title)
+        public void SingleFileUpload(IFormFile file, string title,string folder)
         {
             var dir = _env.ContentRootPath;
-            var smallSizeAdPath = Path.Combine(dir, "Images", "Subcategory", $"{title}.png");
+            var smallSizeAdPath = Path.Combine(dir, "Images", folder, $"{title}.png");
             using var image = Image.Load(file.OpenReadStream());
             image.Mutate(x => x.Resize(300, 300));
             image.Save(smallSizeAdPath);
@@ -147,6 +178,29 @@ namespace DypaApi.Controllers
             }
             return BadRequest(new { response = "failed" });
             
+        }  
+        
+        [HttpPost]
+        [Route("/xorafi/preset")]
+        public IActionResult AddPresetTOxOrafi(int XorafiId, int PresetId)
+        {
+            if (_xorafiRepo.AddPresetToXorafi(XorafiId,PresetId))
+            {
+                return Json(new {reponse="preset added" });
+            }
+            return BadRequest(new { response = "failed to add preset" });
+        }
+
+        [HttpGet]
+        [Route("/xorafi/preset/{PresetId}")]
+        public IActionResult GetPresetPerXorafi(int PresetId)
+        {
+            var xorafi = _xorafiRepo.GetXorafiWithPreset(PresetId);
+            if (xorafi!=null)
+            {
+                return Json(xorafi);
+            }
+            return BadRequest(new { response="Failed"});
         }
     }
 }
