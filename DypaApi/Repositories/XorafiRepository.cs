@@ -114,13 +114,13 @@ namespace DypaApi.Repositories
             }
         }
 
-        public IEnumerable<SubCategory> GetSubCategories()
+        public IEnumerable<SubCategory> GetSubCategories(int CategoryId)
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "SELECT * FROM SubCategory";
-                var subCategories = conn.Query<SubCategory>(sql).ToList();
+                string sql = "SELECT * FROM SubCategory where categoryid=@CategoryId";
+                var subCategories = conn.Query<SubCategory>(sql,new { CategoryId}).ToList();
                 return subCategories;
             }
             catch (SqlException sqlEx)

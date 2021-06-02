@@ -161,10 +161,10 @@ namespace DypaApi.Controllers
         }
 
         [HttpGet]
-        [Route("/subcategory")]
-        public IActionResult GetSubCategories()
+        [Route("/subcategory/{CategoryId}")]
+        public IActionResult GetSubCategories(int CategoryId)
         {
-            return Json(_xorafiRepo.GetSubCategories());
+            return Json(_xorafiRepo.GetSubCategories(CategoryId));
 
         }
 
@@ -202,5 +202,6 @@ namespace DypaApi.Controllers
             }
             return BadRequest(new { response="Failed"});
         }
+
     }
 }

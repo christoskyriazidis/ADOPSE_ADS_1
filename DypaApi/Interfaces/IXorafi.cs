@@ -31,7 +31,7 @@ namespace DypaApi.Interfaces
 
         IEnumerable<Category> GetCategories();
         IEnumerable<Category> GetCategoriesByOwnerId(int OwnerId);
-        IEnumerable<SubCategory> GetSubCategories();
+        IEnumerable<SubCategory> GetSubCategories(int CategoryId);
 
         IEnumerable<Xorafia> GetXorafiaByOwnerId(int OwnderId);
         
