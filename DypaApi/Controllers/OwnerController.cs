@@ -27,7 +27,6 @@ namespace DypaApi.Controllers
         public OwnerController(IWebHostEnvironment webHostEnvironment)
         {
             _env = webHostEnvironment;
-
         }
 
         //[Authorize]
@@ -35,11 +34,11 @@ namespace DypaApi.Controllers
         [Route("/owner/xorafi")]
         public IActionResult GetMyXorafia(int OwnerId)
         {
-            int ownerid = 3;
+            //int ownerid = 3;
             var claims = User.Claims.ToList();
             var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var intId = _workerRepo.GetCustomerIdFromSub(subId);
-            var xorafia = _xorafiRepo.GetXorafiaByOwnerId(ownerid);
+            var xorafia = _xorafiRepo.GetXorafiaByOwnerId(intId);
             if (xorafia!=null)
             {
                 return Json(xorafia);

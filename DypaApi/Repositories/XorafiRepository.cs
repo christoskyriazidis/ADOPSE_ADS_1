@@ -72,7 +72,6 @@ namespace DypaApi.Repositories
                 return false;
             }
         }
-
         public bool AddXorafi(Xorafi xorafi)
         {
             try
@@ -148,7 +147,7 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.latitude,l.longitude,l.title from xorafi x join location l on (l.xorafiId=x.id) WHERE owner =@OwnderId";
+                string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle from xorafi x join location l on (l.xorafiId=x.id) WHERE owner =@OwnderId";
                 var xorafia = conn.Query<Xorafi>(sql, new { OwnderId }).ToList();
                 return xorafia;
             }
