@@ -49,6 +49,22 @@ namespace DypaApi.Repositories
             }
         }
 
+        public IEnumerable<HourlySensorXorafiReport> GetHourlySensorXorafiReports(int XorafiId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "select * from HourlySensorReport where xorafiId=@XorafiId";
+                var weeklyForecastXorafiReports = conn.Query<HourlySensorXorafiReport>(sql, new { XorafiId }).ToList();
+                return weeklyForecastXorafiReports;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
         public IEnumerable<Sensorr> GetSensors()
         {
             try
