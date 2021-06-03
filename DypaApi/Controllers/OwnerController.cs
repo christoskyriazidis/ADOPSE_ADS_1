@@ -29,7 +29,7 @@ namespace DypaApi.Controllers
             _env = webHostEnvironment;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("/owner/xorafi")]
         public IActionResult GetMyXorafia(int OwnerId)
@@ -79,6 +79,7 @@ namespace DypaApi.Controllers
             return BadRequest(new { response = "No info or error" });
         }
 
+        [Authorize]
         [HttpPost]
         [Route("/category")]
         public IActionResult AddCategory([FromForm] Category category)
@@ -88,6 +89,10 @@ namespace DypaApi.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(allErrors);
             }
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _workerRepo.GetCustomerIdFromSub(subId);
+            category.OwnerId = intId;
             if (category.Image != null)
             {
                 category.ImgUrl = $"https://localhost:44331/Images/category/{category.Title}.png";
@@ -200,6 +205,7 @@ namespace DypaApi.Controllers
             }
             return BadRequest(new { response="Failed"});
         }
+
 
     }
 }
