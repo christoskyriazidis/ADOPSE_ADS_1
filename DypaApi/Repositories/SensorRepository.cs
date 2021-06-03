@@ -65,6 +65,22 @@ namespace DypaApi.Repositories
             }
         }
 
+        public IEnumerable<WeeklyForecastXorafiReport> GetMonthlyForecastXorafiReports(int XorafiId, int PageNumber)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec [dbo].[get_forecast_by_xorafi_monthly] @pageNumber, @XorafiId";
+                var weeklyForecastXorafiReports = conn.Query<WeeklyForecastXorafiReport>(sql, new { pageNumber = PageNumber, XorafiId = XorafiId }).ToList();
+                return weeklyForecastXorafiReports;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
         public IEnumerable<Sensorr> GetSensors()
         {
             try

@@ -179,7 +179,7 @@ namespace DypaApi.Controllers
         [Route("/xorafi/monthly/")]
         public IActionResult GetMonthlyXorafiReport(int XorafiId, int PageNumber)
         {
-            var hourlyXorafiReport = _sensorRepo.GetWeeklyForecastXorafiReports(XorafiId, PageNumber);
+            var hourlyXorafiReport = _sensorRepo.GetMonthlyForecastXorafiReports(XorafiId, PageNumber);
             if (hourlyXorafiReport != null)
             {
                 return Json(hourlyXorafiReport);

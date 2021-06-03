@@ -20,6 +20,7 @@ namespace DypaApi.Interfaces
         IEnumerable<Sensorr> GetSensors();
         void Test(int xorafiId,int PageNumber);
         IEnumerable<WeeklyForecastXorafiReport> GetWeeklyForecastXorafiReports(int XorafiId,int PageNumber);
+        IEnumerable<WeeklyForecastXorafiReport> GetMonthlyForecastXorafiReports(int XorafiId,int PageNumber);
         HourlySensorXorafiReport GetHourlySensorXorafiReport(int XorafiId);
         IEnumerable<HourlySensorXorafiReport> GetHourlySensorXorafiReports(int XorafiId);
 
