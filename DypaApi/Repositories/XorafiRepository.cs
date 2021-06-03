@@ -82,8 +82,8 @@ namespace DypaApi.Repositories
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
 
-                string sql = "exec add_xorafi_with_location @Latitude,@Longitude,@Title,@Owner,@Acres,@PlantRoots,@WaterSupply,@LocationTitle";
-                var inserted = conn.Execute(sql, new { xorafi.Latitude,xorafi.Longitude,xorafi.Title,xorafi.Owner,xorafi.Acres,xorafi.PlantRoots,xorafi.WaterSupply,xorafi.LocationTitle });
+                string sql = "exec add_xorafi_with_location @PresetId,@Latitude,@Longitude,@Title,@Owner,@Acres,@PlantRoots,@WaterSupply,@LocationTitle";
+                var inserted = conn.Execute(sql, new { xorafi.PresetId,xorafi.Latitude,xorafi.Longitude,xorafi.Title,xorafi.Owner,xorafi.Acres,xorafi.PlantRoots,xorafi.WaterSupply,xorafi.LocationTitle });
                 return inserted > 0;
             }
             catch (SqlException sqlEx)
@@ -135,7 +135,7 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.title as locationTitle,l.latitude,l.longitude from xorafi x join location l on (x.id=l.xorafiid)  WHERE x.id =@Xid";
+                string sql = "select x.*,l.title as locationTitle,l.latitude,l.longitude ,c.imgUrl,c.LowestNormalSoilMoisture,c.OptimalSoilMoisture,c.title,c.UpperNormalSoilMoisture,c.weeklyRootWaterSummer,c.weeklyRootWaterWinter,c.id as PresetId from xorafi x join location l on (x.id=l.xorafiid) join PresetPerXorafi p on(p.xorafiId=x.id) join Category c on (c.id=p.presetId)  WHERE x.id =@Xid";
                 var xorafi = conn.Query<Xorafi>(sql,new { Xid}).FirstOrDefault();
                 return xorafi;
             }
@@ -178,13 +178,13 @@ namespace DypaApi.Repositories
             }
         }
 
-        public List<Xorafi> GetXorafia()
+        public List<XorafiWithPresetForSensor> GetXorafia()
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.title,l.latitude,l.longitude from xorafi x join location l on (x.id=l.xorafiid)";
-                var xorafia = conn.Query<Xorafi>(sql).ToList();
+                string sql = "select x.id,l.latitude,l.longitude,c.LowestNormalSoilMoisture,c.OptimalSoilMoisture,c.title,c.UpperNormalSoilMoisture,c.weeklyRootWaterSummer,c.weeklyRootWaterWinter,c.id as PresetId from xorafi x join location l on (x.id=l.xorafiid) join PresetPerXorafi p on(p.xorafiId=x.id) join Category c on (c.id=p.presetId)";
+                var xorafia = conn.Query<XorafiWithPresetForSensor>(sql).ToList();
                 return xorafia;
             }
             catch (SqlException sqlEx)

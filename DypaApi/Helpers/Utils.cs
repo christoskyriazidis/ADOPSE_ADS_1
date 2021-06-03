@@ -20,7 +20,7 @@ namespace DypaApi.Helpers
         private readonly IXorafi _xorafiRepo = new XorafiRepository();
         private readonly ISensor _sensorRepo = new SensorRepository();
 
-        public  async Task RefreshHourlySensorLogs(Xorafi xorafi, ISensor _sensorRepo)
+        public  async Task RefreshHourlySensorLogs(XorafiWithPresetForSensor xorafi, ISensor _sensorRepo)
         {
             HttpClient httpClient = new HttpClient();
             string uri = $"https://api.openweathermap.org/data/2.5/onecall?lat={xorafi.Latitude}&lon={xorafi.Longitude}&exclude=hourly,daily,minutely&appid=2512835ec38ca99351ed383b16107efe&units=metric";
@@ -55,7 +55,7 @@ namespace DypaApi.Helpers
             }
         }
 
-        public  async Task RefreshWeeklyForecast(Xorafi xorafi, ISensor _sensorRepo)
+        public  async Task RefreshWeeklyForecast(XorafiWithPresetForSensor xorafi, ISensor _sensorRepo)
         {
             HttpClient httpClient = new HttpClient();
             var key = Startup.StaticConfig.GetValue<string>("ApiKeys:Openweathermap");

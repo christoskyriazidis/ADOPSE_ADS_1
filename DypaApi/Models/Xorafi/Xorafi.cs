@@ -35,6 +35,16 @@ namespace DypaApi.Models.Xorafi
         [Range(1, int.MaxValue)]
         public int WaterSupply { get; set; }
 
+        [Required]
+        public int PresetId { get; set; }
+
+        public int OptimalSoilMoisture { get; set; }   
+        public int LowestNormalSoilMoisture { get; set; }
+        public int UpperNormalSoilMoisture { get; set; }
+        public int WeeklyRootWaterWinter { get; set; } 
+        public int WeeklyRootWaterSummer { get; set; }
+        public string ImgUrl { get; set; }
+
         public Xorafi(int id, string title, float latitude, float longitude, int owner, int acres, int plantRoots, int waterSupply)
         {
             Id = id;

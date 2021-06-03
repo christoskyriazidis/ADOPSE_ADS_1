@@ -49,13 +49,13 @@ namespace DypaApi.Repositories
             }
         }
 
-        public IEnumerable<Sensor> GetSensors()
+        public IEnumerable<Sensorr> GetSensors()
         {
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "SELECT * FROM Sensor";
-                var sensors = conn.Query<Sensor>(sql).ToList();
+                var sensors = conn.Query<Sensorr>(sql).ToList();
                 return sensors;
             }
             catch (SqlException sqlEx)
@@ -134,7 +134,7 @@ namespace DypaApi.Repositories
             }
         }
 
-        public bool UpdateSensor(Sensor sensor)
+        public bool UpdateSensor(Sensorr sensor)
         {
             try
             {

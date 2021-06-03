@@ -58,7 +58,7 @@ class NavbarComponent extends HTMLElement {
                     <a class="nav-link unauthorized" href="#" onclick="signIn()">Log In</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link signUpBtn unauthorized" href="https://localhost:44305/Auth/Register">Sign Up</a>
+                    <a class="nav-link signUpBtn unauthorized" href="https://localhost:44305/Auth/Register?returnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dclient_id_js_Dypa%26redirect_uri%3Dhttps%253A%252F%252Flocalhost%253A44376%252Fhome%252Fsignin.html%26response_type%3Dcode%26scope%3Dopenid%2520ApiDypa%2520credentials%26state%3Dfdf0368865ce49e1b0b3e65bbf0784a8%26code_challenge%3DUL9cvUaAEcM6wiAZ23JnVnVVhrbfRtnMezSu0jsm5P4%26code_challenge_method%3DS256%26response_mode%3Dquery">Sign Up</a>
                 </li>
                   `;
                 break;

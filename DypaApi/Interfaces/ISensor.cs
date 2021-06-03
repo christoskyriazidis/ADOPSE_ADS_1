@@ -14,12 +14,14 @@ namespace DypaApi.Interfaces
     {
         bool AddSensor(string Name);
 
-        bool UpdateSensor(Sensor sensor);
+        bool UpdateSensor(Sensorr sensor);
         bool WeeklyForecast(WeeklyWeatherModel weeklyWeatherModel,int XorafiId);
         bool HourlySensorLogs(WeatherNow weatherNow, int XorafiId);
-        IEnumerable<Sensor> GetSensors();
+        IEnumerable<Sensorr> GetSensors();
         void Test(int xorafiId,int PageNumber);
         IEnumerable<WeeklyForecastXorafiReport> GetWeeklyForecastXorafiReports(int XorafiId,int PageNumber);
         HourlySensorXorafiReport GetHourlySensorXorafiReport(int XorafiId);
+
+
     }
 }

@@ -19,6 +19,7 @@
     <PackageReference Include="SqlTableDependency" Version="8.5.8" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
 	<PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+	<PackageReference Include="NEST" Version="7.12.0" />
 
   </ItemGroup>
   <ItemGroup>

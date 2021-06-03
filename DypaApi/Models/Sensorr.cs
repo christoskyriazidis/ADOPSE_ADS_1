@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DypaApi.Models
 {
-    public class Sensor
+    public class Sensorr
     {
         [Required]
         [Range(1,int.MaxValue)]

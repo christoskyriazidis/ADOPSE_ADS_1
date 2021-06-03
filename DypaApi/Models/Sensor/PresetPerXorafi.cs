@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DypaApi.Models.Presets
+namespace DypaApi.Models.Sensor
 {
-    public class SubCategory
+    public class PresetPerXorafi
     {
         public int Id { get; set; }
-        public int CategoryId { get; set; }
-        public string Title { get; set; }
+        public int XorafiId { get; set; }
+        public int PresetId { get; set; }
     }
 }

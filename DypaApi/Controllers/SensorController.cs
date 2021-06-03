@@ -54,7 +54,7 @@ namespace DypaApi.Controllers
 
         [HttpPut]
         [Route("/sensor")]
-        public IActionResult UpdateSensor([FromBody] Sensor sensor)
+        public IActionResult UpdateSensor([FromBody] Sensorr sensor)
         {
             if (!ModelState.IsValid)
             {
@@ -174,6 +174,7 @@ namespace DypaApi.Controllers
             }
             return BadRequest(new { response = "Den uparxei to xorafi or error?" });
         }
+
 
     }
 }

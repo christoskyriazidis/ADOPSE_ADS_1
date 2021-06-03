@@ -79,8 +79,6 @@ namespace DypaApi.Controllers
             return BadRequest(new { response = "No info or error" });
         }
 
-
-
         [HttpPost]
         [Route("/category")]
         public IActionResult AddCategory([FromForm] Category category)

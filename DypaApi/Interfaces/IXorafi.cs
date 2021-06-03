@@ -26,7 +26,8 @@ namespace DypaApi.Interfaces
 
         IEnumerable<XorafiWithPreset> GetXorafiWithPreset(int XorafiId);
 
-        List<Xorafi> GetXorafia();
+        List<XorafiWithPresetForSensor> GetXorafia();
+
 
 
         IEnumerable<Category> GetCategories();
