@@ -151,7 +151,14 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle,h.humidity,h.icon,h.pressure,h.temp,h.visibility,h.wind_deg,h.humidity from xorafi x join location l on (l.xorafiId=x.id) join Hourlysensorreport h on (h.xorafiId=x.id) WHERE owner =@OwnderId";
+                string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle," +
+                    "(select top 1 temp from HourlySensorReport where xorafiId=x.id order by id desc ) as temp," +
+                    "(select top 1 wind_speed from HourlySensorReport where xorafiId=x.id order by id desc ) as windSpeed," +
+                    "(select top 1 humidity from HourlySensorReport where xorafiId=x.id order by id desc ) as humidity," +
+                    "(select top 1 pressure from HourlySensorReport where xorafiId=x.id order by id desc ) as pressure," +
+                    "(select top 1 icon from HourlySensorReport where xorafiId=x.id order by id desc ) as icon," +
+                    "c.imgUrl,c.title as presetTitle from xorafi x join location l on (l.xorafiId=x.id) join PresetPerXorafi p on (p.xorafiId=x.id) join Category c on (c.id=p.presetId)" +
+                    " where x.owner=@OwnderId";
                 var xorafia = conn.Query<Xorafia>(sql, new { OwnderId }).ToList();
                 return xorafia;
             }
