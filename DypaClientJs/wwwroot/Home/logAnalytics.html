@@ -1,0 +1,111 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.5/oidc-client.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src=""></script>
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+</head>
+<link rel="stylesheet" href="/Home/styles/myPresets/myPresets.css">
+<style>
+    .labels {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    #myRange {
+        width: 100%;
+    }
+</style>
+
+<body>
+    <navbar-component></navbar-component>
+    <main>
+        <h2>Place a marker</h2>
+        <div id="map2"></div>
+        <h2>Select a range</h2>
+        <div class="labels">
+            <p>&lt;10km</p>
+            <p>100km</p>
+            <p>200km</p>
+            <p>300km</p>
+            <p>400km</p>
+            <p>500km</p>
+            <p>600km</p>
+            <p>700km</p>
+            <p>800km</p>
+            <p>900km</p>
+            <p>&gt;1000km</p>
+        </div>
+        <input type="range" min="10" max="200" value="200" class="slider" id="myRange" onmouseup="">
+        <div class="analytics">
+            <span class="averageTemperature">Avg area temperature:</span>
+            <span class="averageSoilHumidity">Avg soil humidity:</span>
+
+            <span class="cubicMetersOfWater">Cubic meters of rain:</span>
+        </div>
+    </main>
+
+</body>
+<script>
+    function initMap2() {
+
+        const myLatlng = { lat: 39.0742, lng: 21.8243 };
+        map2 = new google.maps.Map(document.getElementById("map2"), {
+            zoom: 8,
+            center: myLatlng,
+
+        });
+        // Create the initial InfoWindow.
+        let infoWindow = new google.maps.InfoWindow({
+            content: "Mark your field area, for weather reports",
+            position: myLatlng,
+        });
+        infoWindow.open(map);
+        map2.setMapTypeId(google.maps.MapTypeId.SATELLITE)
+        // Configure the click listener.
+        map2.addListener("click", (mapsMouseEvent) => {
+            // Close the current InfoWindow.
+
+            console.log(locationSelected)
+            latLong = JSON.parse(JSON.stringify(mapsMouseEvent.latLng))
+            console.log(JSON.parse(JSON.stringify(mapsMouseEvent.latLng)))
+            infoWindow.close();
+            // Create a new InfoWindow.
+            infoWindow = new google.maps.InfoWindow({
+                position: mapsMouseEvent.latLng,
+            });
+            infoWindow.setContent(
+                "Here!"
+            );
+            infoWindow.open(map2);
+        });
+    }
+</script>
+<script src="/Home/scripts/sign-in.js"></script>
+<script src="/Home/scripts/components/navComponent.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+</html>

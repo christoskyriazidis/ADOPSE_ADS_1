@@ -24,8 +24,8 @@ $dark-yellow: #2c2c2b;
 }
 
 .widget {
-	margin: 20px;
-	width: 260px;
+	margin: 10px;
+	width: 240px;
 	height: 170px;
 	border-radius: 20px;
 	background: $green-secondary;
@@ -56,7 +56,12 @@ $dark-yellow: #2c2c2b;
 	height: 90px;
 	display: block;
 }
-
+.weatherIcon {
+	width: 60px;
+	height: 60px;
+	display: block;
+	text-align: center;
+}
 .weather-status {
 	color: #fff;
 	text-align: center;
@@ -208,16 +213,14 @@ body {
 		flex-grow: 1;
 	}
 }
-#sensorLogs {
-	
-	
-	table{
-		
-		width:100%;
-		text-align:center;
+#sensorLogs,
+#weatherLogs {
+	table {
+		width: 100%;
+		text-align: center;
 	}
-	tr{
-		text-align:center;
+	tr {
+		text-align: center;
 	}
 	td,
 	th {
@@ -233,8 +236,58 @@ body {
 	th {
 		padding-top: 12px;
 		padding-bottom: 12px;
-		
+
 		background-color: #04aa6d;
 		color: white;
+	}
+}
+#weatherLogs {
+	tbody:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+	tbody{
+
+	}
+	td{
+		padding:0px;
+		margin:0px;
+		width:100px;
+		height:100px;
+	}
+	.weatherCell {
+		background-color: rgba(221, 221, 221, 0);
+		margin:0px;
+		h2{
+			margin-top:5px;
+		}
+		display: flex;
+		flex-direction:column;
+		align-items: center;
+		.bottom{
+			display:flex;
+			flex-direction:row;
+			h5{
+				margin:5px;
+			}
+		}
+	}
+}
+#weatherLogs{
+	h1{
+		text-align: center;		
+	}
+}
+.bottomBodyWeather{
+	display:flex;
+	flex-direction:row;
+	
+	button{
+		width:150px;
+		background-color:#525753;
+		color:white;
+	}
+	.filler{
+		display:flex;
+		flex-grow:1;
 	}
 }

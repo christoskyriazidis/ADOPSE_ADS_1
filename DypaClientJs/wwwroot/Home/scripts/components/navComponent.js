@@ -8,13 +8,20 @@ class NavbarComponent extends HTMLElement {
     get filters() {
         return this.getAttribute("filters");
     }
+    firstTime
     constructor() {
         super();
         this.render();
+        document.querySelector(".dependencies").innerHTML = ""
+        let script = document.createElement("script")
+        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBYNtt3TEftA6RmWg7PlntfcT7OZ6KJN84&callback=initMap&libraries=&v=weekly"
+        document.querySelector(".dependencies").appendChild(script);
+        //axios.get(presets)
+
     }
     attributeChangedCallback(name, oldValue, newValue) {
         this.render();
-
+        attachPresets();
     }
     render = () => {
         let listItems;
@@ -24,10 +31,10 @@ class NavbarComponent extends HTMLElement {
                
               
                 <li class="nav-item">
-                    <a class="nav-link authorized" href="#">My Fields</a>
+                    <a class="nav-link authorized" href="/Home/myFields.html">My Fields</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link authorized" href="#">My Workers</a>
+                    <a class="nav-link authorized" href="/home/myPresets.html">My Presets</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link authorized notification" onclick="attachNotifications(event)" href="#">Notifications</a>
@@ -37,8 +44,9 @@ class NavbarComponent extends HTMLElement {
                     More Actions
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addModal" >Add Field</a>
                     <a class="dropdown-item" href="#">Account Settings</a>
-                    <a class="dropdown-item" href="#">Sensor Logs</a>
+                    <a class="dropdown-item" href="/home/logAnalytics.html">Sensor Logs</a>
                     <a class="dropdown-item" href="#">Weather History</a>
 
                     </div>
@@ -70,7 +78,7 @@ class NavbarComponent extends HTMLElement {
         
         
         <nav class="navbar navbar-expand-lg ">
-            <a class="navbar-brand" href="#" style="">WaterGrape<br><p style="font-size:small;text-align:center;">Smart Irrigation Management</p></a>
+            <a class="navbar-brand" href="/Home/index.html" style="">WaterGrape<br><p style="font-size:small;text-align:center;">Smart Irrigation Management</p></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -80,18 +88,154 @@ class NavbarComponent extends HTMLElement {
             </ul>
             </div>
         </nav>
+        <div class="modal fade"  id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Field</h5>
+                    <button type="button" onclick="clearAdd()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="group">
+                        <label for="#fieldDescriptionAdd">Title</label>
 
+                        <input id="fieldDescriptionAdd" type="text">
+                    </div>
+
+                    <div class="group">
+                        <label for="#fieldAcresAdd">Acres</label>
+
+                        <input id="fieldAcresAdd" type="text">
+                    </div>
+                    <div class="group">
+                        <label for="#fieldPlantRootsAdd">Number of plant roots</label>
+
+                        <input id="fieldPlantRootsAdd" type="text">
+                    </div>
+                    <div class="group">
+                        <label for="#fieldWaterSupplyAdd">Water supply in L/m</label>
+
+                        <input id="fieldWaterSupplyAdd" type="text">
+                    </div>
+                    <div class="group">
+                        <label for="#fieldPresetAdd">Choose a crop type preset</label>
+                        <select id="fieldPresetAdd" ><option value="owners">other</option></select>
+                    </div>
+                    <div class="group">
+                        <label for="#fieldVarietyAdd">Specify crop variety</label>
+                        <select id="fieldVarietyAdd" ></select>
+                    </div>
+                    <div class="group">
+                        <label for="#fieldLocationAdd">General Location</label>
+                        <input id="fieldLocationAdd" type="text">
+                    </div>
+                    
+                    <div id="map"></div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="postXwrafi()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="dependencies"></div>
         <link rel="stylesheet" href="/Home/styles/navbar/navbar.css">
 
         `
+
     };
 }
+const displayAddFieldModal = () => {
+
+}
+const fillEdit = () => {
+    document.querySelector("#fieldDescriptionAdd").value = document.querySelector(".fieldAreaInfo").innerHTML;
+    document.querySelector("#fieldAcresAdd").value = document.querySelector(".fieldAcresInfo").innerHTML;
+    document.querySelector("#fieldPlantRootsAdd").value = document.querySelector(".fieldRootsInfo").innerHTML;
+    document.querySelector("#fieldWaterSupplyAdd").value = document.querySelector(".fieldWaterSupplyInfo").innerHTML;
+    document.querySelector("#fieldLocationAdd").value = document.querySelector(".fieldDescriptionAdd").innerHTML;
+    document.querySelector("#fieldPresetAdd").selectedIndex
+    document.querySelector("#fieldVarietyAdd").selectedIndex
+    clearAdd();
+}
+const clearAdd = () => {
+    const title = document.querySelector("#fieldDescriptionAdd").value = "";
+    const acres = document.querySelector("#fieldAcresAdd").value = "";
+    const roots = document.querySelector("#fieldPlantRootsAdd").value = "";
+    const water = document.querySelector("#fieldWaterSupplyAdd").value = "";
+    const location = document.querySelector("#fieldLocationAdd").value = "";
+
+}
+const postXwrafi = () => {
+    const title = document.querySelector("#fieldDescriptionAdd");
+    const acres = document.querySelector("#fieldAcresAdd");
+    const roots = document.querySelector("#fieldPlantRootsAdd");
+    const water = document.querySelector("#fieldWaterSupplyAdd");
+    const preset = document.querySelector("#fieldPresetAdd").options[document.querySelector("#fieldPresetAdd").selectedIndex];
+    const location = document.querySelector("#fieldLocationAdd");
+    const variety = document.querySelector("#fieldVarietyAdd").options[document.querySelector("#fieldVarietyAdd").selectedIndex];
+    if (locationSelected) {
+        locationSelected = false;
+        let data = {
+            Title: title.value,
+            Acres: acres.value,
+            PlantRoots: roots.value,
+            WaterSupply: water.value,
+            PresetId: preset.value == "owners" ? variety.value : preset.value,
+            LocationTitle: location.value,
+            Latitude: latLong.lat,
+            Longitude: latLong.lng
+        }
+        console.log(data)
+        axios.post("https://localhost:44357/xorafi", data).then(console.log).catch(console.error)
+    } else {
+        alert("You must choose a location")
+    }
+}
+const attachPresets = () => {
+    const presetSelect = document.querySelector("#fieldPresetAdd")
+
+    axios.get("https://localhost:44357/category")
+        .then(res => res.data)
+        .then(data => {
+
+            let options = ""
+            for (const object of data) {
+                options += `<option value="${object.id}">${object.title}</option>`
+            }
+            presetSelect.innerHTML += options;
+        })
+    presetSelect.addEventListener("change", () => {
+        const subcat = document.querySelector("#fieldVarietyAdd")
+        let selectedCategory = presetSelect.options[presetSelect.selectedIndex]
+        if (selectedCategory.value != "owners") {
+            s = "https://localhost:44357/subcategory/" + selectedCategory.value
+        } else {
+            s = "https://localhost:44357/owner/category/"
+        }
+        axios.get(s).then(res => res.data)
+            .then(data => {
+                console.log(data)
+                let options = ""
+                for (const object of data) {
+                    options += `<option value="${object.id}">${object.title}</option>`
+                }
+                subcat.innerHTML = options;
+            })
+    })
+}
+
 const attachNotifications = (event) => {
     if (
         document.querySelector("notification-component").classList.contains("fresh")
     ) {
 
-       
+
         document.querySelector("notification-component").classList.remove("fresh");
         let notification = document.querySelector("notification-component");
         document.querySelector("notification-component").style.display = "block";
@@ -116,7 +260,7 @@ const attachNotifications = (event) => {
 
         document.querySelector("notification-component").style.display = "block";
 
-       
+
     }
     let x = document.querySelector(".notification").getBoundingClientRect().left;
     let y = document
@@ -125,182 +269,147 @@ const attachNotifications = (event) => {
     const notificationComponent = document.querySelector(
         "notification-component"
     );
-    notificationComponent.style.top=y;
-    notificationComponent.style.left=x;
+    notificationComponent.style.top = y;
+    notificationComponent.style.left = x;
 }
 
-    customElements.define("navbar-component", NavbarComponent);
+customElements.define("navbar-component", NavbarComponent);
 
 
-    let notifCounter = 0;
-    class NotificationComponent extends HTMLElement {
-        counter = 0;
-        constructor() {
-            super();
-           
-            // var connection = new signalR.HubConnectionBuilder()
-            //     .withUrl("https://localhost:44374/NotificationHub")
-            //     .build();
-            // connection
-            //     .start()
-            //     .then(function () { })
-            //     .catch(function (err) {
-            //         return console.error(err.toString());
-            //     });
-            // connection.on("ReceiveWishListNotification", (subId) => {
-            //     if (me.profile.sub != subId) {
-            //         document.querySelector(".notification").style.backgroundColor =
-            //             "#1860AA";
-            //         document.querySelector(".notification").style.border =
-            //             "1px solid white";
-            //         notifCounter = 0;
-            //         document.querySelector(".notificationItems").innerHTML = "";
-            //         this.callApi();
+let notifCounter = 0;
+class NotificationComponent extends HTMLElement {
+    counter = 0;
+    constructor() {
+        super();
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:44357/NotificationHub")
+            .build();
+        connection
+            .start()
+            .then(function () { })
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+        connection.on("HourlySensor", (subId) => {
+            this.callApi();
 
 
-            //     }
-            // });
-             this.callApi();
-        }
-        callApi = () => {
-            notifCounter++;
-            axios
-                .get("https://localhost:44374/notification/" + notifCounter)
-                .then((response) => response.data)
-                .then(handleApiDataNotifications)
-                .then(this.render)
-                .catch((x) => console.log(x))
-                .finally();
-        };
-        connectedCallback() { }
-        render = (html) => {
-           
-            this.innerHTML = html;
-            document
-                .querySelector(".notificationItems")
-                .addEventListener("scroll", () => {
-                    if (document.querySelector(".notificationItems").scrollTop == 0) {
-                        notifCounter++;
-                        axios
-                            .get("https://localhost:44374/notification/" + notifCounter)
-                            .then((response) => response.data)
-                            .then(handleApiDataNotifications)
-                            .then(this.render)
-                            .catch((x) => console.log(x))
-                            .finally();
-                    }
-                });
-        };
+         
+        });
+        this.callApi();
     }
-    function listen() {
+    callApi = () => {
         axios
-            .get("https://localhost:44374/notification/1")
+            .get("https://localhost:44357/owner/notification/")
             .then((response) => response.data)
             .then(handleApiDataNotifications)
             .then(this.render)
             .catch((x) => console.log(x))
             .finally();
-    }
-    setSeen = (type, adId, id, sold) => {
-        const data = {
-            Type: type,
-            Id: id,
-        };
-        if (sold) {
-            alert("Already droped a review");
-            return;
-        }
-        if (type != "Review") {
-            axios
-                .put("https://localhost:44374/notification/", data)
-                .then((response) => response.data)
-                .then(() => {
-                    if (type != "Review") {
-                        window.location.href =
-                            "https://localhost:44366/home/ad/index.html?id=" + adId;
-                    } else {
-                    }
-                })
-                .then(this.render)
-                .catch((x) => console.log(x))
-                .finally();
-        } else {
-            window.location.href =
-                "https://localhost:44366/home/profile/index.html?reviewMode=1&id=" +
-                object.customerId +
-                "&adId=" +
-                object.adId;
-        }
     };
-    //style="background-image:url('${object.productphoto}')
-    function handleApiDataNotifications(data) {
-        
-        console.log(data);
-        let prevData = document.querySelector(".notificationItems")
-            ? document.querySelector(".notificationItems").innerHTML
-            : "";
-        let allItems = "";
-        data = data.reverse();
-        for (object of data) {
-            console.log(object);
-            const item = `
-        <li onclick="setSeen('${object.type}',${object.adId},${object.id},${object.sold
-                })" class="${object.clicked ? "" : "new"}" >
-            <a href="${object.type != "Review" ? "#" : "#"}">
-                <span class="itemImage qwe" style='background-image:url(${object.img
-                })' alt=""></span>
+    connectedCallback() { }
+    render = (html) => {
+        this.innerHTML = html;
+    };
+}
+function listen() {
+    axios
+        .get("https://localhost:44374/notification/1")
+        .then((response) => response.data)
+        .then(handleApiDataNotifications)
+        .then(this.render)
+        .catch((x) => console.log(x))
+        .finally();
+}
+
+//style="background-image:url('${object.productphoto}')
+function handleApiDataNotifications(data) {
+    console.log(data);
+    let allItems = "";
+    for (object of data) {
+        console.log(object);
+        const item = `
+        <li onclick="" class="" >
+            <a href="https://localhost:44376/home/fieldOverview.html?id=${object.id}">
                 <div class="itemDescription">
-                    <span class="title">${object.type == "SubCategory"
-                    ? `New ad on ${object.title}`
-                    : object.type == "Review"
-                        ? `You can now drop a review on seller ${object.username}`
-                        : `Ad update: ${object.title}`
-                }</span>
-                    
-                    ${object.type == "Review"
-                    ? ""
-                    : `<span class="price">${object.price}$</span>
-                        <span class="info">${object.username}</span>`
-                }
-                    <span class="date">Before  ${determineNotation(
-                    Math.round((Date.now() - object.timestamp) / 1000)
-                )}</span>
+                    <span class="title">${object.title}</span>
+                    <span class="price">At ${object.locationTitle}</span>
+                    <span class="info">Soil humidity reaches low levels in this field, currently: ${object.currentSoilHum}%, while it should be above ${object.lowestSoilHum}%</span>
+                    <span class="date">Before  ${determineNotation(Math.round((Date.now() - object.timestamp) / 1000))}</span>
                 </div>
             </a>
         </li>
         `;
-            allItems += item;
-        }
+        allItems += item;
+    }
 
-        const html = `
+    const html = `
     <div class="notificationContainer">
         <div class="notificationContent">
             <ul class="notificationItems">
-                ${allItems + prevData}
+                ${allItems}
             </ul>
         </div>
         <br>
-        <div class="notificationMore">
-            <a href="#">Expand this list</a>
-        </div>
+        
     </div>
     <style>@import "/styles/components/notification/notification.css"</style>
     `;
 
-        return html;
-    }
+    return html;
+}
 
-    determineNotation = (seconds) => {
-        let final;
-        if (seconds < 60) {
-            return Math.round(seconds) + " seconds";
-        } else if (seconds / 60 < 60) {
-            return Math.round(seconds / 60) + " minutes";
-        } else if (seconds / 60 / 60 < 24) {
-            return Math.round(seconds / 60 / 60) + " hours";
-        } else if (seconds / 60 / 60 / 24 < 30) {
-            return Math.round(seconds / 60 / 60 / 24) + " days";
-        }
-    };
-    customElements.define("notification-component", NotificationComponent);
+determineNotation = (seconds) => {
+    let final;
+    if (seconds < 60) {
+        return Math.round(seconds) + " seconds";
+    } else if (seconds / 60 < 60) {
+        return Math.round(seconds / 60) + " minutes";
+    } else if (seconds / 60 / 60 < 24) {
+        return Math.round(seconds / 60 / 60) + " hours";
+    } else if (seconds / 60 / 60 / 24 < 30) {
+        return Math.round(seconds / 60 / 60 / 24) + " days";
+    }
+};
+customElements.define("notification-component", NotificationComponent);
+let latLong
+let map;
+let locationSelected
+function initMap() {
+    if(initMap2){
+        initMap2();
+    }
+    locationSelected = false
+    const myLatlng = { lat: 39.0742, lng: 21.8243 };
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 8,
+        center: myLatlng,
+
+    });
+    // Create the initial InfoWindow.
+    let infoWindow = new google.maps.InfoWindow({
+        content: "Mark your field area, for weather reports",
+        position: myLatlng,
+    });
+    infoWindow.open(map);
+    map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
+    // Configure the click listener.
+    map.addListener("click", (mapsMouseEvent) => {
+        // Close the current InfoWindow.
+        locationSelected = true;
+        console.log(locationSelected)
+        latLong = JSON.parse(JSON.stringify(mapsMouseEvent.latLng))
+        console.log(JSON.parse(JSON.stringify(mapsMouseEvent.latLng)))
+        infoWindow.close();
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+            position: mapsMouseEvent.latLng,
+        });
+        infoWindow.setContent(
+            "Here!"
+        );
+        infoWindow.open(map);
+    });
+}
 

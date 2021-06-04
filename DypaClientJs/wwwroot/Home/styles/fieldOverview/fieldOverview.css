@@ -28,8 +28,8 @@
 }
 
 .widget {
-  margin: 20px;
-  width: 260px;
+  margin: 10px;
+  width: 240px;
   height: 170px;
   border-radius: 20px;
   background: #a3bcb6;
@@ -80,6 +80,13 @@
   width: 90px;
   height: 90px;
   display: block;
+}
+
+.weatherIcon {
+  width: 60px;
+  height: 60px;
+  display: block;
+  text-align: center;
 }
 
 .weather-status {
@@ -306,33 +313,113 @@ body main .moreDetails .rightColumn .gmap_canvas iframe {
           flex-grow: 1;
 }
 
-#sensorLogs table {
+#sensorLogs table,
+#weatherLogs table {
   width: 100%;
   text-align: center;
 }
 
-#sensorLogs tr {
+#sensorLogs tr,
+#weatherLogs tr {
   text-align: center;
 }
 
 #sensorLogs td,
-#sensorLogs th {
+#sensorLogs th,
+#weatherLogs td,
+#weatherLogs th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#sensorLogs tr:nth-child(even) {
+#sensorLogs tr:nth-child(even),
+#weatherLogs tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#sensorLogs tr:hover {
+#sensorLogs tr:hover,
+#weatherLogs tr:hover {
   background-color: #ddd;
 }
 
-#sensorLogs th {
+#sensorLogs th,
+#weatherLogs th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04aa6d;
   color: white;
+}
+
+#weatherLogs tbody:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#weatherLogs td {
+  padding: 0px;
+  margin: 0px;
+  width: 100px;
+  height: 100px;
+}
+
+#weatherLogs .weatherCell {
+  background-color: rgba(221, 221, 221, 0);
+  margin: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#weatherLogs .weatherCell h2 {
+  margin-top: 5px;
+}
+
+#weatherLogs .weatherCell .bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+#weatherLogs .weatherCell .bottom h5 {
+  margin: 5px;
+}
+
+#weatherLogs h1 {
+  text-align: center;
+}
+
+.bottomBodyWeather {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.bottomBodyWeather button {
+  width: 150px;
+  background-color: #525753;
+  color: white;
+}
+
+.bottomBodyWeather .filler {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
 }
 /*# sourceMappingURL=fieldOverview.css.map */

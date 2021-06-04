@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <link rel="stylesheet" href="/Home/styles/fieldOverview/fieldOverview.css">
-
+    <script src="/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 
 </head>
 
@@ -30,6 +30,10 @@
                 <div class="innerUpperLeft">
                     <h1>General details:</h1>
                     <p>Field area: <span class="fieldAreaInfo"></span></p>
+                    <br>
+                    <p>Field location: <span class="fieldLocationInfo"></span></p>
+                    <br>
+                    <p>Field preset: <span class="fieldPresetInfo"></span></p>
                     <br>
                     <p>Acres of field: <span class="fieldAcresInfo"></span></p>
                     <br>
@@ -60,15 +64,16 @@
 
                 </div>
                 <div class="innerLowestLeft">
-                    <button data-toggle="modal" data-target="#editModal">Edit Field</button>
+                    <button data-toggle="modal" data-target="#addModal" onclick="fillEdit()">Edit Field</button>
                     <button data-toggle="modal" data-target="#sensorLogs">Sensor Logs</button>
-                    <button>Historic Weather</button>
+                    <button data-toggle="modal" data-target="#weatherLogs">Historic Weather</button>
+                    <button data-toggle="modal" data-target="#deleteModal">Delete this field</button>
                 </div>
             </div>
             <div class="rightColumn">
                 <div class="mapouter">
                     <div class="gmap_canvas"><iframe id="gmap_canvas"
-                            src="https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&t=k&z=15&ie=UTF8&iwloc=&output=embed"
+                            src="https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&maptype=satellite&t=k&z=15&ie=UTF8&iwloc=&output=embed"
                             frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a
                             href="https://putlocker-is.org"></a><br>
                         <style>
@@ -82,6 +87,26 @@
 
     </main>
 </body>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure that you wanna delete this field?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="deleteField()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -112,11 +137,18 @@
 
                     <input id="fieldWaterSupply" type="text">
                 </div>
+                <div id="floating-panel">
+                    <input id="address" type="textbox" value="Sydney, NSW" />
+                    <input id="submit" type="button" value="Geocode" />
+                </div>
+                <div id="map"></div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
             </div>
+            
         </div>
     </div>
 </div>
@@ -138,14 +170,7 @@
                         <th>Wind Speed</th>
                         <th>Soil Humidity</th>
                     </tr>
-                    <tr>
-                        <td>1/6/2021, 8:25:25 μ.μ.</td>
-                        <td>1020 mbar</td>
-                        <td>23 C</td>
-                        <td>65%</td>
-                        <td>4 m/s</td>
-                        <td>42%</td>
-                    </tr>
+                    
                 </table>
             </div>
             <div class="modal-footer">
@@ -155,6 +180,49 @@
         </div>
     </div>
 </div>
+<div class="modal fade " id="weatherLogs" tabindex="-1" role="dialog" aria-labelledby="weatherLogsLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="weatherLogsLabel">Weather Logs</h5>
+
+            </div>
+            <div class="modal-body">
+                <h1>June 2021</h1>
+                <table id="weatherCalendar">
+                    <tr>
+                        <th>Su</th>
+                        <th>Mo</th>
+                        <th>Tu</th>
+                        <th>We</th>
+                        <th>Th</th>
+                        <th>Fr</th>
+                        <th>Sa</th>
+                    </tr>
+
+                </table>
+                <div class="bottomBodyWeather">
+                    <button class="previous">&lt; Previous month</button>
+                    <div class="filler"></div>
+                    <button class="next">Next month &gt;</button>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   
+    
+
+
+</script>
 <script src="/Home/scripts/sign-in.js"></script>
 <script src="/Home/scripts/components/navComponent.js"></script>
 

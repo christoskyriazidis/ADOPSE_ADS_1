@@ -46,7 +46,7 @@ namespace DypaApi.Helpers
                     {
                         if (_sensorRepo.AddNotification(xorafi.Id))
                         {
-                            await _notificationHub.Clients.All.SendAsync("HourlySensor");
+                            await _notificationHub.Clients.All.SendAsync("  ");
                         }
                     }
                 }

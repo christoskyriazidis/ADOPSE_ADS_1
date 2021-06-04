@@ -27,7 +27,6 @@ nav {
             margin-left: 20px;
             border: 1px solid $dark-grey;
             text-align: center;
-          
         }
         .authorized {
             color: $dark-grey;
@@ -57,7 +56,7 @@ nav {
         font-family: "Roboto", sans-serif;
         width: 300px;
         border: 1px solid $subtle-grey;
-        
+
         padding-bottom: 20px;
         box-shadow: 5px 5px 25px grey;
         .notificationContainer {
@@ -109,7 +108,10 @@ nav {
                             display: flex;
                             flex-direction: column;
                             .title {
-                                font-size: small;
+                                font-size: large;
+                                font-weight: bold;
+                            }
+                            .price{
                                 font-weight: bold;
                             }
                             .date {
@@ -143,3 +145,33 @@ nav {
         }
     }
 }
+.modal{
+    .group {
+        display: flex;
+        flex-direction: row;
+        margin:20px;
+        label {
+            display: flex;
+            flex-grow: 1;
+        }
+        input,select{
+            width:40%;
+            
+            option{
+                text-align: center;
+            }
+        }
+    }
+   
+    #map {
+        height: 600px;
+        width: 100%;
+    }
+}
+#map2 {
+    height: 600px;
+    width: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+

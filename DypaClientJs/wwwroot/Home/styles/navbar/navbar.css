@@ -140,7 +140,11 @@ nav notification-component .notificationContainer .notificationItems li a .itemD
 }
 
 nav notification-component .notificationContainer .notificationItems li a .itemDescription .title {
-  font-size: small;
+  font-size: large;
+  font-weight: bold;
+}
+
+nav notification-component .notificationContainer .notificationItems li a .itemDescription .price {
   font-weight: bold;
 }
 
@@ -177,4 +181,44 @@ nav notification-component .notificationContainer .notificationMore a {
   background-color: #1b6dc1;
   color: white;
 }
+
+.modal .group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin: 20px;
+}
+
+.modal .group label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.modal .group input, .modal .group select {
+  width: 40%;
+}
+
+.modal .group input option, .modal .group select option {
+  text-align: center;
+}
+
+.modal #map {
+  height: 600px;
+  width: 100%;
+}
+
+#map2 {
+  height: 600px;
+  width: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
 /*# sourceMappingURL=navbar.css.map */

@@ -23,7 +23,7 @@ class WeatherComponent extends HTMLElement {
     }
     callWeatherApi=()=> {
         console.log(this.fieldId)
-        axios.get(`https://localhost:44331/xorafi/weekly?xorafiId=${this.fieldId}&pageNumber=1`).then(res => res.data)
+        axios.get(`https://localhost:44357/xorafi/weekly?xorafiId=${this.fieldId}&pageNumber=1`).then(res => res.data)
             .then(data => {
                 let days=""
                 data=data.reverse();
