@@ -136,7 +136,7 @@ namespace DypaApi.Repositories
             try
             {
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
-                string sql = "select x.*,l.title as locationTitle,l.latitude,l.longitude ,c.imgUrl,c.LowestNormalSoilMoisture,c.OptimalSoilMoisture,c.title,c.UpperNormalSoilMoisture,c.weeklyRootWaterSummer,c.weeklyRootWaterWinter,c.id as PresetId from xorafi x join location l on (x.id=l.xorafiid) join PresetPerXorafi p on(p.xorafiId=x.id) join Category c on (c.id=p.presetId)  WHERE x.id =@Xid";
+                string sql = "select x.*,l.title as locationTitle,l.latitude,l.longitude ,c.imgUrl,c.LowestNormalSoilMoisture,c.OptimalSoilMoisture,c.title as presetTitle,c.UpperNormalSoilMoisture,c.weeklyRootWaterSummer,c.weeklyRootWaterWinter,c.id as PresetId from xorafi x join location l on (x.id=l.xorafiid) join PresetPerXorafi p on(p.xorafiId=x.id) join Category c on (c.id=p.presetId)  WHERE x.id =@Xid";
                 var xorafi = conn.Query<Xorafi>(sql,new { Xid}).FirstOrDefault();
                 return xorafi;
             }
@@ -154,7 +154,7 @@ namespace DypaApi.Repositories
                 using SqlConnection conn = ConnectionManager.GetSqlConnection();
                 string sql = "select x.*,l.latitude,l.longitude,l.title as locationTitle," +
                     "(select top 1 temp from HourlySensorReport where xorafiId=x.id order by id desc ) as temp," +
-                    "(select top 1 wind_speed from HourlySensorReport where xorafiId=x.id order by id desc ) as windSpeed," +
+                    "(select top 1 wind_speed from HourlySensorReport where xorafiId=x.id order by id desc ) as wind_Speed," +
                     "(select top 1 humidity from HourlySensorReport where xorafiId=x.id order by id desc ) as humidity," +
                     "(select top 1 pressure from HourlySensorReport where xorafiId=x.id order by id desc ) as pressure," +
                     "(select top 1 icon from HourlySensorReport where xorafiId=x.id order by id desc ) as icon," +

@@ -12,6 +12,7 @@ namespace DypaApi.Models.Xorafi
         public int Id { get; set; }
 
         public string Title { get; set; }
+        public string PresetTitle { get; set; }
         
         public string LocationTitle { get; set; }
 

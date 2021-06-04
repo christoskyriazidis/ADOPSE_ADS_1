@@ -143,9 +143,9 @@ namespace DypaApi
             });
             app.UseHangfireDashboard();
 
-            recurringJobManager.AddOrUpdate("HourlySensors",
-                () => serviceProvider.GetService<ICronJob>().FetchSensorAsync(),
-                Cron.Minutely);
+            //recurringJobManager.AddOrUpdate("HourlySensors",
+            //    () => serviceProvider.GetService<ICronJob>().FetchSensorAsync(),
+            //    Cron.Minutely);
             //recurringJobManager.AddOrUpdate("WeeklyForecast",
             //    () => serviceProvider.GetService<ICronJob>().WeeklyForecastAsync(),
             //    Cron.Minutely);

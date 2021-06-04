@@ -22,6 +22,7 @@ namespace DypaApi.Models.Xorafi
         public  decimal Temp { get; set; }
         public  decimal Visibility { get; set; }
         public  decimal Wind_deg { get; set; }
+        public  decimal Wind_speed { get; set; }
         public string LocationTitle { get; set; }
         public string imgUrl { get; set; }
         public string PresetTitle { get; set; }
