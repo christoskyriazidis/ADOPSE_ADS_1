@@ -206,6 +206,20 @@ namespace DypaApi.Controllers
             return BadRequest(new { response="Failed"});
         }
 
-
+        [Authorize]
+        [HttpGet]
+        [Route("/owner/notification")]
+        public IActionResult GetNotifications()
+        {
+            var claims = User.Claims.ToList();
+            var subId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var intId = _workerRepo.GetCustomerIdFromSub(subId);
+            var notifications = _xorafiRepo.GetXorafiNotifications(intId);
+            if (notifications != null)
+            {
+                return Json(notifications);
+            }
+            return BadRequest(new { response="No notifications"});
+        }
     }
 }

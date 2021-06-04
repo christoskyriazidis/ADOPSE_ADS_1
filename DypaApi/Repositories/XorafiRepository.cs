@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DypaApi.Helpers;
 using DypaApi.Interfaces;
+using DypaApi.Models.Notifications;
 using DypaApi.Models.PostRequest;
 using DypaApi.Models.Worker;
 using DypaApi.Models.Xorafi;
@@ -273,6 +274,22 @@ namespace DypaApi.Repositories
                 string sql = "select C.*,p.xorafiId from PresetPerXorafi p join Category c on(c.id=p.presetId) where p.xorafiId=@XorafiId";
                 var xorafiWithPresets = conn.Query<XorafiWithPreset>(sql,new { XorafiId}).ToList();
                 return xorafiWithPresets;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return null;
+            }
+        }
+
+        public IEnumerable<XorafiNotification> GetXorafiNotifications(int OwnderId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "select * from Notification where xorafiId in ((select id from Xorafi where owner =@OwnderId )) order by id desc";
+                var xorafiNotifications = conn.Query<XorafiNotification>(sql, new { OwnderId }).ToList();
+                return xorafiNotifications;
             }
             catch (SqlException sqlEx)
             {

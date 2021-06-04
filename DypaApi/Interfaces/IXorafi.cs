@@ -1,4 +1,5 @@
-﻿using DypaApi.Models.PostRequest;
+﻿using DypaApi.Models.Notifications;
+using DypaApi.Models.PostRequest;
 using DypaApi.Models.Worker;
 using DypaApi.Models.Xorafi;
 using System;
@@ -35,6 +36,8 @@ namespace DypaApi.Interfaces
         IEnumerable<SubCategory> GetSubCategories(int CategoryId);
 
         IEnumerable<Xorafia> GetXorafiaByOwnerId(int OwnderId);
+
+        IEnumerable<XorafiNotification> GetXorafiNotifications(int OwnderId);
         
 
     }

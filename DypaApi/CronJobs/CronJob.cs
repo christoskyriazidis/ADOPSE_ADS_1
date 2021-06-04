@@ -19,12 +19,14 @@ namespace DypaApi.CronJobs
     {
         private readonly ISensor _sensorRepo = new SensorRepository();
         private readonly IXorafi _xorafiRepo = new XorafiRepository();
-        private readonly Utils _utils = new Utils();
         private readonly IHubContext<NotificationHub> _notificationHub;
+        private readonly Utils _utils;
+        //private readonly Utils _utils = new Utils();
 
         public CronJob(IHubContext<NotificationHub> notificationHub)
         {
             _notificationHub = notificationHub;
+            _utils = new Utils(_notificationHub);
         }
 
         public async Task FetchSensorAsync()
@@ -33,16 +35,15 @@ namespace DypaApi.CronJobs
             foreach (var i in xorafia)
             {
                 await _utils.RefreshHourlySensorLogs(i, _sensorRepo);
-                await _notificationHub.Clients.All.SendAsync("HourlySensor");
             }
         }
 
-        public async Task WeeklyForecastAsync() {
+    public async Task WeeklyForecastAsync() {
             var xorafia = _xorafiRepo.GetXorafia();
             foreach (var i in xorafia)
             {
                 await _utils.RefreshWeeklyForecast(i, _sensorRepo);
-                await _notificationHub.Clients.All.SendAsync("WeeklyForecast");
+                //await _notificationHub.Clients.All.SendAsync("WeeklyForecast");
             }
         }
 

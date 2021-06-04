@@ -1,8 +1,10 @@
-﻿using DypaApi.Interfaces;
+﻿using DypaApi.Hubs;
+using DypaApi.Interfaces;
 using DypaApi.Models.Weather;
 using DypaApi.Models.Weather.SingleCall;
 using DypaApi.Models.Xorafi;
 using DypaApi.Repositories;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,11 @@ namespace DypaApi.Helpers
     {
         private readonly IXorafi _xorafiRepo = new XorafiRepository();
         private readonly ISensor _sensorRepo = new SensorRepository();
+        private readonly IHubContext<NotificationHub> _notificationHub;
+        public Utils(IHubContext<NotificationHub> notificationHub)
+        {
+            _notificationHub = notificationHub;
+        }
 
         public  async Task RefreshHourlySensorLogs(XorafiWithPresetForSensor xorafi, ISensor _sensorRepo)
         {
@@ -35,13 +42,12 @@ namespace DypaApi.Helpers
                 {
                     var stats = await JsonSerializer.DeserializeAsync<WeatherNow>(contentStream, new System.Text.Json.JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true });
                     _sensorRepo.HourlySensorLogs(stats,xorafi.Id);
-                    if (stats.current.pressure > 1000)
+                    if(stats.current.humidity <= (xorafi.LowestNormalSoilMoisture+5))
                     {
-                        _xorafiRepo.SetWatering(xorafi.Id, false);
-                    }
-                    else if (stats.current.humidity < 60)
-                    {
-                        _xorafiRepo.SetWatering(xorafi.Id, true);
+                        if (_sensorRepo.AddNotification(xorafi.Id))
+                        {
+                            await _notificationHub.Clients.All.SendAsync("HourlySensor");
+                        }
                     }
                 }
                 catch (JsonException) // Invalid JSON

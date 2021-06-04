@@ -17,6 +17,22 @@ namespace DypaApi.Repositories
 {
     public class SensorRepository : ISensor
     {
+        public bool AddNotification(int XorafiId)
+        {
+            try
+            {
+                using SqlConnection conn = ConnectionManager.GetSqlConnection();
+                string sql = "exec [insert_notification] @xorafiId";
+                var inserted = conn.Execute(sql, new { XorafiId });
+                return inserted > 0;
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx);
+                return false;
+            }
+        }
+
         public bool AddSensor(string Name)
         {
             try
@@ -225,6 +241,7 @@ namespace DypaApi.Repositories
                 return false;
             }
         }
+
 
     }
 }
