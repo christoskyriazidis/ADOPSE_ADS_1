@@ -376,8 +376,10 @@ customElements.define("notification-component", NotificationComponent);
 let latLong
 let map;
 let locationSelected
+here=false;
 function initMap() {
-    if(initMap2){
+
+    if(here){
         initMap2();
     }
     locationSelected = false

@@ -41,7 +41,7 @@ const postPreset = () => {
             'Content-Type': 'multipart/form-data'
         }
     }).then(data=>{
-        $("#addPreset").modal.hide();
+        alert("Preset uploaded")
     }).catch(console.error)
     const title = document.querySelector("#title")
    
