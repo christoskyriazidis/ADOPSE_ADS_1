@@ -44,5 +44,4 @@ const postPreset = () => {
         alert("Preset uploaded")
     }).catch(console.error)
     const title = document.querySelector("#title")
-   
 }
